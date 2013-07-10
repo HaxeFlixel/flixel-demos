@@ -68,5 +68,7 @@
 	<assets path="assets" exclude="*.wav" if="flash" />
 	<assets path="assets" unless="flash" />
 	
+	<haxedef name="FLX_RECORD" />
+	
 	<icon name="assets/HaxeFlixel.svg" />
 </project>

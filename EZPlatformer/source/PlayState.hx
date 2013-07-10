@@ -1,12 +1,14 @@
 package; 
 
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxObject;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
-import org.flixel.FlxTilemap;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.tile.FlxTilemap;
 
 /**
  * ...
@@ -25,7 +27,7 @@ class PlayState extends FlxState
 	override public function create():Void 
 	{
 		//super.create();
-		FlxG.bgColor = 0xffaaaaaa;
+		FlxG.state.bgColor = 0xffaaaaaa;
 		
 		var data:Array<Int> = [
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,

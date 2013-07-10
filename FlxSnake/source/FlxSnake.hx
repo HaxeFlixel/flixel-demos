@@ -8,13 +8,15 @@
 
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.Lib;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxObject;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
 
 class FlxSnake extends FlxState
 {
@@ -81,7 +83,7 @@ class FlxSnake extends FlxState
 				Reg.score += 10;
 				placeFruit();
 				addSegment = true;
-				FlxG.play("Beep");
+				FlxG.sound.play("Beep");
 				
 				//	Get a little faster each time
 				if (snakeSpeed > 50)
@@ -128,7 +130,7 @@ class FlxSnake extends FlxState
 	private function deadSnake(object1:FlxObject, object2:FlxObject):Void
 	{
 		isAlive = false;
-		FlxG.play("Flixel");
+		FlxG.sound.play("Flixel");
 	}
 	
 	private function placeFruit(?object1:FlxObject = null, ?object2:FlxObject = null):Void

@@ -1,14 +1,16 @@
 package;
 
-import org.flixel.addons.FlxTilemapExt;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.addons.tile.FlxTilemapExt;
 import openfl.Assets;
-import org.flixel.FlxCamera;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxObject;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
+import flixel.FlxCamera;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
 
 class PlayState extends FlxState
 {
@@ -42,7 +44,7 @@ class PlayState extends FlxState
 		
 		_hud = new FlxGroup();
 
-		FlxG.bgColor = 0xff050509;
+		FlxG.state.bgColor = 0xff050509;
 		
 		//Simple Version
 		//=================================================================

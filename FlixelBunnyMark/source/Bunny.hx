@@ -1,5 +1,7 @@
 package ;
-import org.flixel.FlxSprite;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxSprite;
 
 /**
  * ...

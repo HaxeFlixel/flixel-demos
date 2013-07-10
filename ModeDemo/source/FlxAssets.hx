@@ -1,4 +1,6 @@
 package ;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.display.Bitmap;
 import flash.media.Sound;
 import openfl.Assets;

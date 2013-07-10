@@ -1,8 +1,10 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.Lib;
-import org.flixel.FlxG;
-import org.flixel.FlxGame;
+import flixel.FlxG;
+import flixel.FlxGame;
 	
 class MultiTouchTest extends FlxGame
 {
@@ -20,7 +22,7 @@ class MultiTouchTest extends FlxGame
 		#end
 		
 		#if android
-		FlxG.addSound("Beep");
+		FlxG.sound.add("Beep");
 		#end	
 	}
 }

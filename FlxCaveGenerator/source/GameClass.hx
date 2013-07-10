@@ -1,5 +1,7 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.Lib;
 import flixel.FlxGame;
 	

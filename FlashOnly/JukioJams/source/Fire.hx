@@ -1,5 +1,7 @@
 package;
-import org.flixel.FlxParticle;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.effects.particles.FlxParticle;
 
 class Fire extends FlxParticle
 {
@@ -29,8 +31,8 @@ class Fire extends FlxParticle
 		}
 		
 		/*small square
-		x = FlxG.width/2 - 25 + FlxG.random()*50;
-		y = FlxG.height/2 - 25 + FlxG.random()*50;
+		x = FlxG.width/2 - 25 + FlxRandom.float()*50;
+		y = FlxG.height/2 - 25 + FlxRandom.float()*50;
 		//*/
 	}
 }

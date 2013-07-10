@@ -1,11 +1,12 @@
 package;
-import org.flixel.FlxEmitter;
-import org.flixel.FlxG;
-import org.flixel.FlxParticle;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
-import org.flixel.util.FlxColor;
-import org.flixel.util.FlxRandom;
+import flixel.util.FlxMisc;
+import flixel.effects.particles.FlxEmitter;
+import flixel.FlxG;
+import flixel.effects.particles.FlxParticle;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
+import flixel.util.FlxRandom;
 class PlayState extends FlxState
 {
 	public var toggle:Bool;
@@ -56,12 +57,12 @@ class PlayState extends FlxState
 		{
 			//By setting the background color to a value with a low transparency,
 			//we can generate a cool "blur" effect.
-			FlxG.bgColor = 0x11000000;
+			FlxG.state.bgColor = 0x11000000;
 		}
 		else
 		{
 			//Setting it to an opaque color will turn the effect back off.
-			FlxG.bgColor = FlxColor.BLACK;
+			FlxG.state.bgColor = FlxColor.BLACK;
 		}
 		
 		super.update();

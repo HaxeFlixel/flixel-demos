@@ -1,8 +1,10 @@
 package;
 
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxSprite;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxSprite;
 
 class Alien extends FlxSprite		//Class declaration for the squid monster class
 {
@@ -23,7 +25,7 @@ class Alien extends FlxSprite		//Class declaration for the squid monster class
 		//We want to play them in the order 1, 2, 3, 1 (but of course this stuff is 0-index).
 		//To avoid a weird, annoying appearance the framerate is randomized a little bit
 		// to a value between 6 and 10 (6+4) frames per second.
-		addAnimation("Default", [0, 1, 0, 2], Math.floor(6 + FlxG.random() * 4));
+		addAnimation("Default", [0, 1, 0, 2], Math.floor(6 + FlxRandom.float() * 4));
 		
 		//Now that the animation is set up, it's very easy to play it back!
 		play("Default");
@@ -68,6 +70,6 @@ class Alien extends FlxSprite		//Class declaration for the squid monster class
 	//This function just resets our bullet logic timer to a random value between 1 and 11
 	private function resetShotClock():Void
 	{
-		shotClock = 1 + FlxG.random() * 10;
+		shotClock = 1 + FlxRandom.float() * 10;
 	}
 }

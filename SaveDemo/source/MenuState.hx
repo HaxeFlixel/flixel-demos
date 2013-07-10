@@ -1,9 +1,11 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.ui.Mouse;
-import org.flixel.FlxG;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
+import flixel.FlxG;
+import flixel.FlxState;
+import flixel.text.FlxText;
 
 class MenuState extends FlxState
 {
@@ -17,8 +19,8 @@ class MenuState extends FlxState
 	{
 		//For the purposes of the demo we'll have the framerate ultra low
 		//so that we don't eat processor power away from any other SWF's on the page.
-		FlxG.framerate = 10;
-		FlxG.flashFramerate = 10;
+		FlxG.framerate = 30;
+		FlxG.flashFramerate = 30;
 		
 		var t:FlxText;
 		t = new FlxText(0,FlxG.height/2-20,FlxG.width,"Save Demo");

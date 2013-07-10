@@ -1,6 +1,8 @@
 package;
 
-import org.flixel.FlxGame;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxGame;
 
 class TweenDemo extends FlxGame
 {

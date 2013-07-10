@@ -1,6 +1,8 @@
 package;
-import org.flixel.FlxG;
-import org.flixel.FlxGame;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.FlxGame;
 
 class FlxSteering extends FlxGame
 {	

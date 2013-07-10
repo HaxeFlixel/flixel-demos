@@ -1,8 +1,10 @@
 package;
-import org.flixel.FlxButton;
-import org.flixel.FlxG;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.ui.FlxButton;
+import flixel.FlxG;
+import flixel.FlxState;
+import flixel.text.FlxText;
 
 class MenuState extends FlxState
 {
@@ -13,7 +15,7 @@ class MenuState extends FlxState
 	
 	override public function create():Void
 	{
-		FlxG.bgColor = 0xff050510;
+		FlxG.state.bgColor = 0xff050510;
 		
 		var text:FlxText;
 		text = new FlxText(FlxG.width / 2 - 100, FlxG.height / 3 - 30, 200, "Slope Demo");

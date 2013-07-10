@@ -1,10 +1,12 @@
 package;
-import org.flixel.FlxEmitter;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.effects.particles.FlxEmitter;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
 
 	
 class PlayState2 extends FlxState
@@ -23,14 +25,14 @@ class PlayState2 extends FlxState
 	override public function create():Void
 	{
 		//Background
-		FlxG.bgColor = 0xffacbcd7;
+		FlxG.state.bgColor = 0xffacbcd7;
 
 		//A bunch of blocks
 		var block:FlxSprite;
 		blocks = new FlxGroup();
 		for (i in 0...300)
 		{
-			block = new FlxSprite(Math.floor(FlxG.random() * 40) * 16, Math.floor(FlxG.random() * 30) * 16).makeGraphic(16, 16, 0xff233e58);
+			block = new FlxSprite(Math.floor(FlxRandom.float() * 40) * 16, Math.floor(FlxRandom.float() * 30) * 16).makeGraphic(16, 16, 0xff233e58);
 			block.immovable = true;
 			block.moves = false;
 			block.active = false;

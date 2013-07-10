@@ -1,9 +1,11 @@
 package;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.display.BitmapData;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxState;
+import flixel.text.FlxText;
 
 class PlayState extends FlxState
 {
@@ -49,7 +51,7 @@ class PlayState extends FlxState
 		
 		glitches = new Glitches();
 		
-		FlxG.fullscreen();
+		FlxG.cameras.fullscreen();
 		FlxG.mouse.hide();
 		
 		//farts
@@ -60,7 +62,7 @@ class PlayState extends FlxState
 	{
 		if(FlxG.keys.justPressed("F"))
 		{
-			FlxG.fullscreen();
+			FlxG.cameras.fullscreen();
 		}
 		
 		super.update();
@@ -71,7 +73,7 @@ class PlayState extends FlxState
 			_oldA = a.visible;
 			_oldB = b.visible;
 			a.visible = b.visible = false;
-			FlxG.bgColor = 0x50000000;
+			FlxG.state.bgColor = 0x50000000;
 			triangles.visible = false;
 			glitches.visible = false;
 		}
@@ -79,7 +81,7 @@ class PlayState extends FlxState
 		{
 			a.visible = _oldA;
 			b.visible = _oldB;
-			FlxG.flash(0xffffffff,0.5);
+			FlxG.camera.flash(0xffffffff,0.5);
 			triangles.visible = true;
 			glitches.visible = true;
 		}
@@ -155,7 +157,7 @@ class PlayState extends FlxState
 		a.visible = !a.visible;
 		b.visible = !b.visible;
 		
-		FlxG.bgColor = Colors.random();
+		FlxG.state.bgColor = Colors.random();
 
 		triangles.onBeat();
 		glitches.onBeat();

@@ -1,7 +1,9 @@
 package;
-import org.flixel.FlxG;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.FlxState;
+import flixel.text.FlxText;
 
 class MenuState extends FlxState 
 {
@@ -9,7 +11,7 @@ class MenuState extends FlxState
 	
 	override public function create():Void 
 	{
-		FlxG.bgColor = 0xff000000;
+		FlxG.state.bgColor = 0xff000000;
 		
 		var t:FlxText;
 		t = new FlxText(0, FlxG.height / 2 - 24, FlxG.width, "FlxPong");

@@ -1,14 +1,16 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.ui.Mouse;
 import openfl.Assets;
-import org.flixel.FlxG;
-import org.flixel.util.FlxPoint;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
-import org.flixel.FlxTilemap;
-import org.flixel.system.FlxReplay;
+import flixel.FlxG;
+import flixel.util.FlxPoint;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.tile.FlxTilemap;
+import flixel.system.FlxReplay;
 
 class PlayState extends FlxState
 {
@@ -151,11 +153,11 @@ class PlayState extends FlxState
 		StateManager.replaying = false;
 		
 		/*
-		 *Note FlxG.recordReplay will restart the game or state
+		 *Note FlxG.vcr.startRecording will restart the game or state
 		 *This function will trigger a flag in FlxGame
 		 *and let the internal FlxReplay to record input on every frame
 		 */
-		FlxG.recordReplay(false);
+		FlxG.vcr.startRecording(false);
 	}
 	
 	private function start_play():Void 
@@ -169,12 +171,12 @@ class PlayState extends FlxState
 		 * Then we load the save
 		 */
 		
-		var save:String = FlxG.stopRecording();
+		var save:String = FlxG.vcr.stopRecording();
 		
 		/**
 		 * NOTE "ANY" or other key wont work under debug mode!
 		 */
-		FlxG.loadReplay(save, new PlayState(), ["ANY", "MOUSE"], 0, start_record);
+		FlxG.vcr.loadReplay(save, new PlayState(), ["ANY", "MOUSE"], 0, start_record);
 		
 	}
 }

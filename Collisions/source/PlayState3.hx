@@ -1,9 +1,11 @@
 package;
-import org.flixel.FlxEmitter;
-import org.flixel.FlxG;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.effects.particles.FlxEmitter;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
 
 
 
@@ -24,7 +26,7 @@ class PlayState3 extends FlxState
 		FlxG.worldBounds.make(0, 0, FlxG.width, FlxG.height);
 		
 		//Background
-		FlxG.bgColor = 0xffacbcd7;
+		FlxG.state.bgColor = 0xffacbcd7;
 		
 		//The thing you can move around
 		_platform = new FlxSprite((FlxG.width - 64) / 2, 200).makeGraphic(64, 16, 0xff233e58);

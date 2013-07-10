@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxMisc;
 import flash.events.Event;
 import flash.Lib;
 import flixel.addons.tile.FlxCaveGenerator;

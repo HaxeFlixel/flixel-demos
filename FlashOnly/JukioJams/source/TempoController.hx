@@ -1,6 +1,8 @@
 package;
-import org.flixel.FlxG;
-import org.flixel.FlxObject;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.FlxObject;
 
 class TempoController extends FlxObject
 {
@@ -59,7 +61,7 @@ class TempoController extends FlxObject
 			FlxG.keys.justPressed("LEFT") ||
 			FlxG.keys.justPressed("RIGHT") )
 		{
-			FlxG.flash(0xffffff, 0.2, null, true);
+			FlxG.camera.flash(0xffffff, 0.2, null, true);
 		}
 		
 		if(FlxG.keys.justPressed("ONE"))

@@ -1,5 +1,7 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import openfl.Assets;
 import haxe.io.Path;
 import haxe.xml.Parser;

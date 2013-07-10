@@ -1,5 +1,7 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.display.BitmapData;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
@@ -10,7 +12,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.Lib;
 
-import org.flixel.FlxGame;
+import flixel.FlxGame;
 
 /**
  * @author Joshua Granick

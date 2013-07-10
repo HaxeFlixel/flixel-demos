@@ -1,9 +1,11 @@
 ﻿package;
 
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxState;
+import flixel.text.FlxText;
 
 class PlayState extends FlxState 
 {

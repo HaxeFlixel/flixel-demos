@@ -1,8 +1,10 @@
 package;
 
-import org.flixel.FlxG;
-import org.flixel.FlxObject;
-import org.flixel.FlxSprite;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.FlxSprite;
 
 /**
  * ...
@@ -44,7 +46,7 @@ class Asteroid extends WrapSprite
 			mass = 1;
 		}
 		
-		angle = FlxG.random() * 360;
+		angle = FlxRandom.float() * 360;
 		
 		if((X != 0) || (Y != 0))
 		{
@@ -57,35 +59,35 @@ class Asteroid extends WrapSprite
 		}
 		
 		var initial_velocity:Int = 20;
-		if(FlxG.random() < 0.5)
+		if(FlxRandom.float() < 0.5)
 		{
-			if(FlxG.random() < 0.5)	//Appears on the left
+			if(FlxRandom.float() < 0.5)	//Appears on the left
 			{
 				x = -64 + offset.x;
-				velocity.x = initial_velocity / 2 + FlxG.random() * initial_velocity;
+				velocity.x = initial_velocity / 2 + FlxRandom.float() * initial_velocity;
 			}
 			else
 			{
 				x = FlxG.width + offset.x;
-				velocity.x = -initial_velocity / 2 - FlxG.random() * initial_velocity;
+				velocity.x = -initial_velocity / 2 - FlxRandom.float() * initial_velocity;
 			}
-			y = FlxG.random()*(FlxG.height-height);
-			velocity.y = FlxG.random() * initial_velocity * 2 - initial_velocity;
+			y = FlxRandom.float()*(FlxG.height-height);
+			velocity.y = FlxRandom.float() * initial_velocity * 2 - initial_velocity;
 		}
 		else
 		{
-			if(FlxG.random() < 0.5)
+			if(FlxRandom.float() < 0.5)
 			{
 				y = -64 + offset.y;
-				velocity.y = initial_velocity / 2 + FlxG.random() * initial_velocity;
+				velocity.y = initial_velocity / 2 + FlxRandom.float() * initial_velocity;
 			}
 			else
 			{
 				y = FlxG.height + offset.y;
-				velocity.y = -initial_velocity / 2 + FlxG.random() * initial_velocity;
+				velocity.y = -initial_velocity / 2 + FlxRandom.float() * initial_velocity;
 			}
-			x = FlxG.random()*(FlxG.width-width);
-			velocity.x = FlxG.random() * initial_velocity * 2 - initial_velocity;
+			x = FlxRandom.float()*(FlxG.width-width);
+			velocity.x = FlxRandom.float() * initial_velocity * 2 - initial_velocity;
 		}
 		
 		angularVelocity = (Math.abs(velocity.x) + Math.abs(velocity.y));
@@ -128,13 +130,13 @@ class Asteroid extends WrapSprite
 			initial_velocity *= 3;
 		}
 		
-		var numChunks:Int = Math.floor(2 + FlxG.random() * 3);
+		var numChunks:Int = Math.floor(2 + FlxRandom.float() * 3);
 		for (i in 0...(numChunks))
 		{
 			var ax:Float = x + width / 2;
 			var ay:Float = y + height / 2;
-			var avx:Float = FlxG.random() * initial_velocity * 2 - initial_velocity;
-			var avy:Float = FlxG.random() * initial_velocity * 2 - initial_velocity;
+			var avx:Float = FlxRandom.float() * initial_velocity * 2 - initial_velocity;
+			var avy:Float = FlxRandom.float() * initial_velocity * 2 - initial_velocity;
 			
 			var asteroid:Asteroid = cast(cast(FlxG.state, PlayState).asteroids.recycle(Asteroid), Asteroid);
 			asteroid.create(Math.floor(ax), Math.floor(ay), avx, avy, size);

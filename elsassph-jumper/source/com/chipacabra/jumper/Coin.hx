@@ -1,8 +1,10 @@
 package com.chipacabra.jumper;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import openfl.Assets;
-import org.flixel.FlxG;
-import org.flixel.FlxSprite;
+import flixel.FlxG;
+import flixel.FlxSprite;
 
 /**
  * ...
@@ -22,7 +24,7 @@ class Coin extends FlxSprite
 	override public function kill():Void 
 	{
 		super.kill();
-		FlxG.play(Assets.getSound("assets/sounds/coin" + Jumper.SoundExtension), 3, false);
+		FlxG.sound.play(Assets.getSound("assets/sounds/coin" + Jumper.SoundExtension), 3, false);
 		Reg.score++;
 	}
 }

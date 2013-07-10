@@ -1,11 +1,13 @@
 package;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
-import org.flixel.FlxG;
+import flixel.FlxG;
 
 class Mirror
 {

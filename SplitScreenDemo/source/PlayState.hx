@@ -1,11 +1,13 @@
 package;
-import org.flixel.FlxButton;
-import org.flixel.FlxCamera;
-import org.flixel.FlxG;
-import org.flixel.FlxObject;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxTilemap;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.ui.FlxButton;
+import flixel.FlxCamera;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.tile.FlxTilemap;
 
 
 class PlayState extends FlxState
@@ -27,7 +29,7 @@ class PlayState extends FlxState
 		FlxG.flashFramerate = 50;
 
 		// set the background color to white
-		FlxG.bgColor = 0xffffffff;
+		FlxG.state.bgColor = 0xffffffff;
 		
 		//Setup the level (40 x 40 tiles) Addapted from Adam Atomic's EZPlatformer
 		var levelData:Array<Int> = [
@@ -100,14 +102,14 @@ class PlayState extends FlxState
 		// this sets the limits of where the camera goes so that it doesn't show what's outside of the tilemap
 		cam.setBounds(0, 0, level.width, level.height);
 		cam.color = 0xFFCCCC; // add a light red tint to the camera to differentiate it from the other
-		FlxG.addCamera(cam);
+		FlxG.cameras.add(cam);
 
 		// Almost the same thing as the first camera
 		cam = new FlxCamera(Math.floor(FlxG.width / 2), 0, Math.floor(FlxG.width / 2), FlxG.height);   // and the second one in the top middle of the screen
 		cam.follow(player1);
 		cam.setBounds(0, 0, level.width, level.height);
 		cam.color = 0xCCCCFF; // Add a light blue tint to the camera
-		FlxG.addCamera(cam);
+		FlxG.cameras.add(cam);
 
 		// add quit button
 		var quitBtn:FlxButton = new FlxButton(1000, 1000, "Quit", onQuit); //put the button out of screen so we don't see in the two other cameras
@@ -116,7 +118,7 @@ class PlayState extends FlxState
 		// Create a camera focused on the button
 		cam = new FlxCamera(2, 2, Math.floor(quitBtn.width), Math.floor(quitBtn.height));
 		cam.follow(quitBtn, FlxCamera.STYLE_NO_DEAD_ZONE);
-		FlxG.addCamera(cam);
+		FlxG.cameras.add(cam);
 	}
 	
 	override public function update():Void

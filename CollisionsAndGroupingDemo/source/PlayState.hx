@@ -1,12 +1,14 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.ui.Mouse;
-import org.flixel.FlxButton;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
+import flixel.ui.FlxButton;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
 
 class PlayState extends FlxState
 {
@@ -62,8 +64,8 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		//Kick the framerate back up
-		FlxG.framerate = 30;
 		FlxG.flashFramerate = 30;
+		FlxG.framerate = 30;
 		
 		//Let's setup our elevator, for some wonderful crate bashing goodness
 		elevator = new FlxSprite((FlxG.width / 2) - 100, 250, "assets/elevator.png");
@@ -79,28 +81,28 @@ class PlayState extends FlxState
 		crateStormGroup = new FlxGroup();
 		for (i in 0...numCrates) 
 		{
-			crate = new FlxSprite((FlxG.random() * 200) + 100, 20);
+			crate = new FlxSprite((FlxRandom.float() * 200) + 100, 20);
 			crate.loadRotatedGraphic("assets/crate.png", 16, 0); //This loads in a graphic, and 'bakes' some rotations in so we don't waste resources computing real rotations later
-			crate.angularVelocity = FlxG.random() * 50-150; //Make it spin a tad
+			crate.angularVelocity = FlxRandom.float() * 50-150; //Make it spin a tad
 			crate.acceleration.y = 300; //Gravity
 			crate.acceleration.x = -50; //Some wind for good measure
 			crate.maxVelocity.y = 500; //Don't fall at 235986mph
 			crate.maxVelocity.x = 200; //"      fly  "  "
-			crate.elasticity = FlxG.random(); //Let's make them all bounce a little bit differently
+			crate.elasticity = FlxRandom.float(); //Let's make them all bounce a little bit differently
 			crateStormGroup.add(crate);
 		}
 		add(crateStormGroup);
 		//And another group, this time - Red crates
 		crateStormGroup2 = new FlxGroup();
 		for (i in 0...numCrates) {
-			crate = new FlxSprite((FlxG.random() * 200) + 100, 20);
+			crate = new FlxSprite((FlxRandom.float() * 200) + 100, 20);
 			crate.loadRotatedGraphic("assets/crate.png", 16, 1);
-			crate.angularVelocity = FlxG.random() * 50-150;
+			crate.angularVelocity = FlxRandom.float() * 50-150;
 			crate.acceleration.y = 300;
 			crate.acceleration.x = 50;
 			crate.maxVelocity.y = 500;
 			crate.maxVelocity.x = 200;
-			crate.elasticity = FlxG.random();
+			crate.elasticity = FlxRandom.float();
 			crateStormGroup2.add(crate);
 		}
 		add(crateStormGroup2);
@@ -141,7 +143,7 @@ class PlayState extends FlxState
 		FlxG.mouse.show();
 		Mouse.hide();
 		
-		FlxG.watch(elevator.velocity, "y", "vy");
+		FlxG.watch.add(elevator.velocity, "y", "vy");
 	}
 	
 	override public function update():Void

@@ -4,28 +4,30 @@ package;
  * Tween demo. Port of: https://github.com/devolonter/flixel-monkey-bananas/tree/master/tweening demo made by Devolonter
  */
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.ui.Mouse;
-import org.flixel.FlxG;
-import org.flixel.util.FlxColor;
-import org.flixel.util.FlxPoint;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
-import org.flixel.tweens.FlxTween;
-import org.flixel.tweens.misc.AngleTween;
-import org.flixel.tweens.misc.ColorTween;
-import org.flixel.tweens.misc.MultiVarTween;
-import org.flixel.tweens.misc.NumTween;
-import org.flixel.tweens.misc.VarTween;
-import org.flixel.tweens.motion.CircularMotion;
-import org.flixel.tweens.motion.CubicMotion;
-import org.flixel.tweens.motion.LinearMotion;
-import org.flixel.tweens.motion.LinearPath;
-import org.flixel.tweens.motion.QuadMotion;
-import org.flixel.tweens.motion.QuadPath;
-import org.flixel.util.FlxString;
+import flixel.FlxG;
+import flixel.util.FlxColor;
+import flixel.util.FlxPoint;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.tweens.FlxTween;
+import flixel.tweens.misc.AngleTween;
+import flixel.tweens.misc.ColorTween;
+import flixel.tweens.misc.MultiVarTween;
+import flixel.tweens.misc.NumTween;
+import flixel.tweens.misc.VarTween;
+import flixel.tweens.motion.CircularMotion;
+import flixel.tweens.motion.CubicMotion;
+import flixel.tweens.motion.LinearMotion;
+import flixel.tweens.motion.LinearPath;
+import flixel.tweens.motion.QuadMotion;
+import flixel.tweens.motion.QuadPath;
+import flixel.util.FlxStringUtil;
 
-import org.flixel.tweens.util.Ease;
+import flixel.tweens.util.Ease;
 
 class PlayState extends FlxState
 {
@@ -47,7 +49,7 @@ class PlayState extends FlxState
 	{
 		super.create();
 		
-		FlxG.bgColor = 0xFF01355F;
+		FlxG.state.bgColor = 0xFF01355F;
 		
 		easeInfo = new Array<EaseInfo>();
 		
@@ -212,7 +214,7 @@ class PlayState extends FlxState
 					tween = addTween(quadPath);
 			}
 			
-			tweenText.text = "Current tweening: " + FlxString.getClassName(tween, true);
+			tweenText.text = "Current tweening: " + FlxStringUtil.getClassName(tween, true);
 			easeText.text = "Current ease function: " + easeInfo[currentEaseIndex].name;
 		}
 	}

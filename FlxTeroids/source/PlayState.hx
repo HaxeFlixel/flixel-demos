@@ -1,10 +1,12 @@
 package;
 
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxObject;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.FlxState;
 
 /**
  * ...
@@ -27,7 +29,7 @@ class PlayState extends FlxState
 		
 		for (i in 0...100)
 		{
-			sprite = new FlxSprite(FlxG.random() * FlxG.width, FlxG.random() * FlxG.height);
+			sprite = new FlxSprite(FlxRandom.float() * FlxG.width, FlxRandom.float() * FlxG.height);
 			sprite.makeGraphic(2, 2, 0xffffffff);
 			sprite.active = false;
 			add(sprite);
@@ -90,7 +92,7 @@ class PlayState extends FlxState
 	{
 		var asteroid:Asteroid = cast(asteroids.recycle(Asteroid), Asteroid);
 		asteroid.create();
-		timer = 1 + FlxG.random() * 4;
+		timer = 1 + FlxRandom.float() * 4;
 	}
 	
 }

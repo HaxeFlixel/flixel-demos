@@ -1,8 +1,10 @@
 package;
 
-import org.flixel.FlxG;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.FlxState;
+import flixel.text.FlxText;
 
 class PlayState extends FlxState
 {
@@ -13,7 +15,7 @@ class PlayState extends FlxState
 	
 	override public function create():Void
 	{
-		FlxG.bgColor = 0xffff0000;	
+		FlxG.state.bgColor = 0xffff0000;	
 		FlxG.mouse.show();	
 		
 		_fps = new FlxText(FlxG.width - 40, 0, 40).setFormat(null, 8, 0xffffff, "right");
@@ -30,7 +32,7 @@ class PlayState extends FlxState
 	{
 		super.update();
 		
-		//FlxG.log(FlxU.collide(_seeker,_pursuer));
+		//trace(FlxU.collide(_seeker,_pursuer));
 		
 		FlxG.collide();
 		

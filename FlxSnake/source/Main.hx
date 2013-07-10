@@ -5,7 +5,9 @@
 
 package;
 
-import org.flixel.FlxGame;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxGame;
 import flash.Lib;
 
 class Main extends FlxGame

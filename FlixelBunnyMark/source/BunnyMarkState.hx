@@ -1,23 +1,25 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.ui.Mouse;
 import openfl.Assets;
 import flash.display.Bitmap;
 import flash.Lib;
-import org.flixel.system.input.FlxAnalog;
-import org.flixel.FlxButton;
-import org.flixel.FlxCamera;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
-import org.flixel.FlxTileblock;
-import org.flixel.plugin.pxText.FlxBitmapTextField;
-import org.flixel.plugin.pxText.PxBitmapFont;
-import org.flixel.plugin.pxText.PxButton;
-import org.flixel.plugin.pxText.PxTextAlign;
-import org.flixel.system.layer.Atlas;
+import flixel.system.input.FlxAnalog;
+import flixel.ui.FlxButton;
+import flixel.FlxCamera;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.tile.FlxTileblock;
+import flixel.text.FlxBitmapTextField;
+import flixel.text.pxText.PxBitmapFont;
+import flixel.ui.PxButton;
+import flixel.text.pxText.PxTextAlign;
+import flixel.system.layer.Atlas;
 
 /**
  * ...
@@ -76,11 +78,11 @@ class BunnyMarkState extends FlxState
 	override public function create():Void
 	{
 		#if flash
-		FlxG.framerate = 30;
 		FlxG.flashFramerate = 30;
+		FlxG.framerate = 30;
 		#else
-		FlxG.framerate = 60;
 		FlxG.flashFramerate = 60;
+		FlxG.framerate = 60;
 		#end
 
 		var bgWidth:Int = Math.ceil(FlxG.width / bgSize) * bgSize;
@@ -106,7 +108,7 @@ class BunnyMarkState extends FlxState
 		btnCam.follow(addBunniesBtn, FlxCamera.STYLE_NO_DEAD_ZONE);
 		addBunniesBtn.cameras = [btnCam];
 		addBunniesBtn.label.cameras = [btnCam];
-		FlxG.addCamera(btnCam);
+		FlxG.cameras.add(btnCam);
 
 		#if flash
 		bunnyCounter = new FlxText(0, 10, FlxG.width, "Bunnies: " + numBunnies);

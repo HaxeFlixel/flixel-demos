@@ -1,6 +1,8 @@
 package;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
 
 class Glitches extends FlxGroup
 {
@@ -20,7 +22,7 @@ class Glitches extends FlxGroup
 		for (i in 0...length)
 		{
 			sprite = cast(members[i], Glitch);
-			sprite.reset(Std.int(FlxG.random() * 16) * 16, Std.int(FlxG.random() * 12) * 16);
+			sprite.reset(Std.int(FlxRandom.float() * 16) * 16, Std.int(FlxRandom.float() * 12) * 16);
 		}
 	}
 }

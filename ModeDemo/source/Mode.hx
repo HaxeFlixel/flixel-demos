@@ -1,8 +1,10 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.Lib;
-import org.flixel.FlxG;
-import org.flixel.FlxGame;
+import flixel.FlxG;
+import flixel.FlxGame;
 	
 class Mode extends FlxGame
 {
@@ -21,20 +23,20 @@ class Mode extends FlxGame
 		#end
 		
 		#if android
-		FlxG.addSound("Beep");
-		FlxG.addSound("Asplode");
-		FlxG.addSound("Button");
-		FlxG.addSound("Countdown");
-		FlxG.addSound("Enemy");
-		FlxG.addSound("Hit");
-		FlxG.addSound("Hurt");
-		FlxG.addSound("Jam");
-		FlxG.addSound("Jet");
-		FlxG.addSound("Jump");
-		FlxG.addSound("Land");
-		FlxG.addSound("MenuHit");
-		FlxG.addSound("MenuHit2");
-		FlxG.addSound("Shoot");
+		FlxG.sound.add("Beep");
+		FlxG.sound.add("Asplode");
+		FlxG.sound.add("Button");
+		FlxG.sound.add("Countdown");
+		FlxG.sound.add("Enemy");
+		FlxG.sound.add("Hit");
+		FlxG.sound.add("Hurt");
+		FlxG.sound.add("Jam");
+		FlxG.sound.add("Jet");
+		FlxG.sound.add("Jump");
+		FlxG.sound.add("Land");
+		FlxG.sound.add("MenuHit");
+		FlxG.sound.add("MenuHit2");
+		FlxG.sound.add("Shoot");
 		#end
 		
 	//	forceDebugger = true;

@@ -1,5 +1,7 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import openfl.Assets;
 import flash.display.BitmapData;
 import flash.display.StageAlign;
@@ -12,7 +14,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.Lib;
 import flash.ui.Keyboard;
-import org.flixel.FlxGame;
+import flixel.FlxGame;
 
 /**
  * @author Joshua Granick

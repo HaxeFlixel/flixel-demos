@@ -1,5 +1,7 @@
 package ;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.display.Sprite;
@@ -7,7 +9,7 @@ import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.Lib;
 import flash.ui.Keyboard;
-import org.flixel.FlxGame;
+import flixel.FlxGame;
 
 /**
  * ...

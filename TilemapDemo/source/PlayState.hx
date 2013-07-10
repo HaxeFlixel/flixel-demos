@@ -1,14 +1,16 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.display.BlendMode;
 import openfl.Assets;
-import org.flixel.FlxButton;
-import org.flixel.FlxG;
-import org.flixel.FlxObject;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
-import org.flixel.FlxTilemap;
+import flixel.ui.FlxButton;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.tile.FlxTilemap;
 
 
 
@@ -122,7 +124,7 @@ class PlayState extends FlxState
 		add(resetBtn);
 		
 		quitBtn = new FlxButton(FlxG.width - resetBtn.width - 4, FlxG.height - 24, "Quit",
-			function():Void { FlxG.fade(0xff000000, 0.22, false, function():Void { FlxG.switchState(new MenuState()); } ); } );
+			function():Void { FlxG.camera.fade(0xff000000, 0.22, false, function():Void { FlxG.switchState(new MenuState()); } ); } );
 		add(quitBtn);
 		
 		helperTxt = new FlxText(12 + autoAltBtn.width * 2, FlxG.height - 30, 150, "Click to place tiles\nShift-Click to remove tiles\nArrow keys to move");

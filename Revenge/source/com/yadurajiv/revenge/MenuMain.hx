@@ -22,12 +22,14 @@ distribution.
 */
 package com.yadurajiv.revenge;
 
-import org.flixel.FlxButton;
-import org.flixel.FlxG;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
-import org.flixel.util.FlxColor;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.ui.FlxButton;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
 
 /**
  * ...
@@ -45,7 +47,7 @@ class MenuMain extends FlxState
 		/**
 		 * fade in from black
 		 */
-		FlxG.flash(FlxColor.BLACK, 3, null);
+		FlxG.camera.flash(FlxColor.BLACK, 3, null);
 		
 		/**
 		 * show the mouse
@@ -86,9 +88,9 @@ class MenuMain extends FlxState
 		_btnStart.loadGraphic("assets/btnStart0.png");
 		add(_btnStart);
 		
-		_btnStart.onOver = onStartOver;
+		_btnStart.setOnOverCallback(onStartOver);
 		
-		_btnStart.onOut = onStartOut;
+		_btnStart.setOnOutCallback(onStartOut);
 		
 		/**
 		 * some credit text
@@ -106,7 +108,7 @@ class MenuMain extends FlxState
 	
 	private function onStart():Void
 	{
-		FlxG.fade(FlxColor.BLACK, 2, false, this.onFade);
+		FlxG.camera.fade(FlxColor.BLACK, 2, false, this.onFade);
 	}
 	
 	private function onFade():Void

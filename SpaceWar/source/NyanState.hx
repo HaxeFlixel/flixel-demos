@@ -1,12 +1,14 @@
 package;
-import org.flixel.FlxEmitter;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxObject;
-import org.flixel.FlxParticle;
-import org.flixel.util.FlxPoint;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.effects.particles.FlxEmitter;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxObject;
+import flixel.effects.particles.FlxParticle;
+import flixel.util.FlxPoint;
+import flixel.FlxState;
+import flixel.text.FlxText;
 
 class NyanState extends FlxState 
 {
@@ -44,7 +46,7 @@ class NyanState extends FlxState
 		_scoreText.setFormat(null, 32, 0xFFFFFF, "left");
 		add(_scoreText);
 		
-		FlxG.playMusic("NyanCat");
+		FlxG.sound.playMusic("NyanCat");
 		
 		super.create();
 	}
@@ -88,7 +90,7 @@ class NyanState extends FlxState
 	{
 		var bullet:Bullet = new Bullet(p.x, p.y);
 		_bullets.add(bullet);
-		FlxG.play("Bullet");
+		FlxG.sound.play("Bullet");
 	}
 	
 	private function spawnCat():Void 
@@ -114,7 +116,7 @@ class NyanState extends FlxState
 		bullet.kill();
 		Reg.score += 1;
 		_scoreText.text = Std.string(Reg.score);
-		FlxG.play("ExplosionAlien");
+		FlxG.sound.play("ExplosionAlien");
 		var emitter:FlxEmitter = createEmitter();
 		emitter.at(cat);
 	}
@@ -123,7 +125,7 @@ class NyanState extends FlxState
 	{
 		ship.kill();
 		cat.kill();
-		FlxG.play("ExplosionShip");
+		FlxG.sound.play("ExplosionShip");
 		var emitter:FlxEmitter = createEmitter();
 		emitter.at(ship);
 		

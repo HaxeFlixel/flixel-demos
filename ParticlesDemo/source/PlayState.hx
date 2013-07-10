@@ -1,14 +1,16 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.ui.Mouse;
-import org.flixel.FlxButton;
-import org.flixel.FlxEmitter;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxParticle;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
+import flixel.ui.FlxButton;
+import flixel.effects.particles.FlxEmitter;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.effects.particles.FlxParticle;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
 
 class PlayState extends FlxState
 {
@@ -171,7 +173,7 @@ class PlayState extends FlxState
 			topText.text = "Collision: OFF";
 		}
 		topText.alpha = 1;
-		FlxG.log("Toggle Collision");
+		trace("Toggle Collision");
 	}
 	
 	//This is run when you flip the gravity
@@ -213,7 +215,7 @@ class PlayState extends FlxState
 			topText.text = "Gravity: OFF";
 		}
 		topText.alpha = 1;
-		FlxG.log("Toggle Gravity");
+		trace("Toggle Gravity");
 	}
 	//This just quits - state.destroy() is automatically called upon state changing
 	private function onQuit():Void 
