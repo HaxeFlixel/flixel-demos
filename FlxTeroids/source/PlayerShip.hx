@@ -1,9 +1,11 @@
 package;
 
-import org.flixel.FlxG;
-import org.flixel.FlxSprite;
-import org.flixel.util.FlxAngle;
-import org.flixel.util.FlxMath;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.util.FlxAngle;
+import flixel.util.FlxMath;
 
 /**
  * ...

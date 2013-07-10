@@ -1,11 +1,13 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import openfl.Assets;
 import flash.display.BlendMode;
-import org.flixel.FlxEmitter;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxSprite;
+import flixel.effects.particles.FlxEmitter;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxSprite;
 
 class Spawner extends FlxSprite
 {
@@ -26,7 +28,7 @@ class Spawner extends FlxSprite
 		_botBullets = BotBullets;
 		_botGibs = BotGibs;
 		_player = ThePlayer;
-		_timer = FlxG.random() * 20;
+		_timer = FlxRandom.float() * 20;
 		_open = false;
 		health = 8;
 
@@ -80,7 +82,7 @@ class Spawner extends FlxSprite
 	
 	override public function hurt(Damage:Float):Void
 	{
-		FlxG.play("Hit");
+		FlxG.sound.play("Hit");
 		
 		flicker(0.2);
 		Reg.score += 50;
@@ -93,8 +95,8 @@ class Spawner extends FlxSprite
 		{
 			return;
 		}
-		FlxG.play("Asplode");
-		FlxG.play("MenuHit2");
+		FlxG.sound.play("Asplode");
+		FlxG.sound.play("MenuHit2");
 		
 		super.kill();
 		active = false;

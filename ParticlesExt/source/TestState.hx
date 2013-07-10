@@ -1,11 +1,13 @@
 package;
-import org.flixel.addons.FlxEmitterExt;
-import org.flixel.FlxEmitter;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
-import org.flixel.util.FlxTimer;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.effects.particles.FlxEmitterExt;
+import flixel.effects.particles.FlxEmitter;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.util.FlxTimer;
 
 
 class TestState extends FlxState
@@ -22,7 +24,7 @@ class TestState extends FlxState
 	
 	override public function create():Void
 	{			
-		FlxG.bgColor = 0xFF333333;
+		FlxG.state.bgColor = 0xFF333333;
 		FlxG.mouse.show();
 		
 		//add info box

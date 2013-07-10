@@ -1,11 +1,13 @@
 package com.chipacabra.jumper;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import openfl.Assets;
-import org.flixel.FlxEmitter;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxObject;
-import org.flixel.FlxSprite;
+import flixel.effects.particles.FlxEmitter;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxObject;
+import flixel.FlxSprite;
 
 /**
  * ...
@@ -127,17 +129,17 @@ class Player extends FlxSprite
 			{
 				_jump = 0;
 				climbing = false;
-				FlxG.play(Assets.getSound("assets/sounds/jump" + Jumper.SoundExtension), 1, false);
+				FlxG.sound.play(Assets.getSound("assets/sounds/jump" + Jumper.SoundExtension), 1, false);
 			}
 			if (velocity.y == 0)
 			{
-				FlxG.play(Assets.getSound("assets/sounds/jump" + Jumper.SoundExtension), 1, false);
+				FlxG.sound.play(Assets.getSound("assets/sounds/jump" + Jumper.SoundExtension), 1, false);
 			}
 		}
 		
 		if (FlxG.keys.justPressed("C") && (velocity.y > 0) && _canDJump == true)
 		{
-			FlxG.play(Assets.getSound("assets/sounds/jump" + Jumper.SoundExtension), 1, false);
+			FlxG.sound.play(Assets.getSound("assets/sounds/jump" + Jumper.SoundExtension), 1, false);
 			_jump = 0;
 			_canDJump = false;
 		}
@@ -244,7 +246,7 @@ class Player extends FlxSprite
 					bXVeloc = BULLET_SPEED;
 				}
 				_blt.shoot(bulletX, bulletY, bXVeloc, bYVeloc);
-				FlxG.play(Assets.getSound("assets/sounds/shoot2" + Jumper.SoundExtension), 1, false);
+				FlxG.sound.play(Assets.getSound("assets/sounds/shoot2" + Jumper.SoundExtension), 1, false);
 				_cooldown = 0; // reset the shot clock
 			}
 		}
@@ -269,13 +271,13 @@ class Player extends FlxSprite
 		super.kill();
 		//exists = false;
 		//visible = false;
-		FlxG.shake(0.005, 0.35);
-		FlxG.flash(0xffDB3624, 0.35);
+		FlxG.camera.shake(0.005, 0.35);
+		FlxG.camera.flash(0xffDB3624, 0.35);
 		if (_gibs != null)
 		{
 			_gibs.at(this);
 			_gibs.start(true, 2.80);
 		}
-		FlxG.play(Assets.getSound("assets/sounds/death" + Jumper.SoundExtension), 1, false);
+		FlxG.sound.play(Assets.getSound("assets/sounds/death" + Jumper.SoundExtension), 1, false);
 	}
 }

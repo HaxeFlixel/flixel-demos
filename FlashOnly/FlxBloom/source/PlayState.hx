@@ -1,15 +1,16 @@
 package;
+import flixel.util.FlxMisc;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.display.BlendMode;
-import org.flixel.FlxEmitter;
-import org.flixel.FlxG;
-import org.flixel.FlxParticle;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
-import org.flixel.util.FlxColor;
-import org.flixel.util.FlxRandom;
+import flixel.effects.particles.FlxEmitter;
+import flixel.FlxG;
+import flixel.effects.particles.FlxParticle;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
+import flixel.util.FlxRandom;
 
 class PlayState extends FlxState
 {

@@ -1,8 +1,10 @@
 package;
-import org.flixel.FlxButton;
-import org.flixel.FlxG;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.ui.FlxButton;
+import flixel.FlxG;
+import flixel.FlxState;
+import flixel.text.FlxText;
 
 class ControlsSelect extends FlxState 
 {

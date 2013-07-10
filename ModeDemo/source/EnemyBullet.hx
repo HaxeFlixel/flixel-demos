@@ -1,10 +1,12 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import openfl.Assets;
-import org.flixel.FlxG;
-import org.flixel.util.FlxAngle;
-import org.flixel.util.FlxPoint;
-import org.flixel.FlxSprite;
+import flixel.FlxG;
+import flixel.util.FlxAngle;
+import flixel.util.FlxPoint;
+import flixel.FlxSprite;
 
 class EnemyBullet extends FlxSprite
 {
@@ -49,7 +51,7 @@ class EnemyBullet extends FlxSprite
 		velocity.y = 0;
 		if(onScreen())
 		{
-			FlxG.play("Jump");
+			FlxG.sound.play("Jump");
 		}
 		alive = false;
 		solid = false;
@@ -58,7 +60,7 @@ class EnemyBullet extends FlxSprite
 	
 	public function shoot(Location:FlxPoint, Angle:Float):Void
 	{
-		FlxG.play("Enemy", 0.5);
+		FlxG.sound.play("Enemy", 0.5);
 		
 		super.reset(Location.x - width / 2, Location.y - height / 2);
 		FlxAngle.rotatePoint(0, speed, 0, 0, Angle, _point);

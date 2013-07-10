@@ -1,8 +1,10 @@
 ﻿package;
 
-import org.flixel.FlxG;
-import org.flixel.FlxObject;
-import org.flixel.FlxSprite;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.FlxSprite;
 
 class Ball extends FlxSprite 
 {

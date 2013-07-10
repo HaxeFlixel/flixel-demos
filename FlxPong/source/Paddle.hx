@@ -1,7 +1,9 @@
 package;
-import org.flixel.FlxG;
-import org.flixel.util.FlxPoint;
-import org.flixel.FlxSprite;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.util.FlxPoint;
+import flixel.FlxSprite;
 
 class Paddle extends FlxSprite 
 {

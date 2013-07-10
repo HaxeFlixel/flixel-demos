@@ -1,10 +1,12 @@
 package com.chipacabra.jumper;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import openfl.Assets;
-import org.flixel.FlxEmitter;
-import org.flixel.FlxG;
-import org.flixel.FlxObject;
-import org.flixel.FlxSprite;
+import flixel.effects.particles.FlxEmitter;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.FlxSprite;
 
 /**
  * ...
@@ -112,7 +114,7 @@ class Enemy extends EnemyTemplate
 			velocity.x = -drag.x * 4;
 		}
 		flicker(.5);
-		FlxG.play(Assets.getSound("assets/sounds/monhurt2" + Jumper.SoundExtension), 1, false);
+		FlxG.sound.play(Assets.getSound("assets/sounds/monhurt2" + Jumper.SoundExtension), 1, false);
 		super.hurt(Damage);
 	}
 	
@@ -124,7 +126,7 @@ class Enemy extends EnemyTemplate
 		{
 			_gibs.at(this);
 			_gibs.start(true, 2.80);
-			FlxG.play(Assets.getSound("assets/sounds/mondead2" + Jumper.SoundExtension), 1, false);
+			FlxG.sound.play(Assets.getSound("assets/sounds/mondead2" + Jumper.SoundExtension), 1, false);
 		}
 		super.kill();
 		//We need to keep updating for the respawn timer, so set exists back on.

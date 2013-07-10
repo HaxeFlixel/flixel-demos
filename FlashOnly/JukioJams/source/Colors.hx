@@ -1,19 +1,21 @@
 package;
 
-import org.flixel.FlxG;
-import org.flixel.util.FlxColor;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.util.FlxColorUtil;
 
 class Colors
 {		
 	public static function random():Int
 	{
-		var flipped:Bool = FlxG.random() < 0.5;
-		return FlxColor.makeFromRGBA(genPair(flipped), genPair(flipped), genPair(flipped));
+		var flipped:Bool = FlxRandom.float() < 0.5;
+		return FlxColorUtil.makeFromRGBA(genPair(flipped), genPair(flipped), genPair(flipped));
 	}
 	
 	public static function genPair(Flipped:Bool):Int
 	{
-		if (FlxG.random() < 0.5)
+		if (FlxRandom.float() < 0.5)
 		{
 			if (Flipped)
 			{
@@ -37,7 +39,7 @@ class Colors
 		}
 		return 0;
 		
-		switch (Std.int(FlxG.random()*4))
+		switch (Std.int(FlxRandom.float()*4))
 		{
 			case 0:
 				return 0;

@@ -1,15 +1,17 @@
 package;
 
-import org.flixel.FlxEmitter;
-import org.flixel.FlxG;
-import org.flixel.FlxObject;
-import org.flixel.FlxPath;
-import org.flixel.util.FlxPoint;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
-import org.flixel.FlxTilemap;
-import org.flixel.system.FlxTile;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.effects.particles.FlxEmitter;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.util.FlxPath;
+import flixel.util.FlxPoint;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.tile.FlxTilemap;
+import flixel.tile.FlxTile;
 
 class PlayState extends FlxState
 {
@@ -24,7 +26,7 @@ class PlayState extends FlxState
 	override public function create():Void
 	{			
 		//Background
-		FlxG.bgColor = 0xffacbcd7;
+		FlxG.state.bgColor = 0xffacbcd7;
 		var decoration:FlxSprite = new FlxSprite(256, 159, "assets/bg.png");
 		decoration.moves = false;
 		decoration.solid = false;
@@ -92,7 +94,7 @@ class PlayState extends FlxState
 		
 		//Library label in upper left
 		var tx:FlxText;
-		tx = new FlxText(2, 0, Std.int(FlxG.width / 4), FlxG.getLibraryName());
+		tx = new FlxText(2, 0, Std.int(FlxG.width / 4), FlxG.libraryName);
 		tx.scrollFactor.x = tx.scrollFactor.y = 0;
 		tx.color = 0x778ea1;
 		tx.shadow = 0x233e58;
@@ -109,7 +111,7 @@ class PlayState extends FlxState
 		
 		/*part of silly path-finding test
 		FlxG.mouse.show();
-		FlxG.visualDebug = true;//*/
+		FlxG.debugger.visualDebug = true;//*/
 	}
 	
 	override public function destroy():Void

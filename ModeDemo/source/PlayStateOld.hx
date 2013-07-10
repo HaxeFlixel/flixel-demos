@@ -1,22 +1,24 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import openfl.Assets;
 import flash.display.Bitmap;
 import flash.events.MouseEvent;
 import flash.Lib;
-import org.flixel.FlxButton;
-import org.flixel.FlxCamera;
-import org.flixel.FlxEmitter;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxObject;
-import org.flixel.FlxParticle;
-import org.flixel.FlxPoint;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
-import org.flixel.FlxTextField;
-import org.flixel.FlxTileblock;
+import flixel.ui.FlxButton;
+import flixel.FlxCamera;
+import flixel.effects.particles.FlxEmitter;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxObject;
+import flixel.effects.particles.FlxParticle;
+import flixel.FlxPoint;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.text.FlxTextField;
+import flixel.FlxTileblock;
 
 class PlayStateOld extends FlxState
 {
@@ -163,25 +165,25 @@ class PlayStateOld extends FlxState
 		#end
 		_score.setFormat(null, 16, 0xd8eba2, "center", 0x131c1b, true);
 		_hud.add(_score);
-		if(FlxG.scores.length < 2)
+		if(Reg.scores.length < 2)
 		{
-			FlxG.scores.push(0);
-			FlxG.scores.push(0);
+			Reg.scores.push(0);
+			Reg.scores.push(0);
 		}
 		
 		//Then for the player's highest and last scores
-		if(FlxG.score > FlxG.scores[0])
+		if(Reg.score > Reg.scores[0])
 		{
-			FlxG.scores[0] = FlxG.score;
+			Reg.scores[0] = Reg.score;
 		}
-		if(FlxG.scores[0] != 0)
+		if(Reg.scores[0] != 0)
 		{
 			_score2 = new FlxText(FlxG.width / 2, 0, Math.floor(FlxG.width / 2));
 			_score2.setFormat(null, 8, 0xd8eba2, "right", _score.shadow, true);
 			_hud.add(_score2);
-			_score2.text = "HIGHEST: "+FlxG.scores[0]+"\nLAST: "+FlxG.score;
+			_score2.text = "HIGHEST: "+Reg.scores[0]+"\nLAST: "+Reg.score;
 		}
-		FlxG.score = 0;
+		Reg.score = 0;
 		_scoreTimer = 0;
 		
 		//Then we create the "gun jammed" notification
@@ -203,18 +205,18 @@ class PlayStateOld extends FlxState
 		_hud.setAll("scrollFactor", new FlxPoint(0, 0));
 		_hud.setAll("cameras", [FlxG.camera]);
 		
-		FlxG.playMusic("Mode");
+		FlxG.sound.playMusic("Mode");
 		
-		FlxG.flash(0xff131c1b);
+		FlxG.camera.flash(0xff131c1b);
 		_fading = false;
 		
-		FlxG.sounds.maxSize = 30;
+		FlxG.sound.list.maxSize = 30;
 		
 		//Debugger Watch examples
-		FlxG.watch(_player, "x");
-		FlxG.watch(_player, "y");
-		FlxG.watch(_enemies, "length", "numEnemies");
-		FlxG.watch(_enemyBullets, "length", "numEnemyBullets");
+		FlxG.watch.add(_player, "x");
+		FlxG.watch.add(_player, "y");
+		FlxG.watch.add(_enemies, "length", "numEnemies");
+		FlxG.watch.add(_enemyBullets, "length", "numEnemyBullets");
 		
 		LeftButton = new FlxButton(1000, 0, "Left");
 		LeftButton.scrollFactor = new FlxPoint(1.0, 1.0);
@@ -229,7 +231,7 @@ class PlayStateOld extends FlxState
 		
 		var leftCam:FlxCamera = new FlxCamera(Math.floor(10 * FlxG.camera.zoom), Math.floor((FlxG.height - 20) * FlxG.camera.zoom), Math.floor(LeftButton.width), Math.floor(LeftButton.height));
 		leftCam.follow(LeftButton, FlxCamera.STYLE_NO_DEAD_ZONE);
-		FlxG.addCamera(leftCam);
+		FlxG.cameras.add(leftCam);
 		
 		RightButton = new FlxButton(1000, 100, "Right");
 		RightButton.scrollFactor = new FlxPoint(1.0, 1.0);
@@ -244,7 +246,7 @@ class PlayStateOld extends FlxState
 		
 		var rightCam:FlxCamera = new FlxCamera(Math.floor(100 * FlxG.camera.zoom), Math.floor((FlxG.height - 20) * FlxG.camera.zoom), Math.floor(LeftButton.width), Math.floor(LeftButton.height));
 		rightCam.follow(RightButton, FlxCamera.STYLE_NO_DEAD_ZONE);
-		FlxG.addCamera(rightCam);
+		FlxG.cameras.add(rightCam);
 		
 		JumpButton = new FlxButton(1000, 200, "Jump");
 		JumpButton.scrollFactor = new FlxPoint(1.0, 1.0);
@@ -259,7 +261,7 @@ class PlayStateOld extends FlxState
 		
 		var jumpCam:FlxCamera = new FlxCamera(Math.floor((FlxG.width - 90) * FlxG.camera.zoom), Math.floor((FlxG.height - 20) * FlxG.camera.zoom), Math.floor(LeftButton.width), Math.floor(LeftButton.height));
 		jumpCam.follow(JumpButton, FlxCamera.STYLE_NO_DEAD_ZONE);
-		FlxG.addCamera(jumpCam);
+		FlxG.cameras.add(jumpCam);
 	}
 	
 	override public function destroy():Void
@@ -294,7 +296,7 @@ class PlayStateOld extends FlxState
 	override public function update():Void
 	{			
 		//save off the current score and update the game state
-		var oldScore:Int = FlxG.score;
+		var oldScore:Int = Reg.score;
 		super.update();
 		
 		//collisions with environment
@@ -303,7 +305,7 @@ class PlayStateOld extends FlxState
 		FlxG.overlap(_bullets, _hazards, overlapped);
 		
 		//check to see if the player scored any points this frame
-		var scoreChanged:Bool = oldScore != FlxG.score;
+		var scoreChanged:Bool = oldScore != Reg.score;
 		
 		//Jammed message
 		if(FlxG.keys.justPressed("C") && _player.flickering)
@@ -334,15 +336,15 @@ class PlayStateOld extends FlxState
 			_scoreTimer -= FlxG.elapsed;
 			if(_scoreTimer < 0)
 			{
-				if(FlxG.score > 0)
+				if(Reg.score > 0)
 				{
-					if(FlxG.score > 100)
+					if(Reg.score > 100)
 					{
-						FlxG.score -= 100;
+						Reg.score -= 100;
 					}
 					else
 					{
-						FlxG.score = 0;
+						Reg.score = 0;
 						_player.kill();
 					}
 					_scoreTimer = 1;
@@ -350,11 +352,11 @@ class PlayStateOld extends FlxState
 					
 					//Play loud beeps if your score is low
 					var volume:Float = 0.35;
-					if(FlxG.score < 600)
+					if(Reg.score < 600)
 					{
 						volume = 1.0;
 					}
-					FlxG.play("Countdown", volume);
+					FlxG.sound.play("Countdown", volume);
 				}
 			}
 		
@@ -363,9 +365,9 @@ class PlayStateOld extends FlxState
 			{
 				_fading = true;
 				#if !neko
-				FlxG.fade(0xffd8eba2, 3, false, onVictory);
+				FlxG.camera.fade(0xffd8eba2, 3, false, onVictory);
 				#else
-				FlxG.fade({rgb:0xd8eba2, a:0xff}, 3, false, onVictory);
+				FlxG.camera.fade({rgb:0xd8eba2, a:0xff}, 3, false, onVictory);
 				#end
 			}
 		}
@@ -373,8 +375,8 @@ class PlayStateOld extends FlxState
 		//actually update score text if it changed
 		if(scoreChanged)
 		{
-			if(!_player.alive) FlxG.score = 0;
-			_score.text = Std.string(FlxG.score);
+			if(!_player.alive) Reg.score = 0;
+			_score.text = Std.string(Reg.score);
 		}
 	}
 
@@ -388,10 +390,10 @@ class PlayStateOld extends FlxState
 		Sprite2.hurt(1);
 	}
 	
-	//A FlxG.fade callback, like in MenuState.
+	//A FlxG.camera.fade callback, like in MenuState.
 	private function onVictory():Void
 	{
-		//FlxG.music.stop();
+		//FlxG.sound.music.stop();
 		FlxG.switchState(new VictoryState());
 	}
 	
@@ -453,12 +455,12 @@ class PlayStateOld extends FlxState
 		var sy:Int = 0;
 		if(Spawners)
 		{
-			sx = Math.floor(2 + FlxG.random() * (rw - 7));
-			sy = Math.floor(2 + FlxG.random() * (rw - 7));
+			sx = Math.floor(2 + FlxRandom.float() * (rw - 7));
+			sy = Math.floor(2 + FlxRandom.float() * (rw - 7));
 		}
 		
 		//then place a bunch of blocks
-		var numBlocks:Int = Math.floor(3 + FlxG.random() * 4);
+		var numBlocks:Int = Math.floor(3 + FlxRandom.float() * 4);
 		if(!Spawners) numBlocks++;
 		var maxW:Int = 10;
 		var minW:Int = 2;
@@ -474,10 +476,10 @@ class PlayStateOld extends FlxState
 			do
 			{
 				//keep generating different specs if they overlap the spawner
-				bw = Math.floor(minW + FlxG.random() * (maxW - minW));
-				bh = Math.floor(minH + FlxG.random() * (maxH - minH));
-				bx = Math.floor( -1 + FlxG.random() * (rw + 1 - bw));
-				by = Math.floor( -1 + FlxG.random() * (rw + 1 - bh));
+				bw = Math.floor(minW + FlxRandom.float() * (maxW - minW));
+				bh = Math.floor(minH + FlxRandom.float() * (maxH - minH));
+				bx = Math.floor( -1 + FlxRandom.float() * (rw + 1 - bw));
+				by = Math.floor( -1 + FlxRandom.float() * (rw + 1 - bh));
 				if(Spawners)
 				{
 					check = ((sx>bx+bw) || (sx+3<bx) || (sy>by+bh) || (sy+3<by));
@@ -518,7 +520,7 @@ class PlayStateOld extends FlxState
 			var ratio:Float = FlxCamera.defaultZoom / 2;
 			var camera:FlxCamera = new FlxCamera(Math.floor(ratio * (10 + (_spawners.length - 1) * 32)), Math.floor(ratio * 10), 24, 24, ratio);
 			camera.follow(sp, FlxCamera.STYLE_NO_DEAD_ZONE);
-			FlxG.addCamera(camera);
+			FlxG.cameras.add(camera);
 		}
 	}
 }

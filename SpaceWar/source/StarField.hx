@@ -1,8 +1,10 @@
 package;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxSprite;
-import org.flixel.util.FlxAngle;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxSprite;
+import flixel.util.FlxAngle;
 
 class StarField extends FlxGroup 
 {

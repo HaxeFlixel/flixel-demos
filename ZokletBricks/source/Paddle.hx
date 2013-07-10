@@ -1,9 +1,11 @@
 ﻿package;
 
-import org.flixel.FlxG;
-import org.flixel.FlxObject;
-import org.flixel.FlxSound;
-import org.flixel.FlxSprite;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.system.FlxSound;
+import flixel.FlxSprite;
 
 class Paddle extends FlxSprite
 {
@@ -25,7 +27,7 @@ class Paddle extends FlxSprite
 		oldSpeedY = ballMC.velocity.y;
 		if (FlxG.collide(this, ballMC))
 		{
-			FlxG.play("BeepSound");
+			FlxG.sound.play("BeepSound");
 			
 			var verticalContact:Bool = (this.justTouched(FlxObject.DOWN) || this.justTouched(FlxObject.UP));
 			var horizontalContact:Bool = (this.justTouched(FlxObject.LEFT) || this.justTouched(FlxObject.RIGHT));

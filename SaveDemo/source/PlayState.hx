@@ -1,15 +1,17 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.ui.Mouse;
-import org.flixel.FlxButton;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxObject;
-import org.flixel.util.FlxPoint;
-import org.flixel.FlxSave;
-import org.flixel.FlxState;
-import org.flixel.FlxSprite;
-import org.flixel.FlxText;
+import flixel.ui.FlxButton;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxObject;
+import flixel.util.FlxPoint;
+import flixel.util.FlxSave;
+import flixel.FlxState;
+import flixel.FlxSprite;
+import flixel.text.FlxText;
 
 
 class PlayState extends FlxState

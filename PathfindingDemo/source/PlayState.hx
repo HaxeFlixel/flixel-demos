@@ -1,14 +1,16 @@
 package;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import openfl.Assets;
-import org.flixel.FlxButton;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxPath;
-import org.flixel.util.FlxPoint;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
-import org.flixel.FlxTilemap;
+import flixel.ui.FlxButton;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.util.FlxPath;
+import flixel.util.FlxPoint;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.tile.FlxTilemap;
 
 
 class PlayState extends FlxState
@@ -98,7 +100,7 @@ class PlayState extends FlxState
 		
 		super();
 		
-		FlxG.bgColor = 0xff000000;
+		FlxG.state.bgColor = 0xff000000;
 	}
 	
 	override public function create():Void

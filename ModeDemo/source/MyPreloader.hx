@@ -1,5 +1,7 @@
 package ;
-import org.flixel.system.FlxPreloader;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.system.FlxPreloader;
 
 /**
  * ...

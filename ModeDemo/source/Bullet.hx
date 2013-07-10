@@ -1,10 +1,12 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import openfl.Assets;
-import org.flixel.FlxG;
-import org.flixel.FlxObject;
-import org.flixel.util.FlxPoint;
-import org.flixel.FlxSprite;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.util.FlxPoint;
+import flixel.FlxSprite;
 
 class Bullet extends FlxSprite
 {
@@ -59,7 +61,7 @@ class Bullet extends FlxSprite
 		velocity.y = 0;
 		if(onScreen())
 		{
-			FlxG.play("Jump");
+			FlxG.sound.play("Jump");
 		}
 		alive = false;
 		solid = false;
@@ -68,7 +70,7 @@ class Bullet extends FlxSprite
 	
 	public function shoot(Location:FlxPoint, Aim:Int):Void
 	{
-		FlxG.play("Shoot");
+		FlxG.sound.play("Shoot");
 		
 		super.reset(Location.x - width / 2, Location.y - height / 2);
 		solid = true;

@@ -1,6 +1,8 @@
 package;
-import org.flixel.FlxG;
-import org.flixel.util.FlxPoint;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.util.FlxPoint;
 
 class EnemyPaddle extends Paddle 
 {

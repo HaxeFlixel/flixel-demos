@@ -10,6 +10,7 @@
 	
 	<haxelib name="openfl" />
 	<haxelib name="flixel" />
+	<haxelib name="flixel-addons" />
 	
 	<assets path="assets" if="android" >
 		<sound path="data/beep.wav" id="Beep" />

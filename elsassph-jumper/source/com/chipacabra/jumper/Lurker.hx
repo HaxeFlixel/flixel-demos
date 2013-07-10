@@ -1,11 +1,13 @@
 package com.chipacabra.jumper;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import com.chipacabra.jumper.Player;
 import openfl.Assets;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxObject;
-import org.flixel.util.FlxPoint;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxObject;
+import flixel.util.FlxPoint;
 /**
  * ...
  * @author David Bell
@@ -57,7 +59,7 @@ class Lurker extends EnemyTemplate
 	{
 		if (health <= 0 && _playdeathsound)
 		{
-			FlxG.play(Assets.getSound("assets/sounds/mondead2.mp3"), 1, false, 50);
+			FlxG.sound.play(Assets.getSound("assets/sounds/mondead2.mp3"), 1, false, 50);
 			_playdeathsound = false;
 		}
 		super.hitBottom(Contact, Velocity);
@@ -70,7 +72,7 @@ class Lurker extends EnemyTemplate
 		{
 			if (health <= 0 && _playdeathsound)
 			{
-				FlxG.play(Assets.getSound("assets/sounds/mondead2" + Jumper.SoundExtension), 1, false);
+				FlxG.sound.play(Assets.getSound("assets/sounds/mondead2" + Jumper.SoundExtension), 1, false);
 				_playdeathsound = false;
 			}
 		}
@@ -162,7 +164,7 @@ class Lurker extends EnemyTemplate
 			velocity.x = -drag.x * 4;
 		}
 		flicker(.5);
-		FlxG.play(Assets.getSound("assets/sounds/monhurt2" + Jumper.SoundExtension), 1, false);
+		FlxG.sound.play(Assets.getSound("assets/sounds/monhurt2" + Jumper.SoundExtension), 1, false);
 		health -= 1;
 		//super.hurt(Damage);
 	}
@@ -190,7 +192,7 @@ class Lurker extends EnemyTemplate
 				bulletX += Math.floor(width - 8);
 			}
 			bullet.angleshoot(bulletX, bulletY, BULLET_SPEED, new FlxPoint(P.x, P.y));
-			FlxG.play(Assets.getSound("assets/sounds/badshoot" + Jumper.SoundExtension), 1, false);
+			FlxG.sound.play(Assets.getSound("assets/sounds/badshoot" + Jumper.SoundExtension), 1, false);
 			_cooldown = 0; // reset the shot clock
 		}
 	}

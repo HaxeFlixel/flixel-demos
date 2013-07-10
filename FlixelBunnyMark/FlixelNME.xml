@@ -8,8 +8,6 @@
  	
 	<set name="BUILD_DIR" value="export" />
 	
-	<app preloader="org.flixel.system.FlxPreloader" unless="html5" />
-	
 	<classpath name="source" />
 	
 	<haxelib name="openfl" />

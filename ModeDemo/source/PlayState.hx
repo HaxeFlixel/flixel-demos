@@ -1,21 +1,23 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import openfl.Assets;
 import flash.display.Bitmap;
 import flash.events.MouseEvent;
 import flash.Lib;
-import org.flixel.FlxButton;
-import org.flixel.FlxCamera;
-import org.flixel.FlxEmitter;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxObject;
-import org.flixel.util.FlxPoint;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
-import org.flixel.FlxTextField;
-import org.flixel.FlxTilemap;
+import flixel.ui.FlxButton;
+import flixel.FlxCamera;
+import flixel.effects.particles.FlxEmitter;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxObject;
+import flixel.util.FlxPoint;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.text.FlxTextField;
+import flixel.tile.FlxTilemap;
 
 class PlayState extends FlxState
 {
@@ -214,19 +216,19 @@ class PlayState extends FlxState
 		_hud.setAll("scrollFactor", new FlxPoint(0, 0));
 		_hud.setAll("cameras", [FlxG.camera]);
 		
-		FlxG.playMusic("Mode");
+		FlxG.sound.playMusic("Mode");
 		
-		FlxG.flash(0xff131c1b);
+		FlxG.camera.flash(0xff131c1b);
 		_fading = false;
 		
-		FlxG.sounds.maxSize = 20;
+		FlxG.sound.list.maxSize = 20;
 		
 		//Debugger Watch examples
-		//FlxG.watch(_player, "x");
-		//FlxG.watch(_player, "y");
-		FlxG.watch(_enemies, "length", "numEnemies");
-		FlxG.watch(_enemyBullets, "length", "numEnemyBullets");
-		FlxG.watch(FlxG.sounds, "length", "numSounds");
+		//FlxG.watch.add(_player, "x");
+		//FlxG.watch.add(_player, "y");
+		FlxG.watch.add(_enemies, "length", "numEnemies");
+		FlxG.watch.add(_enemyBullets, "length", "numEnemyBullets");
+		FlxG.watch.add(FlxG.sound.list, "length", "numSounds");
 		
 		LeftButton = new FlxButton(1000, 0, "Left");
 		LeftButton.scrollFactor = new FlxPoint(1.0, 1.0);
@@ -239,7 +241,7 @@ class PlayState extends FlxState
 		
 		var leftCam:FlxCamera = new FlxCamera(Math.floor(10 * FlxG.camera.zoom), Math.floor((FlxG.height - 20) * FlxG.camera.zoom), Math.floor(LeftButton.width), Math.floor(LeftButton.height));
 		leftCam.follow(LeftButton, FlxCamera.STYLE_NO_DEAD_ZONE);
-		FlxG.addCamera(leftCam);
+		FlxG.cameras.add(leftCam);
 		
 		RightButton = new FlxButton(1000, 100, "Right");
 		RightButton.scrollFactor = new FlxPoint(1.0, 1.0);
@@ -252,7 +254,7 @@ class PlayState extends FlxState
 		
 		var rightCam:FlxCamera = new FlxCamera(Math.floor(100 * FlxG.camera.zoom), Math.floor((FlxG.height - 20) * FlxG.camera.zoom), Math.floor(LeftButton.width), Math.floor(LeftButton.height));
 		rightCam.follow(RightButton, FlxCamera.STYLE_NO_DEAD_ZONE);
-		FlxG.addCamera(rightCam);
+		FlxG.cameras.add(rightCam);
 		
 		JumpButton = new FlxButton(1000, 200, "Jump");
 		JumpButton.scrollFactor = new FlxPoint(1.0, 1.0);
@@ -265,7 +267,7 @@ class PlayState extends FlxState
 		
 		var jumpCam:FlxCamera = new FlxCamera(Math.floor((FlxG.width - 90) * FlxG.camera.zoom), Math.floor((FlxG.height - 20) * FlxG.camera.zoom), Math.floor(LeftButton.width), Math.floor(LeftButton.height));
 		jumpCam.follow(JumpButton, FlxCamera.STYLE_NO_DEAD_ZONE);
-		FlxG.addCamera(jumpCam);
+		FlxG.cameras.add(jumpCam);
 	}
 	
 	override public function destroy():Void
@@ -362,7 +364,7 @@ class PlayState extends FlxState
 					{
 						volume = 1.0;
 					}
-					FlxG.play("Countdown", volume);
+					FlxG.sound.play("Countdown", volume);
 				}
 			}
 		
@@ -370,7 +372,7 @@ class PlayState extends FlxState
 			if(_spawners.countLiving() <= 0)
 			{
 				_fading = true;
-				FlxG.fade(0xffd8eba2, 3, false, onVictory);
+				FlxG.camera.fade(0xffd8eba2, 3, false, onVictory);
 			}
 		}
 		
@@ -392,10 +394,10 @@ class PlayState extends FlxState
 		Sprite2.hurt(1);
 	}
 	
-	//A FlxG.fade callback, like in MenuState.
+	//A FlxG.camera.fade callback, like in MenuState.
 	private function onVictory():Void
 	{
-		//FlxG.music.stop();
+		//FlxG.sound.music.stop();
 		FlxG.switchState(new VictoryState());
 	}
 	
@@ -457,12 +459,12 @@ class PlayState extends FlxState
 		var sy:Int = 0;
 		if(Spawners)
 		{
-			sx = Math.floor(2 + FlxG.random() * (rw - 7));
-			sy = Math.floor(2 + FlxG.random() * (rw - 7));
+			sx = Math.floor(2 + FlxRandom.float() * (rw - 7));
+			sy = Math.floor(2 + FlxRandom.float() * (rw - 7));
 		}
 		
 		//then place a bunch of blocks
-		var numBlocks:Int = Math.floor(3 + FlxG.random() * 4);
+		var numBlocks:Int = Math.floor(3 + FlxRandom.float() * 4);
 		if(!Spawners) numBlocks++;
 		var maxW:Int = 10;
 		var minW:Int = 2;
@@ -478,10 +480,10 @@ class PlayState extends FlxState
 			do
 			{
 				//keep generating different specs if they overlap the spawner
-				bw = Math.floor(minW + FlxG.random() * (maxW - minW));
-				bh = Math.floor(minH + FlxG.random() * (maxH - minH));
-				bx = Math.floor( -1 + FlxG.random() * (rw + 1 - bw));
-				by = Math.floor( -1 + FlxG.random() * (rw + 1 - bh));
+				bw = Math.floor(minW + FlxRandom.float() * (maxW - minW));
+				bh = Math.floor(minH + FlxRandom.float() * (maxH - minH));
+				bx = Math.floor( -1 + FlxRandom.float() * (rw + 1 - bw));
+				by = Math.floor( -1 + FlxRandom.float() * (rw + 1 - bh));
 				if(Spawners)
 				{
 					check = ((sx>bx+bw) || (sx+3<bx) || (sy>by+bh) || (sy+3<by));
@@ -521,7 +523,7 @@ class PlayState extends FlxState
 			var ratio:Float = FlxCamera.defaultZoom / 2;
 			var camera:FlxCamera = new FlxCamera(Math.floor(ratio * (10 + (_spawners.length - 1) * 32)), Math.floor(ratio * 10), 24, 24, ratio);
 			camera.follow(sp, FlxCamera.STYLE_NO_DEAD_ZONE);
-			FlxG.addCamera(camera);
+			FlxG.cameras.add(camera);
 		}
 	}
 	

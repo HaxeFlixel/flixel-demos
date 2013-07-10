@@ -1,6 +1,8 @@
 package ;
-import org.flixel.addons.FlxSkewedSprite;
-import org.flixel.FlxG;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.addons.display.FlxSkewedSprite;
+import flixel.FlxG;
 
 /**
  * ...

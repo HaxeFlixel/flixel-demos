@@ -1,15 +1,17 @@
 package com.chipacabra.jumper;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import openfl.Assets;
-import org.flixel.FlxEmitter;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxObject;
-import org.flixel.util.FlxPoint;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
-import org.flixel.FlxTilemap;
+import flixel.effects.particles.FlxEmitter;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxObject;
+import flixel.util.FlxPoint;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.tile.FlxTilemap;
 
 class PlayState extends FlxState
 {
@@ -124,7 +126,7 @@ class PlayState extends FlxState
 		_text1.scrollFactor.x = _text1.scrollFactor.y = 0;
 		add(_text1); // Add last so it goes on top, you know the drill.
 		
-		FlxG.playMusic(Assets.getSound("assets/music/ScrollingSpace[1]" + Jumper.SoundExtension), .5);
+		FlxG.sound.playMusic(Assets.getSound("assets/music/ScrollingSpace[1]" + Jumper.SoundExtension), .5);
 	}
 	
 	override public function update():Void 

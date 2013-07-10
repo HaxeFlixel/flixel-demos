@@ -1,11 +1,14 @@
 package;
 
-import org.flixel.FlxG;
-import org.flixel.util.FlxColor;
-import org.flixel.util.FlxPoint;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.system.input.FlxJoystick;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.util.FlxColor;
+import flixel.util.FlxPoint;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.system.input.FlxJoystick;
+import flixel.system.input.XBOX_BUTTON_IDS;
 
 class PlayState extends FlxState
 {	
@@ -40,7 +43,7 @@ class PlayState extends FlxState
 	{
 		super.create();
 		
-		FlxG.bgColor = FlxColor.WHITE;
+		FlxG.state.bgColor = FlxColor.WHITE;
 		
 		// getting first availble gamepad
 		gamePad = FlxG.joystickManager.joystick(0);

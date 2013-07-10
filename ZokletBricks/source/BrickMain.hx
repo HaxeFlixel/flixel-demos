@@ -1,7 +1,9 @@
 ﻿package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.Lib;
-import org.flixel.FlxGame;
+import flixel.FlxGame;
 
 class BrickMain extends FlxGame 
 {

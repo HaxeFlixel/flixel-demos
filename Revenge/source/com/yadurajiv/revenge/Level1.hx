@@ -21,15 +21,17 @@ misrepresented as being the original software.
 distribution.
 */
 package com.yadurajiv.revenge;
-import org.flixel.FlxCamera;
-import org.flixel.FlxG;
-import org.flixel.FlxObject;
-import org.flixel.util.FlxColor;
-import org.flixel.util.FlxPoint;
-import org.flixel.util.FlxRect;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxTilemap;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxCamera;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.util.FlxColor;
+import flixel.util.FlxPoint;
+import flixel.util.FlxRect;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.tile.FlxTilemap;
 
 /**
  * ...
@@ -63,7 +65,7 @@ class Level1 extends FlxState
 		/**
 		 * fade in from black :P
 		 */
-		FlxG.flash(FlxColor.BLACK, 1, null);
+		FlxG.camera.flash(FlxColor.BLACK, 1, null);
 		
 		/**
 		 * loading a map!
@@ -115,7 +117,7 @@ class Level1 extends FlxState
 		/**
 		 * see bounding rects for all objects on screen 
 		 */
-		//FlxG.visualDebug = true;
+		//FlxG.debugger.visualDebug = true;
 		
 		/**
 		 * the world bounds need to be set for the collision to work properly
@@ -226,12 +228,12 @@ class Level1 extends FlxState
 	
 	private function onOverlap(Obj1:FlxObject, Obj2:FlxObject):Void 
 	{
-		FlxG.fade(FlxColor.BLACK, 3, false, onFade);
+		FlxG.camera.fade(FlxColor.BLACK, 3, false, onFade);
 	}
 	
 	private function onFade():Void
 	{
-		// FlxG.fade.start also takes in a callback which is called after the fade ends!!
+		// FlxG.camera.fade.start also takes in a callback which is called after the fade ends!!
 		FlxG.switchState(new EndGame());
 	}
 }

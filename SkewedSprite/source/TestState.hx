@@ -1,20 +1,21 @@
 package;
 
-import org.flixel.addons.FlxSkewedSprite;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import flash.ui.Mouse;
 import openfl.Assets;
 import flash.Lib;
-import org.flixel.FlxButton;
-import org.flixel.FlxCamera;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
-import org.flixel.FlxTileblock;
-import org.flixel.plugin.pxText.FlxBitmapTextField;
-import org.flixel.plugin.pxText.PxBitmapFont;
-import org.flixel.plugin.pxText.PxTextAlign;
+import flixel.ui.FlxButton;
+import flixel.FlxCamera;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.tile.FlxTileblock;
+import flixel.text.FlxBitmapTextField;
+import flixel.text.pxText.PxBitmapFont;
+import flixel.text.pxText.PxTextAlign;
 
 /**
  * ...
@@ -37,7 +38,7 @@ class TestState extends FlxState
 		FlxG.flashFramerate = 60;
 		#end
 		
-		FlxG.bgColor = 0xffffffff;
+		FlxG.state.bgColor = 0xffffffff;
 		
 		var grass1:Grass = new Grass(0, 0, 0, 0);
 		var grass2:Grass = new Grass(0, 0, 1, -5);

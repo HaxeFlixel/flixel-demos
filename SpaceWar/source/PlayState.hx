@@ -1,13 +1,15 @@
 package;
-import org.flixel.FlxEmitter;
-import org.flixel.FlxG;
-import org.flixel.FlxGroup;
-import org.flixel.FlxObject;
-import org.flixel.FlxParticle;
-import org.flixel.util.FlxPoint;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.effects.particles.FlxEmitter;
+import flixel.FlxG;
+import flixel.group.FlxGroup;
+import flixel.FlxObject;
+import flixel.effects.particles.FlxParticle;
+import flixel.util.FlxPoint;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
 
 class PlayState extends FlxState 
 {
@@ -67,7 +69,7 @@ class PlayState extends FlxState
 		_scoreText.setFormat(null, 32, 0xFFFFFF, "left");
 		add(_scoreText);
 		
-		FlxG.playMusic("DieAnyway");
+		FlxG.sound.playMusic("DieAnyway");
 		
 		super.create();
 	}
@@ -94,7 +96,7 @@ class PlayState extends FlxState
 		}
 		
 		_spawnTimer -= FlxG.elapsed;
-		random = FlxG.random();	
+		random = FlxRandom.float();	
 		
 		if (_spawnTimer < 0) 
 		{			
@@ -129,14 +131,14 @@ class PlayState extends FlxState
 	
 	public function getRandom2():Void 
 	{
-		random2 = Math.floor(FlxG.random() * 7);
+		random2 = Math.floor(FlxRandom.float() * 7);
 	}
 	
 	private function spawnBullet(p:FlxPoint):Void 
 	{
 		var bullet:Bullet = new Bullet(p.x, p.y);
 		_bullets.add(bullet);
-		FlxG.play("Bullet");
+		FlxG.sound.play("Bullet");
 	}
 	
 	private function spawnAlien():Void 
@@ -174,7 +176,7 @@ class PlayState extends FlxState
 		bullet.kill();
 		Reg.score += 1;
 		_scoreText.text = Std.string(Reg.score);
-		FlxG.play("ExplosionAlien");
+		FlxG.sound.play("ExplosionAlien");
 		var emitter:FlxEmitter = createEmitter();
 		emitter.at(alien);
 	}
@@ -183,7 +185,7 @@ class PlayState extends FlxState
 	{
 		ship.kill();
 		alien.kill();
-		FlxG.play("ExplosionShip");
+		FlxG.sound.play("ExplosionShip");
 		var emitter:FlxEmitter = createEmitter();
 		emitter.at(ship);
 	
@@ -197,7 +199,7 @@ class PlayState extends FlxState
 	{
 		ship.kill();
 		alienShip.kill();
-		FlxG.play("ExplosionShip");
+		FlxG.sound.play("ExplosionShip");
 		var emitter:FlxEmitter = createEmitter();
 		emitter.at(ship);
 		
@@ -219,7 +221,7 @@ class PlayState extends FlxState
 		}
 		Reg.score += 1;
 		_scoreText.text = Std.string(Reg.score);
-		FlxG.play("ExplosionAlien");
+		FlxG.sound.play("ExplosionAlien");
 		var emitter:FlxEmitter = createEmitter();
 		emitter.at(alienShip);
 	}
@@ -228,7 +230,7 @@ class PlayState extends FlxState
 	{
 		ship.kill();
 		bullet.kill();
-		FlxG.play("ExplosionShip");
+		FlxG.sound.play("ExplosionShip");
 		var emitter:FlxEmitter = createEmitter();
 		emitter.at(ship);
 		

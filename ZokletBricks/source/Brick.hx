@@ -1,9 +1,11 @@
 ﻿package;
 
-import org.flixel.FlxG;
-import org.flixel.FlxObject;
-import org.flixel.FlxSound;
-import org.flixel.FlxSprite;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.system.FlxSound;
+import flixel.FlxSprite;
 
 class Brick extends FlxSprite 
 {	
@@ -44,7 +46,7 @@ class Brick extends FlxSprite
 		if (FlxG.collide(this, ballMC)) 
 		{
 			Reg.score++;
-			FlxG.play("BoopSound");
+			FlxG.sound.play("BoopSound");
 			this.kill();
 			
 			var verticalContact:Bool = (this.justTouched(FlxObject.DOWN) || this.justTouched(FlxObject.UP));

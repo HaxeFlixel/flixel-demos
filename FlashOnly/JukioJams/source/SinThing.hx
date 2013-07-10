@@ -1,7 +1,9 @@
 package;
-import org.flixel.FlxG;
-import org.flixel.util.FlxPoint;
-import org.flixel.FlxSprite;
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
+import flixel.FlxG;
+import flixel.util.FlxPoint;
+import flixel.FlxSprite;
 
 class SinThing extends FlxSprite
 {
@@ -16,8 +18,8 @@ class SinThing extends FlxSprite
 		super();
 		
 		var base:Int = 0;
-		var fr:Float = 10 + FlxG.random() * 10;
-		switch (Std.int(FlxG.random() * 3))
+		var fr:Float = 10 + FlxRandom.float() * 10;
+		switch (Std.int(FlxRandom.float() * 3))
 		{
 			case 0:
 				loadGraphic("assets/particle_square.png", true, false, 18, 18);
@@ -43,12 +45,12 @@ class SinThing extends FlxSprite
 		}
 		play("idle");
 		
-		s = new FlxPoint(FlxG.width*FlxG.random(),FlxG.height*FlxG.random());
+		s = new FlxPoint(FlxG.width*FlxRandom.float(),FlxG.height*FlxRandom.float());
 
-		if(FlxG.random() < 0.5)
+		if(FlxRandom.float() < 0.5)
 			flippedFlag = true;
 		
-		if(FlxG.random() < 0.3)
+		if(FlxRandom.float() < 0.3)
 			half = true;
 		
 		_timer = 0;

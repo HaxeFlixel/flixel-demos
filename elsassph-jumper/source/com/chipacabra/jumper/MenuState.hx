@@ -1,11 +1,12 @@
 package com.chipacabra.jumper;
 
+import flixel.util.FlxRandom;
 import openfl.Assets;
-import org.flixel.FlxG;
-import org.flixel.FlxSprite;
-import org.flixel.FlxState;
-import org.flixel.FlxText;
-import org.flixel.util.FlxMisc;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.util.FlxMisc;
 
 /**
  * ...
@@ -31,7 +32,7 @@ class MenuState extends FlxState
 	
 	override public function create():Void 
 	{
-		FlxG.bgColor = 0xFF101414;
+		FlxG.state.bgColor = 0xFF101414;
 		
 		//Each word is its own object so we can position them independantly
 		//_text1 = new FlxText(FlxG.width/5, FlxG.height / 4, 320, "Project");
@@ -102,19 +103,19 @@ class MenuState extends FlxState
 		if (FlxG.keys.justPressed("UP"))
 			{
 				_option = (_option + OPTIONS - 1) % OPTIONS; // A goofy format, because % doesn't work on negative numbers
-				FlxG.play(Assets.getSound("assets/sounds/menu" + Jumper.SoundExtension), 1, false);
+				FlxG.sound.play(Assets.getSound("assets/sounds/menu" + Jumper.SoundExtension), 1, false);
 			}
 		if (FlxG.keys.justPressed("DOWN"))
 			{
 				_option = (_option + OPTIONS + 1) % OPTIONS;
-				FlxG.play(Assets.getSound("assets/sounds/menu" + Jumper.SoundExtension), 1, false);
+				FlxG.sound.play(Assets.getSound("assets/sounds/menu" + Jumper.SoundExtension), 1, false);
 			}
 		if (FlxG.keys.justPressed("SPACE") || FlxG.keys.justPressed("ENTER"))
 			switch (_option) 
 			{
 				case 0:
-					FlxG.fade(0xff969867, 1, false, startGame);
-					FlxG.play(Assets.getSound("assets/sounds/coin" + Jumper.SoundExtension), 1, false);
+					FlxG.camera.fade(0xff969867, 1, false, startGame);
+					FlxG.sound.play(Assets.getSound("assets/sounds/coin" + Jumper.SoundExtension), 1, false);
 				case 1:
 					onURL();
 				case 2:

@@ -1,7 +1,9 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import com.yadurajiv.revenge.MenuMain;
-import org.flixel.FlxGame;
+import flixel.FlxGame;
 
 class Revenge extends FlxGame
 {

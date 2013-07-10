@@ -1,12 +1,14 @@
 package;
 
+import flixel.util.FlxMisc;
+import flixel.util.FlxRandom;
 import openfl.Assets;
-import org.flixel.FlxG;
-import org.flixel.FlxState;
-import org.flixel.system.input.FlxTouch;
+import flixel.FlxG;
+import flixel.FlxState;
+import flixel.system.input.FlxTouch;
 
-import org.flixel.FlxSprite;
-import org.flixel.system.input.FlxTouchManager;
+import flixel.FlxSprite;
+import flixel.system.input.FlxTouchManager;
 
 class MenuState extends FlxState
 {
@@ -19,7 +21,7 @@ class MenuState extends FlxState
 	
 	override public function create():Void
 	{
-		FlxG.bgColor = 0xff131c1b;
+		FlxG.state.bgColor = 0xff131c1b;
 		
 		activeSprites = new Map<Int, FlxSprite>();
 		inactiveSprites = new Array<FlxSprite>();
