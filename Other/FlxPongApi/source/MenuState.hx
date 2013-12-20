@@ -1,5 +1,6 @@
 package;
 
+import flash.display.BitmapData;
 import flash.text.TextFieldType;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -39,12 +40,15 @@ class MenuState extends FlxState
 	private var _mainMenuTime:Float = 0.0;
 	private var _input1:FlxTextField;
 	private var _input2:FlxTextField;
+	private var _imageDisplay:FlxSprite;
 	
 	inline static private function API_TEST_BUTTONS():Array<Array<String>> {
 		return [ 	[ "fetchUser", "authUser", "openSession", "pingSession" ],
 					[ "closeSession", "fetchTrophy", "addTrophy", "fetchScore" ],
 					[ "addScore", "getTables", "fetchData", "setData" ],
-					[ "updateData", "removeData", "getAllKeys" ]
+					[ "updateData", "removeData", "getAllKeys", "resetUser" ],
+					[ "fetchTrophyImage", "fetchAvatarImage", "username", "usertoken" ],
+					[ "isQuickPlay", "isEmbeddedFlash" ]
 				];
 	}
 	
@@ -66,7 +70,7 @@ class MenuState extends FlxState
 		_connection = new FlxText( 1, 1, FlxG.width, "Connecting to GameJolt..." );
 		_connection.color = Reg.med_lite;
 		
-		var info:FlxText = new FlxText( 0, FlxG.height - 14, FlxG.width, "FlxPong uses HaxeFlixel & FlxGameJolt to use the GameJolt API. Have fun, earn trophies!" );
+		var info:FlxText = new FlxText( 0, FlxG.height - 14, FlxG.width, "FlxPong is a demo of HaxeFlixel & FlxGameJolt, which interacts with the GameJolt API." );
 		info.color = Reg.med_lite;
 		info.alignment = "center";
 		
@@ -110,7 +114,7 @@ class MenuState extends FlxState
 		var hf:Button = new Button( 0, 110, "HaxeFlixel.com", hfCallback );
 		Reg.quarterX( hf, 2 );
 		
-		var doc:Button = new Button( 0, 110, "FlxGameJolt Usage", docCallback, 120 );
+		var doc:Button = new Button( 0, 110, "GameJolt API Doc", docCallback, 120 );
 		Reg.quarterX( doc, 3 );
 		
 		_main.add( title );
@@ -135,8 +139,9 @@ class MenuState extends FlxState
 		
 		_apiTest = new FlxGroup();
 		
-		var xpos:Int = 10;
+		var xpos:Int = 2;
 		var ypos:Array<Int> = [ 20, 42, 64, 86, 108, 130 ];
+		var buttonwidth:Int = 100;
 		
 		// Set up the pages of this screen.
 		
@@ -152,22 +157,22 @@ class MenuState extends FlxState
 			var button4:Button;
 			
 			if ( API_TEST_BUTTONS()[i][0] != null ) {
-				button1 = new Button( xpos, ypos[0], API_TEST_BUTTONS()[i][0], apiCallback );
+				button1 = new Button( xpos, ypos[0], API_TEST_BUTTONS()[i][0], apiCallback, buttonwidth );
 				_apiPages[i].add( button1 );
 			}
 			
 			if ( API_TEST_BUTTONS()[i][1] != null ) {
-				button2 = new Button( xpos, ypos[1], API_TEST_BUTTONS()[i][1], apiCallback );
+				button2 = new Button( xpos, ypos[1], API_TEST_BUTTONS()[i][1], apiCallback, buttonwidth );
 				_apiPages[i].add( button2 );
 			}
 			
 			if ( API_TEST_BUTTONS()[i][2] != null ) {
-				button3 = new Button( xpos, ypos[2], API_TEST_BUTTONS()[i][2], apiCallback );
+				button3 = new Button( xpos, ypos[2], API_TEST_BUTTONS()[i][2], apiCallback, buttonwidth );
 				_apiPages[i].add( button3 );
 			}
 			
 			if ( API_TEST_BUTTONS()[i][3] != null ) {
-				button4 = new Button( xpos, ypos[3], API_TEST_BUTTONS()[i][3], apiCallback );
+				button4 = new Button( xpos, ypos[3], API_TEST_BUTTONS()[i][3], apiCallback, buttonwidth );
 				_apiPages[i].add( button4 );
 			}
 			
@@ -182,11 +187,13 @@ class MenuState extends FlxState
 		
 		// Add elements aside from the per-screen buttons
 		
-		var prev:Button = new Button( xpos, ypos[4], "<<", testMove, 39 );
-		var next:Button = new Button( xpos + 80 - 39, ypos[4], ">>", testMove, 39 );
-		var testSpace:PongSprite = new PongSprite( xpos + 90, ypos[0], FlxG.width - 10 - xpos - 90, ypos[4] + 20 - ypos[0], Reg.med_lite );
+		var prev:Button = new Button( xpos, ypos[4], "<<", testMove, Std.int( buttonwidth / 2 - xpos / 2 ) );
+		var next:Button = new Button( Std.int( prev.x + prev.width + 2 ), ypos[4], ">>", testMove, Std.int( buttonwidth / 2 - xpos / 2 ) );
+		var testSpace:PongSprite = new PongSprite( xpos + buttonwidth + xpos, ypos[0], FlxG.width - (xpos + buttonwidth + xpos * 2), ypos[4] + 20 - ypos[0], Reg.med_lite );
 		_return = new FlxText( testSpace.x + 4, testSpace.y + 4, Std.int( testSpace.width - 8 ), "Return data will display here." );
 		_return.color = Reg.lite;
+		_imageDisplay = new FlxSprite( testSpace.x + 5, testSpace.y + 5 );
+		_imageDisplay.visible = false;
 		var exit:Button = new Button( Std.int( testSpace.x + testSpace.width - 40 ), Std.int( testSpace.y + testSpace.height - 20 ), "Back", switchMenu, 40 );
 		
 		// Add everything to this screen
@@ -199,6 +206,7 @@ class MenuState extends FlxState
 		_apiTest.add( next );
 		_apiTest.add( testSpace );
 		_apiTest.add( _return );
+		_apiTest.add( _imageDisplay );
 		_apiTest.add( exit );
 		
 		_apiTest.active = false;
@@ -262,14 +270,20 @@ class MenuState extends FlxState
 		em.start( false );
 		
 		var ba:ByteArray = new MyPrivateKey();
-		
 		#if debug
 		var name:ByteArray = new MyUserName();
 		var token:ByteArray = new MyUserToken();
-		FlxGameJolt.init( Reg.GAME_ID, ba.readUTFBytes( ba.length ), true, name.readUTFBytes( name.length ), token.readUTFBytes( token.length ), initCallback );
-		#else
-		FlxGameJolt.init( Reg.GAME_ID, ba.readUTFBytes( ba.length ), true, null, null, initCallback );
+		FlxGameJolt.verbose = true;
 		#end
+		if ( !FlxGameJolt.initialized ) {
+			#if debug
+			FlxGameJolt.init( Reg.GAME_ID, ba.readUTFBytes( ba.length ), true, name.readUTFBytes( name.length ), token.readUTFBytes( token.length ), initCallback );
+			#else
+			FlxGameJolt.init( Reg.GAME_ID, ba.readUTFBytes( ba.length ), true, null, null, initCallback );
+			#end
+		} else {
+			_connection.text = "Welcome back to the main menu, " + FlxGameJolt.username + "!";
+		}
 		
 		#if debug
 		//var newcol:Button = new Button( FlxG.width - 10, 0, "C", colorCallback, 10 );
@@ -311,7 +325,7 @@ class MenuState extends FlxState
 	
 	private function docCallback( Name:String ):Void
 	{
-		FlxMisc.openURL( " http://www.steverichey.com/dev/flxgamejolt" );
+		FlxMisc.openURL( "http://gamejolt.com/api/doc/game/" );
 	}
 	
 	private function scoresCallback( Name:String ):Void
@@ -360,13 +374,14 @@ class MenuState extends FlxState
 	
 	private function apiCallback( Name:String ):Void
 	{
+		_imageDisplay.visible = false;
 		_return.text = "Sending " + Name + " request to GameJolt...";
 		
 		switch ( Name ) {
 			case "fetchUser":
 				FlxGameJolt.fetchUser( 0, FlxGameJolt.username, [], apiReturn );
 			case "authUser":
-				FlxGameJolt.authUser( null, null, authReturn );
+				FlxGameJolt.authUser( FlxGameJolt.username, FlxGameJolt.usertoken, authReturn );
 			case "openSession":
 				FlxGameJolt.openSession( apiReturn );
 			case "pingSession":
@@ -380,7 +395,7 @@ class MenuState extends FlxState
 			case "fetchScore":
 				FlxGameJolt.fetchScore( 10, apiReturn );
 			case "addScore":
-				FlxGameJolt.addScore( Std.string( _mainMenuTime ) + " seconds in menu", _mainMenuTime, false, null, "FlxPong is a great game.", 0, apiReturn );
+				FlxGameJolt.addScore( Std.string( Math.round( _mainMenuTime ) ) + " seconds in menu", Math.round( _mainMenuTime ), 0, false, null, "FlxPong is a great game.", apiReturn );
 			case "getTables":
 				FlxGameJolt.getTables( apiReturn );
 			case "fetchData":
@@ -393,6 +408,20 @@ class MenuState extends FlxState
 				FlxGameJolt.removeData( "testkey", true, apiReturn );
 			case "getAllKeys":
 				FlxGameJolt.getAllKeys( true, apiReturn );
+			case "resetUser":
+				FlxGameJolt.resetUser( FlxGameJolt.username, FlxGameJolt.usertoken, authReturn );
+			case "fetchTrophyImage":
+				FlxGameJolt.fetchTrophyImage( 5072, apiImageReturn );
+			case "fetchAvatarImage":
+				FlxGameJolt.fetchAvatarImage( apiImageReturn );
+			case "username":
+				_return.text = "User name: " + FlxGameJolt.username;
+			case "usertoken":
+				_return.text = "User token: " + FlxGameJolt.usertoken;
+			case "isQuickPlay":
+				_return.text = "Was FlxPong loaded via Quick Play? Status: " + FlxGameJolt.isQuickPlay;
+			case "isEmbeddedFlash":
+				_return.text = "Was FlxPong loaded as embedded Flash on GameJolt? Status: " + FlxGameJolt.isEmbeddedFlash;
 			default:
 				_return.text = "Sorry, there was an error. :(";
 		}
@@ -403,9 +432,20 @@ class MenuState extends FlxState
 		_return.text = "Received from GameJolt:\n" + ReturnMap.toString();
 	}
 	
+	private function apiImageReturn( Bits:BitmapData ):Void
+	{
+		_return.text = "";
+		_imageDisplay.loadGraphic( Bits );
+		_imageDisplay.visible = true;
+	}
+	
 	private function authReturn( Success:Bool ):Void
 	{
 		_return.text = "The user authentication returned: " + Success;
+		
+		if ( !Success ) {
+			_return.text += ". This is probably because the user is already authenticated! You can use resetUser() to authenticate a new user.";
+		}
 	}
 	
 	private function testMove( Name:String ):Void
@@ -439,7 +479,7 @@ class MenuState extends FlxState
 					_connection.text = "Successfully connected to GameJolt! Hi " + FlxGameJolt.username + "!";
 				}
 				
-				//FlxGameJolt.addTrophy( 5072 );
+				FlxGameJolt.addTrophy( 5072 );
 				
 				if ( _login.visible ) {
 					_login.visible = false;
@@ -449,6 +489,8 @@ class MenuState extends FlxState
 				if ( _loginGroup.visible == true ) {
 					switchMenu( "Back" );
 				}
+				
+				//FlxGameJolt.fetchAvatarImage( avatarCallback );
 			} else {
 				if ( _connection != null ) {
 					_connection.text = "Unable to verify your information with GameJolt.";

@@ -11,7 +11,7 @@ import flixel.util.FlxSave;
 
 class Reg
 {
-	inline static public var VERSION:String = "0.1a";
+	inline static public var VERSION:String = "0.2a";
 	
 	static public var PS:PlayState;
 	static public var colorArray:Array<Int> = [];

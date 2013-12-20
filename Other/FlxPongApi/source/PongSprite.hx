@@ -2,11 +2,13 @@ package;
 
 import flash.display.BitmapData;
 import flixel.FlxSprite;
+import flixel.util.FlxPoint;
 
 class PongSprite extends FlxSprite
 {
 	//public var color:Int;
 	public var secondColor:Int;
+	public var minVelocity:FlxPoint;
 	
 	static public inline var SOLID:Int = 0;
 	static public inline var GRADIENT:Int = 1;
@@ -21,6 +23,24 @@ class PongSprite extends FlxSprite
 		}
 		
 		super( X, Y, Graphic );
+	}
+	
+	override public function update():Void
+	{
+		if ( minVelocity != null ) {
+			if ( Math.abs( velocity.x ) < minVelocity.x ) {
+				var sign:Int = ( velocity.x < 0 ) ? -1 : 1;
+				
+				velocity.x = minVelocity.x * sign;
+			}
+			if ( Math.abs( velocity.y ) < minVelocity.y ) {
+				var sign:Int = ( velocity.y < 0 ) ? -1 : 1;
+				
+				velocity.y = minVelocity.y * sign;
+			}
+		}
+		
+		super.update();
 	}
 	
 	public function fillWithGradient( Bd:BitmapData, Color:Int, SecondColor:Int ):Void
@@ -40,5 +60,29 @@ class PongSprite extends FlxSprite
 				}
 			}
 		}
+	}
+	
+	public var mx(get, null):Int;
+	
+	private function get_mx():Int {
+		return Std.int( x + width / 2 );
+	}
+	
+	public var my(get, null):Int;
+	
+	private function get_my():Int {
+		return Std.int( y + height / 2 );
+	}
+	
+	public var fx(get, null):Int;
+	
+	private function get_fx():Int {
+		return Std.int( x + width );
+	}
+	
+	public var fy(get, null):Int;
+	
+	private function get_fy():Int {
+		return Std.int( y + height );
 	}
 }

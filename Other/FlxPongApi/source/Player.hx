@@ -1,13 +1,26 @@
 package;
 
 import flixel.FlxG;
+import flixel.system.FlxCollisionType;
 import flixel.util.FlxVelocity;
 
 class Player extends PongSprite
 {
+	private var _emitter:Emitter;
+	
 	public function new()
 	{
 		super( 16, Std.int( ( FlxG.height - 16 ) / 2 ), 4, 16, Reg.dark );
+		
+		moves = false;
+		immovable = true;
+	}
+	
+	public function init():Void
+	{
+		_emitter = Reg.PS.emitterGroup.add( new Emitter( Std.int( x ), Std.int( y ), 1 ) );
+		_emitter.width = width;
+		_emitter.height = height;
 	}
 	
 	override public function update():Void
@@ -20,10 +33,8 @@ class Player extends PongSprite
 	
 	override public function kill():Void
 	{
-		var emitter:Emitter = Reg.PS.emitterGroup.recycle( Emitter, [ this.x, this.y, 1, Reg.dark ] );
-		emitter.width = width;
-		emitter.height = height;
-		emitter.start( true );
+		_emitter.start( true );
+		FlxG.sound.play( "kaboom" );
 		
 		super.kill();
 	}

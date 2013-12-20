@@ -15,9 +15,14 @@
 	<set name="BUILD_DIR" value="export" />
 	<classpath name="source" />
 	
-	<!--You can use rename="newName" to shorten the paths to the individual subdirectories!-->
 	<assets path="assets/sounds" if="flash">
 		<sound path="plip.mp3" id="plip" />
+		<sound path="kaboom.mp3" id="kaboom" />
+	</assets>
+	
+	<assets path="assets/sounds" unless="flash">
+		<sound path="plip.ogg" id="plip" />
+		<sound path="kaboom.ogg" id="kaboom" />
 	</assets>
 	
 	<haxelib name="openfl" />

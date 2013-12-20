@@ -6,15 +6,32 @@ import flixel.util.FlxVelocity;
 
 class Enemy extends PongSprite
 {
+	private var _emitter:Emitter;
+	
 	public function new()
 	{
 		super( FlxG.width, 0, Reg.level, Reg.level * 4, Reg.dark );
-		reset(0,0);
+		reset(0, 0);
+	}
+	
+	public function init():Void
+	{
+		_emitter = Reg.PS.emitterGroup.add( new Emitter( Std.int( x ), Std.int( y ), 1 ) );
+		_emitter.width = width;
+		_emitter.height = height;
 	}
 	
 	override public function update():Void
 	{
-		FlxVelocity.accelerateTowardsObject( this, Reg.PS.ball, Reg.level, 0, Reg.level * 2 );
+		acceleration.x = acceleration.y = 0;
+		
+		if ( Reg.PS.ball.my < my ) {
+			acceleration.y = -Reg.level / 10;
+		}
+		
+		if ( Reg.PS.ball.my > my ) {
+			acceleration.y = Reg.level / 10;
+		}
 		
 		super.update();
 	}
@@ -28,10 +45,8 @@ class Enemy extends PongSprite
 	
 	override public function kill():Void
 	{
-		var emitter:Emitter = Reg.PS.emitterGroup.recycle( Emitter, [ this.x, this.y, 1, Reg.dark ] );
-		emitter.width = width;
-		emitter.height = height;
-		emitter.start( true );
+		_emitter.start( true );
+		FlxG.sound.play( "kaboom" );
 		
 		super.kill();
 	}
