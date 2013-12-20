@@ -25,6 +25,8 @@
 		<sound path="kaboom.ogg" id="kaboom" />
 	</assets>
 	
+	<icon path="assets/HaxeFlixel_Addons.svg" />
+	
 	<haxelib name="openfl" />
 	<haxelib name="flixel"/>
 	

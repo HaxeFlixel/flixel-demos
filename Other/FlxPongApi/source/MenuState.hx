@@ -397,15 +397,15 @@ class MenuState extends FlxState
 			case "fetchScore":
 				FlxGameJolt.fetchScore( 10, apiReturn );
 			case "addScore":
-				FlxGameJolt.addScore( Std.string( Math.round( _mainMenuTime ) ) + " seconds in menu", Math.round( _mainMenuTime ), 0, false, null, "FlxPong is a great game.", apiReturn );
+				FlxGameJolt.addScore( Std.string( Math.round( _mainMenuTime ) ) + "secondsinmenu", Math.round( _mainMenuTime ), 0, false, null, "FlxPongRox", apiReturn );
 			case "getTables":
 				FlxGameJolt.getTables( apiReturn );
 			case "fetchData":
 				FlxGameJolt.fetchData( "testkey", true, apiReturn );
 			case "setData":
-				FlxGameJolt.setData( "testkey", "I like bacon quite a bit.", true, apiReturn );
+				FlxGameJolt.setData( "testkey", "IheartBACON", true, apiReturn );
 			case "updateData":
-				FlxGameJolt.updateData( "testkey", "append", " But sausage is nice too.", true, apiReturn );
+				FlxGameJolt.updateData( "testkey", "append", "andSAUSAGE", true, apiReturn );
 			case "removeData":
 				FlxGameJolt.removeData( "testkey", true, apiReturn );
 			case "getAllKeys":
