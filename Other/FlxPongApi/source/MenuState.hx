@@ -237,7 +237,9 @@ class MenuState extends FlxState
 		_input2.textField.multiline = _input1.textField.multiline = false;
 		_input2.textField.wordWrap = _input1.textField.wordWrap = false;
 		_input2.textField.maxChars = _input1.textField.maxChars = 30;
+		#if flash
 		_input2.textField.restrict = _input1.textField.restrict = "A-Za-z0-9_";
+		#end
 		_input2.textField.type = _input1.textField.type = TextFieldType.INPUT;
 		var input1bg:PongSprite = new PongSprite( Std.int( _input1.x ), Std.int( _input1.y ), Std.int( _input1.width - 40 ), Std.int( _input1.height + 4 ), Reg.dark );
 		var input2bg:PongSprite = new PongSprite( Std.int( _input2.x ), Std.int( _input2.y ), Std.int( _input2.width - 40 ), Std.int( _input2.height + 4 ), Reg.dark );
