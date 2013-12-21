@@ -15,10 +15,17 @@
 	<set name="BUILD_DIR" value="export" />
 	<classpath name="source" />
 	
-	<!--You can use rename="newName" to shorten the paths to the individual subdirectories!-->
 	<assets path="assets/sounds" if="flash">
 		<sound path="plip.mp3" id="plip" />
+		<sound path="kaboom.mp3" id="kaboom" />
 	</assets>
+	
+	<assets path="assets/sounds" unless="flash">
+		<sound path="plip.ogg" id="plip" />
+		<sound path="kaboom.ogg" id="kaboom" />
+	</assets>
+	
+	<icon path="assets/HaxeFlixel_Addons.svg" />
 	
 	<haxelib name="openfl" />
 	<haxelib name="flixel"/>
@@ -44,13 +51,13 @@
 	<!--<haxedef name="FLX_MOUSE_ADVANCED" />-->
 	
 	<!--Disable the Native cursor api for Flash target-->
-	<!-- <haxedef name="FLX_NO_NATIVE_CURSOR" /> -->
+	<haxedef name="FLX_NO_NATIVE_CURSOR" />
 	
 	<!--Optimise inputs, be careful you will get null errors if you don't use conditionals in your game-->
-	<!--<haxedef name="FLX_NO_MOUSE" if="mobile" />-->
-	<!--<haxedef name="FLX_NO_KEYBOARD" if="mobile" />-->
-	<!--<haxedef name="FLX_NO_TOUCH" if="desktop" />-->
-	<!--<haxedef name="FLX_NO_GAMEPAD" />-->
+	<haxedef name="FLX_NO_MOUSE" if="mobile" />
+	<haxedef name="FLX_NO_KEYBOARD" if="mobile" />
+	<haxedef name="FLX_NO_TOUCH" if="desktop" />
+	<haxedef name="FLX_NO_GAMEPAD" />
 	
 	<!--Disable the Flixel core sound tray-->
 	<!-- This is disabled so that the user can enter hyphens for their login, if needed -->

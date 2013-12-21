@@ -1,28 +1,26 @@
 package;
 
+import flash.utils.ByteArray;
+import flash.display.Sprite;
+import flash.display.BitmapData;
 import flash.text.TextFieldType;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.group.FlxGroup;
+import flixel.ui.FlxButton;
+import flixel.util.FlxMisc;
 import flixel.text.FlxText;
 import flixel.text.FlxTextField;
-import flixel.ui.FlxButton;
+import flixel.group.FlxGroup;
 import flixel.addons.api.FlxGameJolt;
-import flash.utils.ByteArray;
-import flixel.util.FlxMisc;
 
 /**
  * These lines allow embedding of assets as ByteArrays, which helps to minimize the threat of data being compromised.
- * The MOST important one is the private key. Only use the username and user token for debugging.
- * Since "*.privatekey" is added to the .gitignore, none of these will be uploaded to the repository.
+ * For your own purposes, it is recommended you add "*.privatekey" to your source control ignore list.
+ * The content of the .privatekey file should be just your private key.
+ * To see how this file is read and used, look at the bottom of the create() function below.
  */
-@:file("assets/my.privatekey") class MyPrivateKey extends ByteArray { }
-
-#if debug
-@:file("assets/username.privatekey") class MyUserName extends ByteArray { }
-@:file("assets/usertoken.privatekey") class MyUserToken extends ByteArray { }
-#end
+@:file("assets/example.privatekey") class MyPrivateKey extends ByteArray { }
 
 class MenuState extends FlxState
 {
@@ -39,24 +37,37 @@ class MenuState extends FlxState
 	private var _mainMenuTime:Float = 0.0;
 	private var _input1:FlxTextField;
 	private var _input2:FlxTextField;
+	private var _imageDisplay:FlxSprite;
 	
 	inline static private function API_TEST_BUTTONS():Array<Array<String>> {
 		return [ 	[ "fetchUser", "authUser", "openSession", "pingSession" ],
 					[ "closeSession", "fetchTrophy", "addTrophy", "fetchScore" ],
 					[ "addScore", "getTables", "fetchData", "setData" ],
-					[ "updateData", "removeData", "getAllKeys" ]
+					[ "updateData", "removeData", "getAllKeys", "resetUser" ],
+					[ "fetchTrophyImage", "fetchAvatarImage", "username", "usertoken" ],
+					[ "isQuickPlay", "isEmbeddedFlash" ]
 				];
 	}
 	
 	override public function create():Void
 	{
 		Reg.genColors();
-		//FlxGameJolt.addTrophyCallback( Reg.createToast );
 		FlxG.cameras.bgColor = Reg.lite;
 		Reg.level = 1;
 		
 		#if !FLX_NO_MOUSE
-		FlxG.mouse.show();
+		var mouseSprite:Sprite = new Sprite();
+		mouseSprite.graphics.beginFill( Reg.dark, 1 );
+		mouseSprite.graphics.moveTo( 0, 0 );
+		mouseSprite.graphics.lineTo( 20, 20 );
+		mouseSprite.graphics.lineTo( 0, 27.5 );
+		mouseSprite.graphics.endFill();
+		
+		// using .show( mouseSprite ) doesn't work, so we convert it to bitmapdata
+		
+		var mouseData:BitmapData = new BitmapData( 20, 30, true, 0 );
+		mouseData.draw( mouseSprite );
+		FlxG.mouse.show( mouseData );
 		#end
 		
 		// The background emitter, connection info, version, and blurb are always present.
@@ -66,7 +77,7 @@ class MenuState extends FlxState
 		_connection = new FlxText( 1, 1, FlxG.width, "Connecting to GameJolt..." );
 		_connection.color = Reg.med_lite;
 		
-		var info:FlxText = new FlxText( 0, FlxG.height - 14, FlxG.width, "FlxPong uses HaxeFlixel & FlxGameJolt to use the GameJolt API. Have fun, earn trophies!" );
+		var info:FlxText = new FlxText( 0, FlxG.height - 14, FlxG.width, "FlxPong is a demo of HaxeFlixel & FlxGameJolt, which interacts with the GameJolt API." );
 		info.color = Reg.med_lite;
 		info.alignment = "center";
 		
@@ -110,7 +121,7 @@ class MenuState extends FlxState
 		var hf:Button = new Button( 0, 110, "HaxeFlixel.com", hfCallback );
 		Reg.quarterX( hf, 2 );
 		
-		var doc:Button = new Button( 0, 110, "FlxGameJolt Usage", docCallback, 120 );
+		var doc:Button = new Button( 0, 110, "GameJolt API Doc", docCallback, 120 );
 		Reg.quarterX( doc, 3 );
 		
 		_main.add( title );
@@ -135,8 +146,9 @@ class MenuState extends FlxState
 		
 		_apiTest = new FlxGroup();
 		
-		var xpos:Int = 10;
+		var xpos:Int = 2;
 		var ypos:Array<Int> = [ 20, 42, 64, 86, 108, 130 ];
+		var buttonwidth:Int = 100;
 		
 		// Set up the pages of this screen.
 		
@@ -152,22 +164,22 @@ class MenuState extends FlxState
 			var button4:Button;
 			
 			if ( API_TEST_BUTTONS()[i][0] != null ) {
-				button1 = new Button( xpos, ypos[0], API_TEST_BUTTONS()[i][0], apiCallback );
+				button1 = new Button( xpos, ypos[0], API_TEST_BUTTONS()[i][0], apiCallback, buttonwidth );
 				_apiPages[i].add( button1 );
 			}
 			
 			if ( API_TEST_BUTTONS()[i][1] != null ) {
-				button2 = new Button( xpos, ypos[1], API_TEST_BUTTONS()[i][1], apiCallback );
+				button2 = new Button( xpos, ypos[1], API_TEST_BUTTONS()[i][1], apiCallback, buttonwidth );
 				_apiPages[i].add( button2 );
 			}
 			
 			if ( API_TEST_BUTTONS()[i][2] != null ) {
-				button3 = new Button( xpos, ypos[2], API_TEST_BUTTONS()[i][2], apiCallback );
+				button3 = new Button( xpos, ypos[2], API_TEST_BUTTONS()[i][2], apiCallback, buttonwidth );
 				_apiPages[i].add( button3 );
 			}
 			
 			if ( API_TEST_BUTTONS()[i][3] != null ) {
-				button4 = new Button( xpos, ypos[3], API_TEST_BUTTONS()[i][3], apiCallback );
+				button4 = new Button( xpos, ypos[3], API_TEST_BUTTONS()[i][3], apiCallback, buttonwidth );
 				_apiPages[i].add( button4 );
 			}
 			
@@ -182,11 +194,13 @@ class MenuState extends FlxState
 		
 		// Add elements aside from the per-screen buttons
 		
-		var prev:Button = new Button( xpos, ypos[4], "<<", testMove, 39 );
-		var next:Button = new Button( xpos + 80 - 39, ypos[4], ">>", testMove, 39 );
-		var testSpace:PongSprite = new PongSprite( xpos + 90, ypos[0], FlxG.width - 10 - xpos - 90, ypos[4] + 20 - ypos[0], Reg.med_lite );
+		var prev:Button = new Button( xpos, ypos[4], "<<", testMove, Std.int( buttonwidth / 2 - xpos / 2 ) );
+		var next:Button = new Button( Std.int( prev.x + prev.width + 2 ), ypos[4], ">>", testMove, Std.int( buttonwidth / 2 - xpos / 2 ) );
+		var testSpace:PongSprite = new PongSprite( xpos + buttonwidth + xpos, ypos[0], FlxG.width - (xpos + buttonwidth + xpos * 2), ypos[4] + 20 - ypos[0], Reg.med_lite );
 		_return = new FlxText( testSpace.x + 4, testSpace.y + 4, Std.int( testSpace.width - 8 ), "Return data will display here." );
 		_return.color = Reg.lite;
+		_imageDisplay = new FlxSprite( testSpace.x + 5, testSpace.y + 5 );
+		_imageDisplay.visible = false;
 		var exit:Button = new Button( Std.int( testSpace.x + testSpace.width - 40 ), Std.int( testSpace.y + testSpace.height - 20 ), "Back", switchMenu, 40 );
 		
 		// Add everything to this screen
@@ -199,6 +213,7 @@ class MenuState extends FlxState
 		_apiTest.add( next );
 		_apiTest.add( testSpace );
 		_apiTest.add( _return );
+		_apiTest.add( _imageDisplay );
 		_apiTest.add( exit );
 		
 		_apiTest.active = false;
@@ -229,10 +244,19 @@ class MenuState extends FlxState
 		_input2.textField.multiline = _input1.textField.multiline = false;
 		_input2.textField.wordWrap = _input1.textField.wordWrap = false;
 		_input2.textField.maxChars = _input1.textField.maxChars = 30;
+		#if flash
 		_input2.textField.restrict = _input1.textField.restrict = "A-Za-z0-9_";
+		#end
 		_input2.textField.type = _input1.textField.type = TextFieldType.INPUT;
+		
 		var input1bg:PongSprite = new PongSprite( Std.int( _input1.x ), Std.int( _input1.y ), Std.int( _input1.width - 40 ), Std.int( _input1.height + 4 ), Reg.dark );
 		var input2bg:PongSprite = new PongSprite( Std.int( _input2.x ), Std.int( _input2.y ), Std.int( _input2.width - 40 ), Std.int( _input2.height + 4 ), Reg.dark );
+		
+		#if desktop
+		_input1.height = input1bg.height;
+		_input2.height = input2bg.height;
+		#end
+		
 		var trylogin:Button = new Button( 0, 110, "Log in", loginCallback );
 		Reg.quarterX( trylogin, 2 );
 		var back:Button = new Button( 400, 108, "Back", switchMenu, 40 );
@@ -261,20 +285,20 @@ class MenuState extends FlxState
 		
 		em.start( false );
 		
+		// Load the privatekey data as a bytearray.
+		
 		var ba:ByteArray = new MyPrivateKey();
 		
-		#if debug
-		var name:ByteArray = new MyUserName();
-		var token:ByteArray = new MyUserToken();
-		FlxGameJolt.init( Reg.GAME_ID, ba.readUTFBytes( ba.length ), true, name.readUTFBytes( name.length ), token.readUTFBytes( token.length ), initCallback );
-		#else
-		FlxGameJolt.init( Reg.GAME_ID, ba.readUTFBytes( ba.length ), true, null, null, initCallback );
-		#end
+		// If we're already initialized (which would happen on returning from the playstate), we don't need to run init().
+		// If we're not initialized, call init() using the game ID and the private key, which is converted to a string
+		// with .readUTFBytes( ba.length ). The ba.length ensures that the ByteArray will be read from beginning to end
+		// and then stop; otherwise, there would be an error when the end of the ByteArray was reached.
 		
-		#if debug
-		//var newcol:Button = new Button( FlxG.width - 10, 0, "C", colorCallback, 10 );
-		//add( newcol );
-		#end
+		if ( !FlxGameJolt.initialized ) {
+			FlxGameJolt.init( 19975, ba.readUTFBytes( ba.length ), true, null, null, initCallback );
+		} else {
+			_connection.text = "Welcome back to the main menu, " + FlxGameJolt.username + "!";
+		}
 		
 		super.create();
 	}
@@ -282,6 +306,13 @@ class MenuState extends FlxState
 	override public function update():Void
 	{
 		_mainMenuTime += FlxG.elapsed;
+		
+		#if !FLX_NO_KEYBOARD
+		if ( FlxG.keys.justPressed.ENTER && _loginGroup.visible )
+		{
+			loginCallback( "Login" );
+		}
+		#end
 		
 		super.update();
 	}
@@ -311,7 +342,7 @@ class MenuState extends FlxState
 	
 	private function docCallback( Name:String ):Void
 	{
-		FlxMisc.openURL( " http://www.steverichey.com/dev/flxgamejolt" );
+		FlxMisc.openURL( "http://gamejolt.com/api/doc/game/" );
 	}
 	
 	private function scoresCallback( Name:String ):Void
@@ -360,13 +391,14 @@ class MenuState extends FlxState
 	
 	private function apiCallback( Name:String ):Void
 	{
+		_imageDisplay.visible = false;
 		_return.text = "Sending " + Name + " request to GameJolt...";
 		
 		switch ( Name ) {
 			case "fetchUser":
 				FlxGameJolt.fetchUser( 0, FlxGameJolt.username, [], apiReturn );
 			case "authUser":
-				FlxGameJolt.authUser( null, null, authReturn );
+				FlxGameJolt.authUser( FlxGameJolt.username, FlxGameJolt.usertoken, authReturn );
 			case "openSession":
 				FlxGameJolt.openSession( apiReturn );
 			case "pingSession":
@@ -380,19 +412,33 @@ class MenuState extends FlxState
 			case "fetchScore":
 				FlxGameJolt.fetchScore( 10, apiReturn );
 			case "addScore":
-				FlxGameJolt.addScore( Std.string( _mainMenuTime ) + " seconds in menu", _mainMenuTime, false, null, "FlxPong is a great game.", 0, apiReturn );
+				FlxGameJolt.addScore( Std.string( Math.round( _mainMenuTime ) ) + "secondsinmenu", Math.round( _mainMenuTime ), 0, false, null, "FlxPongRox", apiReturn );
 			case "getTables":
 				FlxGameJolt.getTables( apiReturn );
 			case "fetchData":
 				FlxGameJolt.fetchData( "testkey", true, apiReturn );
 			case "setData":
-				FlxGameJolt.setData( "testkey", "I like bacon quite a bit.", true, apiReturn );
+				FlxGameJolt.setData( "testkey", "IheartBACON", true, apiReturn );
 			case "updateData":
-				FlxGameJolt.updateData( "testkey", "append", " But sausage is nice too.", true, apiReturn );
+				FlxGameJolt.updateData( "testkey", "append", "andSAUSAGE", true, apiReturn );
 			case "removeData":
 				FlxGameJolt.removeData( "testkey", true, apiReturn );
 			case "getAllKeys":
 				FlxGameJolt.getAllKeys( true, apiReturn );
+			case "resetUser":
+				FlxGameJolt.resetUser( FlxGameJolt.username, FlxGameJolt.usertoken, authReturn );
+			case "fetchTrophyImage":
+				FlxGameJolt.fetchTrophyImage( 5072, apiImageReturn );
+			case "fetchAvatarImage":
+				FlxGameJolt.fetchAvatarImage( apiImageReturn );
+			case "username":
+				_return.text = "User name: " + FlxGameJolt.username;
+			case "usertoken":
+				_return.text = "User token: " + FlxGameJolt.usertoken;
+			case "isQuickPlay":
+				_return.text = "Was FlxPong loaded via Quick Play? Status: " + FlxGameJolt.isQuickPlay;
+			case "isEmbeddedFlash":
+				_return.text = "Was FlxPong loaded as embedded Flash on GameJolt? Status: " + FlxGameJolt.isEmbeddedFlash;
 			default:
 				_return.text = "Sorry, there was an error. :(";
 		}
@@ -403,9 +449,20 @@ class MenuState extends FlxState
 		_return.text = "Received from GameJolt:\n" + ReturnMap.toString();
 	}
 	
+	private function apiImageReturn( Bits:BitmapData ):Void
+	{
+		_return.text = "";
+		_imageDisplay.loadGraphic( Bits );
+		_imageDisplay.visible = true;
+	}
+	
 	private function authReturn( Success:Bool ):Void
 	{
 		_return.text = "The user authentication returned: " + Success;
+		
+		if ( !Success ) {
+			_return.text += ". This is probably because the user is already authenticated! You can use resetUser() to authenticate a new user.";
+		}
 	}
 	
 	private function testMove( Name:String ):Void
@@ -439,7 +496,7 @@ class MenuState extends FlxState
 					_connection.text = "Successfully connected to GameJolt! Hi " + FlxGameJolt.username + "!";
 				}
 				
-				//FlxGameJolt.addTrophy( 5072 );
+				FlxGameJolt.addTrophy( 5072 );
 				
 				if ( _login.visible ) {
 					_login.visible = false;
@@ -449,6 +506,8 @@ class MenuState extends FlxState
 				if ( _loginGroup.visible == true ) {
 					switchMenu( "Back" );
 				}
+				
+				//FlxGameJolt.fetchAvatarImage( avatarCallback );
 			} else {
 				if ( _connection != null ) {
 					_connection.text = "Unable to verify your information with GameJolt.";

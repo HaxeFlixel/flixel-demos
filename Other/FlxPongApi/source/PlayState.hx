@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.api.FlxGameJolt;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -16,15 +17,17 @@ import flixel.util.FlxTimer;
 
 class PlayState extends FlxState
 {
+	public var ball:Ball;
+	public var emitterGroup:FlxTypedGroup<Emitter>;
+	public var collidables:FlxGroup;
+	
+	private var _obstacles:FlxTypedGroup<PongSprite>;
+	private var _centerText:FlxText;
 	private var _player:Player;
 	private var _debris:Emitter;
 	private var _enemy:Enemy;
 	private var _enemyBullets:Emitter;
-	public var ball:Ball;
-	private var _obstacles:FlxTypedGroup<PongSprite>;
-	private var _centerText:FlxText;
-	public var emitterGroup:FlxTypedGroup<Emitter>;
-	public var collidables:FlxGroup;
+	private var _paused:Bool = false;
 	
 	override public function create():Void
 	{
@@ -65,20 +68,45 @@ class PlayState extends FlxState
 		
 		collidables = new FlxGroup();
 		
-		var walls:FlxGroup = FlxCollision.createCameraWall( FlxG.camera, FlxCollision.CAMERA_WALL_OUTSIDE, 5 );
+		var topWall:PongSprite = new PongSprite( 0, -2, FlxG.width, 2, Reg.dark );
+		var bottomWall:PongSprite = new PongSprite( 0, FlxG.height, FlxG.width, 2, Reg.dark );
+		topWall.moves = false;
+		bottomWall.moves = false;
+		topWall.immovable = true;
+		bottomWall.immovable = true;
 		
+		collidables.add( _obstacles );
+		collidables.add( topWall );
+		collidables.add( bottomWall );
 		collidables.add( _player );
 		collidables.add( _enemy );
-		collidables.add( _obstacles );
-		collidables.add( walls );
 		
 		_debris.start( false );
 		
+		FlxGameJolt.addTrophy( 5071 );
+		
 		super.create();
+		
+		ball.init();
+		_player.init();
+		_enemy.init();
 	}
 	
 	override public function update():Void
 	{
+		#if !FLX_NO_KEYBOARD
+		if ( FlxG.keys.justPressed.P ) {
+			_paused = !_paused;
+		}
+		if ( FlxG.keys.justPressed.ESCAPE ) {
+			FlxG.switchState( new MenuState() );
+		}
+		#end
+		
+		if ( _paused ) {
+			return;
+		}
+		
 		_player.y = FlxMath.bound( FlxG.mouse.y, 0, FlxG.height - _player.height );
 		
 		if ( ball.alive ) {
@@ -87,6 +115,9 @@ class PlayState extends FlxState
 				_enemy.kill();
 				Reg.level++;
 				_centerText.text = "Nice! Moving on to level " + Reg.level + "!";
+				
+				FlxGameJolt.addScore( Std.string( Reg.level - 1 ) + " enemies destroyed", Reg.level - 1, 20599 );
+				
 				FlxTimer.start( 4, newEnemy, 1 );
 			}
 			
@@ -96,9 +127,6 @@ class PlayState extends FlxState
 				_centerText.text = "Aww! You lost. You got as far as level " + Reg.level + " though, so there's that.";
 				FlxTimer.start( 4, endGame, 1 );
 			}
-			
-			FlxG.collide( _obstacles, ball );
-			FlxG.collide( _obstacles, _player );
 		}
 		
 		super.update();
@@ -110,7 +138,6 @@ class PlayState extends FlxState
 		_debris.setXSpeed( Reg.level * -10, Reg.level * -1 );
 		_enemy.reset(0,0);
 		ball.reset( FlxG.width / 2, FlxG.height / 2 );
-		ball.velocity = new FlxPoint( -64, -64 );
 		newObstacle();
 	}
 	
@@ -119,6 +146,8 @@ class PlayState extends FlxState
 		var obs:PongSprite = _obstacles.recycle( PongSprite, [ FlxG.width, FlxRandom.intRanged( 0, FlxG.height ), FlxRandom.intRanged( 1, 20 ), FlxRandom.intRanged( 4, 40 ), Reg.med_dark ] );
 		obs.velocity.x = FlxRandom.floatRanged( -100, -1 );
 		obs.velocity.y = FlxRandom.floatRanged( -10, 10 );
+		//obs.moves = false;
+		obs.immovable = true;
 	}
 	
 	private function endGame( f:FlxTimer ):Void

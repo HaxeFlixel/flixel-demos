@@ -11,12 +11,10 @@ import flixel.util.FlxSave;
 
 class Reg
 {
-	inline static public var VERSION:String = "0.1a";
+	inline static public var VERSION:String = "v 0.3";
 	
 	static public var PS:PlayState;
 	static public var colorArray:Array<Int> = [];
-	
-	inline static public var GAME_ID:Int = 19975;
 	
 	static public var lite(get, null):Int;
 	
