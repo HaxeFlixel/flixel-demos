@@ -17,6 +17,8 @@ import flixel.addons.api.FlxGameJolt;
 /**
  * These lines allow embedding of assets as ByteArrays, which helps to minimize the threat of data being compromised.
  * For your own purposes, it is recommended you add "*.privatekey" to your source control ignore list.
+ * The content of the .privatekey file should be just your private key.
+ * To see how this file is read and used, look at the bottom of the create() function below.
  */
 @:file("assets/example.privatekey") class MyPrivateKey extends ByteArray { }
 
@@ -283,10 +285,17 @@ class MenuState extends FlxState
 		
 		em.start( false );
 		
+		// Load the privatekey data as a bytearray.
+		
 		var ba:ByteArray = new MyPrivateKey();
 		
+		// If we're already initialized (which would happen on returning from the playstate), we don't need to run init().
+		// If we're not initialized, call init() using the game ID and the private key, which is converted to a string
+		// with .readUTFBytes( ba.length ). The ba.length ensures that the ByteArray will be read from beginning to end
+		// and then stop; otherwise, there would be an error when the end of the ByteArray was reached.
+		
 		if ( !FlxGameJolt.initialized ) {
-			FlxGameJolt.init( Reg.GAME_ID, ba.readUTFBytes( ba.length ), true, null, null, initCallback );
+			FlxGameJolt.init( 19975, ba.readUTFBytes( ba.length ), true, null, null, initCallback );
 		} else {
 			_connection.text = "Welcome back to the main menu, " + FlxGameJolt.username + "!";
 		}
