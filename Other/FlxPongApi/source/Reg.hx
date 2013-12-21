@@ -16,13 +16,6 @@ class Reg
 	static public var PS:PlayState;
 	static public var colorArray:Array<Int> = [];
 	
-	/**
-	 * Obviously, you would change this for your own game.
-	 * You can store it in a Reg class, or store the value as a file, or whatever.
-	 * Your Game ID is part of your game's URL, so you don't need to worry about security.
-	 */
-	inline static public var GAME_ID:Int = 19975;
-	
 	static public var lite(get, null):Int;
 	
 	static private function get_lite():Int
