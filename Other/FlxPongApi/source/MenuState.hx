@@ -1,29 +1,24 @@
 package;
 
+import flash.utils.ByteArray;
+import flash.display.Sprite;
 import flash.display.BitmapData;
 import flash.text.TextFieldType;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.group.FlxGroup;
+import flixel.ui.FlxButton;
+import flixel.util.FlxMisc;
 import flixel.text.FlxText;
 import flixel.text.FlxTextField;
-import flixel.ui.FlxButton;
+import flixel.group.FlxGroup;
 import flixel.addons.api.FlxGameJolt;
-import flash.utils.ByteArray;
-import flixel.util.FlxMisc;
 
 /**
  * These lines allow embedding of assets as ByteArrays, which helps to minimize the threat of data being compromised.
- * The MOST important one is the private key. Only use the username and user token for debugging.
- * Since "*.privatekey" is added to the .gitignore, none of these will be uploaded to the repository.
+ * For your own purposes, it is recommended you add "*.privatekey" to your source control ignore list.
  */
-@:file("assets/my.privatekey") class MyPrivateKey extends ByteArray { }
-
-#if debug
-@:file("assets/username.privatekey") class MyUserName extends ByteArray { }
-@:file("assets/usertoken.privatekey") class MyUserToken extends ByteArray { }
-#end
+@:file("assets/example.privatekey") class MyPrivateKey extends ByteArray { }
 
 class MenuState extends FlxState
 {
@@ -55,12 +50,22 @@ class MenuState extends FlxState
 	override public function create():Void
 	{
 		Reg.genColors();
-		//FlxGameJolt.addTrophyCallback( Reg.createToast );
 		FlxG.cameras.bgColor = Reg.lite;
 		Reg.level = 1;
 		
 		#if !FLX_NO_MOUSE
-		FlxG.mouse.show();
+		var mouseSprite:Sprite = new Sprite();
+		mouseSprite.graphics.beginFill( Reg.dark, 1 );
+		mouseSprite.graphics.moveTo( 0, 0 );
+		mouseSprite.graphics.lineTo( 20, 20 );
+		mouseSprite.graphics.lineTo( 0, 27.5 );
+		mouseSprite.graphics.endFill();
+		
+		// using .show( mouseSprite ) doesn't work, so we convert it to bitmapdata
+		
+		var mouseData:BitmapData = new BitmapData( 20, 30, true, 0 );
+		mouseData.draw( mouseSprite );
+		FlxG.mouse.show( mouseData );
 		#end
 		
 		// The background emitter, connection info, version, and blurb are always present.
@@ -241,8 +246,15 @@ class MenuState extends FlxState
 		_input2.textField.restrict = _input1.textField.restrict = "A-Za-z0-9_";
 		#end
 		_input2.textField.type = _input1.textField.type = TextFieldType.INPUT;
+		
 		var input1bg:PongSprite = new PongSprite( Std.int( _input1.x ), Std.int( _input1.y ), Std.int( _input1.width - 40 ), Std.int( _input1.height + 4 ), Reg.dark );
 		var input2bg:PongSprite = new PongSprite( Std.int( _input2.x ), Std.int( _input2.y ), Std.int( _input2.width - 40 ), Std.int( _input2.height + 4 ), Reg.dark );
+		
+		#if desktop
+		_input1.height = input1bg.height;
+		_input2.height = input2bg.height;
+		#end
+		
 		var trylogin:Button = new Button( 0, 110, "Log in", loginCallback );
 		Reg.quarterX( trylogin, 2 );
 		var back:Button = new Button( 400, 108, "Back", switchMenu, 40 );
@@ -272,25 +284,12 @@ class MenuState extends FlxState
 		em.start( false );
 		
 		var ba:ByteArray = new MyPrivateKey();
-		#if debug
-		var name:ByteArray = new MyUserName();
-		var token:ByteArray = new MyUserToken();
-		FlxGameJolt.verbose = true;
-		#end
+		
 		if ( !FlxGameJolt.initialized ) {
-			#if debug
-			FlxGameJolt.init( Reg.GAME_ID, ba.readUTFBytes( ba.length ), true, name.readUTFBytes( name.length ), token.readUTFBytes( token.length ), initCallback );
-			#else
 			FlxGameJolt.init( Reg.GAME_ID, ba.readUTFBytes( ba.length ), true, null, null, initCallback );
-			#end
 		} else {
 			_connection.text = "Welcome back to the main menu, " + FlxGameJolt.username + "!";
 		}
-		
-		#if debug
-		//var newcol:Button = new Button( FlxG.width - 10, 0, "C", colorCallback, 10 );
-		//add( newcol );
-		#end
 		
 		super.create();
 	}
@@ -298,6 +297,13 @@ class MenuState extends FlxState
 	override public function update():Void
 	{
 		_mainMenuTime += FlxG.elapsed;
+		
+		#if !FLX_NO_KEYBOARD
+		if ( FlxG.keys.justPressed.ENTER && _loginGroup.visible )
+		{
+			loginCallback( "Login" );
+		}
+		#end
 		
 		super.update();
 	}

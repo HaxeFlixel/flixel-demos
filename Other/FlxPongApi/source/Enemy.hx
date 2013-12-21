@@ -26,11 +26,11 @@ class Enemy extends PongSprite
 		acceleration.x = acceleration.y = 0;
 		
 		if ( Reg.PS.ball.my < my ) {
-			acceleration.y = -Reg.level / 10;
+			velocity.y = -Reg.level;
 		}
 		
 		if ( Reg.PS.ball.my > my ) {
-			acceleration.y = Reg.level / 10;
+			velocity.y = Reg.level;
 		}
 		
 		super.update();

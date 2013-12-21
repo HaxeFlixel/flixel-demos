@@ -17,15 +17,17 @@ import flixel.util.FlxTimer;
 
 class PlayState extends FlxState
 {
+	public var ball:Ball;
+	public var emitterGroup:FlxTypedGroup<Emitter>;
+	public var collidables:FlxGroup;
+	
+	private var _obstacles:FlxTypedGroup<PongSprite>;
+	private var _centerText:FlxText;
 	private var _player:Player;
 	private var _debris:Emitter;
 	private var _enemy:Enemy;
 	private var _enemyBullets:Emitter;
-	public var ball:Ball;
-	private var _obstacles:FlxTypedGroup<PongSprite>;
-	private var _centerText:FlxText;
-	public var emitterGroup:FlxTypedGroup<Emitter>;
-	public var collidables:FlxGroup;
+	private var _paused:Bool = false;
 	
 	override public function create():Void
 	{
@@ -92,6 +94,19 @@ class PlayState extends FlxState
 	
 	override public function update():Void
 	{
+		#if !FLX_NO_KEYBOARD
+		if ( FlxG.keys.justPressed.P ) {
+			_paused = !_paused;
+		}
+		if ( FlxG.keys.justPressed.ESCAPE ) {
+			FlxG.switchState( new MenuState() );
+		}
+		#end
+		
+		if ( _paused ) {
+			return;
+		}
+		
 		_player.y = FlxMath.bound( FlxG.mouse.y, 0, FlxG.height - _player.height );
 		
 		if ( ball.alive ) {
