@@ -25,6 +25,7 @@
 	<!--haxedef name="TRUE_ZOOM_OUT" /-->
 	<!--haxedef name="dev" /-->
 	<haxedef name="NAPE_RELEASE_BUILD"/>
+	<haxedef name="NAPE_NO_INLINE" if="neko"/>
 	<haxedef name="HXCPP_DEBUGGER" if="cpp" />
 	<haxedef name="FLX_DEBUG"/>
 	

@@ -30,6 +30,7 @@
 	<haxelib name="nape" />
 	<!--Enable this for nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" />
+	<haxedef name="NAPE_NO_INLINE" if="neko"/>
 	
 	<!--Enable the flixel core recording system-->
 	<!--<haxedef name="FLX_RECORD" />-->
