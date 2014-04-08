@@ -40,9 +40,7 @@ class MenuState extends FlxState
 	{
 		// Fade in from black
 		FlxG.cameras.flash(FlxColor.BLACK, 3);
-		
-		// Show the mouse
-		FlxG.mouse.show();
+		FlxG.mouse.visible = true;
 		
 		// Add the game text and set some formatting options along with a shadow; you can also
 		// pass in your own font if you have one embedded or it uses Flixel's default one
@@ -67,8 +65,8 @@ class MenuState extends FlxState
 		_startButton = new FlxButton(137, 195, "", onStart);
 		// We add a couple of sprites to the button to act as normal and mouseover states
 		_startButton.loadGraphic("assets/btnStart0.png");
-		_startButton.setOnOverCallback(onStartOver);
-		_startButton.setOnOutCallback(onStartOut);
+		_startButton.onOver.callback = onStartOver;
+		_startButton.onOut.callback = onStartOut;
 		add(_startButton);
 		
 		// Some credit text

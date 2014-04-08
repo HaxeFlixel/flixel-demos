@@ -18,13 +18,13 @@ class Card extends FlxNapeSprite
 	/**
 	 * How long the turning animation takes
 	 */
-	inline static private var TURNING_TIME:Float = 0.2;
+	private static inline var TURNING_TIME:Float = 0.2;
 	
 	/**
 	 * This is a helper Array to keep track of the cards that have 
 	 * been picked so far, to avoid the same card being shown twice!
 	 */
-	static public var pickedCards:Array<Int> = new Array<Int>();
+	public static var pickedCards:Array<Int> = new Array<Int>();
 	
 	/**
 	 * Whether the card has been turned around yet or not
@@ -56,7 +56,7 @@ class Card extends FlxNapeSprite
 		if (!_turned)
 		{
 			_turned = true;
-			FlxTween.multiVar(scale, { x: 0 }, TURNING_TIME / 2, { complete: pickCard } );
+			FlxTween.multiVar(scale, { x: 0 }, TURNING_TIME / 2, { complete: pickCard });
 		}
 		
 		var body:Body = cast(Sprite, FlxNapeSprite).body;

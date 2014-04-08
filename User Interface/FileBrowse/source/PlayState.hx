@@ -7,17 +7,11 @@ import flash.geom.Matrix;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.system.FlxAssets;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxMath;
-import flixel.text.FlxText;
-import flixel.tile.FlxTilemap;
-import flixel.ui.FlxButton;
-import flixel.util.FlxColor;
 import flixel.system.FlxAssets;
-import flixel.util.FlxMath;
 
 #if flash
 import flash.display.Loader;
@@ -34,9 +28,9 @@ import systools.Dialogs;
  */
 class PlayState extends FlxState
 {
-	inline static private var MIN_SCALE:Float = 0.1;
-	inline static private var MAX_SCALE:Float = 5;
-	inline static private var ZOOM_FACTOR:Int = 15;
+	private static inline var MIN_SCALE:Float = 0.1;
+	private static inline var MAX_SCALE:Float = 5;
+	private static inline var ZOOM_FACTOR:Int = 15;
 	
 	private var _text:FlxText;
 	private var _button:FlxButton;
@@ -48,7 +42,6 @@ class PlayState extends FlxState
 	override public function create():Void 
 	{
 		FlxG.cameras.bgColor = FlxColor.BLACK;
-		FlxG.mouse.show();
 		
 		_img = new FlxSprite(0, 0);
 		_img.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -74,7 +67,7 @@ class PlayState extends FlxState
 		_scaleText.setFormat(null, 16, FlxColor.WHITE, "right");
 		add(_scaleText);
 		
-		_showImage(FlxG.bitmap.add(FlxAssets.IMG_LOGO).bitmap);
+		_showImage(new GraphicLogo(0, 0));
 	}
 	
 	override public function update():Void
@@ -91,7 +84,7 @@ class PlayState extends FlxState
 		}
 		
 		// Reset to a scale of x1
-		if (FlxG.keyboard.justPressed("R", "SPACE", "ONE"))
+		if (FlxG.keys.anyPressed(["R", "SPACE", "ONE"]))
 		{
 			_updateScale(1);
 		}
@@ -162,7 +155,7 @@ class PlayState extends FlxState
 				, descriptions: ["PNG files", "JPEG files"]
 				, extensions: ["*.png","*.jpg;*.jpeg"]	
 			};	
-			var result:Array<String> = Dialogs.openFile( 
+			var result:Array<String> = Dialogs.openFile(
 				"Select a file please!"
 				, "Please select one or more files, so we can see if this method works"
 				, filters

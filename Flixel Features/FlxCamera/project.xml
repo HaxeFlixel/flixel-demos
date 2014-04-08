@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<app title="FlxCamera" file="FlxCamera" path="bin" main="Main" version="1.0.0" company="TiagoLr ( ~~~ProG4mr~~~)" />
+
+	<window background="#000000" fps="60" />
+	<window width="640" height="480" unless="mobile" />
+	<window orientation="landscape" vsync="true" antialiasing="0" if="cpp" />
+	
+	<!-- classpath, haxe libs -->
+	<source path="source" />
+	<haxelib name="openfl" />
+	<haxelib name="flixel"/>
+	<haxelib name="flixel-addons"/>
+	<haxelib name="nape"/>
+	
+	<!--assets path="assets/img" rename="img" /-->
+	<assets path="assets" />
+
+	<!-- myflags -->
+	<!--haxedef name="TRUE_ZOOM_OUT" /-->
+	<!--haxedef name="dev" /-->
+	<haxedef name="NAPE_RELEASE_BUILD"/>
+	<haxedef name="HXCPP_DEBUGGER" if="cpp" />
+	<haxedef name="FLX_NO_DEBUG" unless="debug" />
+	
+</project>

@@ -27,9 +27,9 @@ class PlayState3 extends FlxState
 		var dispenser:FlxEmitter = new FlxEmitter((FlxG.width - 64) / 2, -64);
 		dispenser.gravity = 200;
 		dispenser.setSize(64, 64);
-		dispenser.setXSpeed(-20, 20);
+		dispenser.setXSpeed( -20, 20);
 		dispenser.setYSpeed(50, 100);
-		dispenser.setRotation(-720, 720);
+		dispenser.setRotation( -720, 720);
 		dispenser.makeParticles("assets/gibs.png", 300, 16, true, 0.5);
 		dispenser.start(false, 5, 0.025);
 		add(dispenser);
@@ -61,11 +61,11 @@ class PlayState3 extends FlxState
 		
 		_platform.velocity.x = 0;
 		
-		if (FlxG.keyboard.pressed("LEFT", "A"))
+		if (FlxG.keys.anyPressed(["LEFT", "A"]))
 		{
 			_platform.velocity.x -= v;
 		}
-		if (FlxG.keyboard.pressed("RIGHT", "D"))
+		if (FlxG.keys.anyPressed(["RIGHT", "D"]))
 		{
 			_platform.velocity.x += v;
 		}

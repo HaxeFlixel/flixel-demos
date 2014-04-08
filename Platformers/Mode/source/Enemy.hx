@@ -8,6 +8,7 @@ import flixel.util.FlxAngle;
 import flixel.util.FlxMath;
 import flixel.util.FlxPoint;
 import flixel.util.FlxSpriteUtil;
+import flixel.util.FlxVelocity;
 
 class Enemy extends FlxSprite
 {
@@ -59,9 +60,9 @@ class Enemy extends FlxSprite
 		super();
 		
 		#if flash
-		loadRotatedGraphic("assets/bot.png", 64, 0, false, false);
+		loadRotatedGraphic(Reg.BOT, 64, 0, false, false);
 		#else
-		loadGraphic("assets/bot.png");
+		loadGraphic(Reg.BOT);
 		#end
 
 		// We want the enemy's "hit box" or actual size to be
@@ -74,7 +75,7 @@ class Enemy extends FlxSprite
 		// that shoot out the back of the ship.
 		_jets = new FlxEmitter();
 		_jets.setRotation();
-		_jets.makeParticles(IMG.JET, 15, 0, false, 0);
+		_jets.makeParticles(Reg.JET, 15, 0, false, 0);
 		
 		// These parameters help control the ship's
 		// speed and direction during the update() loop.
@@ -156,11 +157,11 @@ class Enemy extends FlxSprite
 		
 		// Set the bot's movement speed and direction
 		// based on angle and whether the jets are on.
-		_thrust = FlxMath.computeVelocity(_thrust, (jetsOn ? 90 : 0), drag.x, 60);
+		_thrust = FlxVelocity.computeVelocity(_thrust, (jetsOn ? 90 : 0), drag.x, 60);
 		FlxAngle.rotatePoint(0, _thrust, 0, 0, angle, velocity);
 
 		// Shooting - three shots every few seconds
-		if (onScreen())
+		if (isOnScreen())
 		{
 			var shoot:Bool = false;
 			var os:Float = _shotClock;
@@ -205,7 +206,7 @@ class Enemy extends FlxSprite
 				// turn em on and play a little sound.
 				_jets.start(false, 0.5, 0.01);
 				
-				if (onScreen())
+				if (isOnScreen())
 				{
 					FlxG.sound.play("Jet");
 				}
@@ -213,8 +214,8 @@ class Enemy extends FlxSprite
 			// Then, position the jets at the center of the Enemy,
 			// and point the jets the opposite way from where we're moving.
 			_jets.at(this);
-			_jets.setXSpeed(-velocity.x-30,-velocity.x+30);
-			_jets.setYSpeed(-velocity.y-30,-velocity.y+30);
+			_jets.setXSpeed( -velocity.x-30,-velocity.x+30);
+			_jets.setYSpeed( -velocity.y-30,-velocity.y+30);
 		}
 		// If jets are supposed to be off, just turn em off.
 		else	

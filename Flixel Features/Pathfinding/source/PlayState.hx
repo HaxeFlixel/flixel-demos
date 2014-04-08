@@ -17,26 +17,26 @@ class PlayState extends FlxState
 	/**
 	 * Tile width
 	 */
-	inline static private var TILE_WIDTH:Int = 12;
+	private static inline var TILE_WIDTH:Int = 12;
 	/**
 	 * Tile height
 	 */
-	inline static private var TILE_HEIGHT:Int = 12;
+	private static inline var TILE_HEIGHT:Int = 12;
 	/**
 	 * Unit value for action go
 	 */
-	inline static private var ACTION_GO:Int = 1;
+	private static inline var ACTION_GO:Int = 1;
 	/**
 	 * Unit value for action idle
 	 */
-	inline static private var ACTION_IDLE:Int = 0;
+	private static inline var ACTION_IDLE:Int = 0;
 	/**
 	 * Unit move speed
 	 */
-	inline static private var MOVE_SPEED:Int = 50;
+	private static inline var MOVE_SPEED:Int = 50;
 	
-	inline static private var INSTRUCTION_1:String = "Click in map to place or remove a tile.";
-	inline static private var INSTRUCTION_2:String = "No path found!";
+	private static inline var INSTRUCTION_1:String = "Click in map to place or remove a tile.";
+	private static inline var INSTRUCTION_2:String = "No path found!";
 	
 	/**
 	 * Map
@@ -82,9 +82,6 @@ class PlayState extends FlxState
 	
 	override public function create():Void
 	{
-		FlxG.cameras.bgColor = FlxColor.BLACK;
-		FlxG.mouse.show();
-		
 		// Load _datamap to _map and add to PlayState
 		_map = new FlxTilemap();
 		_map.loadMap(Assets.getText("assets/pathfinding_map.txt"), "assets/tiles.png", TILE_WIDTH, TILE_HEIGHT, 0, 1);

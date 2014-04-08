@@ -17,13 +17,15 @@ class PlayState extends FlxState
 	 */
 	override public function create():Void
 	{
+		FlxG.mouse.visible = false;
+		
 		// Set a background color
 		FlxG.cameras.bgColor = 0xff131c1b;
 		
 		level = new Level("maps/test2.tmx", "maps/test2.tanim");
 		
 		add(level.backgroundGroup);
-		add(level.eventsGroup);
+		add(level.characterGroup);
 		add(level.foregroundGroup);
 		
 		add(level.collisionGroup);

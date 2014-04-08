@@ -1,6 +1,9 @@
 import flash.text.Font;
+import flixel.addons.ui.FlxUI.NamedBool;
+import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.FlxUIPopup;
 import flixel.addons.ui.FlxUIText;
+import flixel.addons.ui.interfaces.IFlxUIWidget;
 import flixel.addons.ui.U;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUIState;
@@ -19,8 +22,6 @@ class State_Title extends FlxUIState
 	{
 		FlxG.cameras.bgColor = 0xff131c1b;
 		FlxG.log.redirectTraces = false; 
-		FlxG.mouse.show();		
-		
 		
 		if (Main.tongue == null) {
 			Main.tongue = new FireTongueEx();
@@ -28,43 +29,38 @@ class State_Title extends FlxUIState
 			FlxUIState.static_tongue = Main.tongue;
 		}
 		
-		
 		_xml_id = "state_title";
 		
 		super.create();
 	}
 	
-	public override function getEvent(id:String, sender:Dynamic, data:Dynamic):Void {
+	public override function getEvent(name:String, sender:IFlxUIWidget, data:Dynamic,?params:Array<Dynamic>):Void {
 		var str:String = "";
 		
-		switch(id) {
+		switch(name) {
 			case "finish_load":
 				var radio:FlxUIRadioGroup = cast _ui.getAsset("locale_radio");
 				if (radio != null) {
-					if(Main.tongue != null){
+					if (Main.tongue != null){
 						radio.selectedId = Main.tongue.locale.toLowerCase();
 					}
 				}
 			case "click_button":
-				if (Std.is(data, Array) && data != null && data.length > 0) {
-					switch(cast(data[0],String)) {
+				if (params != null && params.length > 0) {
+					switch(cast(params[0],String)) {
 						case "saves": FlxG.switchState(new State_SaveMenu());
 						case "menu": FlxG.switchState(new State_TestMenu());
 						case "battle": FlxG.switchState(new State_Battle());
 						case "default_test": FlxG.switchState(new State_DefaultTest());
 						case "code_test": FlxG.switchState(new State_CodeTest());
-						case "popup": setSubState(new Popup_Demo());
+						case "popup": openSubState(new Popup_Demo());
 					}
 				}
 			case "click_radio_group":
-				if (Std.is(data, Array) && data != null && data.length > 0) {
-					var id:String = ""; if(data[0] != null){ id = cast(data[0], String);}
-					var value:String = ""; if(data[1] != null){value = cast(data[1], String);}
-					if (value == "checked:true") {
-						if(Main.tongue != null){
-							Main.tongue.init(id, reloadState);
-						}
-					}
+				var id:String = cast data;
+				if (Main.tongue != null)
+				{
+					Main.tongue.init(id, reloadState);
 				}
 		}		
 	}	

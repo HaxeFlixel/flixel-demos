@@ -13,7 +13,7 @@ class EnemyBullet extends FlxSprite
 	public function new()
 	{
 		super();
-		loadGraphic("assets/bot_bullet.png", true);
+		loadGraphic(Reg.BOT_BULLET, true);
 		animation.add("idle",[0, 1], 50);
 		animation.add("poof",[2, 3, 4], 50, false);
 		speed = 120;
@@ -21,14 +21,14 @@ class EnemyBullet extends FlxSprite
 	
 	override public function update():Void
 	{
-		if(!alive)
+		if (!alive)
 		{
-			if(animation.finished)
+			if (animation.finished)
 			{
 				exists = false;
 			}
 		}
-		else if(touching != 0)
+		else if (touching != 0)
 		{
 			kill();
 		}
@@ -38,13 +38,13 @@ class EnemyBullet extends FlxSprite
 	
 	override public function kill():Void
 	{
-		if(!alive)
+		if (!alive)
 		{
 			return;
 		}
 		velocity.x = 0;
 		velocity.y = 0;
-		if(onScreen())
+		if (isOnScreen())
 		{
 			FlxG.sound.play("Jump");
 		}

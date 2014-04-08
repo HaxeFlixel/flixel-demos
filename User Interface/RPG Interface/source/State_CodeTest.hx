@@ -7,6 +7,7 @@ import flixel.addons.ui.FlxUIRadioGroup;
 import flixel.addons.ui.FlxUISprite;
 import flixel.addons.ui.FlxUITabMenu;
 import flixel.addons.ui.FlxUIText;
+import flixel.addons.ui.interfaces.IFlxUIWidget;
 import flixel.text.FlxText;
 import haxe.xml.Fast;
 import flash.Lib;
@@ -28,14 +29,17 @@ class State_CodeTest extends FlxUIState
 		makeStuffByHand();
 	}
 	
-	public override function getRequest(id:String, target:Dynamic, data:Dynamic):Dynamic {
+	public override function getRequest(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Dynamic {
 		return null;
 	}	
 	
-	public override function eventResponse(id:String,target:Dynamic,data:Array<Dynamic>):Void {
-		if (data != null) {
-			switch(cast(data[0], String)) {
-				case "back": FlxG.switchState(new State_Title());
+	public override function getEvent(id:String, target:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Void {
+		if (params != null) {
+			switch(id) {
+				case "click_button":
+					switch(cast(params[0], String)) {
+						case "back": FlxG.switchState(new State_Title());
+				}
 			}
 		}
 	}
@@ -61,8 +65,9 @@ class State_CodeTest extends FlxUIState
 		
 		/***Check boxes***/
 		
-		var check_1 = new FlxUICheckBox(60, 200, null, null, _tongue.get("$MENU_THING_1", "ui"), 100, _onClickCheckBox, ["thing 1"]);
-		var check_2 = new FlxUICheckBox(60, check_1.y+20, null, null, _tongue.get("$MENU_THING_2", "ui"), 100, _onClickCheckBox, ["thing 2"]);
+		var check_1 = new FlxUICheckBox(60, 200, null, null, _tongue.get("$MENU_THING_1", "ui"), 100, ["thing 1"]);
+		
+		var check_2 = new FlxUICheckBox(60, check_1.y+20, null, null, _tongue.get("$MENU_THING_2", "ui"), 100, ["thing 2"]);
 		
 		add(check_1);
 		add(check_2);
@@ -74,23 +79,22 @@ class State_CodeTest extends FlxUIState
 		    [_tongue.get("$MENU_1_FISH","ui"),
 			 _tongue.get("$MENU_2_FISH","ui"),
 			 _tongue.get("$MENU_RED_FISH","ui"),
-			 _tongue.get("$MENU_BLUE_FISH", "ui")],
-			_onClickRadioGroup);
+			 _tongue.get("$MENU_BLUE_FISH", "ui")]);
 		add(radio_1);
 		
 		/***Toggle buttons***/
 			
-		var button1 = new FlxUIButton(300, 200, _tongue.get("$MENU_TOGGLE", "ui"), _onClickButton);
-		button1.loadGraphicSlice9(null, 0, 0, null, -1, true);
+		var button1 = new FlxUIButton(300, 200, _tongue.get("$MENU_TOGGLE", "ui"));
+		button1.loadGraphicSlice9(null, 0, 0, null, FlxUI9SliceSprite.TILE_NONE, -1, true);
 		
-		var button2 = new FlxUIButton(300, 230, _tongue.get("$MENU_TOGGLE", "ui"), _onClickButton);
-		button2.loadGraphicSlice9(null, 0, 0, null, -1, true);
+		var button2 = new FlxUIButton(300, 230, _tongue.get("$MENU_TOGGLE", "ui"));
+		button2.loadGraphicSlice9(null, 0, 0, null, FlxUI9SliceSprite.TILE_NONE, -1, true);
 		
-		var button3 = new FlxUIButton(300, 260, _tongue.get("$MENU_TOGGLE", "ui"), _onClickButton);
-		button3.loadGraphicSlice9(null, 0, 0, null, -1, true);
+		var button3 = new FlxUIButton(300, 260, _tongue.get("$MENU_TOGGLE", "ui"));
+		button3.loadGraphicSlice9(null, 0, 0, null,FlxUI9SliceSprite.TILE_NONE, -1, true);
 		
-		var button4 = new FlxUIButton(300, 290, _tongue.get("$MENU_TOGGLE", "ui"), _onClickButton);
-		button4.loadGraphicSlice9(null, 0, 0, null, -1, true);		
+		var button4 = new FlxUIButton(300, 290, _tongue.get("$MENU_TOGGLE", "ui"));
+		button4.loadGraphicSlice9(null, 0, 0, null, FlxUI9SliceSprite.TILE_NONE, -1, true);
 		
 		add(button1);
 		add(button2);
@@ -102,10 +106,10 @@ class State_CodeTest extends FlxUIState
 		//This one is particularly unwieldy to create by hand
 				
 		//Define the tabs:
-		var tabs = [ { id:"tab_1", label:_tongue.get("$MENU_TAB_1", "ui") },
+		var tabs = [{ id:"tab_1", label:_tongue.get("$MENU_TAB_1", "ui") },
 					 { id:"tab_2", label:_tongue.get("$MENU_TAB_2", "ui") },
 					 { id:"tab_3", label:_tongue.get("$MENU_TAB_3", "ui") },
-					 { id:"tab_4", label:_tongue.get("$MENU_TAB_4", "ui") }];		
+					 { id:"tab_4", label:_tongue.get("$MENU_TAB_4", "ui") }];
 		
 		//Make the tab menu itself:
 		var tab_menu = new FlxUITabMenu(null, tabs, true);
@@ -122,17 +126,16 @@ class State_CodeTest extends FlxUIState
 				[_tongue.get("$MENU_1_FISH","ui"),
 				_tongue.get("$MENU_2_FISH","ui"),
 				_tongue.get("$MENU_RED_FISH","ui"),
-				_tongue.get("$MENU_BLUE_FISH", "ui")],
-				_onClickRadioGroup);		
+				_tongue.get("$MENU_BLUE_FISH", "ui")]);
 			
 			var tab_group_1:FlxUI = new FlxUI(null, tab_menu, null, _tongue);
 			tab_group_1.id = "tab_1";
 			tab_group_1.add(tabs_radio_1);
 		
 			/***TAB GROUP 2***/
-			var tabs_check_1 = new FlxUICheckBox(10, 10, null, null, _tongue.get("$MENU_THING_1", "ui"), 100, _onClickCheckBox, ["thing 1"]);
-			var tabs_check_2 = new FlxUICheckBox(10, 40, null, null, _tongue.get("$MENU_THING_2", "ui"), 100, _onClickCheckBox, ["thing 2"]);
-				
+			var tabs_check_1 = new FlxUICheckBox(10, 10, null, null, _tongue.get("$MENU_THING_1", "ui"), 100, ["thing 1"]);
+			var tabs_check_2 = new FlxUICheckBox(10, 40, null, null, _tongue.get("$MENU_THING_2", "ui"), 100, ["thing 2"]);
+			
 			var tab_group_2:FlxUI = new FlxUI(null, tab_menu, null, _tongue);
 			tab_group_2.id = "tab_2";
 			tab_group_2.add(tabs_check_1);
@@ -150,6 +153,7 @@ class State_CodeTest extends FlxUIState
 		/***"Back" button***/
 		
 		var back_btn = new FlxUIButton(0, 535, _tongue.get("$MISC_BACK", "ui"));
+		back_btn.params = ["back"];
 		
 		var W:Int = 0;
 		if (_tongue.locale == "nb-NO") {
@@ -158,27 +162,26 @@ class State_CodeTest extends FlxUIState
 		back_btn.loadGraphicSlice9(null, W, 0, null);
 		back_btn.id = "start";
 		back_btn.x = (FlxG.width - back_btn.width) / 2;
-		back_btn.setOnUpCallback(_onClickButton, [["back"]]);
 		
 		add(back_btn);
 		
 		
 	}
 	
-	private function _onClickRadioGroup(params:Dynamic = null):Void {
+	/*private function _onClickRadioGroup(params:Dynamic = null):Void {
 		FlxG.log.add("FlxUI._onClickRadioGroup(" + params + ")");
-		getEvent("click_radio_group", this, params);
-	}
+		getEvent("click_radio_group", this, null, params);
+	}*/
 	
 	
-	private function _onClickButton(params:Array<Dynamic> = null):Void {
+	/*private function _onClickButton(params:Array<Dynamic> = null):Void {
 		FlxG.log.add("FlxUI._onClickButton(" + params + ")");
-		getEvent("click_button", this, params);
-	}
+		getEvent("click_button", this, null, params);
+	}*/
 	
-	private function _onClickCheckBox(params:Dynamic = null):Void {
+	/*private function _onClickCheckBox(params:Dynamic = null):Void {
 		FlxG.log.add("FlxUI._onClickCheckBox(" + params + ")");
-		getEvent("click_checkbox", this, params);
-	}
+		getEvent("click_checkbox", this, null, params);
+	}*/
 	
 }

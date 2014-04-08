@@ -20,8 +20,8 @@ import flixel.util.FlxTimer;
  */
 class PlayState extends FlxState
 {
-	static public var asteroids:FlxTypedGroup<Asteroid>;
-	static public var bullets:FlxTypedGroup<FlxSprite>;
+	public static var asteroids:FlxTypedGroup<Asteroid>;
+	public static var bullets:FlxTypedGroup<FlxSprite>;
 	
 	private var _playerShip:PlayerShip;
 	private var _scoreText:FlxText;
@@ -30,7 +30,7 @@ class PlayState extends FlxState
 	
 	override public function create():Void 
 	{
-		FlxG.mouse.hide();
+		FlxG.mouse.visible = false;
 		
 		// Create a starfield
 		FlxG.plugins.add(new FlxSpecialFX());

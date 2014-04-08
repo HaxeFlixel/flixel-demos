@@ -5,20 +5,49 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxTypedGroup;
+import flixel.input.gamepad.FlxGamepad;
+import flixel.input.gamepad.XboxButtonID;
 import flixel.ui.FlxButton;
+import flixel.ui.FlxVirtualPad;
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxTimer;
+#if (android && OUYA)
+import flixel.input.gamepad.OUYAButtonID;
+#elseif (!FLX_NO_GAMEPAD && (cpp || neko || js))
+#end
 
 class Player extends FlxSprite
 {
+	#if android
+	public static var virtualPad:FlxVirtualPad;
+	#end
+	
+	private static var SHOOT_DELAY;
+	
 	public var isReadyToJump:Bool = true;
 	public var flickering:Bool = false;
-
+	
+	private var _shootCounter:Int = 0;
 	private var _jumpPower:Int = 200;
 	private var _aim:Int;
 	private var _restart:Float = 0;
 	private var _gibs:FlxEmitter;
 	private var _bullets:FlxTypedGroup<Bullet>;
+	
+	// Internal private: accessor to first active gamepad
+	#if (!FLX_NO_GAMEPAD && (cpp || neko || js))
+	private var gamepad(get, never):FlxGamepad;
+	private function get_gamepad():FlxGamepad 
+	{
+		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
+		if (gamepad == null)
+		{
+			// Make sure we don't get a crash on neko when no gamepad is active
+			gamepad = FlxG.gamepads.getByID(0);
+		}
+		return gamepad;
+	}
+	#end
 	
 	/**
 	 * This is the player object class.  Most of the comments I would put in here
@@ -29,7 +58,7 @@ class Player extends FlxSprite
 	{
 		super(X, Y);
 		
-		loadGraphic("assets/spaceman.png", true, true, 8);
+		loadGraphic(Reg.SPACEMAN, true, true, 8);
 		
 		// Bounding box tweaks
 		width = 6;
@@ -54,11 +83,23 @@ class Player extends FlxSprite
 		// Bullet stuff
 		_bullets = Bullets;
 		_gibs = Gibs;
+		
+		#if android
+		virtualPad = new FlxVirtualPad(FULL, A_B);
+		virtualPad.alpha = 0.5;
+		#end
+		
+		// 6 shots per second
+		SHOOT_DELAY = Std.int(FlxG.updateFramerate / 6);
 	}
 	
 	override public function destroy():Void
 	{
 		super.destroy();
+		
+		#if android
+		virtualPad = FlxG.safeDestroy(virtualPad);
+		#end
 		
 		_bullets = null;
 		_gibs = null;
@@ -66,6 +107,8 @@ class Player extends FlxSprite
 	
 	override public function update():Void
 	{
+		_shootCounter --;
+		
 		// Game restart timer
 		if (!alive)
 		{
@@ -85,38 +128,74 @@ class Player extends FlxSprite
 			FlxG.sound.play("Land");
 		}
 		
-		// MOVEMENT
 		acceleration.x = 0;
 		
-		if (FlxG.keys.pressed.LEFT)
+		// INPUT
+		
+		if (FlxG.keys.pressed.LEFT 
+#if (!FLX_NO_GAMEPAD && (cpp || neko || js))
+			 || (gamepad.dpadLeft ||
+	#if OUYA
+				 gamepad.getAxis(OUYAButtonID.LEFT_ANALOGUE_X) < 0) || buttonPressed(virtualPad.buttonLeft)) 
+	#else
+				 gamepad.getAxis(XboxButtonID.LEFT_ANALOGUE_X) < 0))
+	#end
+#else) #end
 		{
-			facing = FlxObject.LEFT;
-			acceleration.x -= drag.x;
+			moveLeft();
 		}
-		else if (FlxG.keys.pressed.RIGHT)
+		else if (FlxG.keys.pressed.RIGHT
+#if (!FLX_NO_GAMEPAD && (cpp || neko || js))
+			 || (gamepad.dpadRight ||
+	#if OUYA
+				 gamepad.getAxis(OUYAButtonID.LEFT_ANALOGUE_X) > 0) || buttonPressed(virtualPad.buttonRight))
+	#else
+				 gamepad.getAxis(XboxButtonID.LEFT_ANALOGUE_X) > 0))
+	#end
+#else) #end
 		{
-			facing = FlxObject.RIGHT;
-			acceleration.x += drag.x;
+			moveRight();
 		}
 		
-		if (FlxG.keys.justPressed.X && isReadyToJump && velocity.y == 0)
-		{
-			velocity.y = -_jumpPower;
-			FlxG.sound.play("Jump");
-		}
+		_aim = facing;
 		
 		// AIMING
-		if (FlxG.keys.pressed.UP)
+		if (FlxG.keys.pressed.UP
+#if (!FLX_NO_GAMEPAD && (cpp || neko || js))
+			 || (gamepad.dpadUp ||
+	#if OUYA
+				 gamepad.getAxis(OUYAButtonID.LEFT_ANALOGUE_Y) < 0) || buttonPressed(virtualPad.buttonUp))
+	#else
+				 gamepad.getAxis(XboxButtonID.LEFT_ANALOGUE_Y) < 0))
+	#end
+#else) #end
 		{
-			_aim = FlxObject.UP;
+			moveUp();
 		}
-		else if (FlxG.keys.pressed.DOWN)
+		else if (FlxG.keys.pressed.DOWN
+#if (!FLX_NO_GAMEPAD && (cpp || neko || js))
+			 || (gamepad.dpadDown ||
+	#if OUYA
+				 gamepad.getAxis(OUYAButtonID.LEFT_ANALOGUE_Y) > 0) || buttonPressed(virtualPad.buttonDown))
+	#else
+				 gamepad.getAxis(XboxButtonID.LEFT_ANALOGUE_Y) > 0))
+	#end
+#else) #end
 		{
-			_aim = FlxObject.DOWN;
+			moveDown();
 		}
-		else
+		
+		// JUMPING
+		if (FlxG.keys.justPressed.X 
+#if (!FLX_NO_GAMEPAD && (cpp || neko || js))
+	#if OUYA
+			|| gamepad.justPressed(OUYAButtonID.O) || buttonPressed(virtualPad.buttonA))
+	#else
+			|| gamepad.justPressed(XboxButtonID.A))
+	#end
+#else) #end
 		{
-			_aim = facing;
+			jump();
 		}
 		
 		// ANIMATION
@@ -159,22 +238,16 @@ class Player extends FlxSprite
 		}
 		
 		// SHOOTING
-		if (FlxG.keys.justPressed.C)
+		if (FlxG.keys.pressed.C
+#if (!FLX_NO_GAMEPAD && (cpp || neko || js))
+	#if OUYA
+			|| gamepad.justPressed(OUYAButtonID.U) || buttonPressed(virtualPad.buttonB)) 
+	#else
+			|| gamepad.justPressed(XboxButtonID.X))
+	#end
+#else) #end
 		{
-			if (flickering)
-			{
-				FlxG.sound.play("Jam");
-			}
-			else
-			{
-				getMidpoint(_point);
-				_bullets.recycle(Bullet).shoot(_point, _aim);
-				
-				if (_aim == FlxObject.DOWN)
-				{
-					velocity.y -= 36;
-				}
-			}
+			shoot();
 		}
 		
         super.update();
@@ -213,7 +286,7 @@ class Player extends FlxSprite
 	private function flicker(Duration:Float):Void
 	{
 		FlxSpriteUtil.flicker(this, Duration, 0.02, true);
-		FlxTimer.start(Duration, function f(T:FlxTimer) { flickering = false; } );
+		FlxTimer.start(Duration, function f(T:FlxTimer) { flickering = false; });
 		flickering = true;
 	}
 	
@@ -242,5 +315,66 @@ class Player extends FlxSprite
 			_gibs.at(this);
 			_gibs.start(true, 5, 0, 50);
 		}
+	}
+	
+	function moveLeft():Void
+	{
+		facing = FlxObject.LEFT;
+		acceleration.x -= drag.x;
+	}
+	
+	function moveRight():Void
+	{
+		facing = FlxObject.RIGHT;
+		acceleration.x += drag.x;
+	}
+	
+	function moveUp():Void
+	{
+		_aim = FlxObject.UP;
+	}
+	
+	function moveDown():Void
+	{
+		_aim = FlxObject.DOWN;
+	}
+	
+	function jump():Void
+	{
+		if (isReadyToJump && (velocity.y == 0))
+		{
+			velocity.y = -_jumpPower;
+			FlxG.sound.play("Jump");
+		}
+	}
+	
+	function shoot():Void
+	{
+		if (_shootCounter > 0)
+		{
+			return;
+		}
+		
+		_shootCounter = SHOOT_DELAY;
+		
+		if (flickering)
+		{
+			FlxG.sound.play("Jam");
+		}
+		else
+		{
+			getMidpoint(_point);
+			_bullets.recycle(Bullet).shoot(_point, _aim);
+			
+			if (_aim == FlxObject.DOWN)
+			{
+				velocity.y -= 36;
+			}
+		}
+	}
+	
+	inline function buttonPressed(button:FlxButton):Bool
+	{
+		return button.status == FlxButton.PRESSED;
 	}
 }

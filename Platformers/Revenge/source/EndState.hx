@@ -39,7 +39,7 @@ class EndState extends FlxState
 		FlxG.cameras.flash(FlxColor.BLACK, 1);
 		
 		// Show our mouse!
-		FlxG.mouse.show();
+		FlxG.mouse.visible = true;
 		
 		// Add some text to the stage as we did earlier
 		_gameTitle = new FlxText(10, 90, 300, "And so the journey begins!!");
@@ -50,8 +50,8 @@ class EndState extends FlxState
 		_startButton = new FlxButton(137, 195, "", onStart);
 		// Load sprites for different button states	
 		_startButton.loadGraphic("assets/ok0.png");
-		_startButton.setOnOverCallback(onStartOver);
-		_startButton.setOnOutCallback(onStartOut);
+		_startButton.onOver.callback = onStartOver;
+		_startButton.onOut.callback = onStartOut;
 		add(_startButton);
 	}
 	

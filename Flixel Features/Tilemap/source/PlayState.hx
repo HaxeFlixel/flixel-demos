@@ -7,7 +7,9 @@ import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
+import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
+import flixel.util.FlxStringUtil;
 import openfl.Assets;
 
 class PlayState extends FlxState
@@ -15,8 +17,8 @@ class PlayState extends FlxState
 	/**
 	 * Some static constants for the size of the tilemap tiles
 	 */
-	inline static private var TILE_WIDTH:Int = 16;
-	inline static private var TILE_HEIGHT:Int = 16;
+	private static inline var TILE_WIDTH:Int = 16;
+	private static inline var TILE_HEIGHT:Int = 16;
 	
 	/**
 	 * The FlxTilemap we're using
@@ -26,7 +28,7 @@ class PlayState extends FlxState
 	/**
 	 * Box to show the user where they're placing stuff
 	 */ 
-	private var _highlightBox:FlxObject;
+	private var _highlightBox:FlxSprite;
 	
 	/**
 	 * Player modified from "Mode" demo
@@ -42,6 +44,8 @@ class PlayState extends FlxState
 	
 	override public function create():Void
 	{
+		FlxG.mouse.visible = false;
+		
 		// Creates a new tilemap with no arguments
 		_collisionMap = new FlxTilemap();
 		
@@ -66,7 +70,10 @@ class PlayState extends FlxState
 		_collisionMap.loadMap(Assets.getText("assets/default_auto.txt"), "assets/auto_tiles.png", TILE_WIDTH, TILE_HEIGHT, FlxTilemap.AUTO);
 		add(_collisionMap);
 		
-		_highlightBox = new FlxObject(0, 0, TILE_WIDTH, TILE_HEIGHT);
+		_highlightBox = new FlxSprite(0, 0);
+		_highlightBox.makeGraphic(TILE_WIDTH, TILE_HEIGHT, FlxColor.TRANSPARENT);
+		FlxSpriteUtil.drawRect(_highlightBox, 0, 0, TILE_WIDTH - 1, TILE_HEIGHT - 1, FlxColor.TRANSPARENT, { thickness: 1, color: FlxColor.RED });
+		add(_highlightBox);
 		
 		setupPlayer();
 		
@@ -132,17 +139,17 @@ class PlayState extends FlxState
 		// MOVEMENT
 		_player.acceleration.x = 0;
 		
-		if (FlxG.keyboard.pressed("LEFT", "A"))
+		if (FlxG.keys.anyPressed(["LEFT", "A"]))
 		{
 			_player.facing = FlxObject.LEFT;
 			_player.acceleration.x -= _player.drag.x;
 		}
-		else if (FlxG.keyboard.pressed("RIGHT", "D"))
+		else if (FlxG.keys.anyPressed(["RIGHT", "D"]))
 		{
 			_player.facing = FlxObject.RIGHT;
 			_player.acceleration.x += _player.drag.x;
 		}
-		if (FlxG.keyboard.justPressed("UP", "W") && _player.velocity.y == 0)
+		if (FlxG.keys.anyJustPressed(["UP", "W"]) && _player.velocity.y == 0)
 		{
 			_player.y -= 1;
 			_player.velocity.y = -200;
@@ -163,30 +170,22 @@ class PlayState extends FlxState
 		}
 	}
 	
-	override public function draw():Void
-	{
-		super.draw();
-		#if !FLX_NO_DEBUG
-		_highlightBox.drawDebugOnCamera(FlxG.camera);
-		#end
-	}
-	
 	private function onAlt():Void
 	{
 		switch (_collisionMap.auto)
 		{
 			case FlxTilemap.AUTO:
-				_collisionMap.loadMap(FlxTilemap.arrayToCSV(_collisionMap.getData(true), _collisionMap.widthInTiles),
+				_collisionMap.loadMap(FlxStringUtil.arrayToCSV(_collisionMap.getData(true), _collisionMap.widthInTiles),
 					"assets/alt_tiles.png", TILE_WIDTH, TILE_HEIGHT, FlxTilemap.ALT);
 				_autoAltButton.label.text = "ALT";
 					
 			case FlxTilemap.ALT:
-				_collisionMap.loadMap(FlxTilemap.arrayToCSV(_collisionMap.getData(true), _collisionMap.widthInTiles),
+				_collisionMap.loadMap(FlxStringUtil.arrayToCSV(_collisionMap.getData(true), _collisionMap.widthInTiles),
 					"assets/empty_tiles.png", TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF);
 				_autoAltButton.label.text = "OFF";
 					
 			case FlxTilemap.OFF:
-				_collisionMap.loadMap(FlxTilemap.arrayToCSV(_collisionMap.getData(true), _collisionMap.widthInTiles),
+				_collisionMap.loadMap(FlxStringUtil.arrayToCSV(_collisionMap.getData(true), _collisionMap.widthInTiles),
 					"assets/auto_tiles.png", TILE_WIDTH, TILE_HEIGHT, FlxTilemap.AUTO);
 				_autoAltButton.label.text = "AUTO";
 		}

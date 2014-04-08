@@ -4,9 +4,7 @@ import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.events.Event;
-import flash.events.KeyboardEvent;
 import flash.Lib;
-import flash.ui.Keyboard;
 import flixel.FlxGame;
 
 /**
@@ -15,7 +13,7 @@ import flixel.FlxGame;
 class Main extends Sprite 
 {
 	// Entry point
-	static public function main():Void
+	public static function main():Void
 	{	
 		Lib.current.addChild(new Main());
 	}

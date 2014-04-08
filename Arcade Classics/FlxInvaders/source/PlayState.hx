@@ -16,7 +16,7 @@ class PlayState extends FlxState
 	/**
 	 * The satus message to show. Static so that it carries over to a new PlayState.
 	 */
-	static public var statusMessage:String = "WELCOME TO FLX INVADERS";
+	public static var statusMessage:String = "WELCOME TO FLX INVADERS";
 	
 	/**
 	 * Refers to all the bullets the enemies shoot at you
@@ -57,6 +57,8 @@ class PlayState extends FlxState
 	 */
 	override public function create():Void
 	{
+		FlxG.mouse.visible = false;
+		
 		// First we will instantiate the bullets you fire at your enemies.
 		var numPlayerBullets:Int = 8;
 		// Initializing the array is very important and easy to forget!
@@ -64,7 +66,7 @@ class PlayState extends FlxState
 		var sprite:FlxSprite;
 		
 		// Create 8 bullets for the player to recycle
-		for(i in 0...numPlayerBullets)			
+		for (i in 0...numPlayerBullets)			
 		{
 			// Instantiate a new sprite offscreen
 			sprite = new FlxSprite( -100, -100);	

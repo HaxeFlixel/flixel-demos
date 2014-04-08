@@ -21,12 +21,14 @@ class PlayState extends FlxState
 	
 	override public function create():Void
 	{
+		FlxG.mouse.visible = false;
+		
 		// Set the background color to white
 		FlxG.cameras.bgColor = FlxColor.WHITE;
 		
 		// Create the tilemap from the levelData we just created
 		_level = new FlxTilemap();
-		_level.loadMap(Assets.getText("assets/level.csv"), FlxTilemap.imgAuto, 0, 0, FlxTilemap.AUTO);
+		_level.loadMap(Assets.getText("assets/level.csv"), GraphicAuto, 0, 0, FlxTilemap.AUTO);
 		add(_level);
 		
 		_halfWidth = Std.int(FlxG.width / 2);

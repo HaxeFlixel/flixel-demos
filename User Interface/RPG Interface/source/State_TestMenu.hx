@@ -16,14 +16,17 @@ class State_TestMenu extends FlxUIState
 		
 	}
 	
-	public override function getRequest(id:String, target:Dynamic, data:Dynamic):Dynamic {
+	public override function getRequest(name:String, target:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Dynamic {
 		return null;
 	}	
 	
-	public override function eventResponse(id:String,target:Dynamic,data:Array<Dynamic>):Void {
-		if (data != null) {
-			switch(cast(data[0], String)) {
-				case "back": FlxG.switchState(new State_Title());
+	public override function getEvent(name:String, target:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Void {
+		if (params != null){
+			switch(name) {
+				case "click_button":
+					switch(cast(params[0], String)) {
+						case "back": FlxG.switchState(new State_Title());
+					}
 			}
 		}
 	}

@@ -12,7 +12,7 @@ import flixel.util.FlxSave;
 
 class PlayState extends FlxState
 {
-	inline static private var NUM_BOXES:Int = 20;
+	private static inline var NUM_BOXES:Int = 20;
 	
 	// Here's the FlxSave variable this is what we're going to be saving to.
 	private var _gameSave:FlxSave;
@@ -35,9 +35,6 @@ class PlayState extends FlxState
 	
 	override public function create():Void
 	{
-		// Let's re show the cursors
-		FlxG.mouse.show();
-		
 		// So here's the core of this demo - the FlxSave you have to instantiate a new one before you can use it
 		_gameSave = new FlxSave();
 		// And then you have to bind it to the save data, you can use different bind strings in different parts of your game
