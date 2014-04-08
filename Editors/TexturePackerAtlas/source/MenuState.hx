@@ -4,6 +4,8 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.util.loaders.LibGDXData;
+import flixel.util.loaders.SparrowData;
 import flixel.util.loaders.TexturePackerData;
 
 class MenuState extends FlxState
@@ -38,7 +40,7 @@ class MenuState extends FlxState
 		var x1:FlxSprite = new FlxSprite(20, 20);
 		x1.loadGraphicFromTexture(tex3, true, false, "100px-1,202,0,200-Scythescraper.png");
 		x1.resetSizeFromFrame();
-		x1.setOriginToCenter();
+		x1.centerOrigin();
 		x1.angularVelocity = 50;
 		add(x1);
 		
@@ -54,7 +56,7 @@ class MenuState extends FlxState
 		x3.loadGraphicFromTexture(tex3, true);
 		x3.animation.frameName = "super_element_50px_0.png";
 		x3.resetSizeFromFrame();
-		x3.setOriginToCenter();
+		x3.centerOrigin();
 		x3.facing = FlxObject.LEFT;
 		add(x3);
 		
@@ -76,17 +78,17 @@ class MenuState extends FlxState
 		x5.animation.play("Animation");
 		add(x5);
 		
-		// 2. The second one requires three additional parameters: image name prefix, array of frame indicies and image name postfix
+		// 2. The second one requires three additional parameters: image name prefix, array of frame indices and image name postfix
 		var x6:FlxSprite = new FlxSprite(300, 200);
 		x6.loadGraphicFromTexture(tex5);
-		// Array with frame indicies in animation
-		var indicies:Array<Int> = new Array<Int>();
+		// Array with frame indices in animation
+		var indices:Array<Int> = new Array<Int>();
 		for (i in 0...20)
 		{
-			indicies.push(i);
+			indices.push(i);
 		}
 		
-		x6.animation.addByIndicies("Animation", "tiles-", indicies, ".png", 8);
+		x6.animation.addByIndices("Animation", "tiles-", indices, ".png", 8);
 		x6.animation.play("Animation", false, 1);
 		add(x6);
 		
@@ -97,6 +99,22 @@ class MenuState extends FlxState
 		x7.animation.play("ani");
 		x7.angle = 45;
 		add(x7);
+		
+		var tex6 = new SparrowData("assets/sparrow/atlas.xml", "assets/sparrow/atlas.png");
+		
+		var x8:FlxSprite = new FlxSprite(500, 200);
+		x8.loadGraphicFromTexture(tex6);
+		x8.animation.addByPrefix("walk", "walk_", 12);
+		x8.animation.play("walk");
+		add(x8);
+		
+		var tex7 = new LibGDXData("assets/libgdx/test-me.pack", "assets/libgdx/test-me.png");
+		
+		var x9:FlxSprite = new FlxSprite(400, -50);
+		x9.loadGraphicFromTexture(tex7);
+		x9.animation.frameName = "test01";
+		x9.scale.set(0.5, 0.5);
+		add(x9);
 		
 		// Remove atlas bitmaps from memory (useful for targets with hardware acceleration: cpp only atm).
 		FlxG.bitmap.dumpCache();
