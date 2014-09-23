@@ -45,9 +45,9 @@ class PlayState extends FlxState
 		// <entity type="entities.Monster" id="specificMonster"  />
 		_specificMonster = _scene.object("specificMonster");
 
-		// <button id="reset_state" text="Reset State" alignBottom="10" alignRight="10" />
-		var resetButton:FlxButton = _scene.object("reset_state");
-		resetButton.onDown.callback = resetStateCallback;
+		// <button id="minimal_state" text="Minimal State" alignBottom="10" alignRight="10" />
+		var resetButton:FlxButton = _scene.object("minimal_state");
+		resetButton.onDown.callback = minimalStateCallback;
 
 		// Constants (Int, Bool, Float, String)
 		/*
@@ -90,8 +90,8 @@ class PlayState extends FlxState
 		_specificMonster.y = FlxG.mouse.y;
 	}
 
-	private function resetStateCallback():Void
+	private function minimalStateCallback():Void
 	{
-		FlxG.resetState();
-	}	
+		FlxG.switchState(new MinimalState());
+	}
 }

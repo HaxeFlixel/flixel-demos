@@ -1,0 +1,7 @@
+<scene>
+	<layer>
+		<!-- Protip: Center align -->
+		<sprite graphic="block.png" alignVertical="0" alignHorizontal="0" />
+		<button id="back_button" text="Back" alignBottom="10" alignRight="10" />
+	</layer>
+</scene>

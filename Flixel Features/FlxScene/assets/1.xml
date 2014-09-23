@@ -17,7 +17,7 @@
 		<!-- You can also use FlxSprite properties, e.g. 'alpha' -->
 		<text id="welcome_text" text="FlxText" x="300" y="100" angle="30" size="40" font="font.ttf" color="black" alignment="left" borderStyle="outline" borderColor="red" borderSize="2" wordWrap="false" />
 
-		<button id="reset_state" text="Reset State" alignBottom="10" alignRight="10" />
+		<button id="minimal_state" text="Minimal State" alignBottom="10" alignRight="10" />
 
 		<!-- Alignment properties (parameter: margin)
 		alignBottom, alignRight, alignHorizontal, alignVertical -->
@@ -31,7 +31,7 @@
 		<entity type="entities.Monster" x="300" y="300" />
 
 		<!-- More properties -->
-		<sprite graphics="block.png" x="0" y="0" scaleX="1.0" scaleY="1.0" angle="0" alpha="0.2" color="blue" flipX="false" flipY="false" originX="0" originY="0" offsetX="0" offsetY="0" visible="true" scrollFactorX="1" scrollFactorY="1" solid="true" immovable="false" width="0" height="0" />
+		<sprite graphic="block.png" x="0" y="0" scaleX="1.0" scaleY="1.0" angle="0" alpha="0.2" color="blue" flipX="false" flipY="false" originX="0" originY="0" offsetX="0" offsetY="0" visible="true" scrollFactorX="1" scrollFactorY="1" solid="true" immovable="false" width="0" height="0" />
 	</layer>
 
 	<layer id="second_layer">
