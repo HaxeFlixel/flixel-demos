@@ -17,24 +17,22 @@ import flixel.addons.ui.FlxSlider;
 
 class SpineViewerState extends FlxState
 {
-	var spineSprite:FlxSpine;
+    var spineSprite:FlxSpine;
     var fps:FPS;
     var fpsText:FlxText;
 
-	override public function create():Void
-	{
-		FlxG.cameras.bgColor = FlxColor.WHITE;
+    override public function create():Void
+    {
+        FlxG.cameras.bgColor = FlxColor.WHITE;
 
         #if !FLX_NO_MOUSE
         FlxG.mouse.visible = true;
         #end
-		
+
         var skeletonData:SkeletonData = FlxSpine.readSkeletonData("spineboy", "assets", 0.5);
 
-		spineSprite = new FlxSpine(skeletonData, 0, 0);
+        spineSprite = new FlxSpine(skeletonData, 0, 0);
         spineSprite.antialiasing = true;
-
-        spineSprite.cameras = [FlxG.camera];
 
         var instructions = new FlxText(20, 20, 250, "Flip: touches \n\n Vertical Swipe: Debug toggle", 12);
         #if !FLX_NO_KEYBOARD
@@ -73,7 +71,7 @@ class SpineViewerState extends FlxState
         FlxG.camera.focusOn(new FlxPoint(spineSprite.x - xInPercent(10.0), spineSprite.y - 200));
 
         //Added SpineSprite in top layer of scene
-		add(spineSprite);
+        add(spineSprite);
 
         #if !FLX_NO_DEBUG
         FlxG.watch.add(spineSprite, "state.timeScale", "Time scale");
@@ -81,26 +79,24 @@ class SpineViewerState extends FlxState
         #end
 
         FlxG.addChildBelowMouse(fps = new FPS(FlxG.width - 60, 5, FlxColor.WHITE));
-		
-		super.create();
-	}
 
-    private inline function xInPercent(x:Float):Int {
+        super.create();
+    }
+
+    private inline function xInPercent(x:Float):Int
+    {
         return Std.int(FlxG.width / 100 * x);
     }
 
-    private inline function yInPercent(y:Float):Int {
-        return Std.int(FlxG.width / 100 * y);
+    private inline function changeAnimation(name:String):Void
+    {
+        spineSprite.state.setAnimationByName(0, name, true);
     }
 
-    private function changeAnimation(name:String):Void {
-		spineSprite.state.setAnimationByName(0, name, true);
-    }
-
-	override public function update(elapsed:Float):Void
-	{
+    override public function update(elapsed:Float):Void
+    {
         fpsText.text = fps.currentFPS + "";
-		
+
         #if !FLX_NO_TOUCH
         // Touches for switch flip of Spine Sprite
         for (touch in FlxG.touches.list)
@@ -108,12 +104,11 @@ class SpineViewerState extends FlxState
             if (touch.pressed)
             {
                 if (touch.x > 10 && touch.x < FlxG.width - 10) {
-                  if (touch.x > spineSprite.x) {
-                      spineSprite.skeleton.flipX = false;
-                  } else {
-                      spineSprite.skeleton.flipX = true;
-                  }
-                
+                    if (touch.x > spineSprite.x) {
+                        spineSprite.skeleton.flipX = false;
+                    } else {
+                        spineSprite.skeleton.flipX = true;
+                    }
                 }
             }
         }
@@ -126,7 +121,7 @@ class SpineViewerState extends FlxState
             {
                 if ((swipe.angle < 10 && swipe.angle > -10) || (swipe.angle > 170 || swipe.angle < -170))
                 {
-			        FlxG.debugger.drawDebug = !FlxG.debugger.drawDebug;
+                    FlxG.debugger.drawDebug = !FlxG.debugger.drawDebug;
                 }
             }
         }
@@ -154,9 +149,11 @@ class SpineViewerState extends FlxState
 
         #if (!FLX_NO_DEBUG && !FLX_NO_KEYBOARD)
         if (FlxG.keys.justPressed.SPACE)
+        {
             FlxG.debugger.drawDebug = !FlxG.debugger.drawDebug;
+        }
         #end
-        
-		super.update(elapsed);
-	}
+
+        super.update(elapsed);
+    }
 }
