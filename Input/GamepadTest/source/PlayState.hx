@@ -98,8 +98,6 @@ class PlayState extends FlxState
 		if (gamepad == null)
 			return;
 		
-		gamepad.model = Logitech;
-		
 		#if !FLX_NO_DEBUG
 		FlxG.watch.addQuick("pressed ID", gamepad.firstJustPressedID());
 		FlxG.watch.addQuick("released ID", gamepad.firstJustReleasedID());
@@ -108,12 +106,13 @@ class PlayState extends FlxState
 		
 		var pressed = gamepad.pressed;
 		
-		updateButton(aButton, gamepad.pressed.A);
+		updateButton(aButton, pressed.A);
 		updateButton(bButton, pressed.B);
 		updateButton(xButton, pressed.X);
 		updateButton(yButton, pressed.Y);
 		
 		updateButton(startButton, pressed.START);
+		updateButton(guideButton, pressed.GUIDE);
 		updateButton(backButton, pressed.BACK);
 		
 		updateShoulderButton(leftShoulder, pressed.LEFT_SHOULDER, LB_Y);
