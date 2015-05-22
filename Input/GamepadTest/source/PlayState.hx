@@ -45,7 +45,9 @@ class PlayState extends FlxState
 	private var _LTrigger:FlxSprite;
 	private var _RTrigger:FlxSprite;
 	private var _gamePad:FlxGamepad;
-
+	
+	private var _guideButton:FlxSprite;
+	
 	override public function create():Void 
 	{
 		FlxG.mouse.visible = false;
@@ -57,7 +59,7 @@ class PlayState extends FlxState
 		_LB = createSprite(71, LB_Y, "assets/LB.png", 1);
 		_RB = createSprite(367, RB_Y, "assets/RB.png", 1);
 		
-		_controllerBg = createSprite(0, 0, "assets/xbox360_gamepad.png", 1);
+		_controllerBg = createSprite(0, 0, "assets/gamepad.png", 1);
 		
 		_leftStick = createSprite(LEFT_STICK_POS.x, LEFT_STICK_POS.y, "assets/Stick.png");
 		_rightStick = createSprite(RIGHT_STICK_POS.x, RIGHT_STICK_POS.y, "assets/Stick.png");
@@ -73,6 +75,7 @@ class PlayState extends FlxState
 		_bButton = createSprite(433, 84, "assets/B.png");
 		
 		_backButton = createSprite(199, 93, "assets/Back.png");
+		_guideButton = createSprite(235, 73, "assets/Guide.png");
 		_startButton = createSprite(306, 93, "assets/Start.png");
 		
 		_startButton.alpha = ALPHA_OFF;
