@@ -35,7 +35,7 @@ class PlayState extends FlxState
 		// Set and create Txt Howto
 		_howto = new FlxText(0, 225, FlxG.width);
 		_howto.alignment = CENTER;
-		_howto.text = "Use the ARROW KEYS or WASD to move around.";
+		_howto.text = "Move: ARROW+WASD+DPAD+BUTTONS+STICK, Color:TRIGGERS";
 		_howto.scrollFactor.set(0, 0);
 		add(_howto);
 		#end

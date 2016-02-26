@@ -2,7 +2,9 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.input.actions.FlxAction.FlxActionAnalog;
 import flixel.input.actions.FlxAction.FlxActionDigital;
+import flixel.input.actions.FlxActionInputAnalog;
 import flixel.input.actions.FlxActionInputDigital.FlxActionInputDigitalIFlxInput;
 import flixel.input.actions.FlxActionInputDigital.FlxActionInputDigitalKeyboard;
 import flixel.input.actions.FlxActionInputDigital.FlxActionInputDigitalGamepad;
@@ -52,6 +54,11 @@ class Player extends FlxSprite
 	private var left:FlxActionDigital;
 	private var right:FlxActionDigital;
 	
+	private var moveAnalog:FlxActionAnalog;
+	
+	private var red:FlxActionAnalog;
+	private var blue:FlxActionAnalog;
+	
 	private var _virtualPad:FlxVirtualPad;
 	
 	public function new(X:Int, Y:Int)
@@ -60,7 +67,7 @@ class Player extends FlxSprite
 		super(X, Y);
 		
 		// Make the player graphic.
-		makeGraphic(TILE_SIZE, TILE_SIZE, 0xffc04040);
+		makeGraphic(TILE_SIZE, TILE_SIZE, FlxColor.WHITE);
 		
 		addInputs();
 	}
@@ -75,6 +82,9 @@ class Player extends FlxSprite
 		down  = new FlxActionDigital("down");
 		left  = new FlxActionDigital("left");
 		right = new FlxActionDigital("right");
+		
+		red   = new FlxActionAnalog("red");
+		blue  = new FlxActionAnalog("blue");
 		
 		//Add keyboard inputs
 		up.addInput   (new FlxActionInputDigitalKeyboard(FlxKey.UP,    JUST_PRESSED));
@@ -107,6 +117,10 @@ class Player extends FlxSprite
 		down.addInput (new FlxActionInputDigitalGamepad(FlxGamepadInputID.RIGHT_STICK_DIGITAL_DOWN,  JUST_PRESSED));
 		left.addInput (new FlxActionInputDigitalGamepad(FlxGamepadInputID.RIGHT_STICK_DIGITAL_LEFT,  JUST_PRESSED));
 		right.addInput(new FlxActionInputDigitalGamepad(FlxGamepadInputID.RIGHT_STICK_DIGITAL_RIGHT, JUST_PRESSED));
+		
+		//Add gamepad analog trigger inputs
+		red.addInput  (new FlxActionInputAnalogGamepad(FlxGamepadInputID.LEFT_TRIGGER,  MOVED));
+		blue.addInput (new FlxActionInputAnalogGamepad(FlxGamepadInputID.RIGHT_TRIGGER, MOVED));
 	}
 	
 	override public function update(elapsed:Float):Void
@@ -135,6 +149,12 @@ class Player extends FlxSprite
 			moveToNextTile = false;
 		}
 		
+		updateDigital();
+		updateAnalog();
+	}
+	
+	private function updateDigital():Void
+	{
 		if (down.check())
 		{
 			moveTo(MoveDirection.DOWN);
@@ -151,46 +171,37 @@ class Player extends FlxSprite
 		{
 			moveTo(MoveDirection.RIGHT);
 		}
+	}
+	
+	private function updateAnalog():Void
+	{
+		//update analog actions
+		red.update();
+		blue.update();
 		
-		/*
-		if (_virtualPad.buttonDown.pressed)
-		{
-			moveTo(MoveDirection.DOWN);
-		}
-		else if (_virtualPad.buttonUp.pressed)
-		{
-			moveTo(MoveDirection.UP);
-		}
-		else if (_virtualPad.buttonLeft.pressed)
-		{
-			moveTo(MoveDirection.LEFT);
-		}
-		else if (_virtualPad.buttonRight.pressed)
-		{
-			moveTo(MoveDirection.RIGHT);
-		}
-		*/
+		var redValue  = Math.abs(red.x);
+		var blueValue = Math.abs(blue.x);
 		
-		/*
-		// Check for WASD or arrow key presses and move accordingly
-		if (FlxG.keys.anyPressed([DOWN, S]))
+		if (redValue  > 1.0) redValue  = 1.0;
+		if (blueValue > 1.0) blueValue = 1.0;
+		
+		if(redValue > 0 && blueValue > 0)
 		{
-			moveTo(MoveDirection.DOWN);
+			var redVsBlue = (1 + (redValue - blueValue)) / 2;
+			color = FlxColor.interpolate(FlxColor.RED, FlxColor.BLUE, redVsBlue);	//Mix Red & Blue
 		}
-		else if (FlxG.keys.anyPressed([UP, W]))
+		else if (redValue > 0)
 		{
-			moveTo(MoveDirection.UP);
+			color = FlxColor.interpolate(FlxColor.WHITE, FlxColor.RED, redValue);	//Mix Red & White
 		}
-		else if (FlxG.keys.anyPressed([LEFT, A]))
+		else if (blueValue > 0)
 		{
-			moveTo(MoveDirection.LEFT);
+			color = FlxColor.interpolate(FlxColor.WHITE, FlxColor.BLUE, blueValue);	//Mix Blue & White
 		}
-		else if (FlxG.keys.anyPressed([RIGHT, D]))
+		else
 		{
-			moveTo(MoveDirection.RIGHT);
+			color = FlxColor.WHITE;
 		}
-		#end
-		*/
 	}
 	
 	public function moveTo(Direction:MoveDirection):Void
