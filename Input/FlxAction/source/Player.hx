@@ -19,35 +19,17 @@ import flixel.util.FlxColor;
  * ...
  * @author .:BuzzJeux:.
  */
-enum MoveDirection
-{
-	UP;
-	DOWN;
-	LEFT;
-	RIGHT;
-}
 
 class Player extends FlxSprite
 {
 	/**
 	 * How big the tiles of the tilemap are.
 	 */
-	private static inline var TILE_SIZE:Int = 16;
+	private static inline var TILE_SIZE:Int = 32;
 	/**
-	 * How many pixels to move each frame. Has to be a divider of TILE_SIZE 
-	 * to work as expected (move one block at a time), because we use the
-	 * modulo-operator to check whether the next block has been reached.
+	 * How many pixels to move each frame.
 	 */
 	private static inline var MOVEMENT_SPEED:Int = 2;
-	
-	/**
-	 * Flag used to check if char is moving.
-	 */ 
-	public var moveToNextTile:Bool;
-	/**
-	 * Var used to hold moving direction.
-	 */ 
-	private var moveDirection:MoveDirection;
 	
 	private var up:FlxActionDigital;
 	private var down:FlxActionDigital;
@@ -56,10 +38,16 @@ class Player extends FlxSprite
 	
 	private var moveAnalog:FlxActionAnalog;
 	
-	private var red:FlxActionAnalog;
-	private var blue:FlxActionAnalog;
+	private var trigger1:FlxActionAnalog;
+	private var trigger2:FlxActionAnalog;
+	
+	private var move:FlxActionAnalog;
 	
 	private var _virtualPad:FlxVirtualPad;
+	private var _analogWidget:AnalogWidget;
+	
+	private var moveX:Float = 0;
+	private var moveY:Float = 0;
 	
 	public function new(X:Int, Y:Int)
 	{
@@ -74,80 +62,86 @@ class Player extends FlxSprite
 	
 	private function addInputs():Void
 	{
+		//Add on screen virtual pad to demonstrate UI buttons tied to actions
 		_virtualPad = new FlxVirtualPad(FULL, NONE);
 		_virtualPad.alpha = 0.5;
+		_virtualPad.x += 50;
+		_virtualPad.y -= 20;
 		FlxG.state.add(_virtualPad);
 		
+		//Add on screen analog indicator to expose values of analog inputs in real time
+		_analogWidget = new AnalogWidget();
+		_analogWidget.alpha = 0.5;
+		_analogWidget.x -= 10;
+		_analogWidget.y -= 2;
+		FlxG.state.add(_analogWidget);
+		
+		//digital actions allow for on/off directional movement
 		up    = new FlxActionDigital("up");
 		down  = new FlxActionDigital("down");
 		left  = new FlxActionDigital("left");
 		right = new FlxActionDigital("right");
 		
-		red   = new FlxActionAnalog("red");
-		blue  = new FlxActionAnalog("blue");
+		//these actions don't do anything, but their values are exposed in the analog visualizer
+		trigger1 = new FlxActionAnalog("trigger1");
+		trigger2 = new FlxActionAnalog("trigger2");
+		
+		//this analog action allows for smooth movement
+		move = new FlxActionAnalog("move");
 		
 		//Add keyboard inputs
-		up.addInput   (new FlxActionInputDigitalKeyboard(FlxKey.UP,    JUST_PRESSED));
-		up.addInput   (new FlxActionInputDigitalKeyboard(FlxKey.W,     JUST_PRESSED));
-		down.addInput (new FlxActionInputDigitalKeyboard(FlxKey.DOWN,  JUST_PRESSED));
-		down.addInput (new FlxActionInputDigitalKeyboard(FlxKey.S,     JUST_PRESSED));
-		left.addInput (new FlxActionInputDigitalKeyboard(FlxKey.LEFT,  JUST_PRESSED));
-		left.addInput (new FlxActionInputDigitalKeyboard(FlxKey.A,     JUST_PRESSED));
-		right.addInput(new FlxActionInputDigitalKeyboard(FlxKey.RIGHT, JUST_PRESSED));
-		right.addInput(new FlxActionInputDigitalKeyboard(FlxKey.D,     JUST_PRESSED));
+		up.addInput   (new FlxActionInputDigitalKeyboard(FlxKey.UP, PRESSED));
+		up.addInput   (new FlxActionInputDigitalKeyboard(FlxKey.W, PRESSED));
+		down.addInput (new FlxActionInputDigitalKeyboard(FlxKey.DOWN, PRESSED));
+		down.addInput (new FlxActionInputDigitalKeyboard(FlxKey.S, PRESSED));
+		left.addInput (new FlxActionInputDigitalKeyboard(FlxKey.LEFT, PRESSED));
+		left.addInput (new FlxActionInputDigitalKeyboard(FlxKey.A, PRESSED));
+		right.addInput(new FlxActionInputDigitalKeyboard(FlxKey.RIGHT, PRESSED));
+		right.addInput(new FlxActionInputDigitalKeyboard(FlxKey.D, PRESSED));
 		
 		//Add virtual pad (on-screen button) inputs
-		up.addInput   (new FlxActionInputDigitalIFlxInput(_virtualPad.buttonUp,    JUST_PRESSED));
-		down.addInput (new FlxActionInputDigitalIFlxInput(_virtualPad.buttonDown,  JUST_PRESSED));
-		left.addInput (new FlxActionInputDigitalIFlxInput(_virtualPad.buttonLeft,  JUST_PRESSED));
-		right.addInput(new FlxActionInputDigitalIFlxInput(_virtualPad.buttonRight, JUST_PRESSED));
+		up.addInput   (new FlxActionInputDigitalIFlxInput(_virtualPad.buttonUp, PRESSED));
+		down.addInput (new FlxActionInputDigitalIFlxInput(_virtualPad.buttonDown, PRESSED));
+		left.addInput (new FlxActionInputDigitalIFlxInput(_virtualPad.buttonLeft, PRESSED));
+		right.addInput(new FlxActionInputDigitalIFlxInput(_virtualPad.buttonRight, PRESSED));
 		
 		//Add gamepad DPAD inputs
-		up.addInput   (new FlxActionInputDigitalGamepad(FlxGamepadInputID.DPAD_UP,    JUST_PRESSED));
-		down.addInput (new FlxActionInputDigitalGamepad(FlxGamepadInputID.DPAD_DOWN,  JUST_PRESSED));
-		left.addInput (new FlxActionInputDigitalGamepad(FlxGamepadInputID.DPAD_LEFT,  JUST_PRESSED));
-		right.addInput(new FlxActionInputDigitalGamepad(FlxGamepadInputID.DPAD_RIGHT, JUST_PRESSED));
+		up.addInput   (new FlxActionInputDigitalGamepad(FlxGamepadInputID.DPAD_UP, PRESSED));
+		down.addInput (new FlxActionInputDigitalGamepad(FlxGamepadInputID.DPAD_DOWN, PRESSED));
+		left.addInput (new FlxActionInputDigitalGamepad(FlxGamepadInputID.DPAD_LEFT, PRESSED));
+		right.addInput(new FlxActionInputDigitalGamepad(FlxGamepadInputID.DPAD_RIGHT, PRESSED));
 		
 		//Add gamepad analog stick (as simulated DPAD) inputs
-		up.addInput   (new FlxActionInputDigitalGamepad(FlxGamepadInputID.LEFT_STICK_DIGITAL_UP,     JUST_PRESSED));
-		down.addInput (new FlxActionInputDigitalGamepad(FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN,   JUST_PRESSED));
-		left.addInput (new FlxActionInputDigitalGamepad(FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT,   JUST_PRESSED));
-		right.addInput(new FlxActionInputDigitalGamepad(FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT,  JUST_PRESSED));
-		up.addInput   (new FlxActionInputDigitalGamepad(FlxGamepadInputID.RIGHT_STICK_DIGITAL_UP,    JUST_PRESSED));
-		down.addInput (new FlxActionInputDigitalGamepad(FlxGamepadInputID.RIGHT_STICK_DIGITAL_DOWN,  JUST_PRESSED));
-		left.addInput (new FlxActionInputDigitalGamepad(FlxGamepadInputID.RIGHT_STICK_DIGITAL_LEFT,  JUST_PRESSED));
-		right.addInput(new FlxActionInputDigitalGamepad(FlxGamepadInputID.RIGHT_STICK_DIGITAL_RIGHT, JUST_PRESSED));
+		up.addInput   (new FlxActionInputDigitalGamepad(FlxGamepadInputID.LEFT_STICK_DIGITAL_UP,     PRESSED));
+		down.addInput (new FlxActionInputDigitalGamepad(FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN,   PRESSED));
+		left.addInput (new FlxActionInputDigitalGamepad(FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT,   PRESSED));
+		right.addInput(new FlxActionInputDigitalGamepad(FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT,  PRESSED));
 		
 		//Add gamepad analog trigger inputs
-		red.addInput  (new FlxActionInputAnalogGamepad(FlxGamepadInputID.LEFT_TRIGGER,  MOVED));
-		blue.addInput (new FlxActionInputAnalogGamepad(FlxGamepadInputID.RIGHT_TRIGGER, MOVED));
+		trigger1.addInput  (new FlxActionInputAnalogGamepad(FlxGamepadInputID.LEFT_TRIGGER,  MOVED));
+		trigger2.addInput (new FlxActionInputAnalogGamepad(FlxGamepadInputID.RIGHT_TRIGGER, MOVED));
+		
+		//Add gamepad analog stick (as actual analog value) motion input
+		move.addInput (new FlxActionInputAnalogGamepad(FlxGamepadInputID.RIGHT_ANALOG_STICK, MOVED, FlxAnalogAxis.EITHER));
+		
+		//Add relative mouse movement as motion input
+		move.addInput (new FlxActionInputAnalogMouseMotion(MOVED, FlxAnalogAxis.EITHER));
+		
+		FlxG.mouse.visible = true;
 	}
 	
 	override public function update(elapsed:Float):Void
 	{
-		super.update(elapsed);  
+		super.update(elapsed);
 		
-		// Move the player to the next block
-		if (moveToNextTile)
-		{
-			switch (moveDirection)
-			{
-				case UP:
-					y -= MOVEMENT_SPEED;
-				case DOWN:
-					y += MOVEMENT_SPEED;
-				case LEFT:
-					x -= MOVEMENT_SPEED;
-				case RIGHT:
-					x += MOVEMENT_SPEED;
-			}
-		}
+		velocity.x = 0;
+		velocity.y = 0;
 		
-		// Check if the player has now reached the next block
-		if ((x % TILE_SIZE == 0) && (y % TILE_SIZE == 0))
-		{
-			moveToNextTile = false;
-		}
+		y += moveY * MOVEMENT_SPEED;
+		x += moveX * MOVEMENT_SPEED;
+		
+		moveX = 0;
+		moveY = 0;
 		
 		updateDigital();
 		updateAnalog();
@@ -155,62 +149,57 @@ class Player extends FlxSprite
 	
 	private function updateDigital():Void
 	{
+		_virtualPad.buttonUp.color = FlxColor.WHITE;
+		_virtualPad.buttonDown.color = FlxColor.WHITE;
+		_virtualPad.buttonLeft.color = FlxColor.WHITE;
+		_virtualPad.buttonRight.color = FlxColor.WHITE;
+		
 		if (down.check())
 		{
-			moveTo(MoveDirection.DOWN);
+			_virtualPad.buttonDown.color = FlxColor.LIME;
+			moveY = 1;
 		}
 		else if (up.check())
 		{
-			moveTo(MoveDirection.UP);
+			_virtualPad.buttonUp.color = FlxColor.LIME;
+			moveY = -1;
 		}
-		else if (left.check())
+		
+		if (left.check())
 		{
-			moveTo(MoveDirection.LEFT);
+			_virtualPad.buttonLeft.color = FlxColor.LIME;
+			moveX = -1;
 		}
 		else if (right.check())
 		{
-			moveTo(MoveDirection.RIGHT);
+			_virtualPad.buttonRight.color = FlxColor.LIME;
+			moveX = 1;
+		}
+		
+		if (moveX != 0 && moveY != 0)
+		{
+			moveY *= .707;
+			moveX *= .707;
 		}
 	}
 	
 	private function updateAnalog():Void
 	{
 		//update analog actions
-		red.update();
-		blue.update();
+		trigger1.update();
+		trigger2.update();
+		move.update();
 		
-		var redValue  = Math.abs(red.x);
-		var blueValue = Math.abs(blue.x);
+		_analogWidget.setValues(move.x, move.y);
+		_analogWidget.l = trigger1.x;
+		_analogWidget.r = trigger2.x;
 		
-		if (redValue  > 1.0) redValue  = 1.0;
-		if (blueValue > 1.0) blueValue = 1.0;
+		if(Math.abs(moveX) < 0.001) {
+			moveX = move.x;
+		}
 		
-		if(redValue > 0 && blueValue > 0)
-		{
-			var redVsBlue = (1 + (redValue - blueValue)) / 2;
-			color = FlxColor.interpolate(FlxColor.RED, FlxColor.BLUE, redVsBlue);	//Mix Red & Blue
-		}
-		else if (redValue > 0)
-		{
-			color = FlxColor.interpolate(FlxColor.WHITE, FlxColor.RED, redValue);	//Mix Red & White
-		}
-		else if (blueValue > 0)
-		{
-			color = FlxColor.interpolate(FlxColor.WHITE, FlxColor.BLUE, blueValue);	//Mix Blue & White
-		}
-		else
-		{
-			color = FlxColor.WHITE;
-		}
-	}
-	
-	public function moveTo(Direction:MoveDirection):Void
-	{
-		// Only change direction if not already moving
-		if (!moveToNextTile)
-		{
-			moveDirection = Direction;
-			moveToNextTile = true;
+		if(Math.abs(moveY) < 0.001) {
+			moveY = move.y;
 		}
 	}
 }

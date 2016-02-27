@@ -33,9 +33,10 @@ class PlayState extends FlxState
 		
 		#if !mobile
 		// Set and create Txt Howto
-		_howto = new FlxText(0, 225, FlxG.width);
+		_howto = new FlxText(0, 20, FlxG.width);
+		_howto.scale.set(2, 2);
 		_howto.alignment = CENTER;
-		_howto.text = "Move: ARROW+WASD+DPAD+BUTTONS+STICK, Color:TRIGGERS";
+		_howto.text = "Digital: ARROWS, WASD, D-PAD, BUTTONS, LEFT STICK\nAnalog: MOUSE motion, RIGHT STICK, TRIGGERS";
 		_howto.scrollFactor.set(0, 0);
 		add(_howto);
 		#end
@@ -46,12 +47,7 @@ class PlayState extends FlxState
 		super.update(elapsed);
 		
 		// Collide with foreground tile layer
-		if (_level.collideWithLevel(player))
-		{
-			// Resetting the movement flag if the player hits the wall 
-			// is crucial, otherwise you can get stuck in the wall
-			player.moveToNextTile = false;
-		}
+		_level.collideWithLevel(player);
 	}
 	
 	override public function destroy():Void
