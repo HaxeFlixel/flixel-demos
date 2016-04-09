@@ -19,6 +19,7 @@ import shaders.Grain;
 import shaders.Hq2x;
 import shaders.Scanline;
 import shaders.Tiltshift;
+import shaders.FXAA;
 #end
 
 class PlayState extends FlxState
@@ -41,12 +42,8 @@ class PlayState extends FlxState
 			"Tiltshift" => {
 				filter:new ShaderFilter(new Tiltshift()),
 			},
-			"Grain" => {
-				var shader = new Grain();
-				{
-					filter:new ShaderFilter(shader),
-					onUpdate: function() shader.uTime = Lib.getTimer() / 1000
-				}
+			"FXAA" => {
+				filter:new ShaderFilter(new FXAA()),
 			},
 			#end
 			"Blur" => {
