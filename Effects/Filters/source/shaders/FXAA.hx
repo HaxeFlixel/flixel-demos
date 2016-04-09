@@ -25,11 +25,11 @@ class FXAA extends Shader
 			
 			vec3 lumA = vec3(0.299, 0.587, 0.114);
 			
-			float lumNW = nw.dot(lumA);
-			float lumNE = ne.dot(lumA);
-			float lumSW = sw.dot(lumA);
-			float lumSE = se.dot(lumA);
-			float lumMid = mid.dot(lumA);
+			float lumNW = dot(nw, lumA);
+			float lumNE = dot(ne, lumA);
+			float lumSW = dot(sw, lumA);
+			float lumSE = dot(se, lumA);
+			float lumMid = dot(mid, lumA);
 			
 			float lumMin = min(lumMid, min(min(lumNW, lumNE), min(lumSW, lumSE)));
 			float lumMax = max(lumMid, max(max(lumNW, lumNE), max(lumSW, lumSE)));
@@ -47,7 +47,7 @@ class FXAA extends Shader
 			float lumB = dot(rgbB, lumA);
 			vec4 color;
 			
-			if ((lumaB < lumaMin) || (lumaB > lumaMax))
+			if ((lumB < lumMin) || (lumB > lumMax))
 			{
 				color = vec4(rgbA, texColor.a);
 			}
