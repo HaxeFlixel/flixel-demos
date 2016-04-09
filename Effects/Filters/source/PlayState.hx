@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxSprite;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.ui.FlxUIAssets;
 import flixel.addons.ui.FlxUICheckBox;
@@ -19,6 +20,7 @@ import shaders.Grain;
 import shaders.Hq2x;
 import shaders.Scanline;
 import shaders.Tiltshift;
+import shaders.FXAA;
 #end
 
 class PlayState extends FlxState
@@ -41,12 +43,8 @@ class PlayState extends FlxState
 			"Tiltshift" => {
 				filter:new ShaderFilter(new Tiltshift()),
 			},
-			"Grain" => {
-				var shader = new Grain();
-				{
-					filter:new ShaderFilter(shader),
-					onUpdate: function() shader.uTime = Lib.getTimer() / 1000
-				}
+			"FXAA" => {
+				filter:new ShaderFilter(new FXAA()),
 			},
 			#end
 			"Blur" => {
@@ -108,10 +106,10 @@ class PlayState extends FlxState
 		uiCamera = new FlxCamera(0, 0, 130, 300);
 		FlxG.cameras.add(uiCamera);
 		
-		var backdrop = new FlxBackdrop(FlxGraphic.fromClass(GraphicLogo));
-		backdrop.cameras = [FlxG.camera];
-		backdrop.velocity.set(150, 150);
-		add(backdrop);
+		var sprite:FlxSprite = new FlxSprite();
+		sprite.loadGraphic("assets/screen.png");
+		sprite.cameras = [FlxG.camera];
+		add(sprite);
 		
 		FlxG.camera.setFilters(filters);
 		FlxG.game.setFilters(filters);
