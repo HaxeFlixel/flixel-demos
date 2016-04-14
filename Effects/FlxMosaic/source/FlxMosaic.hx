@@ -1,91 +1,60 @@
-/**
- * Credits: Terry Paton
- * http://www.terrypaton.com
- * 
- * http://snipplr.com/view/47554/as3-pixelate-bitmapdata/
- */
-
 package ;
  
-	import flixel.FlxSprite;
-	import openfl.Assets;
-	import openfl.display.BitmapData;
-	import openfl.geom.Matrix;
-	import openfl.geom.Point;
-	import openfl.geom.Rectangle;
+	import flash.filters.BitmapFilter;
+	import flixel.FlxG;
+	import openfl.display.Shader;
+	import openfl.filters.ShaderFilter;
 	
 	/**
-	 * FlxMosaic applies a mosaic (pixelated) effect to the provided image
+	 * A classic mosaic effect, just like in the old days!
+	 * Note: The effect will be applied to the whole screen.
 	 */
-	
-	class FlxMosaic extends FlxSprite
+	class FlxMosaic
 	{
-		public var _pixelateMatrix:Matrix = new Matrix();
-		
 		/**
-		 * The "canvas" on which to draw the manipulated pixels on.
+		 * The amount of pixelation applied to the graphic
 		 */
-		public var _resultBmd:BitmapData;
+		private var shader:MosaicShader;
+		private static inline var DEFAULT_STRENGTH:Float = 1;
 		
-		/**
-		 * The original image data
-		 */
-		public var _srcBmd:BitmapData;
-		
-		/**
-		 * How pixelated the graphic is
-		 */
-		private var amount:Float = 0;
-		
-		public function new(_x:Float, _y:Float, assetStr:String):Void
+		public function new():Void
 		{
-			super(0, 0, assetStr);
-			_srcBmd = Assets.getBitmapData(assetStr);
-			_resultBmd = new BitmapData(pixels.width, pixels.height);
+			shader = new MosaicShader();
+			var filter:ShaderFilter = new ShaderFilter(shader);
+			
+			shader.uBlocksize = [DEFAULT_STRENGTH, DEFAULT_STRENGTH];
+			
+			var filters:Array<BitmapFilter> = [filter];
+			FlxG.camera.setFilters(filters);
+			FlxG.camera.filtersEnabled = true;
 		}
 		
-		public function setAmount(v:Float):Void
+		/**
+		 * Sets the size of the inflated pixels
+		 * @param	strengthX
+		 * @param	strengthY
+		 */
+		public function setEffectAmount(strengthX:Float, strengthY:Float):Void
 		{
-			amount = v;
-		}
-		
-		override public function update(elapsed:Float):Void
-		{
-			if (amount > 0)
-			{
-				process(_srcBmd, amount);
-				pixels.copyPixels(_resultBmd, new Rectangle(0, 0, _resultBmd.width, _resultBmd.height), new Point(0, 0));
-			}
-			
-			super.update(elapsed);
-		}
-		
-		public function process(_source:BitmapData, amount:Float):Void
-		{
-			var scaleFactor:Float = 1 / amount;
-			var bmpX:Int = Std.int(scaleFactor * _resultBmd.width);
-			var bmpY:Int = Std.int(scaleFactor * _resultBmd.height);
-			
-			if (bmpX < 1)
-			{
-				bmpX = 10;
-			}
-			if (bmpY < 1)
-			{
-				bmpY = 10;
-			}
-			
-			// scale image down
-			_pixelateMatrix.identity();
-			_pixelateMatrix.scale(scaleFactor, scaleFactor);
-			
-			var _tempBmpData:BitmapData = new BitmapData(bmpX, bmpY, false, 0xFF0000);
-			_tempBmpData.draw(_source, _pixelateMatrix);
-			
-			// now scale it back
-			_pixelateMatrix.identity();
-			_pixelateMatrix.scale(amount, amount);
-			
-			_resultBmd.draw(_tempBmpData, _pixelateMatrix);
+			shader.uBlocksize = [strengthX, strengthY];
 		}
 	}
+
+class MosaicShader extends Shader
+{
+    @fragment var code = '
+    
+    uniform vec2 uBlocksize;
+
+    void main()
+	{
+        vec2 blocks = ${Shader.uTextureSize} / uBlocksize;
+		gl_FragColor = texture2D(${Shader.uSampler}, floor(${Shader.vTexCoord} * blocks) / blocks);
+    }
+    ';
+    
+    public function new()
+    {
+        super();
+    }
+}
