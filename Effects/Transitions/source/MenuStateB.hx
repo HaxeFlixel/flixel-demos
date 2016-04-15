@@ -1,4 +1,5 @@
-package ;
+package;
+
 import flixel.addons.ui.FlxUISprite;
 import flixel.addons.ui.FlxUIText;
 import flixel.FlxG;
@@ -9,13 +10,8 @@ import flixel.FlxG;
  */
 class MenuStateB extends MenuState
 {
-
-	public function new() 
+	private override function init():Void
 	{
-		super();
-	}
-	
-	private override function init():Void {
 		super.init();
 		var back:FlxUISprite = cast _ui.getAsset("back");
 		back.makeGraphic(FlxG.width, FlxG.height, 0xFF0000AA);
@@ -23,7 +19,8 @@ class MenuStateB extends MenuState
 		welcome.text = "STATE B";
 	}
 	
-	private override function transition():Void {
+	private override function transition():Void
+	{
 		FlxG.switchState(new MenuState());
 	}
 }

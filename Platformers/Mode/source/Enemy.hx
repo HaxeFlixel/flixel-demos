@@ -3,12 +3,10 @@ package;
 import flixel.effects.particles.FlxEmitter;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup;
-import flixel.math.FlxAngle;
-import flixel.math.FlxMath;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
-import flixel.util.FlxSpriteUtil;
 import flixel.math.FlxVelocity;
+import flixel.util.FlxSpriteUtil;
 
 class Enemy extends FlxSprite
 {
@@ -55,6 +53,7 @@ class Enemy extends FlxSprite
 	 * This is the constructor for the enemy class. Because we are recycling 
 	 * enemies, we don't want our constructor to have any required parameters.
 	 */
+	@:keep
 	public function new()
 	{
 		super();

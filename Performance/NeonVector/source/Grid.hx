@@ -45,8 +45,8 @@ class Grid
 			for (_x in 0...numColumns + 1)
 			{
 				_index = _y * (numColumns + 1) + _x;
-				if (_x == 0) lineCommands[_index] = cast GraphicsPathCommand.MOVE_TO;
-				else lineCommands[_index] = cast GraphicsPathCommand.LINE_TO;
+				if (_x == 0) lineCommands[_index] = GraphicsPathCommand.MOVE_TO;
+				else lineCommands[_index] = GraphicsPathCommand.LINE_TO;
 				
 				lineData[2 * _index] = _x * (FlxG.width / numColumns);
 				lineData[2 * _index + 1] = _y * (FlxG.height / numRows);
@@ -58,8 +58,8 @@ class Grid
 			for (_y in 0...numRows + 1)
 			{
 				_index = _x * (numRows + 1) + _y;
-				if (_y == 0) lineCommands[_index + _n] = cast GraphicsPathCommand.MOVE_TO;
-				else lineCommands[_index + _n] = cast GraphicsPathCommand.LINE_TO;
+				if (_y == 0) lineCommands[_index + _n] = GraphicsPathCommand.MOVE_TO;
+				else lineCommands[_index + _n] = GraphicsPathCommand.LINE_TO;
 				
 				lineData[2 * _index + 2 * _n] = _x * (FlxG.width / numColumns);
 				lineData[2 * _index + 2 * _n + 1] = _y * (FlxG.height / numRows);
@@ -126,7 +126,7 @@ class Grid
 					_index = _y * (numColumns + 1) + _x;
 					_indexTranspose = _x * (numRows + 1) + _y;
 					
-					_pt = cast(points[_index], PointMass).position;
+					_pt = points[_index].position;
 					
 					lineData[2 * _index] = _pt.x;
 					lineData[2 * _index + 1] = _pt.y;
@@ -165,7 +165,7 @@ class Grid
 		var _distance:Float;
 		for (_mass in points)
 		{
-			_distance = FlxMath.getDistance(Position, _mass.position);
+			_distance = Position.distanceTo(_mass.position);
 			if (_distance < Radius) _mass.applyForce(10 * Force.x / (10 + _distance), 10 * Force.y / (10 + _distance));
 		}
 	}
@@ -175,7 +175,7 @@ class Grid
 		var _distance:Float;
 		for (_mass in points)
 		{
-			_distance = FlxMath.getDistance(Position, _mass.position);
+			_distance = Position.distanceTo(_mass.position);
 			if (_distance < Radius)
 			{
 				_mass.applyForce(
@@ -191,7 +191,7 @@ class Grid
 		var _distance:Float;
 		for (_mass in points)
 		{
-			_distance = FlxMath.getDistance(Position, _mass.position);
+			_distance = Position.distanceTo(_mass.position);
 			if (_distance < Radius)
 			{
 				_mass.applyForce(

@@ -95,9 +95,8 @@ class ScreenState extends FlxState
 		blur = new BlurFilter(8, 8, BitmapFilterQuality.LOW);
 		#end
 		
-		#if FLX_RENDER_TILE
-		FlxG.camera.canvas.addChild(FlxSpriteUtil.flashGfxSprite);
-		#end
+		if (FlxG.renderTile)
+			FlxG.camera.canvas.addChild(FlxSpriteUtil.flashGfxSprite);
 	}
 	
 	override public function update(elapsed:Float):Void
@@ -173,21 +172,18 @@ class ScreenState extends FlxState
 	
 	public function handleCollision(elapsed:Float, Object1:FlxObject, Object2:FlxObject):Void
 	{
-		var DistanceSquared:Float = 0;
-		var Collided:Bool = false;
-		if (Std.is(Object1, Entity) && Std.is(Object2, Entity))
-		{
-				var DX:Float = cast(Object1, Entity).position.x - cast(Object2, Entity).position.x;
-				var DY:Float = cast(Object1, Entity).position.y - cast(Object2, Entity).position.y;
-				var CombinedRadius:Float = cast(Object1, Entity).radius + cast(Object2, Entity).radius;
-				
-				DistanceSquared = DX * DX + DY * DY; //FlxU.getDistance((Object1 as Entity).position, (Object2 as Entity).position);
-				if (DistanceSquared <= CombinedRadius * CombinedRadius) Collided = true;
-				else Collided = false;
-		}
-		if (!Collided) return;
-		cast(Object1, Entity).collidesWith(elapsed, cast(Object2, Entity), DistanceSquared);
-		cast(Object2, Entity).collidesWith(elapsed, cast(Object1, Entity), DistanceSquared);
+		var entity1:Entity = cast Object1;
+		var entity2:Entity = cast Object2;
+		if (entity1 == null || entity2 == null)
+			return;
+		
+		var combinedRadius:Float = entity1.radius + entity2.radius;
+		var distanceSquared = entity1.position.distanceTo(entity2.position);
+		if (distanceSquared > combinedRadius * combinedRadius)
+			return; // no collision
+		
+		entity1.collidesWith(elapsed, entity2, distanceSquared);
+		entity2.collidesWith(elapsed, entity1, distanceSquared);
 	}
 	
 	public static function reset():Void
@@ -197,10 +193,10 @@ class ScreenState extends FlxState
 	
 	public static function makeBullet(PositionX:Float, PositionY:Float, Angle:Float, Speed:Float):Bool
 	{
-		var _bullet:Bullet = cast(entities.getFirstAvailable(Bullet), Bullet);
+		var _bullet:Bullet = cast entities.getFirstAvailable(Bullet);
 		if (_bullet != null)
 		{
-			cast(_bullet, Bullet).reset(PositionX, PositionY);
+			_bullet.reset(PositionX, PositionY);
 			_bullet.angle = Angle;
 			_bullet.velocity.x = Speed * Math.cos((Angle / 180) * Math.PI);
 			_bullet.velocity.y = Speed * Math.sin((Angle / 180) * Math.PI);
@@ -211,7 +207,7 @@ class ScreenState extends FlxState
 	
 	public static function makeEnemy(Type:UInt):Bool
 	{
-		var _enemy:Enemy = cast(entities.getFirstAvailable(Enemy), Enemy);
+		var _enemy:Enemy = cast entities.getFirstAvailable(Enemy);
 		if (_enemy != null) 
 		{
 			var MinimumDistanceFromPlayer:Float = 150;
@@ -226,7 +222,7 @@ class ScreenState extends FlxState
 	
 	public static function makeBlackhole():Bool
 	{
-		var _enemy:Enemy = cast(blackholes.getFirstAvailable(Enemy), Enemy);
+		var _enemy:Enemy = cast blackholes.getFirstAvailable(Enemy);
 		if (_enemy != null) 
 		{
 			var MinimumDistanceFromPlayer:Float = 20;
@@ -268,7 +264,7 @@ class ScreenState extends FlxState
 		{
 			if (_mixColors)
 			{
-				_mixedColor.interpolate(BlendColor, FlxG.random.float());
+				_mixedColor = FlxColor.interpolate(_mixedColor, BlendColor, FlxG.random.float());
 			}
 			makeParticle(Type, PositionX, PositionY, 360 * FlxG.random.float(), Speed * (1 - 0.5 * FlxG.random.float()), _mixedColor);
 		}

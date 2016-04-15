@@ -4,19 +4,16 @@ import flixel.effects.particles.FlxEmitter;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.gamepad.FlxGamepad;
-import flixel.input.gamepad.OUYAButtonID;
-import flixel.input.gamepad.XboxButtonID;
-import flixel.ui.FlxButton;
 import flixel.ui.FlxVirtualPad;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxTimer;
-import flixel.group.FlxGroup;
 
 class Player extends FlxSprite
 {
-	#if android
+	#if VIRTUAL_PAD
 	public static var virtualPad:FlxVirtualPad;
 	#end
 	
@@ -69,7 +66,7 @@ class Player extends FlxSprite
 		_bullets = Bullets;
 		_gibs = Gibs;
 		
-		#if android
+		#if VIRTUAL_PAD
 		virtualPad = new FlxVirtualPad(FULL, A_B);
 		virtualPad.alpha = 0.5;
 		#end
@@ -79,7 +76,7 @@ class Player extends FlxSprite
 	{
 		super.destroy();
 		
-		#if android
+		#if VIRTUAL_PAD
 		virtualPad = FlxDestroyUtil.destroy(virtualPad);
 		#end
 		
@@ -97,7 +94,7 @@ class Player extends FlxSprite
 		
 		updateAnimations();
 		
-        super.update(elapsed);
+		super.update(elapsed);
 	}
 	
 	private function updateKeyboardInput():Void
@@ -134,7 +131,7 @@ class Player extends FlxSprite
 	
 	private function updateVirtualPadInput():Void
 	{
-		#if android
+		#if VIRTUAL_PAD
 		if (virtualPad.buttonLeft.pressed)
 		{
 			moveLeft();
@@ -168,84 +165,38 @@ class Player extends FlxSprite
 	{
 		#if !FLX_NO_GAMEPAD
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
-		if (gamepad != null)
+		if (gamepad == null) return;
+		
+		if (gamepad.analog.value.LEFT_STICK_X < 0 || gamepad.pressed.DPAD_LEFT)
 		{
-			#if android
-			updateOUYAGamepadInput(gamepad);
-			#else
-			updateXboxGamepadInput(gamepad);
-			#end
+			moveLeft();
+		}
+		else
+		if (gamepad.analog.value.LEFT_STICK_X > 0 || gamepad.pressed.DPAD_RIGHT)
+		{
+			moveRight();
+		}
+		
+		if (gamepad.analog.value.LEFT_STICK_Y < 0 || gamepad.pressed.DPAD_UP)
+		{
+			moveUp();
+		}
+		else
+		if (gamepad.analog.value.LEFT_STICK_Y > 0 || gamepad.pressed.DPAD_DOWN)
+		{
+			moveDown();
+		}
+		
+		if (gamepad.justPressed.A)
+		{
+			jump();
+		}
+		
+		if (gamepad.pressed.X)
+		{
+			shoot();
 		}
 		#end
-	}
-	
-	private function updateXboxGamepadInput(gamepad:FlxGamepad):Void
-	{
-		if (gamepad.getXAxis(XboxButtonID.LEFT_ANALOG_STICK) < 0 ||
-			gamepad.pressed(XboxButtonID.DPAD_LEFT))
-		{
-			moveLeft();
-		}
-		else
-		if (gamepad.getXAxis(XboxButtonID.LEFT_ANALOG_STICK) > 0 ||
-			gamepad.pressed(XboxButtonID.DPAD_RIGHT))
-		{
-			moveRight();
-		}
-		
-		if (gamepad.getYAxis(XboxButtonID.LEFT_ANALOG_STICK) < 0 ||
-			gamepad.pressed(XboxButtonID.DPAD_UP))
-		{
-			moveUp();
-		}
-		else
-		if (gamepad.getYAxis(XboxButtonID.LEFT_ANALOG_STICK) > 0 ||
-			gamepad.pressed(XboxButtonID.DPAD_DOWN))
-		{
-			moveDown();
-		}
-		
-		if (gamepad.justPressed(XboxButtonID.A))
-		{
-			jump();
-		}
-		
-		if (gamepad.pressed(XboxButtonID.X))
-		{
-			shoot();
-		}
-	}
-	
-	private function updateOUYAGamepadInput(gamepad:FlxGamepad):Void
-	{
-		if (gamepad.getXAxis(OUYAButtonID.LEFT_ANALOG_STICK) < 0)
-		{
-			moveLeft();
-		}
-		if (gamepad.getXAxis(OUYAButtonID.LEFT_ANALOG_STICK) > 0)
-		{
-			moveRight();
-		}
-		
-		if (gamepad.getYAxis(OUYAButtonID.LEFT_ANALOG_STICK) < 0)
-		{
-			moveUp();
-		}
-		
-		if (gamepad.getYAxis(OUYAButtonID.LEFT_ANALOG_STICK) > 0)
-		{
-			moveDown();
-		}
-		
-		if (gamepad.justPressed(OUYAButtonID.O))
-		{
-			jump();
-		}
-		
-		if (gamepad.pressed(OUYAButtonID.U))
-		{
-			shoot();
-		}
 	}
 	
 	private function updateAnimations():Void
@@ -321,7 +272,8 @@ class Player extends FlxSprite
 	
 	private function flicker(Duration:Float):Void
 	{
-		FlxSpriteUtil.flicker(this, Duration, 0.02, true, true, function(_) {
+		FlxSpriteUtil.flicker(this, Duration, 0.02, true, true, function(_)
+		{
 			flickering = false;
 		});
 		flickering = true;
@@ -355,7 +307,8 @@ class Player extends FlxSprite
 			_gibs.start(true, 0, 50);
 		}
 		
-		new FlxTimer().start(2, function(_) {
+		new FlxTimer().start(2, function(_)
+		{
 			FlxG.resetState();
 		});
 	}

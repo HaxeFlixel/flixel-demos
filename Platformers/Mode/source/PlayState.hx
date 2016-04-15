@@ -8,21 +8,10 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
-import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
-import flixel.ui.FlxButton;
-import flixel.math.FlxPoint;
-import flixel.math.FlxRandom;
-import flixel.util.FlxStringUtil;
-import flixel.util.FlxTimer;
 import openfl.display.FPS;
-import openfl.events.Event;
 import openfl.Lib;
-
-#if (cpp || neko)
-import flixel.input.gamepad.FlxGamepad;
-#end
 
 /**
  * A FlxState which can be used for the actual gameplay.
@@ -142,7 +131,8 @@ class PlayState extends FlxState
 		// that is, the player score, number of spawners left, etc.
 		// First, we'll create a text field for the current score
 		_score = new FlxText(FlxG.width / 4, 0, Math.floor(FlxG.width / 2));
-		_score.setFormat(null, 16, 0xd8eba2, CENTER, OUTLINE, 0x131c1b);
+		_score.setFormat(null, 16, 0xffd8eba2, FlxTextAlign.CENTER);
+		_score.setBorderStyle(FlxTextBorderStyle.OUTLINE, 0xff131c1b, 2);
 		_hud.add(_score);
 		
 		if (Reg.scores.length < 2)
@@ -176,7 +166,8 @@ class PlayState extends FlxState
 		_hud.add(_gunjam);
 		
 		// With forEach() we can execute a function on every group member
-		_hud.forEach(function(s:FlxSprite) {
+		_hud.forEach(function(s:FlxSprite)
+		{
 			// This makes sure the HUD does not move with the camera scroll
 			s.scrollFactor.set(0, 0);
 			// We only want out HUD to display on the main camera
@@ -197,7 +188,7 @@ class PlayState extends FlxState
 		FlxG.watch.add(_enemyBullets, "length", "numEnemyBullets");
 		FlxG.watch.add(FlxG.sound.list, "length", "numSounds");
 		
-		#if android
+		#if VIRTUAL_PAD
 		add(Player.virtualPad);
 		#end
 		
@@ -331,6 +322,9 @@ class PlayState extends FlxState
 			}
 		}
 		
+		if (_score.size > 16)
+			_score.size--;
+		
 		// Actually update score text if it changed
 		if (scoreChanged)
 		{
@@ -339,6 +333,7 @@ class PlayState extends FlxState
 				Reg.score = 0;
 			}
 			
+			_score.size = 24;
 			_score.text = Std.string(Reg.score);
 		}
 		

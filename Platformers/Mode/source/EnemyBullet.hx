@@ -1,15 +1,14 @@
 package;
 
-import openfl.Assets;
 import flixel.FlxG;
-import flixel.math.FlxAngle;
-import flixel.math.FlxPoint;
 import flixel.FlxSprite;
+import flixel.math.FlxPoint;
 
 class EnemyBullet extends FlxSprite
 {
 	public var speed:Float;
 	
+	@:keep
 	public function new()
 	{
 		super();
@@ -33,7 +32,7 @@ class EnemyBullet extends FlxSprite
 			kill();
 		}
 
-        super.update(elapsed);
+		super.update(elapsed);
 	}
 	
 	override public function kill():Void

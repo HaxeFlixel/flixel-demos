@@ -1,3 +1,72 @@
+2.1.0
+------------------------------
+* FlxSnake:
+ * fixed the pickup sound effect not being played
+ * fixed snake being able to crash into itself (#215)
+* Project Jumper" -> "ProjectJumper"
+* "RPG Interface" -> "RPGInterface"
+* "MouseEventManager" -> "FlxMouseEventManager"
+* `/Flixel Features` -> `/Features`
+* `/User Interface` -> `/UserInterface`
+* TurnBasedRPG: removed unnecessary comments and `destroy()` overrides
+* FlxSpriteFilters: mobile compile fix
+* Minor code cleanup for several demos
+
+2.0.0
+------------------------------
+* Compatibility with flixel 4.0.0
+* Renamed "Arcade Classics" to "Arcade"
+* Moved 3 demos to Arcade:
+ * Flappybalt
+ * MinimalistTD
+ * FlxPongAPI
+* Added 23 new demos:
+ * Arcade:
+    * Flixius
+ * Editors:
+    * FlxPexParser
+ * Effects:
+    * DynamicShadows
+    * Filters
+    * FlxClothSprite
+    * FlxEffectSprite (replaces the FlxGlitchSprite and FlxWaveSprite demos)
+    * Parallax
+    * PostProcess
+    * Transitions
+ * Flixel Features:
+    * Colors
+    * FlxFSM
+    * FlxNapeTerrain
+    * FlxNapeTilemap
+    * FlxPieDial
+    * FlxScene
+    * FlxShape
+    * FlxSound
+    * SubState
+ * Other:
+    * BSPMapGen
+    * Calculator
+    * FlxAtlas
+    * FrameCollections
+ * User Interface
+    * Tooltips
+* Merged Effects/ParticlesExt into Effects/Particles
+* Renamed FlxBitmapTextField to FlxBitmapText
+* FlxNape:
+ * added a SolarSystem demo
+ * fixed a crash on Neko
+* GamepadTest:
+ * added a gamepad model dropdown
+ * added a deadzone numeric stepper
+ * added a list of all connected gamepads
+ * added Wii Remote support
+ * added a label with the gamepad's name
+* TiledEditor: updated to showcase support for image layers and image tilesets
+
+1.1.2
+------------------------------
+* Added Tutorials/TurnBasedRPG
+
 1.1.1
 ------------------------------
 * GamepadTest: now compatible with OpenFL 1.4.0

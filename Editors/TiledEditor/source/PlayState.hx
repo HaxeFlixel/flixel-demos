@@ -1,12 +1,11 @@
 package; 
 
 import flixel.FlxG;
-import flixel.FlxState;
-import flixel.FlxSprite;
 import flixel.FlxObject;
-import flixel.text.FlxText;
+import flixel.FlxSprite;
+import flixel.FlxState;
 import flixel.group.FlxGroup;
-import flixel.tile.FlxTilemap;
+import flixel.text.FlxText;
 
 class PlayState extends FlxState
 {
@@ -25,24 +24,26 @@ class PlayState extends FlxState
 	{
 		FlxG.mouse.visible = false;
 		
-		//super.create();
 		bgColor = 0xffaaaaaa;
 		
 		// Load the level's tilemaps
-		level = new TiledLevel("assets/tiled/level.tmx");
-		
-		// Add tilemaps
-		add(level.foregroundTiles);
-		
-		// Draw coins first
 		coins = new FlxGroup();
+		level = new TiledLevel("assets/tiled/level.tmx", this);
+		
+		// Add backgrounds
+		add(level.backgroundLayer);
+
+		// Draw coins first
 		add(coins);
 		
-		// Load player objects
-		level.loadObjects(this);
+		// Add static images
+		add(level.imagesLayer);
 		
-		// Add background tiles after adding level objects, so these tiles render on top of player
-		add(level.backgroundTiles);
+		// Load player objects
+		add(level.objectsLayer);
+		
+		// Add foreground tiles after adding level objects, so these tiles render on top of player
+		add(level.foregroundTiles);
 		
 		// Create UI
 		score = new FlxText(2, 2, 80);
@@ -57,27 +58,22 @@ class PlayState extends FlxState
 		status.borderColor = 0xff000000;
 		score.borderStyle = SHADOW;
 		status.alignment = RIGHT;
-		
-		if (youDied == false)
-			status.text = "Collect coins.";
-		else
-			status.text = "Aww, you died!";
-		
+		status.text = youDied ? "Aww, you died!" : "Collect coins.";
 		add(status);
 	}
 	
 	override public function update(elapsed:Float):Void 
 	{
 		player.acceleration.x = 0;
-		if (FlxG.keys.pressed.LEFT)
+		if (FlxG.keys.anyPressed([LEFT, A]))
 		{
-			player.acceleration.x = -player.maxVelocity.x * 4;
+			player.acceleration.x -= player.maxVelocity.x * 4;
 		}
-		if (FlxG.keys.pressed.RIGHT)
+		if (FlxG.keys.anyPressed([RIGHT, D]))
 		{
-			player.acceleration.x = player.maxVelocity.x * 4;
+			player.acceleration.x += player.maxVelocity.x * 4;
 		}
-		if (FlxG.keys.pressed.SPACE && player.isTouching(FlxObject.FLOOR))
+		if (FlxG.keys.anyPressed([W, UP, SPACE]) && player.isTouching(FlxObject.FLOOR))
 		{
 			player.velocity.y = -player.maxVelocity.y / 2;
 		}
@@ -114,5 +110,4 @@ class PlayState extends FlxState
 			exit.exists = true;
 		}
 	}
-	
 }

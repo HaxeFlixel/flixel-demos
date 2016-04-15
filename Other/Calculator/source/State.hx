@@ -88,8 +88,8 @@ class State extends FlxState
 					input.caretIndex++;
 				}));
 				
+				buttons[y][x].label.setFormat("Font", 8, 0xff000000, CENTER);
 				buttons[y][x].resize(21, 16);
-				buttons[y][x].label.setFormat("Font", 8, 0xff000000, "center");
 				add(buttons[y][x]);
 			}
 		}
@@ -112,16 +112,16 @@ class State extends FlxState
 				          ];
 				
 				// Button functions
-				if (i == 0) { index--; if (index < 0) index = txt.length -1; }	// Previous
-				if (i == 1) { input.text = ""; return;  }                      // Clear
-				if (i == 2) { index++; if (index >= txt.length) index = 0; }	// Next
+				if (i == 0) { index--; if (index < 0) index = txt.length -1; }  // Previous
+				if (i == 1) { input.text = ""; return; }                        // Clear
+				if (i == 2) { index++; if (index >= txt.length) index = 0; }    // Next
 				
 				input.text = txt[index];
 				input.hasFocus = true;
 			});
 			
+			examples[i].label.setFormat("Font", 8, 0xff000000, CENTER);
 			examples[i].resize(66, 16);
-			examples[i].label.setFormat("Font", 8, 0xff000000, "center");
 			add(examples[i]);
 		}
 		
@@ -164,10 +164,10 @@ class State extends FlxState
 			
 			// Set all the output text colors to default (green)
 			for (text in outputs)
-				 text.color = 0xffc7e0c1;
+				text.color = 0xffc7e0c1;
 			
 			// Parse the string. If this fails, it'd be caught outside of this try
-			outputs[0].text = "\"" + Std.string(output) + "\"";
+			outputs[0].text = "\"" + output + "\"";
 			
 			// Otherwise try to cast each output to its corresponding type, catching the errors as a red '?' string
 			try { outputs[1].text = Std.string(cast(output, Int)); } 				catch (unknown:Dynamic) { outputs[1].color = 0xffe09f9f; outputs[1].text = "?"; }
@@ -176,7 +176,7 @@ class State extends FlxState
 			try { outputs[4].text = HexToBin(StringTools.hex(cast(output, Int))); } catch (unknown:Dynamic) { outputs[4].color = 0xffe09f9f; outputs[4].text = "?"; }
 			
 			// Draw graph (naively execute the script 150 times per frame stepping in the y-direction. This has sampling error.)
-			FlxSpriteUtil.drawRect(graph, 0, 0, graph.width, graph.height, 0xffffffff, {thickness:2, color:0xff000000});
+			FlxSpriteUtil.drawRect(graph, 0, 0, graph.width, graph.height, 0xffffffff, { thickness:2, color:0xff000000});
 			FlxSpriteUtil.drawLine(graph, graph.width / 2, 1, graph.width / 2, graph.height - 1, { thickness:1, color:0xff999999 } );
 			FlxSpriteUtil.drawLine(graph, 1, graph.height/2, graph.width -1, graph.height/2, { thickness:1, color:0xff999999 } );
 			if (input.text.indexOf("y") >= 0)
