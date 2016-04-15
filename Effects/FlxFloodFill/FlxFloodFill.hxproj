@@ -16,21 +16,21 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="C:\dev\HaxeToolkit\haxe\lib\flixel\git" />
-    <class path="C:\dev\HaxeToolkit\haxe\lib\openfl\3,6,0" />
-    <class path="C:\dev\HaxeToolkit\haxe\lib\lime\2,9,0" />
-    <class path="C:\dev\HaxeToolkit\haxe\lib\hscript\2,0,5" />
+    <class path="C:\dev\HaxeToolkit\haxe\lib\openfl\3,6,1" />
+    <class path="C:\dev\HaxeToolkit\haxe\lib\lime\2,9,1" />
+    <class path="C:\dev\HaxeToolkit\haxe\lib\hscript\2,0,7" />
     <class path="source" />
-    <class path="C:\dev\HaxeToolkit\haxe\lib\openfl\3,6,0\extern" />
-    <class path="export\windows\neko\haxe" />
+    <class path="C:\dev\HaxeToolkit\haxe\lib\openfl\3,6,1\extern" />
+    <class path="export\windows\cpp\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="flixel=4.0.0&#xA;openfl=3.6.0&#xA;lime=2.9.0&#xA;hscript=2.0.5&#xA;openfl-next&#xA;tools=2.9.0&#xA;no-compilation&#xA;native&#xA;FLX_NO_TOUCH&#xA;lime-native&#xA;openfl-native&#xA;windows&#xA;desktop&#xA;display" />
+    <option directives="flixel=4.0.1&#xA;openfl=3.6.1&#xA;lime=2.9.1&#xA;hscript=2.0.7&#xA;HXCPP_QUIET&#xA;openfl-next&#xA;tools=2.9.1&#xA;no-compilation&#xA;native&#xA;FLX_NO_TOUCH&#xA;lime-native&#xA;openfl-native&#xA;windows&#xA;desktop&#xA;display" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="False" />
-    <option additional="--remap flash:openfl&#xA;--macro flixel.system.macros.FlxDefines.run()&#xA;#--macro keep(&quot;Main&quot;)&#xA;-debug " />
+    <option additional="#--macro keep('IntIterator')&#xA;--remap flash:openfl&#xA;--macro flixel.system.macros.FlxDefines.run()&#xA;#--macro keep(&quot;Main&quot;)&#xA;-debug " />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

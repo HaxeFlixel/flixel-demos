@@ -41,18 +41,18 @@ class DemoState extends FlxState
 		
 		if (FlxG.keys.justPressed.SPACE) 
 		{
-			isActive = !isActive;
-			
-			if (isActive) 
-			{
-				effectSprite.stop();
-				effectSprite2.stop();
-			}
-			else
+			if (!isActive) 
 			{
 				effectSprite.start();
 				effectSprite2.start();
 			}
+			else
+			{
+				effectSprite.stop();
+				effectSprite2.stop();
+			}
+			
+			isActive = !isActive;
 		}
 		
 		super.update(elapsed);
