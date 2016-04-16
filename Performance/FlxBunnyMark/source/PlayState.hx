@@ -10,6 +10,7 @@ import flixel.text.FlxText;
 import flixel.tile.FlxTileblock;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
+//import shaders.Invert;
 
 /**
  * ...
@@ -17,7 +18,7 @@ import flixel.util.FlxColor;
  */
 class PlayState extends FlxState
 {
-	public static inline var INITIAL_AMOUNT:Int = 1000;
+	public static inline var INITIAL_AMOUNT:Int = 100;
 	
 	public static var complex:Bool = false;
 	public static var offScreen:Bool = false;
@@ -35,7 +36,9 @@ class PlayState extends FlxState
 	private var _offScreenButton:FlxButton;
 	private var _bunnyCounter:FlxText;
 	private var _fpsCounter:FlxText;
-
+	private var floodFill = new FloodFill();
+	private var invert = new Invert();
+	
 	override public function create():Void
 	{
 		// The grass background
@@ -57,6 +60,9 @@ class PlayState extends FlxState
 		_bunnies = new FlxTypedGroup<Bunny>();
 		changeBunnyNumber(true);
 		add(_bunnies);
+		
+		for (i in 0...25) _bunnies.members[i].shader = floodFill;
+		for (i in 25...50) _bunnies.members[i].shader = invert;
 		
 		// Add a jumping pirate
 		_pirate = new FlxSprite();
@@ -119,6 +125,8 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+		
+		floodFill.uFloodFillY = 0.5 * (1.0 + Math.sin(Lib.getTimer() / 1000));
 		
 		var t = Lib.getTimer();
 		

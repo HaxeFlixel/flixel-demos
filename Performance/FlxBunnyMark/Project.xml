@@ -33,6 +33,7 @@
 	
 	<!--------------------------------LIBRARIES------------------------------------->
 
+	<set name="next"/>
 	<haxelib name="flixel"/>
 	
 	<!--In case you want to use the addons package-->
