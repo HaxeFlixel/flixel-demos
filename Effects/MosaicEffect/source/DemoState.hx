@@ -6,11 +6,14 @@ import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import flash.filters.BitmapFilter;
+import openfl.filters.ShaderFilter;
 
 class DemoState extends FlxState
 {
-	private var isActive:Bool = false;
 	private var effect:MosaicEffect;
+	private var effectTween:FlxTween;
+	private var bg1:FlxSprite;
 	
 	override public function create():Void
 	{	
@@ -19,31 +22,31 @@ class DemoState extends FlxState
 		// The effect is not a FlxObject, so no need to call the state's add()-method.
 		effect = new MosaicEffect();
 		
-		var infoText:FlxText = new FlxText(10, 10, 100, "Press SPACE key to run the effect.");
+		var filter:ShaderFilter = new ShaderFilter(effect.getShader());
+		var filters:Array<BitmapFilter> = [filter];
+		
+		FlxG.camera.setFilters(filters);
+		FlxG.camera.filtersEnabled = true;
+		
+		var infoText:FlxText = new FlxText(10, 10, 100, "Press SPACE to pause the effect.");
 		infoText.color = FlxColor.BLACK;
 		add(infoText);
+		
+		effectTween = FlxTween.num(MosaicEffect.DEFAULT_VALUE, 15, 2, {type:FlxTween.PINGPONG}, updateAmount);
 	}
 
 	override public function update(elapsed:Float):Void
 	{
-		if (!isActive && FlxG.keys.justPressed.SPACE) 
+		if (FlxG.keys.justPressed.SPACE) 
 		{
-			isActive = true;
-			FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 15, .1, { type:FlxTween.ONESHOT}, updateAmount).then(
-				FlxTween.num(15, MosaicEffect.DEFAULT_STRENGTH, .1, { type:FlxTween.ONESHOT, onComplete:resetEffect }, updateAmount)
-			);
+			effectTween.active = !effectTween.active;
 		}
 		
 		super.update(elapsed);
 	}
 	
-	private function resetEffect(t:FlxTween):Void
-	{
-		isActive = false;
-	}
-	
 	private function updateAmount(v:Float):Void
 	{
-		effect.setEffectAmount(v, v);
+		effect.setEffectStrengthXY(v, v);
 	}
 }
