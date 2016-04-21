@@ -59,18 +59,18 @@ class MosaicEffect
 	 * Sets the size of the inflated pixels on the X-axis (horizontally).
 	 * @param	StrengthX Desired effect strength on the X-axis.
 	 */
-	public function setEffectStrengthX(StrengthX:Float):Void
+	public function setEffectStrengthX(strengthX:Float):Void
 	{
-		setEffectStrengthXY(StrengthX, strengthY);
+		setEffectStrengthXY(strengthX, this.strengthY);
 	}
 	
 	/**
 	 * Sets the size of the inflated pixels on the Y-axis (vertically).
 	 * @param	StrengthY Desired effect strength on the Y-axis.
 	 */
-	public function setEffectStrengthY(StrengthY:Float):Void
+	public function setEffectStrengthY(strengthY:Float):Void
 	{
-		setEffectStrengthXY(strengthX, StrengthY);
+		setEffectStrengthXY(this.strengthX, strengthY);
 	}
 	
 	/**
@@ -78,10 +78,10 @@ class MosaicEffect
 	 * @param	StrengthX Desired effect strength on the X-axis (horizontally).
 	 * @param	StrengthY Desired effect strength on the Y-axis (vertically).
 	 */
-	public function setEffectStrengthXY(StrengthX:Float, StrengthY:Float):Void
+	public function setEffectStrengthXY(strengthX:Float, strengthY:Float):Void
 	{
-		strengthX = StrengthX;
-		strengthY = StrengthY;
-		shader.uBlocksize = [strengthX, strengthY];
+		this.strengthX = strengthX;
+		this.strengthY = strengthY;
+		shader.uBlocksize = [this.strengthX, this.strengthY];
 	}
 }
