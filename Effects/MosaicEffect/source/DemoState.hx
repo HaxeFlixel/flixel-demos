@@ -13,7 +13,6 @@ class DemoState extends FlxState
 {
 	private var effect:MosaicEffect;
 	private var effectTween:FlxTween;
-	private var bg1:FlxSprite;
 	
 	override public function create():Void
 	{	
