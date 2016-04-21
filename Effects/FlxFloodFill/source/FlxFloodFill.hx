@@ -35,59 +35,43 @@ class FlxFloodFill extends FlxSprite
 	private var fillOffset:Int = 1;
 	
 	/**
-	 * @param _x The effect's x-position.
-	 * @param _y The effect's y-position.
-	 * @param _srcBmd The image data used for the effect.
-	 * @param _width The width of the effect.
-	 * @param _height The height of the effect (a value larger than the source image makes the effect taller!).
-	 * @param _fillLinesPerUpdate Number of lines per update to fill the effect with.
-	 * @param _delayPerUpdate The time delay between each update.
+	 * @param x The effect's x-position.
+	 * @param x The effect's y-position.
+	 * @param srcBmd The image data used for the effect.
+	 * @param width The width of the effect.
+	 * @param height The height of the effect (a value larger than the source image makes the effect taller!).
+	 * @param fillLinesPerUpdate Number of lines per update to fill the effect with.
+	 * @param delayPerUpdate The time delay between each update.
 	 */
-	public function new(_x:Float, _y:Float, _srcBmd:BitmapData, ?_width:Int, ?_height:Int, ?_fillLinesPerUpdate:Int = 1, ?_delayPerUpdate:Float = .05)
+	public function new(x:Float, y:Float, srcBmd:BitmapData, ?width:Int, ?height:Int, ?fillLinesPerUpdate:Int = 1, ?delayPerUpdate:Float = .05)
 	{
-		super(_x, _y);
+		super(x, y);
 		
-		if ((_width != null && _width != _srcBmd.width) || (_height != null && _height != _srcBmd.height))
+		if ((width != null && width != srcBmd.width) || (height != null && height != srcBmd.height))
 		{
-			srcBitmapData = new BitmapData(_width, _height, true, FlxColor.TRANSPARENT);
-			srcBitmapData.copyPixels(_srcBmd, new Rectangle(0, 0, _srcBmd.width, _srcBmd.height), new Point(0, _height -_srcBmd.height));
+			srcBitmapData = new BitmapData(width, height, true, FlxColor.TRANSPARENT);
+			srcBitmapData.copyPixels(srcBmd, new Rectangle(0, 0, srcBmd.width, srcBmd.height), new Point(0, height -srcBmd.height));
 		}
 		else
 		{
-			srcBitmapData = _srcBmd;
+			srcBitmapData = srcBmd;
 		}
 		
 		makeGraphic(srcBitmapData.width, srcBitmapData.height, FlxColor.TRANSPARENT, true);
 		
-		fillDelay = _delayPerUpdate;
-		fillOffset = _fillLinesPerUpdate;
+		fillDelay = delayPerUpdate;
+		fillOffset = fillLinesPerUpdate;
 		
 		dropRect = new Rectangle(0, srcBitmapData.height-fillOffset, srcBitmapData.width, fillOffset);
 		dropPoint = new Point();
 		dropY = srcBitmapData.height;
 	}
 	
-	/**
-	 * Starts the effect
-	 */
-	public function start():Void
-	{
-		isFilling = true;
-	}
-	
-	/**
-	 * Pauses the effect
-	 */
-	public function stop():Void
-	{
-		isFilling = false;
-	}
-	
 	override public function update(elapsed:Float)
 	{
-		if (isFilling && complete == false) 
+		if (complete == false) 
 		{
-			fillClock += FlxG.elapsed;
+			fillClock += elapsed;
 			
 			if (dropRect.y >= 0 && fillClock >= fillDelay)
 			{

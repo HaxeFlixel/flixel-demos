@@ -13,7 +13,6 @@ class DemoState extends FlxState
 	private var effectSprite:FlxFloodFill;
 	private var effectSprite2:FlxFloodFill;
 	private var infoText:FlxText;
-	private var isActive:Bool = false;
 	
 	override public function create():Void
 	{
@@ -41,18 +40,8 @@ class DemoState extends FlxState
 		
 		if (FlxG.keys.justPressed.SPACE) 
 		{
-			if (!isActive) 
-			{
-				effectSprite.start();
-				effectSprite2.start();
-			}
-			else
-			{
-				effectSprite.stop();
-				effectSprite2.stop();
-			}
-			
-			isActive = !isActive;
+			effectSprite.active = !effectSprite.active;
+			effectSprite2.active = !effectSprite2.active;
 		}
 		
 		super.update(elapsed);
