@@ -11,6 +11,16 @@ import openfl.filters.ShaderFilter;
 
 class DemoState extends FlxState
 {
+	#if flash
+	override public function create():Void
+	{
+		var infoText:FlxText = new FlxText(10, 10, FlxG.width, "This demo does not work on Flash", 16);
+		infoText.setFormat(null, 16, FlxColor.WHITE, FlxTextAlign.CENTER);
+		infoText.setPosition(FlxG.width*.5 -infoText.width*.5, FlxG.height*.45);
+		add(infoText);
+	}
+	#else
+	
 	private var effect:MosaicEffect;
 	private var effectTween:FlxTween;
 	
@@ -48,4 +58,5 @@ class DemoState extends FlxState
 	{
 		effect.setEffectStrengthXY(v, v);
 	}
+	#end
 }
