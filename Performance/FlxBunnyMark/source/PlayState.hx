@@ -6,11 +6,11 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
+import flixel.system.FlxAssets.FlxShader;
 import flixel.text.FlxText;
 import flixel.tile.FlxTileblock;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
-//import shaders.Invert;
 
 /**
  * ...
@@ -22,6 +22,7 @@ class PlayState extends FlxState
 	
 	public static var complex:Bool = false;
 	public static var offScreen:Bool = false;
+	public static var useShaders:Bool = false;
 	
 	private var _changeAmount:Int = Std.int(INITIAL_AMOUNT / 2);
 	private var _times:Array<Float>;
@@ -36,8 +37,16 @@ class PlayState extends FlxState
 	private var _offScreenButton:FlxButton;
 	private var _bunnyCounter:FlxText;
 	private var _fpsCounter:FlxText;
+	
+	#if !flash
+	private var _shaderButton:FlxButton;
+	
 	private var floodFill = new FloodFill();
 	private var invert = new Invert();
+	#else
+	private var floodFill:FlxShader;
+	private var invert:FlxShader;
+	#end
 	
 	override public function create():Void
 	{
@@ -60,9 +69,6 @@ class PlayState extends FlxState
 		_bunnies = new FlxTypedGroup<Bunny>();
 		changeBunnyNumber(true);
 		add(_bunnies);
-		
-		for (i in 0...25) _bunnies.members[i].shader = floodFill;
-		for (i in 25...50) _bunnies.members[i].shader = invert;
 		
 		// Add a jumping pirate
 		_pirate = new FlxSprite();
@@ -110,6 +116,11 @@ class PlayState extends FlxState
 		_offScreenButton = new FlxButton(rightButtonX, 35, "On-Screen", onOffScreenToggle);
 		add(_offScreenButton);
 		
+		#if !flash
+		_shaderButton = new FlxButton(rightButtonX, 60, "Shaders: Off", onShaderToggle);
+		add(_shaderButton);
+		#end
+		
 		// The texts
 		_bunnyCounter = new FlxText(0, 10, FlxG.width, "Bunnies: " + _changeAmount);
 		_bunnyCounter.setFormat(null, 22, FlxColor.BLACK, CENTER);
@@ -126,7 +137,9 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		
+		#if !flash
 		floodFill.uFloodFillY = 0.5 * (1.0 + Math.sin(Lib.getTimer() / 1000));
+		#end
 		
 		var t = Lib.getTimer();
 		
@@ -153,10 +166,14 @@ class PlayState extends FlxState
 	{
 		if (Add)
 		{
+			var halfAmount:Int = Std.int(0.5 * _changeAmount);
+			var shader:FlxShader = null;
+			
 			for (i in 0..._changeAmount)
 			{
+				shader = (i <  halfAmount) ? floodFill : invert;
 				// It's much slower to recycle objects, but keeps runtime costs of garbage collection low
-				_bunnies.add(new Bunny().init());
+				_bunnies.add(new Bunny().init(offScreen, useShaders, shader));
 			}
 		}
 		else 
@@ -229,10 +246,27 @@ class PlayState extends FlxState
 		{
 			if (bunny != null)
 			{
-				bunny.init(offScreen);
+				bunny.init(offScreen, useShaders);
 			}
 		}
 	}
+	
+	#if !flash
+	private function onShaderToggle():Void
+	{
+		useShaders = !useShaders;
+		toggleHelper(_shaderButton, "Shaders: Off", "Shaders: On");
+		
+		// Update the bunnies
+		for (bunny in _bunnies)
+		{
+			if (bunny != null)
+			{
+				bunny.useShader = useShaders;
+			}
+		}
+	}
+	#end
 	
 	/**
 	 * Just a little helper function for some toggle button behaviour.
