@@ -38,7 +38,7 @@ class PlayState extends FlxState
 	private var _bunnyCounter:FlxText;
 	private var _fpsCounter:FlxText;
 	
-	#if !flash
+	#if shaders_supported
 	private var _shaderButton:FlxButton;
 	
 	private var floodFill = new FloodFill();
@@ -116,7 +116,7 @@ class PlayState extends FlxState
 		_offScreenButton = new FlxButton(rightButtonX, 35, "On-Screen", onOffScreenToggle);
 		add(_offScreenButton);
 		
-		#if !flash
+		#if shaders_supported
 		_shaderButton = new FlxButton(rightButtonX, 60, "Shaders: Off", onShaderToggle);
 		add(_shaderButton);
 		#end
@@ -137,11 +137,11 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		
-		#if !flash
-		floodFill.uFloodFillY = 0.5 * (1.0 + Math.sin(Lib.getTimer() / 1000));
-		#end
+		var t = FlxG.game.ticks;
 		
-		var t = Lib.getTimer();
+		#if shaders_supported
+		floodFill.uFloodFillY = 0.5 * (1.0 + Math.sin(t / 1000));
+		#end
 		
 		_pirate.x = Std.int((FlxG.width - _pirate.width) * (0.5 + 0.5 * Math.sin(t / 3000)));
 		_pirate.y = Std.int(FlxG.height - 1.3 * _pirate.height + 70 - 30 * Math.sin(t / 100));
@@ -251,7 +251,7 @@ class PlayState extends FlxState
 		}
 	}
 	
-	#if !flash
+	#if shaders_supported
 	private function onShaderToggle():Void
 	{
 		useShaders = !useShaders;
