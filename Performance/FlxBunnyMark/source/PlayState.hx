@@ -55,7 +55,7 @@ class PlayState extends FlxState
 		var bgWidth:Int = Math.ceil(FlxG.width / bgSize) * bgSize;
 		var bgHeight:Int = Math.ceil(FlxG.height / bgSize) * bgSize;
 		
-		if (FlxG.renderBlit)
+		if (FlxG.renderBlit #if !openfl_legacy || true #end)
 		{
 			var bg:FlxTileblock = new FlxTileblock(0, 0, bgWidth, bgHeight);
 			add(bg.loadTiles("assets/grass.png"));
