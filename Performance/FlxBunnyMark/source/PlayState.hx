@@ -18,7 +18,7 @@ import flixel.util.FlxColor;
  */
 class PlayState extends FlxState
 {
-	public static inline var INITIAL_AMOUNT:Int = 100;
+	public static inline var INITIAL_AMOUNT:Int = 1000;
 	
 	public static var complex:Bool = false;
 	public static var offScreen:Bool = false;

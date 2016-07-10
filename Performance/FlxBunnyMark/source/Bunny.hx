@@ -11,6 +11,10 @@ import flixel.system.FlxAssets.FlxShader;
  */
 class Bunny extends FlxSprite
 {
+	public var complex(default, set):Bool = false;
+	
+	public var useShader(default, set):Bool = false;
+	
 	private var _shader:FlxShader;
 	
 	public function new() 
@@ -95,8 +99,6 @@ class Bunny extends FlxSprite
 		}
 	}
 	
-	public var complex(default, set):Bool = false;
-	
 	private function set_complex(Value:Bool):Bool
 	{
 		if (Value)
@@ -111,8 +113,6 @@ class Bunny extends FlxSprite
 		
 		return complex = Value;
 	}
-	
-	public var useShader(default, set):Bool = false;
 	
 	private function set_useShader(Value:Bool):Bool
 	{
