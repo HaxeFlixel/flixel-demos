@@ -1,0 +1,15 @@
+-main ApplicationMain 
+-lib nme
+-lib flixel
+-cp source
+-cp C:\Motion-Twin\haxe\lib\nme/3,5,5/
+-cp C:\Motion-Twin\haxe\lib\flixel/1,09/
+-cp assets/axonometricLib
+-D nme_install_tool
+-D web
+-swf-version 10.1
+-swf9 export/flash/bin/AxonometricDemo.swf
+-swf-header 640:480:30:FFFFFF
+-cp export/flash/haxe
+--no-inline
+-debug

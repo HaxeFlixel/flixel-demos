@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<assets path="">
+		<image path="grounddirt.png" id="axonometric_grounddirt"/>
+		<image path="tile_town.png" id="axonometric_tile_town"/>
+		<image path="oval_shadow_anim.png" id="axonometric_oval_shadow_anim"/>
+	</assets>
+</project>
