@@ -13,18 +13,21 @@ import nape.phys.Material;
  * references to objects and other things for quick-access. Feel
  * free to simply ignore it or change it in any way you like.
  */
-class Cache {
+class Cache
+{
     /**
      * Generic levels Array that can be used for cross-state stuff.
      * Example usage: Storing the levels of a platformer.
     */
     public static var tilegraphics: FlxGraphic;
 
-    public static function init(): Void {
+    public static function init(): Void
+    {
         tilegraphics = FlxG.bitmap.add("assets/tiles.png");
     }
 
-    public static function loadLevel(name: String, file: String): CustomNapeTilemap {
+    public static function loadLevel(name: String, file: String): CustomNapeTilemap
+    {
         if (levels.exists(name))
             return levels.get(name);
         var tilemap = new CustomNapeTilemap(file, tilegraphics, Constants.TILESIZE);
