@@ -36,6 +36,8 @@ class Shooter extends FlxTypedGroup<FlxNapeSprite>
 	{
 		super(11);
 		
+		FlxMouseEventManager.init();
+		
 		// Background sprite is used to detect mouseClicks on empty space.
 		// When such click is detected shooter launches a projectile.
 		// If a selectable sprite is clicked, it creates a mouseJoint to that sprite.
@@ -43,7 +45,7 @@ class Shooter extends FlxTypedGroup<FlxNapeSprite>
 		background.makeGraphic(640, 480, 0xFF000000);
 		background.alpha = 1;
 		FlxG.state.insert(0, background);
-		FlxMouseEventManager.add(background, launchProjectile);
+		FlxMouseEventManager.globalManager.add(background, launchProjectile);
 		var color = 0x333333;
 		
 		for (i in 0...maxSize)
@@ -99,7 +101,7 @@ class Shooter extends FlxTypedGroup<FlxNapeSprite>
 	
 	public inline function registerPhysSprite(spr:FlxNapeSprite)
 	{
-		FlxMouseEventManager.add(spr, createMouseJoint);
+		FlxMouseEventManager.globalManager.add(spr, createMouseJoint);
 	}
 	
 	function createMouseJoint(spr:FlxSprite) 
