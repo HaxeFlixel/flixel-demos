@@ -47,7 +47,7 @@ class Card extends FlxNapeSprite
 		body.setShapeFilters(new InteractionFilter(2, ~2));
 		
 		// Setup the mouse events
-		FlxMouseEventManager.add(this, onDown, null, onOver, onOut);
+		FlxMouseEventManager.globalManager.add(this, onDown, null, onOver, onOut);
 	}
 	
 	private function onDown(Sprite:FlxSprite)
@@ -94,7 +94,7 @@ class Card extends FlxNapeSprite
 	override public function destroy():Void 
 	{
 		// Make sure that this object is removed from the FlxMouseEventManager for GC
-		FlxMouseEventManager.remove(this);
+		FlxMouseEventManager.globalManager.remove(this);
 		super.destroy();
 	}
 }
