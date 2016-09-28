@@ -77,12 +77,12 @@ class TiledLevel extends TiledMap
 			var imagePath 		= new Path(tileSet.imageSource);
 			var processedPath 	= c_PATH_LEVEL_TILESHEETS + imagePath.file + "." + imagePath.ext;
 			
-			var animated:Bool = tileLayer.properties.contains("animated");
-			var tilemap:FlxTilemap = animated ? new FlxTilemapExt() : new FlxTilemap();
+			// could be a regular FlxTilemap if there are no animated tiles
+			var tilemap = new FlxTilemapExt();
 			tilemap.loadMapFromArray(tileLayer.tileArray, width, height, processedPath,
 				tileSet.tileWidth, tileSet.tileHeight, OFF, tileSet.firstGID, 1, 1);
 			
-			if (animated)
+			if (tileLayer.properties.contains("animated"))
 			{
 				var tileset = tilesets["level"];
 				var specialTiles:Map<Int, TiledTilePropertySet> = new Map();
@@ -90,14 +90,15 @@ class TiledLevel extends TiledMap
 				{
 					if (tileProp != null && tileProp.animationFrames.length > 0)
 					{
-						specialTiles[tileProp.tileID+tileset.firstGID] = tileProp;
+						specialTiles[tileProp.tileID + tileset.firstGID] = tileProp;
 					}
 				}
-				cast(tilemap, FlxTilemapExt).setSpecialTiles([
-					for (tile in cast(layer, TiledTileLayer).tiles)
-					(tile != null && specialTiles.exists(tile.tileID))
-						? animatedTile(specialTiles[tile.tileID], tileset)
-						: null
+				var tileLayer:TiledTileLayer = cast layer;
+				tilemap.setSpecialTiles([
+					for (tile in tileLayer.tiles)
+						if (tile != null && specialTiles.exists(tile.tileID))
+							getAnimatedTile(specialTiles[tile.tileID], tileset)
+						else null
 				]);
 			}
 			
@@ -117,14 +118,14 @@ class TiledLevel extends TiledMap
 		}
 	}
 
-	static inline function animatedTile(props:TiledTilePropertySet, tileset:TiledTileSet)
+	private function getAnimatedTile(props:TiledTilePropertySet, tileset:TiledTileSet):FlxTileSpecial
 	{
 		var special = new FlxTileSpecial(1, false, false, 0);
-		var n:Int = props.animationFrames.length,
-		offset = Std.random(n);
+		var n:Int = props.animationFrames.length;
+		var offset = Std.random(n);
 		special.addAnimation(
-			[for (i in 0 ... n) props.animationFrames[(i+offset) % n].tileID + tileset.firstGID],
-			(1000/props.animationFrames[0].duration)
+			[for (i in 0 ... n) props.animationFrames[(i + offset) % n].tileID + tileset.firstGID],
+			(1000 / props.animationFrames[0].duration)
 		);
 		return special;
 	}
