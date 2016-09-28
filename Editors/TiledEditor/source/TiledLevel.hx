@@ -11,8 +11,11 @@ import flixel.addons.editors.tiled.TiledObject;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledTileSet;
+import flixel.addons.editors.tiled.TiledTilePropertySet;
 import flixel.group.FlxGroup;
 import flixel.tile.FlxTilemap;
+import flixel.addons.tile.FlxTilemapExt;
+import flixel.addons.tile.FlxTileSpecial;
 import haxe.io.Path;
 
 /**
@@ -74,9 +77,30 @@ class TiledLevel extends TiledMap
 			var imagePath 		= new Path(tileSet.imageSource);
 			var processedPath 	= c_PATH_LEVEL_TILESHEETS + imagePath.file + "." + imagePath.ext;
 			
-			var tilemap:FlxTilemap = new FlxTilemap();
+			var animated:Bool = tileLayer.properties.contains("animated");
+			var tilemap:FlxTilemap = animated ? new FlxTilemapExt() : new FlxTilemap();
 			tilemap.loadMapFromArray(tileLayer.tileArray, width, height, processedPath,
 				tileSet.tileWidth, tileSet.tileHeight, OFF, tileSet.firstGID, 1, 1);
+			
+			if (animated)
+			{
+				var tileset = tilesets["level"];
+				var specialTiles:Map<Int, TiledTilePropertySet> = new Map();
+				for (tileProp in tileset.tileProps)
+				{
+					if (tileProp != null && tileProp.animationFrames.length > 0)
+					{
+						specialTiles[tileProp.tileID+tileset.firstGID] = tileProp;
+					}
+				}
+				cast(tilemap, FlxTilemapExt).setSpecialTiles([
+					for (tile in cast(layer, TiledTileLayer).tiles)
+					(tile != null && specialTiles.exists(tile.tileID))
+						? animatedTile(specialTiles[tile.tileID], tileset)
+						: null
+				]);
+			}
+			
 			
 			if (tileLayer.properties.contains("nocollide"))
 			{
@@ -91,6 +115,18 @@ class TiledLevel extends TiledMap
 				collidableTileLayers.push(tilemap);
 			}
 		}
+	}
+
+	static inline function animatedTile(props:TiledTilePropertySet, tileset:TiledTileSet)
+	{
+		var special = new FlxTileSpecial(1, false, false, 0);
+		var n:Int = props.animationFrames.length,
+		offset = Std.random(n);
+		special.addAnimation(
+			[for (i in 0 ... n) props.animationFrames[(i+offset) % n].tileID + tileset.firstGID],
+			(1000/props.animationFrames[0].duration)
+		);
+		return special;
 	}
 	
 	public function loadObjects(state:PlayState)
