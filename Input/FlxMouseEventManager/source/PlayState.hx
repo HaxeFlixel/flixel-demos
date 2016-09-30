@@ -30,7 +30,7 @@ class PlayState extends FlxState
 		
 		// We need the FlxMouseEventManager plugin for sprite-mouse-interaction
 		// Important to set this up before createCards()
-		FlxG.plugins.add(new FlxMouseEventManager());
+		FlxMouseEventManager.init();
 		
 		// Creating the card group and the cards
 		_cardGroup = new FlxTypedGroup<Card>();
