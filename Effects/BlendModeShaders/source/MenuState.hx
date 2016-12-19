@@ -1,5 +1,6 @@
 package;
 
+#if !flash
 import effects.ColorBurnBlend;
 import effects.ColorSwap;
 import effects.HardMixBlend;
@@ -9,6 +10,7 @@ import effects.MultiplyBlend;
 import effects.ShutterEffect;
 import effects.VividLightBlend;
 import effects.WiggleEffect;
+#end
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -29,10 +31,11 @@ class MenuState extends FlxState
 	private static inline var LOGO_COLOR_LIGHT_BLUE:Int = 0x00ccff;
 	private static inline var LOGO_COLOR_GREEN:Int = 0x00cc33;
 	// effects (also shader based)
+	#if !flash
 	private var shutter:ShutterEffect;
 	private var wiggleEffect:WiggleEffect;
 	private var colorSwap:ColorSwap;
-	
+	#end
 	private var shutterCanvas:FlxSprite;
 	private var logoColors:Array<Int>;
 	private var infoText:FlxText;
@@ -44,11 +47,14 @@ class MenuState extends FlxState
 		var backdrop = new FlxSprite(0, 0, AssetPaths.backdrop__png);
 		add(backdrop);
 		
+		#if flash
+		return;
+		#else
 		wiggleEffect = new WiggleEffect();
 		wiggleEffect.effectType = WiggleEffect.EFFECT_TYPE_DREAMY;
 		wiggleEffect.waveAmplitude = .2;
 		wiggleEffect.waveFrequency = 7;
-		wiggleEffect.waveSpeed = 1;
+		wiggleEffect.waveSpeed = 1;		
 		
 		// set this to false to apply effect to the whole screen
 		var doApplyShaderToBackdrop = true;
@@ -73,6 +79,7 @@ class MenuState extends FlxState
 		logoColors = [LOGO_COLOR_RED, LOGO_COLOR_BLUE, LOGO_COLOR_LIGHT_BLUE, LOGO_COLOR_GREEN, LOGO_COLOR_YELLOW];
 		colorSwap = new ColorSwap(LOGO_COLOR_RED, FlxG.random.int(0, logoColors.length-1));
 		logo.shader = colorSwap.shader;
+		
 		
 		new FlxTimer().start(.02, function (timer)
 		{
@@ -116,8 +123,10 @@ class MenuState extends FlxState
 		}
 		
 		super.create();
+		#end
 	}
 	
+	#if !flash
 	private function setupShutterEffect():Void
 	{
 		shutter = new ShutterEffect();
@@ -138,4 +147,5 @@ class MenuState extends FlxState
 		
 		super.update(elapsed);
 	}
+	#end
 }
