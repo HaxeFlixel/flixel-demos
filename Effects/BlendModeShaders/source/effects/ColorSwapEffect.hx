@@ -3,9 +3,6 @@ package effects;
 import flixel.util.FlxColor;
 import openfl.display.Shader;
 
-/**
- * Note: BitmapFilters can only be used on 'OpenFL Next'
- */
 class ColorSwapEffect
 {
 	/**

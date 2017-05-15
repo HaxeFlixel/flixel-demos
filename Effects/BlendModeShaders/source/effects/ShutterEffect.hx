@@ -3,9 +3,6 @@ package effects;
 import flixel.FlxG;
 import openfl.display.Shader;
  
-/**
- * Note: BitmapFilters can only be used on 'OpenFL Next'
- */
 class ShutterEffect
 {
 	public static inline var SHUTTER_TARGET_FLXSPRITE:Int = 0;

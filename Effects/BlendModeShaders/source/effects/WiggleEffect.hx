@@ -2,42 +2,34 @@ package effects;
 
 import openfl.display.Shader;
 
-/**
- * Note: BitmapFilters can only be used on 'OpenFL Next'
- */
+enum WiggleEffectType
+{
+	DREAMY;
+	WAVY;
+	HEAT_WAVE_HORIZONTAL;
+	HEAT_WAVE_VERTICAL;
+	FLAG;
+}
+
 class WiggleEffect
 {
-	public static inline var EFFECT_TYPE_DREAMY:Int = 0;
-	public static inline var EFFECT_TYPE_WAVY:Int = 1;
-	public static inline var EFFECT_TYPE_HEAT_WAVE_HORIZONTAL:Int = 2;
-	public static inline var EFFECT_TYPE_HEAT_WAVE_VERTICAL:Int = 3;
-	public static inline var EFFECT_TYPE_FLAG:Int = 4;
+	public var effectType(default, set):WiggleEffectType = DREAMY;
+	public var shader(default, null):WiggleShader = new WiggleShader();
+	public var waveSpeed(default, set):Float = 0;
+	public var waveFrequency(default, set):Float = 0;
+	public var waveAmplitude(default, set):Float = 0;
 	
-	public var effectType(default, set):Int = 0;
-	public var shader(default, null):WiggleShader;
-	public var waveSpeed(default, set):Float;
-	public var waveFrequency(default, set):Float;
-	public var waveAmplitude(default, set):Float;
-	
-	public function new():Void
-	{
-		shader = new WiggleShader();
-		waveSpeed = 0.0;
-		waveFrequency = 0.0;
-		waveAmplitude = .00;
-		
-		effectType = EFFECT_TYPE_DREAMY;
-	}
+	public function new():Void {}
 	
 	public function update(elapsed:Float):Void
 	{
 		shader.uTime += elapsed;
 	}
 	
-	private function set_effectType(v:Int):Int
+	private function set_effectType(v:WiggleEffectType):WiggleEffectType
 	{
 		this.effectType = v;
-		shader.effectType = this.effectType;
+		shader.effectType = WiggleEffectType.getConstructors().indexOf(Std.string(v));
 		return v;
 	}
 	

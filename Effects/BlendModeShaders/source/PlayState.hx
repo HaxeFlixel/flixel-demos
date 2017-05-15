@@ -71,7 +71,7 @@ class PlayState extends FlxState
 		add(infoText);
 		#else
 		wiggleEffect = new WiggleEffect();
-		wiggleEffect.effectType = WiggleEffect.EFFECT_TYPE_DREAMY;
+		wiggleEffect.effectType = WiggleEffectType.DREAMY;
 		wiggleEffect.waveAmplitude = 0.2;
 		wiggleEffect.waveFrequency = 7;
 		wiggleEffect.waveSpeed = 1;
