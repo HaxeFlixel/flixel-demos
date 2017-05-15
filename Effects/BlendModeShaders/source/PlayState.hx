@@ -6,15 +6,15 @@ import flixel.FlxState;
 import flixel.util.FlxColor;
 
 #if !flash
-import effects.ColorBurnBlend;
-import effects.ColorSwap;
-import effects.HardMixBlend;
-import effects.LightenBlend;
-import effects.LinearDodgeBlend;
-import effects.MultiplyBlend;
-import effects.ShutterEffect;
-import effects.VividLightBlend;
+import blends.ColorBurnBlend;
+import blends.HardMixBlend;
+import blends.LightenBlend;
+import blends.LinearDodgeBlend;
+import blends.MultiplyBlend;
+import blends.VividLightBlend;
 import effects.WiggleEffect;
+import effects.ColorSwapEffect;
+import effects.ShutterEffect;
 import openfl.filters.ShaderFilter;
 import openfl.display.Shader;
 import flixel.util.FlxTimer;
@@ -74,7 +74,7 @@ class PlayState extends FlxState
 		add(logo);
 		
 		var logoColors = [RED, BLUE, YELLOW, CYAN, GREEN];
-		var colorSwap = new ColorSwap(RED, FlxG.random.int(0, logoColors.length - 1));
+		var colorSwap = new ColorSwapEffect(RED, FlxG.random.int(0, logoColors.length - 1));
 		logo.shader = colorSwap.shader;
 		
 		new FlxTimer().start(0.2, function(timer)

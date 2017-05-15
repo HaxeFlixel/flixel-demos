@@ -5,7 +5,7 @@ import openfl.display.Shader;
 /**
  * Note: BitmapFilters can only be used on 'OpenFL Next'
  */
-class ColorSwap
+class ColorSwapEffect
 {
 	/**
 	 * The instance of the actual shader class

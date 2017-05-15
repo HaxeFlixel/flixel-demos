@@ -1,4 +1,4 @@
-package effects;
+package blends;
 
 import openfl.display.Shader;
  

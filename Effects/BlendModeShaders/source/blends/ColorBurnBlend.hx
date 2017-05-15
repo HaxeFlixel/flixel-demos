@@ -1,26 +1,29 @@
-package effects;
+package blends;
 
 import openfl.display.Shader;
  
 /**
  * Note: BitmapFilters can only be used on 'OpenFL Next'
  */
-class VividLightBlend
+class ColorBurnBlend
 {
-	public var shader(default, null):VividLightShader;
+	public var shader(default, null):ColorBurnShader;
 	
 	/**
 	 * A value between 0-255
 	 */
 	public var r(default, null):Float = 1.0;
+	
 	/**
 	 * A value between 0-255
 	 */
 	public var g(default, null):Float = 1.0;
+	
 	/**
 	 * A value between 0-255
 	 */
 	public var b(default, null):Float = 1.0;
+	
 	/**
 	 * A value between 0-1
 	 */
@@ -28,16 +31,16 @@ class VividLightBlend
 	
 	public function new(r:Float = 255, g:Float = 255, b:Float = 255, a:Float = 1):Void
 	{
-		shader = new VividLightShader();
+		shader = new ColorBurnShader();
 		setRGBA(r, g, b, a);
 	}
 	
 	private function set_a(v:Float):Float
 	{
-		a = (v < 0.0 ? 0.0 :
-			(v > 1. ? 1. : v));
+		this.a = (v < 0.0 ? 0.0 : v);
+		this.a = (v > 1.0 ? 1.0 : v);
 		
-		shader.uBlendColor[3] = a;
+		shader.uBlendColor[3] = this.a;
 		return v;
 	}
 	
@@ -55,7 +58,7 @@ class VividLightBlend
 	}
 }
 
-class VividLightShader extends Shader
+class ColorBurnShader extends Shader
 {
 	@fragment var code = '
 
@@ -66,51 +69,41 @@ class VividLightShader extends Shader
 	 */
 	float normalize(float value)
 	{
-		return (value-0) / (255. - 0.);
+		return (value-0)/(255-0);
 	}
 	
-	float colorDodge(float base, float blend)
+	float applyColorBurnToChannel( float base, float blend )
 	{
-		return (blend == 1.0) ? blend : min(base / (1.0 - blend), 1.0);
+		return ((blend == 0.0) ? blend : max((1.0 - ((1.0 - base) / blend)), 0.0));
 	}
 	
-	float colorBurn(float base, float blend)
-	{
-		return (blend == 0.0) ? blend : max((1.0 - ((1.0 - base) / blend)), 0.0);
-	}
-	
-	float vividLight( float base, float blend )
-	{
-		return ((blend < 0.5) ? colorBurn(base, (2.0 * blend)) : colorDodge(base, (2.0 * (blend - 0.5))));
-	}
-	
-	vec4 vividLight(vec4 base, vec4 blend)
+	vec4 blendColorBurn(vec4 base, vec4 blend)
 	{
 		return vec4(
-			vividLight(base.r, blend.r),
-			vividLight(base.g, blend.g),
-			vividLight(base.b, blend.b),
-			vividLight(base.a, blend.a)
+			applyColorBurnToChannel(base.r, blend.r),
+			applyColorBurnToChannel(base.g, blend.g),
+			applyColorBurnToChannel(base.b, blend.b),
+			applyColorBurnToChannel(base.a, blend.a)
 		);
 	}
 	
-	vec4 vividLight(vec4 base, vec4 blend, float opacity)
+	vec4 blendColorBurn(vec4 base, vec4 blend, float opacity)
 	{
-		return (vividLight(base, blend) * opacity + base * (1.0 - opacity));
+		return (blendColorBurn(base, blend) * opacity + base * (1.0 - opacity));
 	}
 	
 	void main()
 	{
-		vec4 base = texture2D(${ Shader.uSampler }, ${ Shader.vTexCoord } );
+		vec4 base = texture2D(${Shader.uSampler }, ${Shader.vTexCoord });
 		
-		vec4 blendColor = vec4(
+		vec4 blend = vec4(
 			normalize(uBlendColor[0]),
 			normalize(uBlendColor[1]),
 			normalize(uBlendColor[2]),
 			uBlendColor[3]
 		);
 		
-		gl_FragColor = vividLight(base, blendColor, uBlendColor[3]);
+		gl_FragColor = blendColorBurn(base, blend, uBlendColor[3]);
 	}
 	';
 	
