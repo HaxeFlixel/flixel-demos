@@ -27,11 +27,18 @@ import flixel.text.FlxText;
 
 @:enum abstract LogoColor(FlxColor) to FlxColor
 {
+	static var LIST(default, null) = [RED, BLUE, YELLOW, CYAN, GREEN];
+
 	var RED = 0xff3366;
 	var BLUE = 0x3333ff;
 	var YELLOW = 0xffcc33;
 	var CYAN = 0x00ccff;
 	var GREEN = 0x00cc33;
+
+	public static function getRandom():LogoColor
+	{
+		return LIST[FlxG.random.int(0, LIST.length - 1)];
+	}
 }
 
 class PlayState extends FlxState
@@ -73,18 +80,17 @@ class PlayState extends FlxState
 		logo.screenCenter();
 		add(logo);
 		
-		var logoColors = [RED, BLUE, YELLOW, CYAN, GREEN];
-		var colorSwap = new ColorSwapEffect(RED, FlxG.random.int(0, logoColors.length - 1));
+		var colorSwap = new ColorSwapEffect(RED, LogoColor.getRandom());
 		logo.shader = colorSwap.shader;
 		
 		new FlxTimer().start(0.2, function(timer)
 		{
-			colorSwap.colorToReplace = logoColors[FlxG.random.int(0, logoColors.length - 1)];
-			colorSwap.newColor = logoColors[FlxG.random.int(0, logoColors.length - 1)];
+			colorSwap.colorToReplace = LogoColor.getRandom();
+			colorSwap.newColor = LogoColor.getRandom();
 		}, 0);
 
 		var labels = FlxUIDropDownMenu.makeStrIdLabelArray([for (name in effects.keys()) name]);
-		add(new FlxUIDropDownMenu(2, 2, labels, selectBlendEffect, new FlxUIDropDownHeader(150)));
+		add(new FlxUIDropDownMenu(2, 2, labels, selectBlendEffect, new FlxUIDropDownHeader(140)));
 
 		selectBlendEffect("ColorBurnBlend");
 		createShutterEffect();
