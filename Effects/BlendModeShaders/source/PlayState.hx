@@ -103,18 +103,20 @@ class PlayState extends FlxState
 	#if !flash
 	private function createUI()
 	{
+		var dropDownWidth = 155;
+
 		add(createText(4, 38, "Wiggle Effect:"));
 
 		var wiggleEffects = FlxUIDropDownMenu.makeStrIdLabelArray(WiggleEffectType.getConstructors());
 		add(new FlxUIDropDownMenu(80, 34, wiggleEffects, function(type)
 		{
 			wiggleEffect.effectType = WiggleEffectType.createByName(type);
-		}, new FlxUIDropDownHeader(140)));
+		}, new FlxUIDropDownHeader(dropDownWidth)));
 
 		add(createText(4, 8, "Blend Mode:"));
 
 		var blendModes = FlxUIDropDownMenu.makeStrIdLabelArray([for (name in effects.keys()) name]);
-		add(new FlxUIDropDownMenu(80, 4, blendModes, selectBlendEffect, new FlxUIDropDownHeader(140)));
+		add(new FlxUIDropDownMenu(80, 4, blendModes, selectBlendEffect, new FlxUIDropDownHeader(dropDownWidth)));
 	}
 
 	private function selectBlendEffect(blendEffect:String)
