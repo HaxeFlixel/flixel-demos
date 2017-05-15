@@ -42,8 +42,6 @@ class PlayState extends FlxState
 	
 	override public function create():Void
 	{
-		FlxG.debugger.toggleKeys = [FlxKey.DELETE];
-		
 		var backdrop = new FlxSprite(0, 0, AssetPaths.backdrop__png);
 		add(backdrop);
 		
@@ -92,7 +90,7 @@ class PlayState extends FlxState
 			shutter.radius = v;
 		});
 		
-		infoText = new FlxText(10, 10, 120, "Press DEL to display render statistics.\n\nPress R to restart demo.", 11);
+		infoText = new FlxText(10, 10, 120, "Press R to restart demo.", 11);
 		infoText.color = FlxColor.BLACK;
 		add(infoText);
 		
