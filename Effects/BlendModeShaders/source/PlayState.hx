@@ -22,14 +22,17 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 #end
 
+@:enum abstract LogoColor(FlxColor) to FlxColor
+{
+	var RED = 0xff3366;
+	var BLUE = 0x3333ff;
+	var YELLOW = 0xffcc33;
+	var CYAN = 0x00ccff;
+	var GREEN = 0x00cc33;
+}
+
 class PlayState extends FlxState
 {
-	private static inline var LOGO_COLOR_RED:Int = 0xff3366;
-	private static inline var LOGO_COLOR_BLUE:Int = 0x3333ff;
-	private static inline var LOGO_COLOR_YELLOW:Int = 0xffcc33;
-	private static inline var LOGO_COLOR_LIGHT_BLUE:Int = 0x00ccff;
-	private static inline var LOGO_COLOR_GREEN:Int = 0x00cc33;
-
 	// effects (also shader based)
 	#if !flash
 	private var wiggleEffect:WiggleEffect;
@@ -58,8 +61,8 @@ class PlayState extends FlxState
 		
 		setupShutterEffect();
 		
-		var logoColors = [LOGO_COLOR_RED, LOGO_COLOR_BLUE, LOGO_COLOR_LIGHT_BLUE, LOGO_COLOR_GREEN, LOGO_COLOR_YELLOW];
-		var colorSwap = new ColorSwap(LOGO_COLOR_RED, FlxG.random.int(0, logoColors.length - 1));
+		var logoColors = [RED, BLUE, YELLOW, CYAN, GREEN];
+		var colorSwap = new ColorSwap(RED, FlxG.random.int(0, logoColors.length - 1));
 		logo.shader = colorSwap.shader;
 		
 		new FlxTimer().start(0.2, function(timer)
