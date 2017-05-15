@@ -50,20 +50,7 @@ class PlayState extends FlxState
 		wiggleEffect.waveAmplitude = 0.2;
 		wiggleEffect.waveFrequency = 7;
 		wiggleEffect.waveSpeed = 1;
-		
-		// set this to false to apply effect to the whole screen
-		var doApplyShaderToBackdrop = true;
-		
-		if (doApplyShaderToBackdrop)
-		{
-			backdrop.shader = wiggleEffect.shader;
-		}
-		else
-		{
-			FlxG.camera.setFilters([
-				new ShaderFilter(wiggleEffect.shader),
-			]);
-		}
+		backdrop.shader = wiggleEffect.shader;
 		
 		var logo = new FlxSprite(0, 0, AssetPaths.logo__png);
 		logo.screenCenter();
@@ -75,7 +62,7 @@ class PlayState extends FlxState
 		var colorSwap = new ColorSwap(LOGO_COLOR_RED, FlxG.random.int(0, logoColors.length - 1));
 		logo.shader = colorSwap.shader;
 		
-		new FlxTimer().start(0.02, function(timer)
+		new FlxTimer().start(0.2, function(timer)
 		{
 			colorSwap.colorToReplace = logoColors[FlxG.random.int(0, logoColors.length - 1)];
 			colorSwap.newColor = logoColors[FlxG.random.int(0, logoColors.length - 1)];
