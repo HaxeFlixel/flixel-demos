@@ -12,12 +12,12 @@ import blends.LightenShader;
 import blends.LinearDodgeShader;
 import blends.MultiplyShader;
 import blends.VividLightShader;
-import blends.BlendModeEffect;
+import effects.BlendModeEffect;
 import effects.WiggleEffect;
 import effects.ColorSwapEffect;
 import effects.ShutterEffect;
 import openfl.filters.ShaderFilter;
-import openfl.display.Shader;
+import flixel.text.FlxText;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -65,10 +65,7 @@ class PlayState extends FlxState
 		add(backdrop);
 		
 		#if flash
-		var infoText = new FlxText(0, 0, 0, "Not supported on Flash!", 16);
-		infoText.color = FlxColor.BLACK;
-		infoText.screenCenter();
-		add(infoText);
+		add(createText(0, 0, "Not supported on Flash!", 16).screenCenter());
 		#else
 		wiggleEffect = new WiggleEffect();
 		wiggleEffect.effectType = WiggleEffectType.DREAMY;
@@ -90,15 +87,36 @@ class PlayState extends FlxState
 			colorSwap.newColor = LogoColor.getRandom();
 		}, 0);
 
-		var labels = FlxUIDropDownMenu.makeStrIdLabelArray([for (name in effects.keys()) name]);
-		add(new FlxUIDropDownMenu(2, 2, labels, selectBlendEffect, new FlxUIDropDownHeader(140)));
-
 		selectBlendEffect(effects.keys().next());
 		createShutterEffect();
+		createUI();
 		#end
 	}
 
+	private function createText(x, y, label, size = 8):FlxText
+	{
+		var text = new FlxText(x, y, 0, label, size);
+		text.color = FlxColor.BLACK;
+		return text;
+	}
+
 	#if !flash
+	private function createUI()
+	{
+		add(createText(4, 38, "Wiggle Effect:"));
+
+		var wiggleEffects = FlxUIDropDownMenu.makeStrIdLabelArray(WiggleEffectType.getConstructors());
+		add(new FlxUIDropDownMenu(80, 34, wiggleEffects, function(type)
+		{
+			wiggleEffect.effectType = WiggleEffectType.createByName(type);
+		}, new FlxUIDropDownHeader(140)));
+
+		add(createText(4, 8, "Blend Mode:"));
+
+		var blendModes = FlxUIDropDownMenu.makeStrIdLabelArray([for (name in effects.keys()) name]);
+		add(new FlxUIDropDownMenu(80, 4, blendModes, selectBlendEffect, new FlxUIDropDownHeader(140)));
+	}
+
 	private function selectBlendEffect(blendEffect:String)
 	{
 		var color = FlxG.random.color();

@@ -1,4 +1,4 @@
-package blends;
+package effects;
 
 import flixel.util.FlxColor;
 
