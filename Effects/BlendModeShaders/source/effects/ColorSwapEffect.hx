@@ -1,7 +1,8 @@
 package effects;
 
+import flixel.util.FlxColor;
 import openfl.display.Shader;
- 
+
 /**
  * Note: BitmapFilters can only be used on 'OpenFL Next'
  */
@@ -15,19 +16,19 @@ class ColorSwapEffect
 	/**
 	 * The color to replace with another
 	 */
-	public var colorToReplace(default, set):Int;
+	public var colorToReplace(default, set):FlxColor;
 	
 	/**
 	 * The desired new color
 	 */
-	public var newColor(default, set):Int;
+	public var newColor(default, set):FlxColor;
 	
 	/**
 	 * Activates/Deactivates the shader
 	 */
 	public var isShaderActive(default, set):Bool;
 	
-	public function new(?colorToReplace:Int, ?newColor:Int, ?isShaderActive:Bool):Void
+	public function new():Void
 	{
 		shader = new ColorSwapShader();
 		shader.shaderIsActive = true;
@@ -40,33 +41,26 @@ class ColorSwapEffect
 		return value;
 	}
 	
-	private function colorToReplaceRGB(r:Int, g:Int, b:Int):Void
+	private function set_colorToReplace(color:FlxColor):FlxColor
 	{
-		shader.colorOld[0] = r;
-		shader.colorOld[1] = g;
-		shader.colorOld[2] = b;
+		colorToReplace = color;
+
+		shader.colorOld[0] = color.red;
+		shader.colorOld[1] = color.green;
+		shader.colorOld[2] = color.blue;
+		
+		return color;
 	}
 	
-	private function set_colorToReplace(value:Int):Int
+	private function set_newColor(color:FlxColor):FlxColor
 	{
-		colorToReplace = value;
+		newColor = color;
 		
-		shader.colorOld[0] = (value & 0xFF0000) >> 16;
-		shader.colorOld[1] = (value & 0xFF00) >> 8;
-		shader.colorOld[2] = (value & 0xFF);
+		shader.colorNew[0] = color.red;
+		shader.colorNew[1] = color.green;
+		shader.colorNew[2] = color.blue;
 		
-		return value;
-	}
-	
-	private function set_newColor(value:Int):Int
-	{
-		newColor = value;
-		
-		shader.colorNew[0] = (value & 0xFF0000) >> 16;
-		shader.colorNew[1] = (value & 0xFF00) >> 8;
-		shader.colorNew[2] = (value & 0xFF);
-		
-		return value;
+		return color;
 	}
 }
 

@@ -45,16 +45,16 @@ class PlayState extends FlxState
 {
 	#if !flash
 	var wiggleEffect:WiggleEffect;
-	
-	var effects:Map<String, Float->Float->Float->Float->{public var shader(default, null):Shader;}> = [
+
+	var effects:Map<String, FlxColor->{public var shader(default, null):Shader;}> = [
 		"ColorBurnBlend" => ColorBurnBlend.new,
 		"HardMixBlend" => HardMixBlend.new,
 		"LightenBlend" => LightenBlend.new,
-		// LinearDodgeBlend.new,
+		"LinearDodgeBlend" => LinearDodgeBlend.new,
 		"MultiplyBlend" => MultiplyBlend.new,
 		"VividLightBlend" => VividLightBlend.new
 	];
-	#end	
+	#end
 
 	override public function create():Void
 	{
@@ -80,7 +80,7 @@ class PlayState extends FlxState
 		logo.screenCenter();
 		add(logo);
 		
-		var colorSwap = new ColorSwapEffect(RED, LogoColor.getRandom());
+		var colorSwap = new ColorSwapEffect();
 		logo.shader = colorSwap.shader;
 		
 		new FlxTimer().start(0.2, function(timer)
@@ -100,11 +100,10 @@ class PlayState extends FlxState
 	#if !flash
 	private function selectBlendEffect(blendEffect:String)
 	{
-		var r = FlxG.random.float(0, 255);
-		var g = FlxG.random.float(0, 255);
-		var b = FlxG.random.float(0, 255);
-		
-		var effect = effects[blendEffect](r, g, b, 0.5);
+		var color = FlxG.random.color();
+		color.alphaFloat = 0.5;
+
+		var effect = effects[blendEffect](color);
 		FlxG.camera.setFilters([new ShaderFilter(effect.shader)]);
 	}
 	
@@ -116,10 +115,7 @@ class PlayState extends FlxState
 		shutterCanvas.shader = shutter.shader;
 		add(shutterCanvas);
 
-		FlxTween.num(0.0, 450, 1.5, { ease: FlxEase.quintOut, startDelay: 0.2 }, function(v:Float)
-		{
-			shutter.radius = v;
-		});
+		FlxTween.num(0.0, 450, 1.5, { ease: FlxEase.quintOut, startDelay: 0.2 }, function(v) shutter.radius = v);
 	}
 
 	override public function update(elapsed:Float):Void

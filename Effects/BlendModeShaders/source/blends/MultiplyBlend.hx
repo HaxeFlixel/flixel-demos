@@ -1,82 +1,29 @@
 package blends;
 
+import flixel.util.FlxColor;
 import openfl.display.Shader;
- 
-/**
- * Note: BitmapFilters can only be used on 'OpenFL Next'
- */
+
 class MultiplyBlend
 {
-	/**
-	 * The instance of the actual shader class
-	 */
 	public var shader(default, null):MultiplyShader;
 	
-	/**
-	 * A value between 0-255
-	 */
-	public var r(default, set):Float = 1.0;
+	@:isVar
+	public var color(default, set):FlxColor;
 	
-	/**
-	 * A value between 0-255
-	 */
-	public var g(default, set):Float = 1.0;
-	
-	/**
-	 * A value between 0-255
-	 */
-	public var b(default, set):Float = 1.0;
-	
-	/**
-	 * A value between 0-1
-	 */
-	public var a(default, set):Float = 1.0;
-	
-	public function new(r:Float = 0, g:Float = 0, b:Float = 0, a:Float = 1):Void
+	public function new(color:FlxColor):Void
 	{
 		shader = new MultiplyShader();
-		setRGBA(r, g, b, a);
+		this.color = color;
 	}
 	
-	public function setRGBA(r:Float, g:Float, b:Float, a:Float):Void
+	private function set_color(color:FlxColor):FlxColor
 	{
-		this.r = r;
-		this.g = g;
-		this.b = b;
-		this.a = a;
-		
-		shader.uBlendColor[0] = this.r;
-		shader.uBlendColor[1] = this.g;
-		shader.uBlendColor[2] = this.b;
-		shader.uBlendColor[3] = this.a;
-	}
-	
-	private function set_r(value:Float):Float
-	{
-		this.r = value;
-		shader.uBlendColor[0] = this.r;
-		return value;
-	}
-	
-	private function set_g(value:Float):Float
-	{
-		this.g = value;
-		shader.uBlendColor[1] = this.g;
-		return value;
-	}
-	
-	private function set_b(value:Float):Float
-	{
-		this.b = value;
-		shader.uBlendColor[2] = this.b;
-		return value;
-	}
-	
-	private function set_a(value:Float):Float
-	{
-		this.a = value;
-		shader.uBlendColor[3] = this.a;
-		return value;
+		shader.uBlendColor[0] = color.red;
+		shader.uBlendColor[1] = color.green;
+		shader.uBlendColor[2] = color.blue;
+		shader.uBlendColor[3] = color.alphaFloat;
+
+		return this.color = color;
 	}
 }
 

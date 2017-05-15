@@ -1,60 +1,29 @@
 package blends;
 
+import flixel.util.FlxColor;
 import openfl.display.Shader;
- 
-/**
- * Note: BitmapFilters can only be used on 'OpenFL Next'
- */
+
 class LightenBlend
 {
-	/**
-	 * The instance of the actual shader class
-	 */
 	public var shader(default, null):LightenShader;
 	
-	/**
-	 * A value between 0-255
-	 */
-	public var r(default, null):Float = 1.0;
+	@:isVar
+	public var color(default, set):FlxColor;
 	
-	/**
-	 * A value between 0-255
-	 */
-	public var g(default, null):Float = 1.0;
-	
-	/**
-	 * A value between 0-255
-	 */
-	public var b(default, null):Float = 1.0;
-	
-	/**
-	 * A value between 0-1
-	 */
-	public var a(default, null):Float = 1.0;
-	
-	public function new(r:Float = 255, g:Float = 255, b:Float = 255, a:Float = 1):Void
+	public function new(color:FlxColor):Void
 	{
 		shader = new LightenShader();
-		setRGBA(r, g, b, a);
+		this.color = color;
 	}
 	
-	public function setAlpha(a:Float):Void
+	private function set_color(color:FlxColor):FlxColor
 	{
-		this.a = a;
-		shader.uBlendColor[3] = a;
-	}
-	
-	public function setRGBA(r:Float, g:Float, b:Float, a:Float):Void
-	{
-		this.r = r;
-		this.g = g;
-		this.b = b;
-		this.a = a;
-		
-		shader.uBlendColor[0] = r;
-		shader.uBlendColor[1] = g;
-		shader.uBlendColor[2] = b;
-		shader.uBlendColor[3] = a;
+		shader.uBlendColor[0] = color.red;
+		shader.uBlendColor[1] = color.green;
+		shader.uBlendColor[2] = color.blue;
+		shader.uBlendColor[3] = color.alphaFloat;
+
+		return this.color = color;
 	}
 }
 

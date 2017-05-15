@@ -1,8 +1,7 @@
 package effects;
 
 import openfl.display.Shader;
-import flixel.FlxG;
- 
+
 /**
  * Note: BitmapFilters can only be used on 'OpenFL Next'
  */
@@ -14,7 +13,7 @@ class WiggleEffect
 	public static inline var EFFECT_TYPE_HEAT_WAVE_VERTICAL:Int = 3;
 	public static inline var EFFECT_TYPE_FLAG:Int = 4;
 	
-	public  var effectType(default, set):Int = 0;
+	public var effectType(default, set):Int = 0;
 	public var shader(default, null):WiggleShader;
 	public var waveSpeed(default, set):Float;
 	public var waveFrequency(default, set):Float;
@@ -95,7 +94,7 @@ class WiggleShader extends Shader
 	uniform float uWaveAmplitude;
 
 	vec2 sineWave( vec2 pt )
-    {
+	{
 		float x = 0.0;
 		float y = 0.0;
 		
@@ -124,13 +123,13 @@ class WiggleShader extends Shader
 		}
 		
 		return vec2(pt.x + x, pt.y + y);
-    }
+	}
 
 	void main()
-    {
-		vec2 uv = sineWave( ${Shader.vTexCoord} );
+	{
+		vec2 uv = sineWave(${Shader.vTexCoord});
 		gl_FragColor = texture2D(${Shader.uSampler}, uv);
-    }
+	}
 
 	';
 	

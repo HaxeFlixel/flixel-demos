@@ -1,57 +1,29 @@
 package blends;
 
+import flixel.util.FlxColor;
 import openfl.display.Shader;
- 
-/**
- * Note: BitmapFilters can only be used on 'OpenFL Next'
- */
+
 class VividLightBlend
 {
 	public var shader(default, null):VividLightShader;
 	
-	/**
-	 * A value between 0-255
-	 */
-	public var r(default, null):Float = 1.0;
-	/**
-	 * A value between 0-255
-	 */
-	public var g(default, null):Float = 1.0;
-	/**
-	 * A value between 0-255
-	 */
-	public var b(default, null):Float = 1.0;
-	/**
-	 * A value between 0-1
-	 */
-	public var a(default, set):Float = 1.0;
+	@:isVar
+	public var color(default, set):FlxColor;
 	
-	public function new(r:Float = 255, g:Float = 255, b:Float = 255, a:Float = 1):Void
+	public function new(color:FlxColor):Void
 	{
 		shader = new VividLightShader();
-		setRGBA(r, g, b, a);
+		this.color = color;
 	}
 	
-	private function set_a(v:Float):Float
+	private function set_color(color:FlxColor):FlxColor
 	{
-		a = (v < 0.0 ? 0.0 :
-			(v > 1. ? 1. : v));
-		
-		shader.uBlendColor[3] = a;
-		return v;
-	}
-	
-	public function setRGBA(r:Float, g:Float, b:Float, a:Float):Void
-	{
-		this.r = r;
-		this.g = g;
-		this.b = b;
-		this.a = a;
-		
-		shader.uBlendColor[0] = this.r;
-		shader.uBlendColor[1] = this.g;
-		shader.uBlendColor[2] = this.b;
-		shader.uBlendColor[3] = this.a;
+		shader.uBlendColor[0] = color.red;
+		shader.uBlendColor[1] = color.green;
+		shader.uBlendColor[2] = color.blue;
+		shader.uBlendColor[3] = color.alphaFloat;
+
+		return this.color = color;
 	}
 }
 
@@ -101,7 +73,7 @@ class VividLightShader extends Shader
 	
 	void main()
 	{
-		vec4 base = texture2D(${ Shader.uSampler }, ${ Shader.vTexCoord } );
+		vec4 base = texture2D(${Shader.uSampler}, ${Shader.vTexCoord});
 		
 		vec4 blendColor = vec4(
 			normalize(uBlendColor[0]),

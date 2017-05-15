@@ -1,63 +1,29 @@
 package blends;
 
+import flixel.util.FlxColor;
 import openfl.display.Shader;
- 
-/**
- * Note: BitmapFilters can only be used on 'OpenFL Next'
- */
+
 class HardMixBlend
 {
-	/**
-	 * The instance of the actual shader class
-	 */
 	public var shader(default, null):HardMixShader;
 	
-	/**
-	 * A value between 0-255
-	 */
-	public var r(default, null):Float = 1.0;
+	@:isVar
+	public var color(default, set):FlxColor;
 	
-	/**
-	 * A value between 0-255
-	 */
-	public var g(default, null):Float = 1.0;
-	
-	/**
-	 * A value between 0-255
-	 */
-	public var b(default, null):Float = 1.0;
-	
-	/**
-	 * A value between 0-1
-	 */
-	public var a(default, set):Float = 1.0;
-	
-	public function new(r:Float = 255, g:Float = 255, b:Float = 255, a:Float = 1):Void
+	public function new(color:FlxColor):Void
 	{
 		shader = new HardMixShader();
-		setRGBA(r, g, b, a);
+		this.color = color;
 	}
 	
-	private function set_a(v:Float):Float
+	private function set_color(color:FlxColor):FlxColor
 	{
-		a = (v < 0.0 ? 0.0 :
-			(v > 1.0 ? 1.0 : v));
-		
-		shader.uBlendColor[3] = a;
-		return v;
-	}
-	
-	public function setRGBA(r:Float, g:Float, b:Float, a:Float = 1):Void
-	{
-		this.r = r;
-		this.g = g;
-		this.b = b;
-		this.a = a;
-		
-		shader.uBlendColor[0] = r;
-		shader.uBlendColor[1] = g;
-		shader.uBlendColor[2] = b;
-		shader.uBlendColor[3] = a;
+		shader.uBlendColor[0] = color.red;
+		shader.uBlendColor[1] = color.green;
+		shader.uBlendColor[2] = color.blue;
+		shader.uBlendColor[3] = color.alphaFloat;
+
+		return this.color = color;
 	}
 }
 
@@ -118,7 +84,7 @@ class HardMixShader extends Shader
 			uBlendColor[3]
 		);
 		
-		vec4 blend = texture2D(${Shader.uSampler }, ${Shader.vTexCoord });
+		vec4 blend = texture2D(${Shader.uSampler}, ${Shader.vTexCoord});
 		vec4 res = blendHardMix(base, blend);
 		
 		gl_FragColor = blendHardMix(blend, res, uBlendColor[3]);

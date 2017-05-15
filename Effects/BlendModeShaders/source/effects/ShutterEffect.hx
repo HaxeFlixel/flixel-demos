@@ -106,8 +106,8 @@ class ShutterShader extends Shader
 	vec2 getCoordinates()
 	{
 		return vec2(
-			(${ Shader.vTexCoord }.x * uResolution.x) / scale,
-			(${ Shader.vTexCoord }.y * uResolution.y) / scale
+			(${Shader.vTexCoord}.x * uResolution.x) / scale,
+			(${Shader.vTexCoord}.y * uResolution.y) / scale
 		);
 	}
 	
@@ -122,10 +122,10 @@ class ShutterShader extends Shader
 	}
 	
 	void main()
-	{		
+	{
 		if (!shaderIsActive)
 		{
-			gl_FragColor = texture2D(${ Shader.uSampler }, ${ Shader.vTexCoord } );
+			gl_FragColor = texture2D(${Shader.uSampler}, ${Shader.vTexCoord});
 			return;
 		}
 		
@@ -145,7 +145,7 @@ class ShutterShader extends Shader
 			
 			if (shutterTargetMode == SHUTTER_TARGET_FLXCAMERA)
 			{
-				gl_FragColor = texture2D(${Shader.uSampler}, ${Shader.vTexCoord});	
+				gl_FragColor = texture2D(${Shader.uSampler}, ${Shader.vTexCoord});
 			}
 		}
 	}
