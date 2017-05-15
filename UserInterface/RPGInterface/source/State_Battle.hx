@@ -1,8 +1,4 @@
-import flash.events.Event;
-import flixel.addons.ui.FlxUI;
-import flixel.addons.ui.FlxUIState;
 import flixel.addons.ui.FlxUITypedButton.FlxUITypedButton;
-import flixel.addons.ui.interfaces.IFlxUIWidget;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUIState;
 import flixel.addons.ui.FlxUI;
@@ -31,8 +27,8 @@ class State_Battle extends FlxUIState
 		var ui_tall:FlxUI = cast _ui.getAsset("tall");
 		
 		#if debug
-			trace("ui_tall.failed = " + ui_tall.failed + " by = " + ui_tall.failed_by);
-			trace("ui_wide.failed = " + ui_wide.failed + " by = " + ui_wide.failed_by);
+		trace("ui_tall.failed = " + ui_tall.failed + " by = " + ui_tall.failed_by);
+		trace("ui_wide.failed = " + ui_wide.failed + " by = " + ui_wide.failed_by);
 		#end
 		
 		if (ui_tall.failed && !ui_wide.failed)

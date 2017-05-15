@@ -19,7 +19,7 @@ class Spawner extends FlxSprite
 	public function new(X:Int, Y:Int, Gibs:FlxEmitter, Bots:FlxTypedGroup<Enemy>, BotBullets:FlxTypedGroup<EnemyBullet>, BotGibs:FlxEmitter, ThePlayer:Player)
 	{
 		super(X, Y);
-		loadGraphic(Reg.SPAWNER, true);
+		loadGraphic(AssetPaths.spawner__png, true);
 		_gibs = Gibs;
 		_bots = Bots;
 		_botBullets = BotBullets;
@@ -114,7 +114,7 @@ class Spawner extends FlxSprite
 	
 	private function makeBot():Void
 	{
-		_bots.recycle(Enemy).init(Math.floor(x + width / 2), Math.floor(y + height / 2), _botBullets, _botGibs, _player);
+		_bots.recycle(Enemy.new).init(Math.floor(x + width / 2), Math.floor(y + height / 2), _botBullets, _botGibs, _player);
 	}
 	
 	private function turnOffSlowMo():Void

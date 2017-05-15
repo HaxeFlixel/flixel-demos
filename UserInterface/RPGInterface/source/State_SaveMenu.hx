@@ -1,5 +1,4 @@
 import haxe.xml.Fast;
-import flash.Lib;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUIState;
 using flixel.util.FlxStringUtil;
@@ -40,11 +39,11 @@ class State_SaveMenu extends FlxUIState
 		{
 			switch (id)
 			{
-			case "click_button":
-				switch (Std.string(params[0]))
-				{
-					case "back": FlxG.switchState(new State_Title());
-				}
+				case "click_button":
+					switch (Std.string(params[0]))
+					{
+						case "back": FlxG.switchState(new State_Title());
+					}
 			}
 		}
 	}

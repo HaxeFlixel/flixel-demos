@@ -53,15 +53,14 @@ class Enemy extends FlxSprite
 	 * This is the constructor for the enemy class. Because we are recycling 
 	 * enemies, we don't want our constructor to have any required parameters.
 	 */
-	@:keep
 	public function new()
 	{
 		super();
 		
 		#if flash
-		loadRotatedGraphic(Reg.BOT, 64, 0, false, false);
+		loadRotatedGraphic(AssetPaths.bot__png, 64, 0, false, false);
 		#else
-		loadGraphic(Reg.BOT);
+		loadGraphic(AssetPaths.bot__png);
 		#end
 
 		// We want the enemy's "hit box" or actual size to be
@@ -73,7 +72,7 @@ class Enemy extends FlxSprite
 		// Here we are setting up the jet particles
 		// that shoot out the back of the ship.
 		_jets = new FlxEmitter();
-		_jets.loadParticles(Reg.JET, 15, 0, false);
+		_jets.loadParticles(AssetPaths.jet__png, 15, 0, false);
 		
 		// These parameters help control the ship's
 		// speed and direction during the update() loop.
@@ -133,25 +132,17 @@ class Enemy extends FlxSprite
 		var da:Float = angleTowardPlayer();
 		
 		if (da < angle)
-		{
 			angularAcceleration = -angularDrag;
-		}
 		else if (da > angle)
-		{
 			angularAcceleration = angularDrag;
-		}
 		else
-		{
 			angularAcceleration = 0;
-		}
 
 		// Figure out if we want the jets on or not.
 		_timer += elapsed;
 		
 		if (_timer > 8)
-		{
 			_timer = 0;
-		}
 		var jetsOn:Bool = _timer < 6;
 		
 		// Set the bot's movement speed and direction
@@ -187,7 +178,7 @@ class Enemy extends FlxSprite
 			{
 				// First, recycle a bullet from the bullet pile.
 				// If there are none, recycle will automatically create one for us.
-				var b:EnemyBullet = _bullets.recycle(EnemyBullet);
+				var b:EnemyBullet = _bullets.recycle(EnemyBullet.new);
 				// Then, shoot it from our midpoint out along our angle.
 				b.shoot(getMidpoint(_point), angle);
 			}
@@ -207,9 +198,7 @@ class Enemy extends FlxSprite
 				_jets.start(false, 0.01);
 				
 				if (isOnScreen())
-				{
 					FlxG.sound.play("Jet");
-				}
 			}
 			// Then, position the jets at the center of the Enemy,
 			// and point the jets the opposite way from where we're moving.
@@ -260,9 +249,7 @@ class Enemy extends FlxSprite
 	override public function kill():Void
 	{
 		if (!alive)
-		{
 			return;
-		}
 		
 		FlxG.sound.play("Asplode");
 		

@@ -1,8 +1,6 @@
 package;
 
 import flash.display.Sprite;
-import flash.geom.ColorTransform;
-import openfl.Assets;
 import flash.display.BlendMode;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -120,7 +118,7 @@ class PlayState extends FlxState
 		
 		// Set up bottom default GUI
 		
-		var guiUnderlay:FlxSprite = new FlxSprite(0, FlxG.height - 16);
+		var guiUnderlay = new FlxSprite(0, FlxG.height - 16);
 		guiUnderlay.makeGraphic(FlxG.width, 16, FlxColor.WHITE);
 		
 		_guiGroup = new FlxGroup();
@@ -250,7 +248,7 @@ class PlayState extends FlxState
 		add(_upgradeMenu);
 		add(_sellMenu);
 		add(_sellConfirm);
-		add(_topGui);	
+		add(_topGui);
 		add(_centerText);
 		
 		// Call this to set up for first wave
@@ -469,10 +467,10 @@ class PlayState extends FlxState
 	/**
 	 * Called when an enemy collides with a goal. Explodes the enemy, damages the goal.
 	 */
-	private function hitGoal(enemy:Dynamic, goal:Dynamic):Void
+	private function hitGoal(enemy:Enemy, goal:FlxSprite):Void
 	{
 		_lives--;
-		enemy.startAtPosition(false);
+		enemy.explode(false);
 		
 		if (_lives >= 0)
 			_lifeGroup.members[_lives].kill();
@@ -486,7 +484,7 @@ class PlayState extends FlxState
 	/**
 	 * Called when a bullet hits an enemy. Damages the enemy, kills the bullet.
 	 */
-	private function hitEnemy(bullet:Dynamic, enemy:Dynamic):Void
+	private function hitEnemy(bullet:Bullet, enemy:FlxSprite):Void
 	{
 		enemy.hurt(bullet.damage);
 		bullet.kill();
@@ -803,7 +801,7 @@ class PlayState extends FlxState
 	{
 		enemiesToSpawn--;
 		
-		var enemy:Enemy = enemyGroup.recycle(Enemy);
+		var enemy = enemyGroup.recycle(Enemy.new.bind(0, 0));
 		enemy.init(_enemySpawnPosition.x, _enemySpawnPosition.y);
 		enemy.followPath(_map.findPath(_enemySpawnPosition, _goalPosition.copyTo().add(5, 5)), 20 + Reg.PS.wave);
 		_spawnCounter = 0;

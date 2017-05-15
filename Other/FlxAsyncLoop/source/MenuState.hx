@@ -8,8 +8,6 @@ import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
-import flixel.math.FlxRandom;
-import flixel.util.FlxSpriteUtil;
 
 class MenuState extends FlxState
 {
@@ -24,7 +22,7 @@ class MenuState extends FlxState
 	{
 		FlxG.cameras.bgColor = 0xff131c1b;
 		// Show the mouse (in case it hasn't been disabled)
-		#if !FLX_NO_MOUSE
+		#if FLX_MOUSE
 		FlxG.mouse.visible = false;
 		#end
 		
@@ -92,7 +90,7 @@ class MenuState extends FlxState
 				
 				//clean up our loop
 				_loopOne.kill();
-				_loopOne.destroy(); 
+				_loopOne.destroy();
 			}
 		}
 		

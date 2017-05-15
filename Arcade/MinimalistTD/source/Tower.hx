@@ -2,9 +2,6 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.math.FlxVelocity;
-import flixel.math.FlxMath;
-import flixel.math.FlxPoint;
 import flixel.group.FlxGroup;
 
 class Tower extends FlxSprite
@@ -21,7 +18,7 @@ class Tower extends FlxSprite
 	public var firerate_PRIZE:Int = BASE_PRIZE;
 	public var damage_PRIZE:Int =  BASE_PRIZE;
 	
-	private var _shootInvertall:Int = 2;
+	private var _shootInterval:Int = 2;
 	private var _shootCounter:Int = 0;
 	private var _initialCost:Int = 0;
 	private var _indicator:FlxSprite;
@@ -57,11 +54,11 @@ class Tower extends FlxSprite
 		else
 		{
 			_indicator.visible = true;
-			_indicator.alpha = _shootCounter / (_shootInvertall * FlxG.updateFramerate);
+			_indicator.alpha = _shootCounter / (_shootInterval * FlxG.updateFramerate);
 			
 			_shootCounter += Std.int(FlxG.timeScale);
 			
-			if (_shootCounter > (_shootInvertall * FlxG.updateFramerate) * fireRate)
+			if (_shootCounter > (_shootInterval * FlxG.updateFramerate) * fireRate)
 			{
 				shoot();
 			}
@@ -93,13 +90,10 @@ class Tower extends FlxSprite
 	private function shoot():Void
 	{
 		var target:Enemy = getNearestEnemy();
-		
 		if (target == null)
-		{
 			return;
-		}
 		
-		var bullet:Bullet = Reg.PS.bulletGroup.recycle(Bullet);
+		var bullet = Reg.PS.bulletGroup.recycle(Bullet.new);
 		var midpoint = getMidpoint();
 		bullet.init(midpoint.x, midpoint.y, target, damage);
 		midpoint.put();

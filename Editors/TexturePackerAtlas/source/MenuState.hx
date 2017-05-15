@@ -6,7 +6,6 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.frames.FlxFrame;
-import openfl.Assets;
 
 class MenuState extends FlxState
 {
@@ -27,8 +26,7 @@ class MenuState extends FlxState
 		// Let's create some more atlases (just for testing of rotation and trim support)
 		var tex2 = FlxAtlasFrames.fromTexturePackerJson("assets/test-rotation.png", "assets/test-rotation.json");
 		var tex3 = FlxAtlasFrames.fromTexturePackerJson("assets/test-trim.png", "assets/test-trim.json");
-		var tex4 = FlxAtlasFrames.fromTexturePackerJson("assets/test.png", "assets/test.json");
-		var tex5 = FlxAtlasFrames.fromTexturePackerJson("assets/anim-trim.png", "assets/anim-trim.json");
+		var tex4 = FlxAtlasFrames.fromTexturePackerJson("assets/anim-trim.png", "assets/anim-trim.json");
 		
 		// You can provide first frame to show (see last parameter in loadImageFromTexture() method)
 		// Plus you can generate reversed sprites which is useful for animating character in games
@@ -62,7 +60,7 @@ class MenuState extends FlxState
 		
 		// 1. The first one requires array with names of images from the atlas:
 		var x5 = new FlxSprite(300, 20);
-		x5.frames = tex5;
+		x5.frames = tex4;
 		// Array with frame names in animation
 		var names = [];
 		for (i in 0...20)
@@ -76,7 +74,7 @@ class MenuState extends FlxState
 		
 		// 2. The second one requires three additional parameters: image name prefix, array of frame indices and image name postfix
 		var x6 = new FlxSprite(300, 200);
-		x6.frames = tex5;
+		x6.frames = tex4;
 		// Array with frame indices in animation
 		var indices:Array<Int> = new Array<Int>();
 		for (i in 0...20)
@@ -90,7 +88,7 @@ class MenuState extends FlxState
 		
 		// And the third one requires only image name prefix and it will sort and add all frames with it to animation
 		var x7 = new FlxSprite(120, 200);
-		x7.frames = tex5;
+		x7.frames = tex4;
 		x7.animation.addByPrefix("ani", "tiles-", 8);
 		x7.animation.play("ani");
 		x7.angle = 45;
@@ -118,6 +116,15 @@ class MenuState extends FlxState
 		x10.frames = tex8;
 		x10.animation.frameName = "wabbit_alpha";
 		add(x10);
+
+		var tex9 = FlxAtlasFrames.fromLibGdx("assets/libgdx/libgdx-packed.png", "assets/libgdx/libgdx-packed.atlas");
+		
+		var x11 = new FlxSprite(0, 300);
+		x11.frames = tex9;
+		x11.animation.addByPrefix("spin", "", 3);
+		x11.animation.play("spin");
+		add(x11);
+
 		
 		// Remove atlas bitmaps from memory (useful for targets with hardware acceleration: cpp only atm).
 		FlxG.bitmap.dumpCache();

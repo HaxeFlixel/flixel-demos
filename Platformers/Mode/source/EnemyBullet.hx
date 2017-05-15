@@ -8,11 +8,10 @@ class EnemyBullet extends FlxSprite
 {
 	public var speed:Float;
 	
-	@:keep
 	public function new()
 	{
 		super();
-		loadGraphic(Reg.BOT_BULLET, true);
+		loadGraphic(AssetPaths.bot_bullet__png, true);
 		animation.add("idle",[0, 1], 50);
 		animation.add("poof",[2, 3, 4], 50, false);
 		speed = 120;
@@ -23,9 +22,7 @@ class EnemyBullet extends FlxSprite
 		if (!alive)
 		{
 			if (animation.finished)
-			{
 				exists = false;
-			}
 		}
 		else if (touching != 0)
 		{
@@ -38,14 +35,12 @@ class EnemyBullet extends FlxSprite
 	override public function kill():Void
 	{
 		if (!alive)
-		{
 			return;
-		}
+
 		velocity.set();
 		if (isOnScreen())
-		{
 			FlxG.sound.play("Jump");
-		}
+
 		alive = false;
 		solid = false;
 		animation.play("poof");

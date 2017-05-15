@@ -10,8 +10,11 @@ import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
+
+#if SHOW_FPS
 import openfl.display.FPS;
 import openfl.Lib;
+#end
 
 /**
  * A FlxState which can be used for the actual gameplay.
@@ -54,7 +57,7 @@ class PlayState extends FlxState
 	 */
 	override public function create():Void
 	{
-		#if !FLX_NO_MOUSE
+		#if FLX_MOUSE
 		FlxG.mouse.visible = false;
 		#end
 		
@@ -65,7 +68,7 @@ class PlayState extends FlxState
 		_littleGibs.angularVelocity.set( -720);
 		_littleGibs.acceleration.set(0, 350);
 		_littleGibs.elasticity.set(0.5);
-		_littleGibs.loadParticles(Reg.GIBS, 100, 10, true);
+		_littleGibs.loadParticles(AssetPaths.gibs__png, 100, 10, true);
 		
 		// Next we create a smaller pool of larger metal bits for exploding.
 		_bigGibs = new FlxEmitter();
@@ -73,7 +76,7 @@ class PlayState extends FlxState
 		_bigGibs.angularVelocity.set( -720, -720);
 		_bigGibs.acceleration.set(0, 350);
 		_bigGibs.elasticity.set(0.35);
-		_bigGibs.loadParticles(Reg.SPAWNER_GIBS, 50, 20, true);
+		_bigGibs.loadParticles(AssetPaths.spawner_gibs__png, 50, 20, true);
 		
 		// Then we'll set up the rest of our object groups or pools
 		_enemies = new FlxTypedGroup<Enemy>(50);
@@ -143,9 +146,7 @@ class PlayState extends FlxState
 		
 		// Then for the player's highest and last scores
 		if (Reg.score > Reg.scores[0])
-		{
 			Reg.scores[0] = Reg.score;
-		}
 		
 		if (Reg.scores[0] != 0)
 		{
@@ -195,7 +196,7 @@ class PlayState extends FlxState
 		super.create();
 
 		#if SHOW_FPS
-			makeFPSCounter();
+		makeFPSCounter();
 		#end
 	}
 	
@@ -227,7 +228,7 @@ class PlayState extends FlxState
 		_tileMap = null;
 		
 		#if SHOW_FPS
-			FlxG.removeChild(fps);
+		FlxG.removeChild(fps);
 		#end
 		
 		super.destroy();
@@ -251,7 +252,7 @@ class PlayState extends FlxState
 		// Check to see if the player scored any points this frame
 		var scoreChanged:Bool = oldScore != Reg.score;
 		
-		#if !FLX_NO_KEYBOARD
+		#if FLX_KEYBOARD
 		// Jammed message
 		if (FlxG.keys.justPressed.C && _player.flickering)
 		{
@@ -338,23 +339,19 @@ class PlayState extends FlxState
 		}
 		
 		// Escape to the main menu
-		#if !FLX_NO_KEYBOARD
+		#if FLX_KEYBOARD
 		if (FlxG.keys.pressed.ESCAPE)
-		{
 			FlxG.switchState(new MenuState());
-		}
 		#end
 	}
 	
 	/**
-	 * This is an overlap callback function, triggered by the calls to FlxU.overlap().
+	 * This is an overlap callback function, triggered by the calls to FlxG.overlap().
 	 */
 	private function overlapped(Sprite1:FlxObject, Sprite2:FlxObject):Void
 	{
 		if (Std.is(Sprite1, EnemyBullet) || Std.is(Sprite1, Bullet))
-		{
 			Sprite1.kill();
-		}
 		
 		Sprite2.hurt(1);
 	}
@@ -381,9 +378,7 @@ class PlayState extends FlxState
 		var numTilesTotal:Int = MAP_HEIGHT_IN_TILES * MAP_WIDTH_IN_TILES;
 		
 		for (i in 0...numTilesTotal)
-		{
 			_map[i] = 0;
-		}
 		
 		// First, we create the walls, ceiling and floors:
 		fillTileMapRectWithRandomTiles(0, 0, 640, 16, 1, 6, _map, MAP_WIDTH_IN_TILES);
@@ -414,7 +409,7 @@ class PlayState extends FlxState
 		
 		_tileMap = new FlxTilemap();
 		_tileMap.useScaleHack = true;
-		_tileMap.loadMapFromArray(_map, MAP_WIDTH_IN_TILES, MAP_HEIGHT_IN_TILES, Reg.IMG_TILES, 8, 8);
+		_tileMap.loadMapFromArray(_map, MAP_WIDTH_IN_TILES, MAP_HEIGHT_IN_TILES, AssetPaths.img_tiles__png, 8, 8);
 		add(_tileMap);
 	}
 	
@@ -447,9 +442,7 @@ class PlayState extends FlxState
 		var check:Bool;
 		
 		if (!Spawners) 
-		{
 			numBlocks++;
-		}
 		
 		for (i in 0...numBlocks)
 		{
@@ -462,13 +455,10 @@ class PlayState extends FlxState
 				by = FlxG.random.int( -1, rw - bh);
 				
 				if (Spawners)
-				{
 					check = ((sx>bx+bw) || (sx+3<bx) || (sy>by+bh) || (sy+3<by));
-				}
 				else
-				{
 					check = true;
-				}
+
 			} while (!check);
 			
 			fillTileMapRectWithRandomTiles(RX + bx * 8, RY + by * 8, bw * 8, bh * 8, 1, 6, _map, MAP_WIDTH_IN_TILES);
@@ -488,7 +478,7 @@ class PlayState extends FlxState
 			_spawners.add(sp);
 			
 			// Then create a dedicated camera to watch the spawner
-			var miniFrame:FlxSprite = new FlxSprite(3 + (_spawners.length - 1) * 16, 3, Reg.MINI_FRAME);
+			var miniFrame:FlxSprite = new FlxSprite(3 + (_spawners.length - 1) * 16, 3, AssetPaths.miniframe__png);
 			_hud.add(miniFrame);
 			
 			var ratio:Float = FlxCamera.defaultZoom / 2;
@@ -504,8 +494,6 @@ class PlayState extends FlxState
 		var numRowsToPush:Int = Math.floor(Height / TILE_SIZE);
 		var xStartIndex:Int = Math.floor(X / TILE_SIZE);
 		var yStartIndex:Int = Math.floor(Y / TILE_SIZE);
-		var startColToPush:Int = Math.floor(X / TILE_SIZE);
-		var startRowToPush:Int = Math.floor(Y / TILE_SIZE);
 		var randomTile:Int;
 		var currentTileIndex:Int;
 		
@@ -528,8 +516,7 @@ class PlayState extends FlxState
 	
 	private function makeFPSCounter():Void
 	{
-		
-		fps = new FPS(Lib.current.stage.stageWidth-50, 0, 0xFFFFFF);
+		fps = new FPS(FlxG.stage.stageWidth - 50, 0, 0xFFFFFF);
 		FlxG.addChildBelowMouse(fps);
 	}
 	#end

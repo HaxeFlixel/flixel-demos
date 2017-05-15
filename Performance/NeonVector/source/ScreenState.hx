@@ -13,7 +13,6 @@ import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.math.FlxPoint;
-import flixel.math.FlxRandom;
 import flixel.util.FlxSpriteUtil;
 
 /**
@@ -139,7 +138,7 @@ class ScreenState extends FlxState
 			displayText.alignment = RIGHT;
 			displayText.offset.y = 0;
 			displayText.text = "Lives: " + PlayerShip.lives + "\t\tScore: " + PlayerShip.score + "\t\tMultiplier: " 
-					+ PlayerShip.multiplier;
+				+ PlayerShip.multiplier;
 			displayText.text += "\n" + Std.int((500 * fpsBuffer.length) / _timeTotalInMilliseconds) + " fps";
 		}
 	}

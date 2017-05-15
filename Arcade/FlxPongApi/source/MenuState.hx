@@ -3,7 +3,6 @@ package;
 import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.text.TextFieldType;
-import flash.utils.ByteArray;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -20,7 +19,7 @@ using StringTools;
  * The content of the .privatekey file should be just your private key.
  * To see how this file is read and used, look at the bottom of the create() function below.
  */
-@:file("assets/example.privatekey") class MyPrivateKey extends #if (lime_legacy || openfl <= "3.4.0") ByteArray #else ByteArrayData #end {} 
+@:file("assets/example.privatekey") class MyPrivateKey extends ByteArrayData {}
 
 class MenuState extends FlxState
 {
@@ -41,12 +40,14 @@ class MenuState extends FlxState
 	
 	private static inline function API_TEST_BUTTONS():Array<Array<String>>
 	{
-		return [["fetchUser", "authUser", "openSession", "pingSession"],
-		        ["closeSession", "fetchTrophy", "addTrophy", "fetchScore"],
-		        ["addScore", "getTables", "fetchData", "setData"],
-		        ["updateData", "removeData", "getAllKeys", "resetUser"],
-		        ["fetchTrophyImage", "fetchAvatarImage", "username", "usertoken"],
-		        ["isQuickPlay", "isEmbeddedFlash"]];
+		return [
+			["fetchUser", "authUser", "openSession", "pingSession"],
+			["closeSession", "fetchTrophy", "addTrophy", "fetchScore"],
+			["addScore", "getTables", "fetchData", "setData"],
+			["updateData", "removeData", "getAllKeys", "resetUser"],
+			["fetchTrophyImage", "fetchAvatarImage", "username", "usertoken"],
+			["isQuickPlay", "isEmbeddedFlash"]
+		];
 	}
 	
 	override public function create():Void
@@ -55,7 +56,7 @@ class MenuState extends FlxState
 		FlxG.cameras.bgColor = Reg.lite;
 		Reg.level = 1;
 		
-		#if !FLX_NO_MOUSE
+		#if FLX_MOUSE
 		var mouseSprite:Sprite = new Sprite();
 		mouseSprite.graphics.beginFill(Reg.dark, 1);
 		mouseSprite.graphics.moveTo(0, 0);
@@ -317,7 +318,7 @@ class MenuState extends FlxState
 	{
 		_mainMenuTime += elapsed;
 		
-		#if !FLX_NO_KEYBOARD
+		#if FLX_KEYBOARD
 		if (FlxG.keys.justPressed.ENTER && _loginGroup.visible)
 		{
 			loginCallback("Login");
