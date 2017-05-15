@@ -1,5 +1,11 @@
 package;
 
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
+
 #if !flash
 import effects.ColorBurnBlend;
 import effects.ColorSwap;
@@ -10,18 +16,12 @@ import effects.MultiplyBlend;
 import effects.ShutterEffect;
 import effects.VividLightBlend;
 import effects.WiggleEffect;
-#end
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.FlxState;
-import flixel.input.keyboard.FlxKey;
-import flixel.text.FlxText;
+import openfl.filters.ShaderFilter;
+import flixel.util.FlxTimer;
+import flixel.util.FlxAxes;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import flixel.util.FlxAxes;
-import flixel.util.FlxColor;
-import flixel.util.FlxTimer;
-import openfl.filters.ShaderFilter;
+#end
 
 class PlayState extends FlxState
 {
@@ -30,23 +30,21 @@ class PlayState extends FlxState
 	private static inline var LOGO_COLOR_YELLOW:Int = 0xffcc33;
 	private static inline var LOGO_COLOR_LIGHT_BLUE:Int = 0x00ccff;
 	private static inline var LOGO_COLOR_GREEN:Int = 0x00cc33;
+
 	// effects (also shader based)
 	#if !flash
-	private var shutter:ShutterEffect;
 	private var wiggleEffect:WiggleEffect;
-	private var colorSwap:ColorSwap;
 	#end
-	private var shutterCanvas:FlxSprite;
-	private var logoColors:Array<Int>;
-	private var infoText:FlxText;
 	
 	override public function create():Void
 	{
 		var backdrop = new FlxSprite(0, 0, AssetPaths.backdrop__png);
 		add(backdrop);
 		
+		var info:String;
+
 		#if flash
-		return;
+		info = "Not supported on Flash!";
 		#else
 		wiggleEffect = new WiggleEffect();
 		wiggleEffect.effectType = WiggleEffect.EFFECT_TYPE_DREAMY;
@@ -57,7 +55,7 @@ class PlayState extends FlxState
 		// set this to false to apply effect to the whole screen
 		var doApplyShaderToBackdrop = true;
 		
-		if (doApplyShaderToBackdrop) 
+		if (doApplyShaderToBackdrop)
 		{
 			backdrop.shader = wiggleEffect.shader;
 		}
@@ -74,25 +72,15 @@ class PlayState extends FlxState
 		
 		setupShutterEffect();
 		
-		logoColors = [LOGO_COLOR_RED, LOGO_COLOR_BLUE, LOGO_COLOR_LIGHT_BLUE, LOGO_COLOR_GREEN, LOGO_COLOR_YELLOW];
-		colorSwap = new ColorSwap(LOGO_COLOR_RED, FlxG.random.int(0, logoColors.length-1));
+		var logoColors = [LOGO_COLOR_RED, LOGO_COLOR_BLUE, LOGO_COLOR_LIGHT_BLUE, LOGO_COLOR_GREEN, LOGO_COLOR_YELLOW];
+		var colorSwap = new ColorSwap(LOGO_COLOR_RED, FlxG.random.int(0, logoColors.length - 1));
 		logo.shader = colorSwap.shader;
 		
-		
-		new FlxTimer().start(.02, function (timer)
+		new FlxTimer().start(.02, function(timer)
 		{
 			colorSwap.colorToReplace = logoColors[FlxG.random.int(0, logoColors.length - 1)];
 			colorSwap.newColor = logoColors[FlxG.random.int(0, logoColors.length - 1)];
 		}, 0);
-		
-		FlxTween.num(0.0, 450, 1.5, {ease: FlxEase.quintOut, startDelay: 0.2}, function (v:Float)
-		{
-			shutter.radius = v;
-		});
-		
-		infoText = new FlxText(10, 10, 120, "Press R to restart demo.", 11);
-		infoText.color = FlxColor.BLACK;
-		add(infoText);
 		
 		var r = FlxG.random.float(0, 255);
 		var g = FlxG.random.float(0, 255);
@@ -121,27 +109,36 @@ class PlayState extends FlxState
 		}
 		
 		super.create();
+
+		info = "Press R to restart demo.";
 		#end
+
+		var infoText = new FlxText(10, 10, 120, info, 11);
+		infoText.color = FlxColor.BLACK;
+		add(infoText);
 	}
 	
 	#if !flash
 	private function setupShutterEffect():Void
 	{
-		shutter = new ShutterEffect();
-		shutterCanvas = new FlxSprite(0, 0);
+		var shutter = new ShutterEffect();
+		var shutterCanvas = new FlxSprite();
 		shutterCanvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		shutterCanvas.shader = shutter.shader;
 		add(shutterCanvas);
+
+		FlxTween.num(0.0, 450, 1.5, { ease: FlxEase.quintOut, startDelay: 0.2 }, function(v:Float)
+		{
+			shutter.radius = v;
+		});
 	}
 
 	override public function update(elapsed:Float):Void
 	{
 		wiggleEffect.update(elapsed);
 		
-		if (FlxG.keys.justPressed.R) 
-		{
+		if (FlxG.keys.justPressed.R)
 			FlxG.resetState();
-		}
 		
 		super.update(elapsed);
 	}
