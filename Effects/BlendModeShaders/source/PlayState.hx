@@ -3,7 +3,6 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
 #if !flash
@@ -21,6 +20,9 @@ import openfl.display.Shader;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.addons.ui.FlxUIDropDownMenu;
+#else
+import flixel.text.FlxText;
 #end
 
 @:enum abstract LogoColor(FlxColor) to FlxColor
@@ -34,11 +36,19 @@ import flixel.tweens.FlxTween;
 
 class PlayState extends FlxState
 {
-	// effects (also shader based)
 	#if !flash
-	private var wiggleEffect:WiggleEffect;
-	#end
+	var wiggleEffect:WiggleEffect;
 	
+	var effects:Map<String, Float->Float->Float->Float->{public var shader(default, null):Shader;}> = [
+		"ColorBurnBlend" => ColorBurnBlend.new,
+		"HardMixBlend" => HardMixBlend.new,
+		"LightenBlend" => LightenBlend.new,
+		// LinearDodgeBlend.new,
+		"MultiplyBlend" => MultiplyBlend.new,
+		"VividLightBlend" => VividLightBlend.new
+	];
+	#end	
+
 	override public function create():Void
 	{
 		super.create();
@@ -46,10 +56,11 @@ class PlayState extends FlxState
 		var backdrop = new FlxSprite(0, 0, AssetPaths.backdrop__png);
 		add(backdrop);
 		
-		var info:String;
-
 		#if flash
-		info = "Not supported on Flash!";
+		var infoText = new FlxText(0, 0, 0, "Not supported on Flash!", 16);
+		infoText.color = FlxColor.BLACK;
+		infoText.screenCenter();
+		add(infoText);
 		#else
 		wiggleEffect = new WiggleEffect();
 		wiggleEffect.effectType = WiggleEffect.EFFECT_TYPE_DREAMY;
@@ -62,8 +73,6 @@ class PlayState extends FlxState
 		logo.screenCenter();
 		add(logo);
 		
-		setupShutterEffect();
-		
 		var logoColors = [RED, BLUE, YELLOW, CYAN, GREEN];
 		var colorSwap = new ColorSwap(RED, FlxG.random.int(0, logoColors.length - 1));
 		logo.shader = colorSwap.shader;
@@ -73,33 +82,27 @@ class PlayState extends FlxState
 			colorSwap.colorToReplace = logoColors[FlxG.random.int(0, logoColors.length - 1)];
 			colorSwap.newColor = logoColors[FlxG.random.int(0, logoColors.length - 1)];
 		}, 0);
-		
+
+		var labels = FlxUIDropDownMenu.makeStrIdLabelArray([for (name in effects.keys()) name]);
+		add(new FlxUIDropDownMenu(2, 2, labels, selectBlendEffect, new FlxUIDropDownHeader(150)));
+
+		selectBlendEffect("ColorBurnBlend");
+		createShutterEffect();
+		#end
+	}
+
+	#if !flash
+	private function selectBlendEffect(blendEffect:String)
+	{
 		var r = FlxG.random.float(0, 255);
 		var g = FlxG.random.float(0, 255);
 		var b = FlxG.random.float(0, 255);
 		
-		var effects:Array<Float->Float->Float->Float->{public var shader(default, null):Shader;}> = [
-			ColorBurnBlend.new,
-			HardMixBlend.new,
-			LightenBlend.new,
-			// LinearDodgeBlend.new,
-			MultiplyBlend.new,
-			VividLightBlend.new
-		];
-		var choice = FlxG.random.int(0, effects.length - 1);
-		var effect = effects[choice](r, g, b, 0.5);
+		var effect = effects[blendEffect](r, g, b, 0.5);
 		FlxG.camera.setFilters([new ShaderFilter(effect.shader)]);
-
-		info = "Press R to restart demo.";
-		#end
-
-		var infoText = new FlxText(10, 10, 120, info, 11);
-		infoText.color = FlxColor.BLACK;
-		add(infoText);
 	}
 	
-	#if !flash
-	private function setupShutterEffect():Void
+	private function createShutterEffect():Void
 	{
 		var shutter = new ShutterEffect();
 		var shutterCanvas = new FlxSprite();
@@ -116,10 +119,6 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		wiggleEffect.update(elapsed);
-		
-		if (FlxG.keys.justPressed.R)
-			FlxG.resetState();
-		
 		super.update(elapsed);
 	}
 	#end
