@@ -1,31 +1,6 @@
 package blends;
 
-import flixel.util.FlxColor;
 import openfl.display.Shader;
-
-class ColorBurnBlend
-{
-	public var shader(default, null):ColorBurnShader;
-	
-	@:isVar
-	public var color(default, set):FlxColor;
-	
-	public function new(color:FlxColor):Void
-	{
-		shader = new ColorBurnShader();
-		this.color = color;
-	}
-	
-	private function set_color(color:FlxColor):FlxColor
-	{
-		shader.uBlendColor[0] = color.red;
-		shader.uBlendColor[1] = color.green;
-		shader.uBlendColor[2] = color.blue;
-		shader.uBlendColor[3] = color.alphaFloat;
-
-		return this.color = color;
-	}
-}
 
 class ColorBurnShader extends Shader
 {

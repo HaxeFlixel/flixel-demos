@@ -6,12 +6,13 @@ import flixel.FlxState;
 import flixel.util.FlxColor;
 
 #if !flash
-import blends.ColorBurnBlend;
-import blends.HardMixBlend;
-import blends.LightenBlend;
-import blends.LinearDodgeBlend;
-import blends.MultiplyBlend;
-import blends.VividLightBlend;
+import blends.ColorBurnShader;
+import blends.HardMixShader;
+import blends.LightenShader;
+import blends.LinearDodgeShader;
+import blends.MultiplyShader;
+import blends.VividLightShader;
+import blends.BlendModeEffect;
 import effects.WiggleEffect;
 import effects.ColorSwapEffect;
 import effects.ShutterEffect;
@@ -46,13 +47,13 @@ class PlayState extends FlxState
 	#if !flash
 	var wiggleEffect:WiggleEffect;
 
-	var effects:Map<String, FlxColor->{public var shader(default, null):Shader;}> = [
-		"ColorBurnBlend" => ColorBurnBlend.new,
-		"HardMixBlend" => HardMixBlend.new,
-		"LightenBlend" => LightenBlend.new,
-		"LinearDodgeBlend" => LinearDodgeBlend.new,
-		"MultiplyBlend" => MultiplyBlend.new,
-		"VividLightBlend" => VividLightBlend.new
+	var effects:Map<String, BlendModeShader> = [
+		"ColorBurn" => new ColorBurnShader(),
+		"HardMix" => new HardMixShader(),
+		"Lighten" => new LightenShader(),
+		"LinearDodge" => new LinearDodgeShader(),
+		"Multiply" => new MultiplyShader(),
+		"VividLight" => new VividLightShader()
 	];
 	#end
 
@@ -92,7 +93,7 @@ class PlayState extends FlxState
 		var labels = FlxUIDropDownMenu.makeStrIdLabelArray([for (name in effects.keys()) name]);
 		add(new FlxUIDropDownMenu(2, 2, labels, selectBlendEffect, new FlxUIDropDownHeader(140)));
 
-		selectBlendEffect("ColorBurnBlend");
+		selectBlendEffect(effects.keys().next());
 		createShutterEffect();
 		#end
 	}
@@ -103,8 +104,8 @@ class PlayState extends FlxState
 		var color = FlxG.random.color();
 		color.alphaFloat = 0.5;
 
-		var effect = effects[blendEffect](color);
-		FlxG.camera.setFilters([new ShaderFilter(effect.shader)]);
+		var effect = new BlendModeEffect(effects[blendEffect], color);
+		FlxG.camera.setFilters([new ShaderFilter(cast effect.shader)]);
 	}
 	
 	private function createShutterEffect():Void
