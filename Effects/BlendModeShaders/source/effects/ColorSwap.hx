@@ -37,7 +37,6 @@ class ColorSwap
 	{
 		isShaderActive = value;
 		shader.shaderIsActive = value;
-		
 		return value;
 	}
 	
@@ -103,20 +102,23 @@ class ColorSwapShader extends Shader
 		 */
 		vec3 eps = vec3(0.009, 0.009, 0.009);
 		
-		colorOld[0] = normalize(colorOld[0]);
-		colorOld[1] = normalize(colorOld[1]);
-		colorOld[2] = normalize(colorOld[2]);
+		vec3 colorOldNormalized = vec3(
+			normalize(colorOld[0]),
+			normalize(colorOld[1]),
+			normalize(colorOld[2])
+		);
+
+		vec3 colorNewNormalized = vec3(
+			normalize(colorNew[0]),
+			normalize(colorNew[1]),
+			normalize(colorNew[2])
+		);
 		
-		colorNew[0] = normalize(colorNew[0]);
-		colorNew[1] = normalize(colorNew[1]);
-		colorNew[2] = normalize(colorNew[2]);
-		
-		if (
-		   all(greaterThanEqual(pixel, vec4(colorOld - eps, 1.0)) )
-			&& all(lessThanEqual(pixel, vec4(colorOld + eps, 1.0)) )
+		if (all(greaterThanEqual(pixel, vec4(colorOldNormalized - eps, 1.0)) ) &&
+			all(lessThanEqual(pixel, vec4(colorOldNormalized + eps, 1.0)) )
 		)
 		{
-			pixel = vec4(colorNew, 1.0);
+			pixel = vec4(colorNewNormalized, 1.0);
 		}
 		
 		gl_FragColor = pixel;

@@ -18,7 +18,6 @@ import effects.VividLightBlend;
 import effects.WiggleEffect;
 import openfl.filters.ShaderFilter;
 import flixel.util.FlxTimer;
-import flixel.util.FlxAxes;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 #end
@@ -48,7 +47,7 @@ class PlayState extends FlxState
 		#else
 		wiggleEffect = new WiggleEffect();
 		wiggleEffect.effectType = WiggleEffect.EFFECT_TYPE_DREAMY;
-		wiggleEffect.waveAmplitude = .2;
+		wiggleEffect.waveAmplitude = 0.2;
 		wiggleEffect.waveFrequency = 7;
 		wiggleEffect.waveSpeed = 1;
 		
@@ -67,7 +66,7 @@ class PlayState extends FlxState
 		}
 		
 		var logo = new FlxSprite(0, 0, AssetPaths.logo__png);
-		logo.screenCenter(FlxAxes.XY);
+		logo.screenCenter();
 		add(logo);
 		
 		setupShutterEffect();
@@ -76,7 +75,7 @@ class PlayState extends FlxState
 		var colorSwap = new ColorSwap(LOGO_COLOR_RED, FlxG.random.int(0, logoColors.length - 1));
 		logo.shader = colorSwap.shader;
 		
-		new FlxTimer().start(.02, function(timer)
+		new FlxTimer().start(0.02, function(timer)
 		{
 			colorSwap.colorToReplace = logoColors[FlxG.random.int(0, logoColors.length - 1)];
 			colorSwap.newColor = logoColors[FlxG.random.int(0, logoColors.length - 1)];
@@ -86,7 +85,7 @@ class PlayState extends FlxState
 		var g = FlxG.random.float(0, 255);
 		var b = FlxG.random.float(0, 255);
 		
-		switch (FlxG.random.int(0, 5)) 
+		switch (FlxG.random.int(0, 5))
 		{
 			case 0:
 				var effect = new ColorBurnBlend(r, g, b, .5);

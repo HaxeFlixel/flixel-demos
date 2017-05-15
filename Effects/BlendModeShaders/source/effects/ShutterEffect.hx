@@ -46,7 +46,6 @@ class ShutterEffect
 	{
 		shader.uResolution[0] = FlxG.width;
 		shader.uResolution[1] = FlxG.height;
-		//shader.scale = FlxG.camera.zoom;
 	}
 	
 	private function set_shutterTargetMode(v:Int):Int
