@@ -17,6 +17,7 @@ import effects.ShutterEffect;
 import effects.VividLightBlend;
 import effects.WiggleEffect;
 import openfl.filters.ShaderFilter;
+import openfl.display.Shader;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -40,6 +41,8 @@ class PlayState extends FlxState
 	
 	override public function create():Void
 	{
+		super.create();
+
 		var backdrop = new FlxSprite(0, 0, AssetPaths.backdrop__png);
 		add(backdrop);
 		
@@ -75,29 +78,17 @@ class PlayState extends FlxState
 		var g = FlxG.random.float(0, 255);
 		var b = FlxG.random.float(0, 255);
 		
-		switch (FlxG.random.int(0, 5))
-		{
-			case 0:
-				var effect = new ColorBurnBlend(r, g, b, .5);
-				FlxG.camera.setFilters([ new ShaderFilter(effect.shader) ]);
-			case 1:
-				var effect = new HardMixBlend(r, g, b, .5);
-				FlxG.camera.setFilters([ new ShaderFilter(effect.shader) ]);
-			case 2:
-				var effect = new LightenBlend(r, g, b, .5);
-				FlxG.camera.setFilters([ new ShaderFilter(effect.shader) ]);
-			case 3:
-				var effect = new LinearDodgeBlend(0xffffff, .5);
-				FlxG.camera.setFilters([ new ShaderFilter(effect.shader) ]);
-			case 4:
-				var effect = new MultiplyBlend(r, g, b, .5);
-				FlxG.camera.setFilters([ new ShaderFilter(effect.shader) ]);
-			case 5:
-				var effect = new VividLightBlend(r, g, b, .5);
-				FlxG.camera.setFilters([ new ShaderFilter(effect.shader) ]);
-		}
-		
-		super.create();
+		var effects:Array<Float->Float->Float->Float->{public var shader(default, null):Shader;}> = [
+			ColorBurnBlend.new,
+			HardMixBlend.new,
+			LightenBlend.new,
+			// LinearDodgeBlend.new,
+			MultiplyBlend.new,
+			VividLightBlend.new
+		];
+		var choice = FlxG.random.int(0, effects.length - 1);
+		var effect = effects[choice](r, g, b, 0.5);
+		FlxG.camera.setFilters([new ShaderFilter(effect.shader)]);
 
 		info = "Press R to restart demo.";
 		#end
