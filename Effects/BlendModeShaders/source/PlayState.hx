@@ -85,7 +85,7 @@ class PlayState extends FlxState
 			colorSwap.newColor = logoColors[FlxG.random.int(0, logoColors.length - 1)];
 		}, 0);
 		
-		FlxTween.num(0.0, 450, 1.5, {ease:FlxEase.quintOut, startDelay:.2}, function (v:Float)
+		FlxTween.num(0.0, 450, 1.5, {ease: FlxEase.quintOut, startDelay: 0.2}, function (v:Float)
 		{
 			shutter.radius = v;
 		});
@@ -94,9 +94,9 @@ class PlayState extends FlxState
 		infoText.color = FlxColor.BLACK;
 		add(infoText);
 		
-		var r = FlxG.random.float(0., 255.);
-		var g = FlxG.random.float(0., 255.);
-		var b = FlxG.random.float(0., 255.);
+		var r = FlxG.random.float(0, 255);
+		var g = FlxG.random.float(0, 255);
+		var b = FlxG.random.float(0, 255);
 		
 		switch (FlxG.random.int(0, 5)) 
 		{

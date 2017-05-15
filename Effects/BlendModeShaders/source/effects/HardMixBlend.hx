@@ -32,13 +32,13 @@ class HardMixBlend
 	 */
 	public var a(default, set):Float = 1.0;
 	
-	public function new(r:Float = 255., g:Float = 255., b:Float = 255., a:Float = 1.):Void
+	public function new(r:Float = 255, g:Float = 255, b:Float = 255, a:Float = 1):Void
 	{
 		shader = new HardMixShader();
 		setRGBA(r, g, b, a);
 	}
 	
-	public function set_a(v:Float):Float
+	private function set_a(v:Float):Float
 	{
 		a = (v < 0.0 ? 0.0 :
 			(v > 1.0 ? 1.0 : v));
@@ -47,7 +47,7 @@ class HardMixBlend
 		return v;
 	}
 	
-	public function setRGBA(r:Float, g:Float, b:Float, a:Float = 1.):Void
+	public function setRGBA(r:Float, g:Float, b:Float, a:Float = 1):Void
 	{
 		this.r = r;
 		this.g = g;

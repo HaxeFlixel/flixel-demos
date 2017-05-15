@@ -26,13 +26,13 @@ class VividLightBlend
 	 */
 	public var a(default, set):Float = 1.0;
 	
-	public function new(r:Float = 255., g:Float = 255., b:Float = 255., a:Float = 1.):Void
+	public function new(r:Float = 255, g:Float = 255, b:Float = 255, a:Float = 1):Void
 	{
 		shader = new VividLightShader();
 		setRGBA(r, g, b, a);
 	}
 	
-	public function set_a(v:Float):Float
+	private function set_a(v:Float):Float
 	{
 		a = (v < 0.0 ? 0.0 :
 			(v > 1. ? 1. : v));

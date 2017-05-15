@@ -32,7 +32,7 @@ class MultiplyBlend
 	 */
 	public var a(default, set):Float = 1.0;
 	
-	public function new(r:Float = 0., g:Float = 0., b:Float = 0., a:Float = 1.):Void
+	public function new(r:Float = 0, g:Float = 0, b:Float = 0, a:Float = 1):Void
 	{
 		shader = new MultiplyShader();
 		setRGBA(r, g, b, a);
@@ -51,35 +51,31 @@ class MultiplyBlend
 		shader.uBlendColor[3] = this.a;
 	}
 	
-	public function set_r(value:Float):Float
+	private function set_r(value:Float):Float
 	{
 		this.r = value;
 		shader.uBlendColor[0] = this.r;
-		
 		return value;
 	}
 	
-	public function set_g(value:Float):Float
+	private function set_g(value:Float):Float
 	{
 		this.g = value;
 		shader.uBlendColor[1] = this.g;
-		
 		return value;
 	}
 	
-	public function set_b(value:Float):Float
+	private function set_b(value:Float):Float
 	{
 		this.b = value;
 		shader.uBlendColor[2] = this.b;
-		
 		return value;
 	}
 	
-	public function set_a(value:Float):Float
+	private function set_a(value:Float):Float
 	{
 		this.a = value;
 		shader.uBlendColor[3] = this.a;
-		
 		return value;
 	}
 }
@@ -110,7 +106,7 @@ class MultiplyShader extends Shader
 	
 	void main()
 	{
-		vec4 base = texture2D(${Shader.uSampler }, ${Shader.vTexCoord });
+		vec4 base = texture2D(${Shader.uSampler}, ${Shader.vTexCoord});
 		
 		vec4 blend = vec4(
 			normalize(uBlendColor[0]),

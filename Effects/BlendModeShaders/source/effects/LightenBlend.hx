@@ -32,7 +32,7 @@ class LightenBlend
 	 */
 	public var a(default, null):Float = 1.0;
 	
-	public function new(r:Float = 255., g:Float = 255., b:Float = 255., a:Float = 1.):Void
+	public function new(r:Float = 255, g:Float = 255, b:Float = 255, a:Float = 1):Void
 	{
 		shader = new LightenShader();
 		setRGBA(r, g, b, a);

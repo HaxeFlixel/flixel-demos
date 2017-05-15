@@ -34,7 +34,7 @@ class LinearDodgeBlend
 	 */
 	public var a(default, set):Float = 1.0;
 	
-	public function new(Color:Int = 0xFFFFFF, a:Float = 1.):Void
+	public function new(Color:Int = 0xFFFFFF, a:Float = 1):Void
 	{
 		shader = new LinearDodgeShader();
 		blendColor = Color;
@@ -54,7 +54,7 @@ class LinearDodgeBlend
 		shader.uBlendColor[3] = this.a;
 	}
 	
-	public function set_r(value:Float):Float
+	private function set_r(value:Float):Float
 	{
 		value = (value > 255 ? 255 : value);
 		value = (value < 0.0 ? 0.0 : value);
@@ -65,7 +65,7 @@ class LinearDodgeBlend
 		return value;
 	}
 	
-	public function set_g(value:Float):Float
+	private function set_g(value:Float):Float
 	{
 		value = (value > 255 ? 255 : value);
 		value = (value < 0.0 ? 0.0 : value);
@@ -76,7 +76,7 @@ class LinearDodgeBlend
 		return value;
 	}
 	
-	public function set_b(value:Float):Float
+	private function set_b(value:Float):Float
 	{
 		value = (value > 255 ? 255 : value);
 		value = (value < 0.0 ? 0.0 : value);
@@ -87,7 +87,7 @@ class LinearDodgeBlend
 		return value;
 	}
 	
-	public function set_a(value:Float):Float
+	private function set_a(value:Float):Float
 	{
 		value = (value > 1.0 ? 1.0 : value);
 		value = (value < 0.0 ? 0.0 : value);
