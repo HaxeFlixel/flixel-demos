@@ -134,7 +134,7 @@ class PlayState extends FlxState
 		shutterCanvas.shader = shutter.shader;
 		add(shutterCanvas);
 
-		FlxTween.num(0.0, 450, 1.5, { ease: FlxEase.quintOut, startDelay: 0.2 }, function(v) shutter.radius = v);
+		FlxTween.tween(shutter, { radius: 450 }, 1.5, { ease: FlxEase.quintOut, startDelay: 0.2 });
 	}
 
 	override public function update(elapsed:Float):Void
