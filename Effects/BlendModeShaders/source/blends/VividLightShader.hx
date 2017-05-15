@@ -8,14 +8,6 @@ class VividLightShader extends Shader
 
 	uniform vec4 uBlendColor;
 	
-	/**
-	 * Helper method that normalized an RGB value (in the 0-255 range) to a value between 0-1.
-	 */
-	float normalize(float value)
-	{
-		return (value-0) / (255. - 0.);
-	}
-	
 	float colorDodge(float base, float blend)
 	{
 		return (blend == 1.0) ? blend : min(base / (1.0 - blend), 1.0);
@@ -49,15 +41,7 @@ class VividLightShader extends Shader
 	void main()
 	{
 		vec4 base = texture2D(${Shader.uSampler}, ${Shader.vTexCoord});
-		
-		vec4 blendColor = vec4(
-			normalize(uBlendColor[0]),
-			normalize(uBlendColor[1]),
-			normalize(uBlendColor[2]),
-			uBlendColor[3]
-		);
-		
-		gl_FragColor = vividLight(base, blendColor, uBlendColor[3]);
+		gl_FragColor = vividLight(base, uBlendColor, uBlendColor[3]);
 	}
 	';
 	

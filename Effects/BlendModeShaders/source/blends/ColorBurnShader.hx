@@ -8,14 +8,6 @@ class ColorBurnShader extends Shader
 
 	uniform vec4 uBlendColor;
 	
-	/**
-	 * Helper method that normalized an RGB value (in the 0-255 range) to a value between 0-1.
-	 */
-	float normalize(float value)
-	{
-		return (value-0)/(255-0);
-	}
-	
 	float applyColorBurnToChannel(float base, float blend)
 	{
 		return ((blend == 0.0) ? blend : max((1.0 - ((1.0 - base) / blend)), 0.0));
@@ -39,15 +31,7 @@ class ColorBurnShader extends Shader
 	void main()
 	{
 		vec4 base = texture2D(${Shader.uSampler}, ${Shader.vTexCoord});
-		
-		vec4 blend = vec4(
-			normalize(uBlendColor[0]),
-			normalize(uBlendColor[1]),
-			normalize(uBlendColor[2]),
-			uBlendColor[3]
-		);
-		
-		gl_FragColor = blendColorBurn(base, blend, uBlendColor[3]);
+		gl_FragColor = blendColorBurn(base, uBlendColor, uBlendColor[3]);
 	}
 	';
 	

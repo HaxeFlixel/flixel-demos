@@ -8,11 +8,6 @@ class LightenShader extends Shader
 
 	uniform vec4 uBlendColor;
 	
-	float normalize(float value)
-	{
-		return (value-0)/(255-0);
-	}
-	
 	vec4 blendLighten(vec4 base, vec4 blend)
 	{
 		return max(blend, base);
@@ -26,15 +21,7 @@ class LightenShader extends Shader
 	void main()
 	{
 		vec4 base = texture2D(${Shader.uSampler}, ${Shader.vTexCoord});
-		
-		vec4 blend = vec4(
-			normalize(uBlendColor[0]),
-			normalize(uBlendColor[1]),
-			normalize(uBlendColor[2]),
-			uBlendColor[3]
-		);
-		
-		gl_FragColor = blendLighten(base, blend, blend.a);
+		gl_FragColor = blendLighten(base, uBlendColor, uBlendColor.a);
 	}
 	';
 	

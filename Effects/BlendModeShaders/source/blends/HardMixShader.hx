@@ -8,11 +8,6 @@ class HardMixShader extends Shader
 
 	uniform vec4 uBlendColor;
 	
-	float normalize(float value)
-	{
-		return (value-0)/(255-0);
-	}
-	
 	float blendColorDodge(float base, float blend) {
 		return (blend == 1.0)
 			? blend
@@ -52,15 +47,8 @@ class HardMixShader extends Shader
 	
 	void main()
 	{
-		vec4 base = vec4(
-			normalize(uBlendColor[0]),
-			normalize(uBlendColor[1]),
-			normalize(uBlendColor[2]),
-			uBlendColor[3]
-		);
-		
 		vec4 blend = texture2D(${Shader.uSampler}, ${Shader.vTexCoord});
-		vec4 res = blendHardMix(base, blend);
+		vec4 res = blendHardMix(uBlendColor, blend);
 		
 		gl_FragColor = blendHardMix(blend, res, uBlendColor[3]);
 	}
