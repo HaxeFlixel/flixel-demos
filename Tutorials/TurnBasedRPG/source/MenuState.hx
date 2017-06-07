@@ -21,7 +21,7 @@ class MenuState extends FlxState
 	
 	override public function create():Void
 	{
-		if (FlxG.sound.music == null) // don't restart the music if it's alredy playing
+		if (FlxG.sound.music == null) // don't restart the music if it's already playing
 		{
 			#if flash
 			FlxG.sound.playMusic(AssetPaths.HaxeFlixel_Tutorial_Game__mp3, 1, true);
