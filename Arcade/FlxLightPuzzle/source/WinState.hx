@@ -28,8 +28,20 @@ class WinState extends FlxSubState
 		new FlxTimer().start(1, addWinMessage);
 	}
 	
+	override public function destroy():Void
+	{
+		super.destroy();
+		
+		if (winMessage != null)
+		{
+			winMessage.destroy();
+			winMessage = null;
+		}
+	}
+	
 	function addWinMessage(_):Void
 	{
-		add(winMessage);
+		if (winMessage != null) // this check is for the off-chance someone hits the reset button before the message shows up
+			add(winMessage);
 	}
 }

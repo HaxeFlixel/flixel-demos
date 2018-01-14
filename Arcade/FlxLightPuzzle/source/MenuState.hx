@@ -34,6 +34,27 @@ class MenuState extends FlxSubState
 		add(playCMY);
 	}
 	
+	override public function destroy():Void
+	{
+		if (playRYB != null)
+		{
+			playRYB.destroy();
+			playRYB = null;
+		}
+		
+		if (playRGB != null)
+		{
+			playRGB.destroy();
+			playRGB = null;
+		}
+		
+		if (playCMY != null)
+		{
+			playCMY.destroy();
+			playCMY = null;
+		}
+	}
+	
 	function onSelect(target:FlxSprite):Void
 	{
 		ColorMaps.defaultColorMap = 

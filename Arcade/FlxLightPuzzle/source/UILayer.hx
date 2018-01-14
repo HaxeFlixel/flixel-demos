@@ -58,6 +58,9 @@ class UILayer extends FlxSpriteGroup
 		
 		add(mute);
 		
+		/*
+		// I'm leaving fullscreen disabled since it doesn't really work on HTML5
+		
 		var fullscreen = new FlxSprite(0, 69 + 50);
 		fullscreen.loadGraphic(AssetPaths.resize__png, true, 50, 50);
 		fullscreen.animation.add("fullscreen", [0], 0, false);
@@ -67,6 +70,7 @@ class UILayer extends FlxSpriteGroup
 		FlxMouseEventManager.add(fullscreen, null, toggleFullscreen, onMOver, onMOut, true, true, false);
 		
 		add(fullscreen);
+		*/
 		
 		var restart = new FlxSprite(0, 69 + 100);
 		restart.loadGraphic(AssetPaths.return__png, false);
@@ -83,7 +87,8 @@ class UILayer extends FlxSpriteGroup
 		FlxMouseEventManager.add(patreon, null, onPatreon, onMOver, onMOut, true, true, false);
 		add(patreon);
 		
-		credits = new FlxText(70, 246, 180, "Made by MSGhero for HaxeFlixel\nArt from Kenney.nl\nWaltz in G minor by Strimlarn87", 8);
+		credits = new FlxText(60, 216, 180, "Made by MSGhero for HaxeFlixel\nArt from Kenney.nl\nWaltz in G minor by Strimlarn87", 8);
+		credits.alignment = "center";
 		FlxMouseEventManager.add(credits, null, onCredits, onMOver, onMOut, true, true, false);
 		add(credits);
 		
@@ -125,7 +130,10 @@ class UILayer extends FlxSpriteGroup
 	public function unforceMenuExpand(?_):Void
 	{
 		FlxMouseEventManager.setObjectMouseEnabled(bg, true);
-		onPanelOut(bg);
+		
+		// the one time this gets called in the game, the mouse will be within the 50 px menu, over the reset button
+		// we don't really want onPanelOut to be called just for onPanelOver to be called one frame later, or the menu will flicker
+		// onPanelOut(bg);
 	}
 	
 	function toggleMute(mute:FlxSprite):Void
@@ -143,6 +151,7 @@ class UILayer extends FlxSpriteGroup
 		}
 	}
 	
+	/*
 	function toggleFullscreen(fullscreen:FlxSprite):Void
 	{
 		if (fullscreen.animation.curAnim.name == "unfullscreen")
@@ -157,6 +166,7 @@ class UILayer extends FlxSpriteGroup
 			FlxG.fullscreen = true;
 		}
 	}
+	*/
 	
 	function onRestart(_):Void
 	{
@@ -186,7 +196,7 @@ class UILayer extends FlxSpriteGroup
 	
 	function onSource(_):Void
 	{
-		// TBD: FlxG.openURL("");
+		FlxG.openURL("https://github.com/HaxeFlixel/flixel-demos/tree/master/Arcade/FlxLightPuzzle");
 	}
 	
 	function onCredits(credits:FlxText):Void

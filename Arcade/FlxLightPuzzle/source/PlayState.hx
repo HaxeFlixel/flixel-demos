@@ -63,11 +63,7 @@ class PlayState extends FlxState
 		// this is really easy to change using a free program like Audacity
 		FlxG.sound.playMusic(AssetPaths.Waltzon_edit__mp3, 0.5);
 		
-		// the main menu is going to be a substate here:
-		// this lets us do the neat trick of having the menu feel like the first level
-		var sub = new MenuState();
-		sub.closeCallback = nextLevel;
-		openSubState(sub);
+		openMenu();
 	}
 
 	override public function update(elapsed:Float):Void
@@ -81,8 +77,6 @@ class PlayState extends FlxState
 		}
 		
 		if (FlxG.keys.justPressed.R) resetLevel();
-		
-		if (FlxG.keys.justPressed.F) FlxG.fullscreen = !FlxG.fullscreen;
 		
 		// helpful debug keys to quickly view levels without playing through them, only in debug mode
 		#if debug
@@ -105,32 +99,43 @@ class PlayState extends FlxState
 		}
 	}
 	
+	function openMenu():Void
+	{
+		// the main menu is going to be a substate here:
+		// this lets us do the neat trick of having the menu feel like the first level
+		var sub = new MenuState();
+		sub.closeCallback = nextLevel;
+		openSubState(sub);
+	}
+	
 	function resetLevel():Void
 	{
 		if (currLevelIndex == -1) return; // in case someone presses reset from the menu state, which shouldn't do anything
 		
 		FlxTween.globalManager.clear();
 		
-		game.remove(player);
-		for (item in game) item.destroy();
+		game.remove(player); // we don't want to destroy the player
+		for (item in game) item.destroy(); // but we do want to destroy all the targets and lines to clear up memory
 		
-		game.clear();
+		game.clear(); // remove all the destroyed targets and lines from the game
+		game.add(player); // we'd like the player to stick around, though
+		
 		currLevel.reset();
-		
-		// resetting the final level resets the game, start back at level 0
-		if (currLevelIndex >= numLevels)
-		{
-			ui.unforceMenuExpand(); // reset the side panel menu to its normal behavior
-			
-			currLevelIndex = -1;
-			nextLevel();
-			
-			return;
-		}
 		
 		lights = [];
 		
-		game.add(player);
+		// resetting the final level resets the game
+		if (currLevelIndex >= numLevels)
+		{
+			ui.unforceMenuExpand(); // reset the side panel menu to its normal behavior
+			closeSubState(); // close the win state
+			
+			currLevelIndex = -1; // reset the levels
+			
+			openMenu(); // reopen the menu to choose another color set
+			
+			return;
+		}
 		
 		// skip drawing the border, which is the first 4 mirrors in the list
 		for (i in 4...currLevel.mirrors.length)
