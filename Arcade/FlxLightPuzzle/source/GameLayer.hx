@@ -60,8 +60,10 @@ class GameLayer extends FlxGroup
 		light.clipRect = light.clipRect;
 	}
 	
-	public function drawCircle(circle:Circle, delay:Float):Void
+	public function drawCircle(circle:Circle, delay:Float, duration:Float = .54):Void
 	{
+		// since we're using an elasticOut tween, the scale of the circle will stretch past 1.0
+		// that looks bad if we're being honest, so we're now creating a bigger circle than we want and scaling that to 70 percent instead of stretching it past 100 percent
 		var resize = 1 / .7;
 		
 		var sprite = new FlxSprite();
@@ -78,7 +80,7 @@ class GameLayer extends FlxGroup
 		
 		FlxSpriteUtil.drawCircle(sprite, -1, -1, circle.radius * resize, ColorMaps.defaultColorMap.get(circle.color), null, defaultDrawStyle);
 		
-		FlxTween.num(0, 1 / resize, .54, { onStart : addSprite.bind(sprite), startDelay : delay, ease : FlxEase.elasticOut }, updateCircle.bind(sprite));
+		FlxTween.num(0, 1 / resize, duration, { onStart : addSprite.bind(sprite), startDelay : delay, ease : FlxEase.elasticOut }, updateCircle.bind(sprite));
 	}
 	
 	function updateCircle(circle:FlxSprite, t:Float):Void
@@ -88,6 +90,7 @@ class GameLayer extends FlxGroup
 	
 	public function eraseCircle(circle:Circle, delay:Float):Void
 	{
+		// erasing the circle is also on a tween
 		FlxTween.num(.7, 0, .27, { startDelay : delay, ease : FlxEase.elasticIn, onComplete : removeCircle.bind(circle) }, updateCircle.bind(circle.graphic));
 	}
 	

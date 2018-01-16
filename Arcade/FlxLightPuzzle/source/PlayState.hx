@@ -28,6 +28,8 @@ class PlayState extends FlxState
 	var currLevel:Template;
 	var currLevelIndex:Int;
 	
+	var blockLevelReset:Bool;
+	
 	override public function create():Void
 	{
 		super.create();
@@ -53,6 +55,7 @@ class PlayState extends FlxState
 		playerPosition = FlxVector.get(75, 144);
 		
 		currLevelIndex = -1;
+		blockLevelReset = false;
 		
 		add(game);
 		add(ui); // we want the UI on top of the game
@@ -78,7 +81,8 @@ class PlayState extends FlxState
 		
 		if (FlxG.keys.justPressed.R) resetLevel();
 		
-		// helpful debug keys to quickly view levels without playing through them, only in debug mode
+		// helpful debug keys to quickly view levels without playing through them
+		// only in debug mode, you cheater
 		#if debug
 		if (FlxG.keys.justPressed.LEFT && currLevelIndex > 0)
 		{
@@ -111,8 +115,9 @@ class PlayState extends FlxState
 	function resetLevel():Void
 	{
 		if (currLevelIndex == -1) return; // in case someone presses reset from the menu state, which shouldn't do anything
+		if (blockLevelReset) return;
 		
-		FlxTween.globalManager.clear();
+		FlxTween.globalManager.clear(); // eliminates any tweens in progress
 		
 		game.remove(player); // we don't want to destroy the player
 		for (item in game) item.destroy(); // but we do want to destroy all the targets and lines to clear up memory
@@ -155,15 +160,17 @@ class PlayState extends FlxState
 	{
 		++currLevelIndex;
 		
+		blockLevelReset = false;
+		
 		if (currLevelIndex >= numLevels)
 		{
 			// win the game
 			var endCircle = new Circle(FlxVector.get(300, 144), 350, Color.WHITE);
-			game.drawCircle(endCircle, 1);
+			game.drawCircle(endCircle, 1, 4.32);
 			
 			openSubState(new WinState());
 			
-			new FlxTimer().start(1, ui.forceMenuExpand); // force-expand the side panel menu to show the clickable options
+			new FlxTimer().start(1.25, ui.forceMenuExpand); // force-expand the side panel menu to show the clickable options
 			
 			return;
 		}
@@ -207,8 +214,9 @@ class PlayState extends FlxState
 						
 						if (currLevel.targets.length == 0)
 						{
-							// if the level is complete, move on to the next one
-							new FlxTimer().start(lightDelay + .54, checkLevelFinish);
+							// if the player just hit the last target, we want the light reflecting to end before moving on
+							// but we also don't want the player to click to reset the level before it finishes
+							blockLevelReset = true;
 						}
 					}
 					
@@ -227,6 +235,12 @@ class PlayState extends FlxState
 		// remove this color and move on to the next one
 		currLevel.colors.shift();
 		ui.setAmmo(currLevel.colors);
+						
+		if (currLevel.targets.length == 0)
+		{
+			// if the level is complete, move on to the next one after the light has finished reflecting
+			new FlxTimer().start(lightDelay + .54, checkLevelFinish);
+		}
 	}
 	
 	function checkLevelFinish(_):Void

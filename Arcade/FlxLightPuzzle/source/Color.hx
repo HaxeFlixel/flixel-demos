@@ -8,16 +8,16 @@ package;
 @:enum
 abstract Color(Int) from Int to Int
 {
-	var MIRROR = 1 << 0;
+	var MIRROR = 0x01 << 0;
 	
 	var RED = 0x01 << 1;
 	var YELLOW = 0x01 << 2;
 	var BLUE = 0x01 << 3;
 	
-	// binary gives us an easy way to combine colors
-	var ORANGE = RED | YELLOW;
-	var GREEN = YELLOW | BLUE;
-	var PURPLE = RED | BLUE;
+	// using binary gives us an easy way to combine colors
+	var ORANGE = 6; // equal to RED | YELLOW
+	var GREEN = 12; // equal to YELLOW | BLUE
+	var PURPLE = 10; // equal to RED | BLUE
 	
-	var WHITE = RED | YELLOW | BLUE;
+	var WHITE = 14; // equal to RED | YELLOW | BLUE
 }

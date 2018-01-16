@@ -25,7 +25,7 @@ class WinState extends FlxSubState
 		winMessage.alignment = "center";
 		
 		// delay to match up with the expanding circle background
-		new FlxTimer().start(1, addWinMessage);
+		new FlxTimer().start(1.25, addWinMessage);
 	}
 	
 	override public function destroy():Void
