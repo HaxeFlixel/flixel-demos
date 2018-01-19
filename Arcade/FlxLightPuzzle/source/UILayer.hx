@@ -196,7 +196,7 @@ class UILayer extends FlxSpriteGroup
 	
 	function onSource(_):Void
 	{
-		FlxG.openURL("https://github.com/HaxeFlixel/flixel-demos/tree/master/Arcade/FlxLightPuzzle");
+		FlxG.openURL("https://github.com/HaxeFlixel/flixel-demos/tree/dev/Arcade/FlxLightPuzzle");
 	}
 	
 	function onCredits(credits:FlxText):Void
