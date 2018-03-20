@@ -1,5 +1,6 @@
 package;
 
+import openfl.display.Shader;
 import flixel.system.FlxAssets.FlxShader;
 
 /**

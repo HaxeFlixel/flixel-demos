@@ -12,10 +12,6 @@ import flixel.tile.FlxTileblock;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 
-#if (openfl >= "8.0.0")
-import openfl.display.ShaderParameter;
-#end
-
 /**
  * ...
  * @author Zaphod
@@ -47,9 +43,6 @@ class PlayState extends FlxState
 	
 	private var floodFill = new FloodFill();
 	private var invert = new Invert();
-	#else
-	private var floodFill:FlxShader;
-	private var invert:FlxShader;
 	#end
 	
 	override public function create():Void
@@ -175,12 +168,13 @@ class PlayState extends FlxState
 	{
 		if (Add)
 		{
-			var halfAmount:Int = Std.int(0.5 * _changeAmount);
-			var shader:FlxShader = null;
-			
 			for (i in 0..._changeAmount)
 			{
-				shader = (i < halfAmount) ? floodFill : invert;
+				var shader = null;
+				#if shaders_supported
+				shader = (i < _changeAmount / 2) ? floodFill : invert;
+				#end
+
 				// It's much slower to recycle objects, but keeps runtime costs of garbage collection low
 				_bunnies.add(new Bunny().init(offScreen, useShaders, shader));
 			}
