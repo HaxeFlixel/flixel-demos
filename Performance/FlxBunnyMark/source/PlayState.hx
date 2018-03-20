@@ -12,6 +12,10 @@ import flixel.tile.FlxTileblock;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 
+#if (openfl >= "8.0.0")
+import openfl.display.ShaderParameter;
+#end
+
 /**
  * ...
  * @author Zaphod
@@ -140,7 +144,12 @@ class PlayState extends FlxState
 		var t = FlxG.game.ticks;
 		
 		#if shaders_supported
-		floodFill.uFloodFillY = 0.5 * (1.0 + Math.sin(t / 1000));
+		var floodFillY = 0.5 * (1.0 + Math.sin(t / 1000));
+		#if (openfl >= "8.0.0")
+		floodFill.uFloodFillY.value = [floodFillY];
+		#else
+		floodFill.uFloodFillY = floodFillY;
+		#end
 		#end
 		
 		_pirate.x = Std.int((FlxG.width - _pirate.width) * (0.5 + 0.5 * Math.sin(t / 3000)));
@@ -171,7 +180,7 @@ class PlayState extends FlxState
 			
 			for (i in 0..._changeAmount)
 			{
-				shader = (i <  halfAmount) ? floodFill : invert;
+				shader = (i < halfAmount) ? floodFill : invert;
 				// It's much slower to recycle objects, but keeps runtime costs of garbage collection low
 				_bunnies.add(new Bunny().init(offScreen, useShaders, shader));
 			}
