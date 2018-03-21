@@ -11,7 +11,7 @@ import flixel.system.FlxAssets;
 import openfl.filters.BitmapFilter;
 import openfl.filters.BlurFilter;
 import openfl.filters.ColorMatrixFilter;
-#if (next && !flash)
+#if filters_supported
 import shaders.Grain;
 import shaders.Hq2x;
 import shaders.Scanline;
@@ -29,7 +29,7 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		filterMap = [
-			#if (next && !flash)
+			#if filters_supported
 			"Scanline" => {
 				filter:new ShaderFilter(new Scanline()),
 			},
