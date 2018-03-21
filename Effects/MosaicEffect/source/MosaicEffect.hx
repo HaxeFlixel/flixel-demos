@@ -1,10 +1,8 @@
 package;
 
 import openfl.display.Shader;
- 
-/**
- * Note: BitmapFilters can only be used on 'OpenFL next'
- */
+import flixel.system.FlxAssets.FlxShader;
+
 class MosaicEffect
 {
 	/**
@@ -30,16 +28,26 @@ class MosaicEffect
 	public function new(width:Float, height:Float):Void
 	{
 		shader = new MosaicShader();
+		#if (openfl >= "8.0.0")
+		shader.data.uTextureSize.value = [width, height];
+		shader.data.uBlocksize.value = [strengthX, strengthY];
+		#else
 		shader.uTextureSize = [width, height];
 		shader.uBlocksize = [strengthX, strengthY];
+		#end
 	}
 	
 	public function setStrength(strengthX:Float, strengthY:Float):Void
 	{
 		this.strengthX = strengthX;
 		this.strengthY = strengthY;
+		#if (openfl >= "8.0.0")
+		shader.data.uBlocksize.value[0] = strengthX;
+		shader.data.uBlocksize.value[1] = strengthY;
+		#else
 		shader.uBlocksize[0] = strengthX;
 		shader.uBlocksize[1] = strengthY;
+		#end
 	}
 }
 
@@ -50,8 +58,21 @@ class MosaicEffect
  * - The effect will be applied to the whole screen.
  * - Set the x/y-values on the 'uBlocksize' vector to the desired size (setting this to 0 will make the screen go black)
  */
-class MosaicShader extends Shader
+class MosaicShader extends FlxShader
 {
+	#if (openfl >= "8.0.0")
+	@:glFragmentSource('
+	varying vec2 openfl_vTexCoord;
+	uniform vec2 uTextureSize;
+	uniform vec2 uBlocksize;
+	uniform sampler2D texture0;
+
+	void main()
+	{
+		vec2 blocks = uTextureSize / uBlocksize;
+		gl_FragColor = texture2D(texture0, floor(openfl_vTexCoord * blocks) / blocks);
+	}')
+	#else
 	@fragment var code = '
 	uniform vec2 uTextureSize;
 	uniform vec2 uBlocksize;
@@ -61,6 +82,7 @@ class MosaicShader extends Shader
 		vec2 blocks = uTextureSize / uBlocksize;
 		gl_FragColor = texture2D(${Shader.uSampler}, floor(${Shader.vTexCoord} * blocks) / blocks);
 	}';
+	#end
 	
 	public function new()
 	{
