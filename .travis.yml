@@ -27,8 +27,6 @@ before_install:
 install:
   - haxelib install munit > /dev/null
   - haxelib install hamcrest > /dev/null
-  - haxelib install lime 2.9.1 > /dev/null
-  - haxelib install openfl 3.6.1 > /dev/null
   - haxelib install systools > /dev/null
   - haxelib install nape > /dev/null
   - haxelib install task > /dev/null
