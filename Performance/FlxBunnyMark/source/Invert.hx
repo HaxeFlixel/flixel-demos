@@ -12,11 +12,11 @@ class Invert extends FlxShader
 	#if (openfl >= "8.0.0")
 	@:glFragmentSource('
 	varying vec2 openfl_vTexCoord;
-	uniform sampler2D texture0;
+	uniform sampler2D bitmap;
 
 	void main()
 	{
-		vec4 color = texture2D(texture0, openfl_vTexCoord);
+		vec4 color = texture2D(bitmap, openfl_vTexCoord);
 		gl_FragColor = vec4((1.0 - color.r) * color.a, (1.0 - color.g) * color.a, (1.0 - color.b) * color.a, color.a);
 	}')
 	#else

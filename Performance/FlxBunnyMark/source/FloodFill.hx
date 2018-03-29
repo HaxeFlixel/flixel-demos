@@ -9,7 +9,7 @@ class FloodFill extends FlxShader
 	@:glFragmentSource('
 	varying vec2 openfl_vTexCoord;
 	uniform float uFloodFillY;
-	uniform sampler2D texture0;
+	uniform sampler2D bitmap;
 	
 	void main() 
 	{
@@ -18,11 +18,11 @@ class FloodFill extends FlxShader
 		
 		if (openfl_vTexCoord.y > uFloodFillY)
 		{
-			color = texture2D(texture0, border);
+			color = texture2D(bitmap, border);
 		}
 		else
 		{
-			color = texture2D(texture0, openfl_vTexCoord);
+			color = texture2D(bitmap, openfl_vTexCoord);
 		}
 		
 		gl_FragColor = color;
