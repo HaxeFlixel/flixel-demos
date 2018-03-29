@@ -11,6 +11,12 @@ import flixel.tile.FlxTileblock;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 
+#if (openfl >= "8.0.0")
+import openfl8.*;
+#else
+import openfl3.*;
+#end
+
 /**
  * ...
  * @author Zaphod
@@ -51,7 +57,7 @@ class PlayState extends FlxState
 		
 		if (FlxG.renderBlit #if !openfl_legacy || true #end)
 		{
-			var bg:FlxTileblock = new FlxTileblock(0, 0, bgWidth, bgHeight);
+			var bg = new FlxTileblock(0, 0, bgWidth, bgHeight);
 			add(bg.loadTiles("assets/grass.png"));
 		}
 		else
@@ -71,7 +77,6 @@ class PlayState extends FlxState
 		add(uiBackground);
 		
 		// Left UI
-		
 		var amountSlider:FlxSlider = new FlxSlider(this, "_changeAmount", 40, 5, 1, INITIAL_AMOUNT);
 		amountSlider.nameLabel.text = "Change amount by:";
 		amountSlider.decimals = 0;
