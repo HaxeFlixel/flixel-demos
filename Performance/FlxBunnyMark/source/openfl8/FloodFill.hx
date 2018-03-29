@@ -5,9 +5,8 @@ import flixel.system.FlxAssets.FlxShader;
 class FloodFill extends FlxShader
 {
 	@:glFragmentSource('
-		varying vec2 openfl_vTexCoord;
+		#pragma header
 		uniform float uFloodFillY;
-		uniform sampler2D bitmap;
 
 		void main() 
 		{

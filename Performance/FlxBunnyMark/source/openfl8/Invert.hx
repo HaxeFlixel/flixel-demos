@@ -5,8 +5,7 @@ import flixel.system.FlxAssets.FlxShader;
 class Invert extends FlxShader
 {
 	@:glFragmentSource('
-		varying vec2 openfl_vTexCoord;
-		uniform sampler2D bitmap;
+		#pragma header
 
 		void main()
 		{
