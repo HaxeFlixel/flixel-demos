@@ -62,26 +62,26 @@ class MosaicShader extends FlxShader
 {
 	#if (openfl >= "8.0.0")
 	@:glFragmentSource('
-	varying vec2 openfl_vTexCoord;
-	uniform vec2 uTextureSize;
-	uniform vec2 uBlocksize;
-	uniform sampler2D bitmap;
+		#pragma header
+		uniform vec2 uTextureSize;
+		uniform vec2 uBlocksize;
 
-	void main()
-	{
-		vec2 blocks = uTextureSize / uBlocksize;
-		gl_FragColor = texture2D(bitmap, floor(openfl_vTexCoord * blocks) / blocks);
-	}')
+		void main()
+		{
+			vec2 blocks = uTextureSize / uBlocksize;
+			gl_FragColor = texture2D(bitmap, floor(openfl_TexCoordv * blocks) / blocks);
+		}'
+	)
 	#else
 	@fragment var code = '
-	uniform vec2 uTextureSize;
-	uniform vec2 uBlocksize;
+		uniform vec2 uTextureSize;
+		uniform vec2 uBlocksize;
 
-	void main()
-	{
-		vec2 blocks = uTextureSize / uBlocksize;
-		gl_FragColor = texture2D(${Shader.uSampler}, floor(${Shader.vTexCoord} * blocks) / blocks);
-	}';
+		void main()
+		{
+			vec2 blocks = uTextureSize / uBlocksize;
+			gl_FragColor = texture2D(${Shader.uSampler}, floor(${Shader.vTexCoord} * blocks) / blocks);
+		}';
 	#end
 	
 	public function new()

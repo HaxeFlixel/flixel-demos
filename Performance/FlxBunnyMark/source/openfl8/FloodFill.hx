@@ -8,18 +8,18 @@ class FloodFill extends FlxShader
 		#pragma header
 		uniform float uFloodFillY;
 
-		void main() 
+		void main()
 		{
-			vec2 border = vec2(openfl_vTexCoord.x, uFloodFillY);
+			vec2 border = vec2(openfl_TexCoordv.x, uFloodFillY);
 			vec4 color;
 
-			if (openfl_vTexCoord.y > uFloodFillY)
+			if (openfl_TexCoordv.y > uFloodFillY)
 			{
 				color = texture2D(bitmap, border);
 			}
 			else
 			{
-				color = texture2D(bitmap, openfl_vTexCoord);
+				color = texture2D(bitmap, openfl_TexCoordv);
 			}
 
 			gl_FragColor = color;
