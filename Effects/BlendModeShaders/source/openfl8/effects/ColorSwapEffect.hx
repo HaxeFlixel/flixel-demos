@@ -76,7 +76,7 @@ class ColorSwapShader extends FlxShader
 		 */
 		float normalize(float value)
 		{
-			return (value-0)/(255-0);
+			return (value - 0.0) / (255.0 - 0.0);
 		}
 
 		void main()
