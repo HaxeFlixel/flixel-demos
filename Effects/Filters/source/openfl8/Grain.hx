@@ -1,16 +1,10 @@
-package shaders;
+package openfl8;
 
-import openfl.display.Shader;
+import flixel.system.FlxAssets.FlxShader;
 
-/**
- * ...
- * @author MrCdK
- */
-class Grain extends Shader
+class Grain extends FlxShader
 {
-	
-	@fragment var code = '
-	
+	@:glFragmentSource('
 		/*
 		Film Grain post-process shader v1.1
 		Martins Upitis (martinsh) devlog-martinsh.blogspot.com
@@ -119,7 +113,7 @@ class Grain extends Shader
 
 		void main()
 		{
-			vec2 texCoord = ${Shader.vTexCoord}.st;
+			vec2 texCoord = openfl_TexCoordv.st;
 
 			vec3 rotOffset = vec3(1.425,3.892,5.835); //rotation offset values
 			vec2 rotCoordsR = coordRot(texCoord, uTime + rotOffset.x);
@@ -133,7 +127,7 @@ class Grain extends Shader
 				noise.b = mix(noise.r,pnoise3D(vec3(rotCoordsB*vec2(width/grainsize,height/grainsize),2.0)),coloramount);
 			}
 
-			vec3 col = texture2D(${Shader.uSampler}, ${Shader.vTexCoord}).rgb;
+			vec3 col = texture2D(bitmap, openfl_TexCoordv).rgb;
 
 			//noisiness response curve based on scene luminance
 			vec3 lumcoeff = vec3(0.299,0.587,0.114);
@@ -146,15 +140,11 @@ class Grain extends Shader
 			col = col+noise*grainamount;
 
 			gl_FragColor =  vec4(col,1.0);
-		}
-
-	
-	';
-	
+		}'
+	)
 
 	public function new() 
 	{
 		super();
 	}
-	
 }
