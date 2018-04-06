@@ -4,13 +4,13 @@ import flixel.system.FlxAssets.FlxShader;
 
 class Hq2x extends FlxShader
 {
-	@fragment var code = '
+	@:glFragmentSource('
 		#pragma header
 
 		void main()
 		{
-			float x = 1.0 / ${Shader.uTextureSize}.x;
-			float y = 1.0 / ${Shader.uTextureSize}.y;
+			float x = 1.0 / 640.0;
+			float y = 1.0 / 480.0;
 
 			vec4 color1 = texture2D(bitmap, openfl_TexCoordv.st + vec2(-x, -y));
 			vec4 color2 = texture2D(bitmap, openfl_TexCoordv.st + vec2(0.0, -y));
@@ -26,7 +26,8 @@ class Hq2x extends FlxShader
 			vec4 avg = color1 + color2 + color3 + color4 + color5 + color6 + color7 + color8 + color9;
 
 			gl_FragColor = avg / 9.0;
-		}';
+		}'
+	)
 	
 	public function new() 
 	{

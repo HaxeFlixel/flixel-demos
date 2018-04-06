@@ -10,7 +10,7 @@ class Scanline extends FlxShader
 
 		void main()
 		{
-			if (mod(floor(openfl_TexCoordv.y * ${Shader.uTextureSize}.y / scale), 2.0) == 0.0)
+			if (mod(floor(openfl_TexCoordv.y * 480.0 / scale), 2.0) == 0.0)
 				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 			else
 				gl_FragColor = texture2D(bitmap, openfl_TexCoordv);
