@@ -11,13 +11,15 @@ import flixel.system.FlxAssets;
 import openfl.filters.BitmapFilter;
 import openfl.filters.BlurFilter;
 import openfl.filters.ColorMatrixFilter;
-import openfl.filters.ShaderFilter;
-import openfl.Lib;
 
+#if shaders_supported
 #if (openfl >= "8.0.0")
 import openfl8.*;
 #else
 import openfl3.*;
+#end
+import openfl.filters.ShaderFilter;
+import openfl.Lib;
 #end
 
 class PlayState extends FlxState
@@ -29,6 +31,7 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		filterMap = [
+			#if shaders_supported
 			"Scanline" => {
 				filter: new ShaderFilter(new Scanline()),
 			},
@@ -51,6 +54,7 @@ class PlayState extends FlxState
 					}
 				}
 			},
+			#end
 			"Blur" => {
 				filter:new BlurFilter(),
 			},

@@ -5,7 +5,7 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.util.FlxColor;
 
-#if !flash
+#if shaders_supported
 #if (openfl >= "8.0.0")
 import openfl8.blends.*;
 import openfl8.effects.*;
@@ -46,7 +46,7 @@ class PlayState extends FlxState
 {
 	var backdrop:FlxSprite;
 
-	#if !flash
+	#if shaders_supported
 	var wiggleEffect:WiggleEffect;
 
 	var effects:Map<String, BlendModeShader> = [
@@ -66,7 +66,7 @@ class PlayState extends FlxState
 		backdrop = new FlxSprite(0, 0, AssetPaths.backdrop__png);
 		add(backdrop);
 
-		#if flash
+		#if !shaders_supported
 		add(createText(0, 0, "Not supported on this target!", 16).screenCenter());
 		#else
 		var logo = new FlxSprite(0, 0, AssetPaths.logo__png);
@@ -102,7 +102,7 @@ class PlayState extends FlxState
 		return text;
 	}
 
-	#if !flash
+	#if shaders_supported
 	private function createUI()
 	{
 		var dropDownWidth = 155;

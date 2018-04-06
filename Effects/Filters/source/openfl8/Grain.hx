@@ -5,6 +5,8 @@ import flixel.system.FlxAssets.FlxShader;
 class Grain extends FlxShader
 {
 	@:glFragmentSource('
+		#pragma header
+
 		/*
 		Film Grain post-process shader v1.1
 		Martins Upitis (martinsh) devlog-martinsh.blogspot.com
