@@ -30,7 +30,7 @@ class ColorBurnShader extends FlxShader
 		
 		void main()
 		{
-			vec4 base = texture2D(bitmap, openfl_TexCoordv);
+			vec4 base = texture2D(bitmap, openfl_TextureCoordv);
 			gl_FragColor = blendColorBurn(base, uBlendColor, uBlendColor[3]);
 		}'
 	)

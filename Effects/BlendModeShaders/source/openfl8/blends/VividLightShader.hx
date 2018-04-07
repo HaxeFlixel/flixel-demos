@@ -40,7 +40,7 @@ class VividLightShader extends FlxShader
 
 		void main()
 		{
-			vec4 base = texture2D(bitmap, openfl_TexCoordv);
+			vec4 base = texture2D(bitmap, openfl_TextureCoordv);
 			gl_FragColor = vividLight(base, uBlendColor, uBlendColor[3]);
 		}'
 	)

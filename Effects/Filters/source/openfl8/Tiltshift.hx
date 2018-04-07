@@ -56,7 +56,7 @@ class Tiltshift extends FlxShader
 			vec4 blurred;
 				
 			// Work out how much to blur based on the mid point 
-			amount = pow((openfl_TexCoordv.y * center) * 2.0 - 1.0, 2.0) * bluramount;
+			amount = pow((openfl_TextureCoordv.y * center) * 2.0 - 1.0, 2.0) * bluramount;
 				
 			// This is the accumulation of color from the surrounding pixels in the texture
 			blurred = vec4(0.0, 0.0, 0.0, 1.0);
@@ -66,7 +66,7 @@ class Tiltshift extends FlxShader
 				for (float offsY = minOffs; offsY <= maxOffs; ++offsY) {
 		 
 					// copy the coord so we can mess with it
-					vec2 temp_tcoord = openfl_TexCoordv.xy;
+					vec2 temp_tcoord = openfl_TextureCoordv.xy;
 		 
 					//work out which uv we want to sample now
 					temp_tcoord.x += offsX * amount * stepSize;

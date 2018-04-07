@@ -85,7 +85,7 @@ class ColorSwapShader extends FlxShader
 
 		void main()
 		{
-			vec4 pixel = texture2D(bitmap, openfl_TexCoordv);
+			vec4 pixel = texture2D(bitmap, openfl_TextureCoordv);
 
 			if (!shaderIsActive)
 			{

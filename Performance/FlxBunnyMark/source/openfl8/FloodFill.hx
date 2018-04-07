@@ -10,16 +10,16 @@ class FloodFill extends FlxShader
 
 		void main()
 		{
-			vec2 border = vec2(openfl_TexCoordv.x, uFloodFillY);
+			vec2 border = vec2(openfl_TextureCoordv.x, uFloodFillY);
 			vec4 color;
 
-			if (openfl_TexCoordv.y > uFloodFillY)
+			if (openfl_TextureCoordv.y > uFloodFillY)
 			{
 				color = texture2D(bitmap, border);
 			}
 			else
 			{
-				color = texture2D(bitmap, openfl_TexCoordv);
+				color = texture2D(bitmap, openfl_TextureCoordv);
 			}
 
 			gl_FragColor = color;

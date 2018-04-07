@@ -115,7 +115,7 @@ class Grain extends FlxShader
 
 		void main()
 		{
-			vec2 texCoord = openfl_TexCoordv.st;
+			vec2 texCoord = openfl_TextureCoordv.st;
 
 			vec3 rotOffset = vec3(1.425,3.892,5.835); //rotation offset values
 			vec2 rotCoordsR = coordRot(texCoord, uTime + rotOffset.x);
@@ -129,7 +129,7 @@ class Grain extends FlxShader
 				noise.b = mix(noise.r,pnoise3D(vec3(rotCoordsB*vec2(width/grainsize,height/grainsize),2.0)),coloramount);
 			}
 
-			vec3 col = texture2D(bitmap, openfl_TexCoordv).rgb;
+			vec3 col = texture2D(bitmap, openfl_TextureCoordv).rgb;
 
 			//noisiness response curve based on scene luminance
 			vec3 lumcoeff = vec3(0.299,0.587,0.114);

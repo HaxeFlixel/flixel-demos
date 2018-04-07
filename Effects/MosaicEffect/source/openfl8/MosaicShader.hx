@@ -19,7 +19,7 @@ class MosaicShader extends FlxShader
 		void main()
 		{
 			vec2 blocks = uTextureSize / uBlocksize;
-			gl_FragColor = texture2D(bitmap, floor(openfl_TexCoordv * blocks) / blocks);
+			gl_FragColor = texture2D(bitmap, floor(openfl_TextureCoordv * blocks) / blocks);
 		}'
 	)
 

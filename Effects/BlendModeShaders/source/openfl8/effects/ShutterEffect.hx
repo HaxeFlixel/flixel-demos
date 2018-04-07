@@ -102,8 +102,8 @@ class ShutterShader extends FlxShader
 		vec2 getCoordinates()
 		{
 			return vec2(
-				(openfl_TexCoordv.x * uResolution.x) / scale,
-				(openfl_TexCoordv.y * uResolution.y) / scale
+				(openfl_TextureCoordv.x * uResolution.x) / scale,
+				(openfl_TextureCoordv.y * uResolution.y) / scale
 			);
 		}
 
@@ -121,7 +121,7 @@ class ShutterShader extends FlxShader
 		{
 			if (!shaderIsActive)
 			{
-				gl_FragColor = texture2D(bitmap, openfl_TexCoordv);
+				gl_FragColor = texture2D(bitmap, openfl_TextureCoordv);
 				return;
 			}
 
@@ -141,7 +141,7 @@ class ShutterShader extends FlxShader
 
 				if (shutterTargetMode == SHUTTER_TARGET_FLXCAMERA)
 				{
-					gl_FragColor = texture2D(bitmap, openfl_TexCoordv);
+					gl_FragColor = texture2D(bitmap, openfl_TextureCoordv);
 				}
 			}
 		}'

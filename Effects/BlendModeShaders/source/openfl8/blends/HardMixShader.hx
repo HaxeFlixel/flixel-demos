@@ -53,7 +53,7 @@ class HardMixShader extends FlxShader
 
 		void main()
 		{
-			vec4 blend = texture2D(bitmap, openfl_TexCoordv);
+			vec4 blend = texture2D(bitmap, openfl_TextureCoordv);
 			vec4 res = blendHardMix(uBlendColor, blend);
 
 			gl_FragColor = blendHardMix(blend, res, uBlendColor[3]);
