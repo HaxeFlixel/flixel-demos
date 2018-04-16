@@ -13,13 +13,10 @@
 		
 	<!--Enable OpenFL next -->
 	<set name="next" />
-	<haxedef name="next" />
 	
 	<!--Enable webgl -->
 	<set name="webgl" if="html5" />
-	<set name="FLX_RENDER_TILE" if="html5" />
 	<haxedef name="webgl" if="html5" />
-	<haxedef name="FLX_RENDER_TILE" if="html5" />
 	
 	<!--------------------------------WINDOW SETTINGS------------------------------->
 	
