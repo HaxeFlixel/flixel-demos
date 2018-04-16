@@ -29,8 +29,8 @@ class Grain extends FlxShader
 		const float permTexUnit = 1.0/256.0;        // Perm texture texel-size
 		const float permTexUnitHalf = 0.5/256.0;    // Half perm texture texel-size
 
-		float width = 640.0;
-		float height = 480.0;
+		float width = openfl_TextureSize.x;
+		float height = openfl_TextureSize.y;
 
 		const float grainamount = 0.05; //grain amount
 		bool colored = false; //colored noise?

@@ -9,8 +9,8 @@ class Hq2x extends FlxShader
 
 		void main()
 		{
-			float x = 1.0 / 640.0;
-			float y = 1.0 / 480.0;
+			float x = 1.0 / openfl_TextureSize.x;
+			float y = 1.0 / openfl_TextureSize.y;
 
 			vec4 color1 = texture2D(bitmap, openfl_TextureCoordv.st + vec2(-x, -y));
 			vec4 color2 = texture2D(bitmap, openfl_TextureCoordv.st + vec2(0.0, -y));
