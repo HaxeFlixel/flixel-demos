@@ -15,7 +15,7 @@
 	<!--------------------------------WINDOW SETTINGS------------------------------->
 	
 	<!--These window settings apply to all targets-->
-	<window width="1280" height="720" fps="60" background="#160100" hardware="true" vsync="true" />
+	<window width="1280" height="720" fps="60" background="#160100" hardware="true" vsync="false" />
 	
 	<!--HTML5-specific-->
 	<window if="html5" resizable="false" />
@@ -60,7 +60,7 @@
 	<!--Optimise inputs, be careful you will get null errors if you don't use conditionals in your game-->
 	<!--<haxedef name="FLX_NO_MOUSE" />-->
 	<haxedef name="FLX_NO_KEYBOARD" if="mobile" />
-	<haxedef name="FLX_NO_TOUCH" />
+	<haxedef name="FLX_NO_TOUCH" unless="mobile" />
 	<haxedef name="FLX_NO_GAMEPAD" />
 	
 	<!--Disable the Flixel core sound tray-->

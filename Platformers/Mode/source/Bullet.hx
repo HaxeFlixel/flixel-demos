@@ -4,17 +4,17 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
+import flixel.system.FlxAssets;
 
 class Bullet extends FlxSprite
 {
 	private var _speed:Float;
 	
-	@:keep
 	public function new()
 	{
 		super();
 		
-		loadGraphic(Reg.BULLET, true);
+		loadGraphic(AssetPaths.bullet__png, true);
 		width = 6;
 		height = 6;
 		offset.set(1, 1);
@@ -33,9 +33,7 @@ class Bullet extends FlxSprite
 		if (!alive)
 		{
 			if (animation.finished)
-			{
 				exists = false;
-			}
 		}
 		else if (touching != 0)
 		{
@@ -47,16 +45,12 @@ class Bullet extends FlxSprite
 	override public function kill():Void
 	{
 		if (!alive)
-		{
 			return;
-		}
 		
 		velocity.set(0, 0);
 		
 		if (isOnScreen())
-		{
-			FlxG.sound.play("Jump");
-		}
+			FlxG.sound.play(FlxAssets.getSound("assets/sounds/jump"));
 		
 		alive = false;
 		solid = false;
@@ -65,7 +59,7 @@ class Bullet extends FlxSprite
 	
 	public function shoot(Location:FlxPoint, Aim:Int):Void
 	{
-		FlxG.sound.play("Shoot");
+		FlxG.sound.play(FlxAssets.getSound("assets/sounds/shoot"));
 		
 		super.reset(Location.x - width / 2, Location.y - height / 2);
 		

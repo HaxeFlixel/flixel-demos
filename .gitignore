@@ -169,3 +169,5 @@ dump
 
 *.hash
 Other/SpriteStressTest/
+.vscode
+debug.log

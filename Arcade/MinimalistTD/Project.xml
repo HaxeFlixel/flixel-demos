@@ -14,7 +14,7 @@
 	<!--------------------------------WINDOW SETTINGS------------------------------->
 	
 	<!--These window settings apply to all targets-->
-	<window width="640" height="480" fps="60" background="#000000" hardware="true" vsync="true" />
+	<window width="640" height="480" fps="60" background="#000000" hardware="true" vsync="false" />
 	
 	<!--HTML5-specific-->
 	<window if="html5" resizable="false" />
@@ -52,7 +52,7 @@
 	<haxedef name="FLX_NO_MOUSE_ADVANCED" />
 	
 	<!--Disable the Native cursor api for Flash target-->
-	<!--<haxedef name="FLX_NO_NATIVE_CURSOR" />-->
+	<haxedef name="FLX_NO_NATIVE_CURSOR" />
 	
 	<!--Optimise inputs, be careful you will get null errors if you don't use conditionals in your game-->
 	<haxedef name="FLX_NO_MOUSE" if="mobile" />

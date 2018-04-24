@@ -13,10 +13,9 @@ class Enemy extends FlxSprite
 	/**
 	 * Create a new enemy. Used in the menu and playstate.
 	 */
-	override public function new(X:Float, Y:Float) 
+	override public function new(X:Float = 0, Y:Float = 0) 
 	{
 		super(X, Y, Reg.enemyImage);
-		
 		health = maxHealth;
 	}
 	
@@ -34,12 +33,11 @@ class Enemy extends FlxSprite
 	}
 	
 	/**
-	 * The alpha of the enmy is dependent on health.
+	 * The alpha of the enemy is dependent on health.
 	 */
 	override public function update(elapsed:Float):Void
 	{
 		alpha = health / maxHealth; 
-		
 		super.update(elapsed);
 	}
 	
@@ -66,7 +64,7 @@ class Enemy extends FlxSprite
 	{
 		FlxG.sound.play("enemykill");
 		
-		var emitter:EnemyGibs = Reg.PS.emitterGroup.recycle(EnemyGibs);
+		var emitter = Reg.PS.emitters.recycle(EnemyGibs.new);
 		emitter.startAtPosition(x, y);
 		
 		Reg.PS.enemiesToKill--;
@@ -93,10 +91,10 @@ class Enemy extends FlxSprite
 		if (Path == null)
 			throw("No valid path was passed to the enemy! Does the tilemap provide a valid path from start to finish?");
 		
-		x = Path[0].x;
-		y = Path[0].y;
+		Path[0].x = x;
+		Path[0].y = y;
 		
-		this.path = new FlxPath().start(Path, Speed, 0, true);
+		path = new FlxPath().start(Path, Speed, 0, true);
 		path.onComplete = OnComplete;
 	}
 }

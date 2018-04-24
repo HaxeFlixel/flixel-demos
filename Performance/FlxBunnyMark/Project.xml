@@ -14,7 +14,7 @@
 	<!--------------------------------WINDOW SETTINGS------------------------------->
 	
 	<!--These window settings apply to all targets-->
-	<window width="640" height="480" fps="60" background="#000000" hardware="true" vsync="true" />
+	<window width="640" height="480" fps="60" background="#000000" hardware="true" vsync="false" />
 	
 	<!--HTML5-specific-->
 	<window if="html5" resizable="false" />
@@ -33,6 +33,8 @@
 	
 	<!--------------------------------LIBRARIES------------------------------------->
 
+	<!-- enable next for shader support -->
+	<!--<set name="next"/>-->
 	<haxelib name="flixel"/>
 	
 	<!--In case you want to use the addons package-->
@@ -75,6 +77,8 @@
 	
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
+	
+	<haxedef name="shaders_supported" unless="flash || openfl-legacy" />
 	
 	<!--------------------------------CUSTOM---------------------------------------->
 	

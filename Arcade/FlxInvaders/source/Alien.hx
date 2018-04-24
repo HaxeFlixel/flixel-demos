@@ -3,7 +3,6 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
-import flixel.math.FlxRandom;
 
 /**
  * Class declaration for the squid monster class
@@ -17,20 +16,20 @@ class Alien extends FlxSprite
 	/**
 	 * Saves the starting horizontal position (for movement logic)
 	 */
-	private var _originalX:Int;				
+	private var _originalX:Int;
 	
 	/**
 	 * This is the constructor for the squid monster.
 	 * We are going to set up the basic values and then create a simple animation.
 	 */
-	public function new(X:Int, Y:Int, Color:Int, Bullets:FlxGroup)
+	public function new(X:Int, Y:Int, Color:Int, Bullets:FlxTypedGroup<FlxSprite>)
 	{
 		// Initialize sprite object
-		super(X, Y);		
+		super(X, Y);
 		// Load this animated graphic file
-		loadGraphic("assets/alien.png", true);	
+		loadGraphic("assets/alien.png", true);
 		// Setting the color tints the plain white alien graphic
-		color = Color;		
+		color = Color;
 		_originalX = X;
 		resetShotClock();
 		
@@ -71,14 +70,15 @@ class Alien extends FlxSprite
 		if (y > FlxG.height * 0.35)
 		{
 			// Only count down if on the bottom two-thirds of the screen
-			_shotClock -= elapsed; 
+			_shotClock -= elapsed;
 		}
 		
 		if (_shotClock <= 0)
 		{
 			// We counted down to zero, so it's time to shoot a bullet!
 			resetShotClock();
-			var bullet:FlxSprite = cast(cast(FlxG.state, PlayState).alienBullets.recycle(), FlxSprite);
+			var playState:PlayState = cast FlxG.state;
+			var bullet = playState.alienBullets.recycle();
 			bullet.reset(x + width / 2 - bullet.width / 2, y);
 			bullet.velocity.y = 65;
 		}

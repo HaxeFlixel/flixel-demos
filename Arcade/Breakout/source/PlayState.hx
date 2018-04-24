@@ -6,7 +6,6 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
 import flixel.util.FlxColor;
-import flixel.math.FlxRandom;
 
 /**
 * Atari 2600 Breakout
@@ -101,14 +100,14 @@ class PlayState extends FlxState
 		
 		_bat.velocity.x = 0;
 		
-		#if !FLX_NO_TOUCH
+		#if FLX_TOUCH
 		// Simple routine to move bat to x position of touch
 		for (touch in FlxG.touches.list)
 		{
 			if (touch.pressed)
 			{
 				if (touch.x > 10 && touch.x < 270)
-				_bat.x = touch.x;
+					_bat.x = touch.x;
 			}
 		}
 		// Vertical long swipe up or down resets game state

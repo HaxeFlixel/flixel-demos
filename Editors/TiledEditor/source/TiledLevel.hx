@@ -11,8 +11,11 @@ import flixel.addons.editors.tiled.TiledObject;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledTileSet;
+import flixel.addons.editors.tiled.TiledTilePropertySet;
 import flixel.group.FlxGroup;
 import flixel.tile.FlxTilemap;
+import flixel.addons.tile.FlxTilemapExt;
+import flixel.addons.tile.FlxTileSpecial;
 import haxe.io.Path;
 
 /**
@@ -74,9 +77,31 @@ class TiledLevel extends TiledMap
 			var imagePath 		= new Path(tileSet.imageSource);
 			var processedPath 	= c_PATH_LEVEL_TILESHEETS + imagePath.file + "." + imagePath.ext;
 			
-			var tilemap:FlxTilemap = new FlxTilemap();
+			// could be a regular FlxTilemap if there are no animated tiles
+			var tilemap = new FlxTilemapExt();
 			tilemap.loadMapFromArray(tileLayer.tileArray, width, height, processedPath,
 				tileSet.tileWidth, tileSet.tileHeight, OFF, tileSet.firstGID, 1, 1);
+			
+			if (tileLayer.properties.contains("animated"))
+			{
+				var tileset = tilesets["level"];
+				var specialTiles:Map<Int, TiledTilePropertySet> = new Map();
+				for (tileProp in tileset.tileProps)
+				{
+					if (tileProp != null && tileProp.animationFrames.length > 0)
+					{
+						specialTiles[tileProp.tileID + tileset.firstGID] = tileProp;
+					}
+				}
+				var tileLayer:TiledTileLayer = cast layer;
+				tilemap.setSpecialTiles([
+					for (tile in tileLayer.tiles)
+						if (tile != null && specialTiles.exists(tile.tileID))
+							getAnimatedTile(specialTiles[tile.tileID], tileset)
+						else null
+				]);
+			}
+			
 			
 			if (tileLayer.properties.contains("nocollide"))
 			{
@@ -92,10 +117,21 @@ class TiledLevel extends TiledMap
 			}
 		}
 	}
+
+	private function getAnimatedTile(props:TiledTilePropertySet, tileset:TiledTileSet):FlxTileSpecial
+	{
+		var special = new FlxTileSpecial(1, false, false, 0);
+		var n:Int = props.animationFrames.length;
+		var offset = Std.random(n);
+		special.addAnimation(
+			[for (i in 0...n) props.animationFrames[(i + offset) % n].tileID + tileset.firstGID],
+			(1000 / props.animationFrames[0].duration)
+		);
+		return special;
+	}
 	
 	public function loadObjects(state:PlayState)
 	{
-		var layer:TiledObjectLayer;
 		for (layer in layers)
 		{
 			if (layer.type != TiledLayerType.OBJECT)
@@ -136,6 +172,14 @@ class TiledLevel extends TiledMap
 		{
 			decoSprite.antialiasing = true;
 			decoSprite.setGraphicSize(object.width, object.height);
+		}
+		if (object.flippedHorizontally)
+		{
+			decoSprite.flipX = true;
+		}
+		if (object.flippedVertically)
+		{
+			decoSprite.flipY = true;
 		}
 		decoSprite.setPosition(object.x, object.y - decoSprite.height);
 		decoSprite.origin.set(0, decoSprite.height);
@@ -216,8 +260,8 @@ class TiledLevel extends TiledMap
 
 		for (map in collidableTileLayers)
 		{
-			// IMPORTANT: Always collide the map with objects, not the other way around. 
-			//			  This prevents odd collision errors (collision separation code off by 1 px).
+			// IMPORTANT: Always collide the map with objects, not the other way around.
+			//            This prevents odd collision errors (collision separation code off by 1 px).
 			if (FlxG.overlap(map, obj, notifyCallback, processCallback != null ? processCallback : FlxObject.separate))
 			{
 				return true;

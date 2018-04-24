@@ -8,7 +8,6 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
 import flixel.util.FlxSave;
-using flixel.util.FlxSpriteUtil;
 
 class GameOverState extends FlxState
 {
@@ -36,7 +35,7 @@ class GameOverState extends FlxState
 	override public function create():Void 
 	{
 		
-		#if !FLX_NO_MOUSE
+		#if FLX_MOUSE
 		FlxG.mouse.visible = true;
 		#end
 		
@@ -90,16 +89,14 @@ class GameOverState extends FlxState
 		var _save:FlxSave = new FlxSave();
 		if (_save.bind("flixel-tutorial"))
 		{
-			if (_save.data.hiscore != null)
+			if (_save.data.hiscore != null && _save.data.hiscore > _hi)
 			{
-				if (_save.data.hiscore > _hi)
-				{
-					_hi = _save.data.hiscore;
-				}
-				else
-				{
-					_save.data.hiscore = _hi;
-				}
+				_hi = _save.data.hiscore;
+			}
+			else
+			{
+				// data is less or there is no data; save current score
+				_save.data.hiscore = _hi;
 			}
 		}
 		_save.close();

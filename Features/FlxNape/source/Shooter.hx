@@ -16,7 +16,6 @@ import nape.callbacks.InteractionType;
 import nape.constraint.DistanceJoint;
 import nape.dynamics.InteractionFilter;
 import nape.geom.Vec2;
-import nape.phys.Body;
 
 /**
  * Fires small projectiles to where the user clicks.
@@ -44,7 +43,6 @@ class Shooter extends FlxTypedGroup<FlxNapeSprite>
 		background.alpha = 1;
 		FlxG.state.insert(0, background);
 		FlxMouseEventManager.add(background, launchProjectile);
-		var color = 0x333333;
 		
 		for (i in 0...maxSize)
 		{
@@ -67,7 +65,7 @@ class Shooter extends FlxTypedGroup<FlxNapeSprite>
 			InteractionType.COLLISION, 
 			CB_BULLET,
 			CbType.ANY_BODY,
-			onBulletColides));
+			onBulletCollides));
 	}
 	
 	function launchProjectile(spr:FlxSprite) 
@@ -76,8 +74,9 @@ class Shooter extends FlxTypedGroup<FlxNapeSprite>
 			return;
 		
 		var spr = recycle(FlxNapeSprite);
-		var trail = new Trail(spr);
-		
+		var trail = new Trail(spr).start(false, FlxG.elapsed);
+		FlxG.state.add(trail);
+
 		spr.body.position.y = 30;
 		spr.body.position.x = 30 + Std.random(640 - 30);
 		var angle = FlxG.mouse.getPosition()
@@ -87,10 +86,10 @@ class Shooter extends FlxTypedGroup<FlxNapeSprite>
 			impulse * Math.cos(angle * 3.14 / 180),
 			impulse * Math.sin(angle * 3.14 / 180));
 		
-		spr.body.angularVel = 30;				
+		spr.body.angularVel = 30;
 	}
 
-	public function onBulletColides(clbk:InteractionCallback) 
+	public function onBulletCollides(clbk:InteractionCallback) 
 	{
 		var spr = getFirstAlive();
 		if (spr != null)
@@ -102,12 +101,10 @@ class Shooter extends FlxTypedGroup<FlxNapeSprite>
 		FlxMouseEventManager.add(spr, createMouseJoint);
 	}
 	
-	function createMouseJoint(spr:FlxSprite) 
+	function createMouseJoint(spr:FlxNapeSprite) 
 	{
-		var body:Body = cast(spr, FlxNapeSprite).body;
-		
-		mouseJoint = new DistanceJoint(FlxNapeSpace.space.world, body, new Vec2(FlxG.mouse.x, FlxG.mouse.y),
-			body.worldPointToLocal(new Vec2(FlxG.mouse.x, FlxG.mouse.y)), 0, 0);
+		mouseJoint = new DistanceJoint(FlxNapeSpace.space.world, spr.body, new Vec2(FlxG.mouse.x, FlxG.mouse.y),
+			spr.body.worldPointToLocal(new Vec2(FlxG.mouse.x, FlxG.mouse.y)), 0, 0);
 		
 		mouseJoint.space = FlxNapeSpace.space;
 	}	
@@ -134,10 +131,9 @@ class Shooter extends FlxTypedGroup<FlxNapeSprite>
 	
 	public function setDensity(density:Float) 
 	{
-		for (spr in members)
+		for (sprite in members)
 		{
-			var fps:FlxNapeSprite = cast(spr, FlxNapeSprite);
-			fps.body.shapes.at(0).material.density = density;
+			sprite.body.shapes.at(0).material.density = density;
 		}
 	}
 }
@@ -153,13 +149,9 @@ class Trail extends FlxEmitter
 		loadParticles("assets/shooter.png", 20, 0);
 		attach = Attach;
 		
-		FlxG.state.add(this);
-		
 		velocity.set(0, 0);
 		scale.set(1, 1, 1, 1, 0, 0, 0, 0);
 		lifespan.set(0.25);
-		
-		start(false, FlxG.elapsed);
 	}
 	
 	override public function update(elapsed:Float):Void

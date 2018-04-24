@@ -6,10 +6,14 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.gamepad.FlxGamepad;
-import flixel.ui.FlxVirtualPad;
-import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxTimer;
+import flixel.system.FlxAssets;
+
+#if VIRTUAL_PAD
+import flixel.ui.FlxVirtualPad;
+import flixel.util.FlxDestroyUtil;
+#end
 
 class Player extends FlxSprite
 {
@@ -17,7 +21,7 @@ class Player extends FlxSprite
 	public static var virtualPad:FlxVirtualPad;
 	#end
 	
-	private static var SHOOT_RATE:Float = 1 / 10; // 10 shots per second
+	private static var FIRE_RATE:Float = 1 / 10; // 10 shots per second
 	
 	public var isReadyToJump:Bool = true;
 	public var flickering:Bool = false;
@@ -37,7 +41,7 @@ class Player extends FlxSprite
 	{
 		super(X, Y);
 		
-		loadGraphic(Reg.SPACEMAN, true, 8);
+		loadGraphic(AssetPaths.spaceman__png, true, 8);
 		
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
@@ -54,13 +58,15 @@ class Player extends FlxSprite
 		maxVelocity.set(runSpeed, _jumpPower);
 		
 		// Animations
-		animation.add("idle", [0]);
-		animation.add("run", [1, 2, 3, 0], 12);
-		animation.add("jump", [4]);
-		animation.add("idle_up", [5]);
-		animation.add("run_up", [6, 7, 8, 5], 12);
-		animation.add("jump_up", [9]);
-		animation.add("jump_down", [10]);
+		animation.add(Animation.IDLE, [0]);
+		animation.add(Animation.IDLE_UP, [5]);
+
+		animation.add(Animation.RUN, [1, 2, 3, 0], 12);
+		animation.add(Animation.RUN_UP, [6, 7, 8, 5], 12);
+		
+		animation.add(Animation.JUMP, [4]);
+		animation.add(Animation.JUMP_UP, [9]);
+		animation.add(Animation.JUMP_DOWN, [10]);
 		
 		// Bullet stuff
 		_bullets = Bullets;
@@ -99,33 +105,21 @@ class Player extends FlxSprite
 	
 	private function updateKeyboardInput():Void
 	{
-		#if !FLX_NO_KEYBOARD
+		#if FLX_KEYBOARD
 		if (FlxG.keys.anyPressed([A, LEFT]))
-		{
 			moveLeft();
-		}
 		else if (FlxG.keys.anyPressed([D, RIGHT]))
-		{
 			moveRight();
-		}
 		
 		if (FlxG.keys.anyPressed([W, UP]))
-		{
 			moveUp();
-		}
 		else if (FlxG.keys.anyPressed([S, DOWN]))
-		{
 			moveDown();
-		}
 		
 		if (FlxG.keys.pressed.X)
-		{
 			jump();
-		}
 		if (FlxG.keys.pressed.C)
-		{
 			shoot();
-		}
 		#end
 	}
 	
@@ -133,69 +127,44 @@ class Player extends FlxSprite
 	{
 		#if VIRTUAL_PAD
 		if (virtualPad.buttonLeft.pressed)
-		{
 			moveLeft();
-		}
 		else if (virtualPad.buttonRight.pressed)
-		{
 			moveRight();
-		}
 		
 		if (virtualPad.buttonUp.pressed)
-		{
 			moveUp();
-		}
 		else if (virtualPad.buttonDown.pressed)
-		{
 			moveDown();
-		}
 		
 		if (virtualPad.buttonA.justPressed)
-		{
 			jump();
-		}
 		if (virtualPad.buttonB.pressed)
-		{
 			shoot();
-		}
 		#end
 	}
 	
 	private function updateGamepadInput():Void
 	{
-		#if !FLX_NO_GAMEPAD
+		#if FLX_GAMEPAD
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
-		if (gamepad == null) return;
+		if (gamepad == null)
+			return;
 		
 		if (gamepad.analog.value.LEFT_STICK_X < 0 || gamepad.pressed.DPAD_LEFT)
-		{
 			moveLeft();
-		}
-		else
-		if (gamepad.analog.value.LEFT_STICK_X > 0 || gamepad.pressed.DPAD_RIGHT)
-		{
+		else if (gamepad.analog.value.LEFT_STICK_X > 0 || gamepad.pressed.DPAD_RIGHT)
 			moveRight();
-		}
 		
 		if (gamepad.analog.value.LEFT_STICK_Y < 0 || gamepad.pressed.DPAD_UP)
-		{
 			moveUp();
-		}
-		else
-		if (gamepad.analog.value.LEFT_STICK_Y > 0 || gamepad.pressed.DPAD_DOWN)
-		{
+		else if (gamepad.analog.value.LEFT_STICK_Y > 0 || gamepad.pressed.DPAD_DOWN)
 			moveDown();
-		}
 		
 		if (gamepad.justPressed.A)
-		{
 			jump();
-		}
 		
 		if (gamepad.pressed.X)
-		{
 			shoot();
-		}
 		#end
 	}
 	
@@ -203,40 +172,21 @@ class Player extends FlxSprite
 	{
 		if (velocity.y != 0)
 		{
-			if (_aim == FlxObject.UP) 
+			animation.play(switch (_aim)
 			{
-				animation.play("jump_up");
-			}
-			else if (_aim == FlxObject.DOWN) 
-			{
-				animation.play("jump_down");
-			}
-			else 
-			{
-				animation.play("jump");
-			}
+				case FlxObject.UP: Animation.JUMP_UP;
+				case FlxObject.DOWN: Animation.JUMP_DOWN;
+				default: Animation.JUMP;
+
+			});
 		}
 		else if (velocity.x == 0)
 		{
-			if (_aim == FlxObject.UP) 
-			{
-				animation.play("idle_up");
-			}
-			else 
-			{
-				animation.play("idle");
-			}
+			animation.play(if (_aim == FlxObject.UP) Animation.IDLE_UP else Animation.IDLE);
 		}
 		else
 		{
-			if (_aim == FlxObject.UP) 
-			{
-				animation.play("run_up");
-			}
-			else 
-			{
-				animation.play("run");
-			}
+			animation.play(if (_aim == FlxObject.UP) Animation.RUN_UP else Animation.RUN);
 		}
 	}
 	
@@ -245,27 +195,19 @@ class Player extends FlxSprite
 		Damage = 0;
 		
 		if (flickering)
-		{
 			return;
-		}
 		
-		FlxG.sound.play("Hurt");
+		FlxG.sound.play(FlxAssets.getSound("assets/sounds/hurt"));
 		
 		flicker(1.3);
 		
 		if (Reg.score > 1000) 
-		{
 			Reg.score -= 1000;
-		}
 		
 		if (velocity.x > 0)
-		{
 			velocity.x = -maxVelocity.x;
-		}
 		else
-		{
 			velocity.x = maxVelocity.x;
-		}
 		
 		super.hurt(Damage);
 	}
@@ -282,13 +224,11 @@ class Player extends FlxSprite
 	override public function kill():Void
 	{
 		if (!alive)
-		{
 			return;
-		}
 		
 		solid = false;
-		FlxG.sound.play("Asplode");
-		FlxG.sound.play("MenuHit2");
+		FlxG.sound.play(FlxAssets.getSound("assets/sounds/asplode"));
+		FlxG.sound.play(FlxAssets.getSound("assets/sounds/menu_hit_2"));
 		
 		super.kill();
 		
@@ -340,26 +280,24 @@ class Player extends FlxSprite
 		if (isReadyToJump && (velocity.y == 0))
 		{
 			velocity.y = -_jumpPower;
-			FlxG.sound.play("Jump");
+			FlxG.sound.play(FlxAssets.getSound("assets/sounds/jump"));
 		}
 	}
 	
 	function shoot():Void
 	{
 		if (_shootTimer.active)
-		{
 			return;
-		}
-		_shootTimer.start(SHOOT_RATE);
+		_shootTimer.start(FIRE_RATE);
 		
 		if (flickering)
 		{
-			FlxG.sound.play("Jam");
+			FlxG.sound.play(FlxAssets.getSound("assets/sounds/jam"));
 		}
 		else
 		{
 			getMidpoint(_point);
-			_bullets.recycle(Bullet).shoot(_point, _aim);
+			_bullets.recycle(Bullet.new).shoot(_point, _aim);
 			
 			if (_aim == FlxObject.DOWN)
 			{
@@ -367,4 +305,17 @@ class Player extends FlxSprite
 			}
 		}
 	}
+}
+
+@:enum abstract Animation(String) to String
+{
+	var IDLE = "idle";
+	var IDLE_UP = "idle_up";
+
+	var JUMP = "jump";
+	var JUMP_UP = "jump_up";
+	var JUMP_DOWN = "jump_down";
+
+	var RUN = "run";
+	var RUN_UP = "run_up";
 }

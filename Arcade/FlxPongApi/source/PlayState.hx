@@ -2,17 +2,10 @@ package;
 
 import flixel.addons.api.FlxGameJolt;
 import flixel.FlxG;
-import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
-import flixel.group.FlxGroup;
 import flixel.text.FlxText;
-import flixel.ui.FlxButton;
-import flixel.effects.particles.FlxEmitter;
-import flixel.util.FlxCollision;
 import flixel.math.FlxMath;
-import flixel.math.FlxPoint;
-import flixel.math.FlxRandom;
 import flixel.util.FlxTimer;
 
 class PlayState extends FlxState
@@ -34,7 +27,7 @@ class PlayState extends FlxState
 		Reg.PS = this;
 		FlxG.cameras.bgColor = Reg.lite;
 		
-		#if !FLX_NO_MOUSE
+		#if FLX_MOUSE
 		FlxG.mouse.visible = false;
 		#end
 		
@@ -93,7 +86,7 @@ class PlayState extends FlxState
 	
 	override public function update(elapsed:Float):Void
 	{
-		#if !FLX_NO_KEYBOARD
+		#if FLX_KEYBOARD
 		if (FlxG.keys.justPressed.P)
 		{
 			_paused = !_paused;
@@ -153,7 +146,6 @@ class PlayState extends FlxState
 		});
 		obs.velocity.x = FlxG.random.float( -100, -1);
 		obs.velocity.y = FlxG.random.float( -10, 10);
-		//obs.moves = false;
 		obs.immovable = true;
 	}
 	

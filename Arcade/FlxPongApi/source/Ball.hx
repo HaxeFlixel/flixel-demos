@@ -2,11 +2,7 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxObject;
-import flixel.math.FlxAngle;
-import flixel.util.FlxCollision;
-import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
-import flixel.math.FlxVelocity;
 
 class Ball extends PongSprite
 {
@@ -16,7 +12,7 @@ class Ball extends PongSprite
 	
 	inline private static function DEFAULT_VELOCITY():FlxPoint
 	{
-		return FlxPoint.get( -128, -128);
+		return FlxPoint.get(-128, -128);
 	}
 	
 	public function new()
@@ -31,12 +27,9 @@ class Ball extends PongSprite
 	
 	public function init():Void
 	{
-		_exhaust = Reg.PS.emitterGroup.recycle(Emitter, function()
-		{
-			return new Emitter(x, y, 2, Reg.med_lite);
-		}, true);
+		_exhaust = Reg.PS.emitterGroup.recycle(Emitter.new.bind(x, y, 2, Reg.med_lite), true);
 		_exhaust.acceleration.set(0, 0.5);
-		_exhaust.velocity.set( -0.1, -0.1, 0.1, 0.1);
+		_exhaust.velocity.set(-0.1, -0.1, 0.1, 0.1);
 		_exhaust.alpha.set(0.7, 0.9, 0, 0);
 		
 		_emitter = Reg.PS.emitterGroup.add(new Emitter(Std.int(x), Std.int(y), 1));

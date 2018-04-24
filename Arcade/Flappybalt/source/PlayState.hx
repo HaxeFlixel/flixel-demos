@@ -5,10 +5,7 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.group.FlxGroup;
 import flixel.text.FlxText;
-import flixel.ui.FlxButton;
-import flixel.math.FlxRandom;
 import flixel.util.FlxSave;
 
 class PlayState extends FlxState
@@ -40,7 +37,7 @@ class PlayState extends FlxState
 		
 		// Hide the mouse.
 		
-		#if !FLX_NO_MOUSE
+		#if FLX_MOUSE
 		FlxG.mouse.visible = false;
 		#end
 		
@@ -130,7 +127,7 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		if (FlxG.pixelPerfectOverlap(_player, _spikeBottom) || FlxG.pixelPerfectOverlap(_player, _spikeTop) 
-				|| FlxG.pixelPerfectOverlap(_player, _paddleLeft) || FlxG.pixelPerfectOverlap(_player, _paddleRight))
+			|| FlxG.pixelPerfectOverlap(_player, _paddleLeft) || FlxG.pixelPerfectOverlap(_player, _paddleRight))
 		{
 			_player.kill();
 		}
@@ -153,7 +150,7 @@ class PlayState extends FlxState
 			_paddleLeft.randomize();
 		}
 		
-		#if !FLX_NO_KEYBOARD
+		#if FLX_KEYBOARD
 		if (FlxG.keys.justPressed.E && (FlxG.keys.pressed.CONTROL || FlxG.keys.pressed.SHIFT || FlxG.keys.pressed.ALT))
 		{
 			clearSave();

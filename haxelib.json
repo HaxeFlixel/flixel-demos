@@ -1,11 +1,11 @@
 {
     "name": "flixel-demos",
-    "url": "http://www.haxeflixel.com",
+    "url": "https://github.com/HaxeFlixel/flixel-demos",
     "license": "MIT",
     "tags": ["game", "openfl", "flash", "neko", "cpp", "android", "ios", "demo", "cross"],
     "description": "Demo Projects for HaxeFlixel",
-    "version": "2.1.0",
-    "releasenote": "Minor restructure, cleanup and fixes. See the CHANGELOG.md for more details.",
-    "contributors": [ "haxeflixel" ],
-    "dependencies": { "flixel": "" }
+    "version": "2.6.0",
+    "releasenote": "Compatibility with flixel 4.4.0.",
+    "contributors": ["haxeflixel", "Gama11"],
+    "dependencies": {}
 }
