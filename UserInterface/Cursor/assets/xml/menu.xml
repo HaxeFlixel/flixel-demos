@@ -53,44 +53,52 @@
 	
 	<text id="keyboard" x="6%" y="butt_0.top-16" align="left" width="20%" color="0xFFFFFF" text="Keyboard:"/>
 	
-	<checkbox id="check_wrap" label="Wrap" checked="true" x="6%">
+	<checkbox id="check_tab" label="Tab" checked="true" x="6%" label_width="60">
 		<anchor y="butt_0.top" x-flush="top"/>
-		<param type="string" value="wrap"/>
-	</checkbox>
-	<checkbox id="check_tab" label="Tab" checked="true" x="6%">
-		<anchor y="butt_1.top" x-flush="top"/>
 		<param type="string" value="tab"/>
 	</checkbox>
-	<checkbox id="check_arrows" label="Arrows" checked="true" x="6%">
-		<anchor y="butt_2.top" x-flush="top"/>
+	<checkbox id="check_arrows" label="Arrows" checked="true" x="6%" label_width="60">
+		<anchor y="butt_1.top" x-flush="top"/>
 		<param type="string" value="arrows"/>
 	</checkbox>
-	<checkbox id="check_wasd" label="WASD" checked="false" x="6%">
-		<anchor y="butt_3.top" x-flush="top"/>
+	<checkbox id="check_wasd" label="WASD" checked="false" x="6%" label_width="60">
+		<anchor y="butt_2.top" x-flush="top"/>
 		<param type="string" value="wasd"/>
 	</checkbox>
-	<checkbox id="check_numpad" label="NUMPAD" checked="false" x="6%">
-		<anchor y="butt_4.top" x-flush="top"/>
+	<checkbox id="check_numpad" label="NUMPAD" checked="false" x="6%" label_width="60">
+		<anchor y="butt_3.top" x-flush="top"/>
 		<param type="string" value="numpad"/>
 	</checkbox>
 	
 	<text id="gamepad" x="32%" y="butt_0.top-16" align="left" width="20%" color="0xFFFFFF" text="Gamepad:"/>
 	
-	<checkbox id="check_dpad" label="DPAD" checked="true" x="32%">
+	<checkbox id="check_dpad" label="DPAD" checked="true" x="32%" label_width="60">
 		<anchor y="butt_0.top" x-flush="top"/>
 		<param type="string" value="dpad"/>
 	</checkbox>
-	<checkbox id="check_lstick" label="L STICK" checked="false" x="32%">
+	<checkbox id="check_lstick" label="L STICK" checked="false" x="32%" label_width="60">
 		<anchor y="butt_1.top" x-flush="top"/>
 		<param type="string" value="lstick"/>
 	</checkbox>
-	<checkbox id="check_rstick" label="R STICK" checked="false" x="32%">
+	<checkbox id="check_rstick" label="R STICK" checked="false" x="32%" label_width="60">
 		<anchor y="butt_2.top" x-flush="top"/>
 		<param type="string" value="rstick"/>
 	</checkbox>
-	<checkbox id="check_bumpers" label="BUMPERS" checked="false" x="32%">
+	<checkbox id="check_bumpers" label="BUMPERS" checked="false" x="32%" label_width="60">
 		<anchor y="butt_3.top" x-flush="top"/>
 		<param type="string" value="bumpers"/>
+	</checkbox>
+	
+	<line axis="horizontal" x="check_tab.left-10" y="butt_4.top-5" width="stretch:check_tab.left-10,butt_0.left-10" thickness="1" color="0x808080"/>
+	
+	<checkbox id="check_wrap" label="Wrap" checked="true" x="6%" label_width="60">
+		<anchor y="butt_4.top" x-flush="top"/>
+		<param type="string" value="wrap"/>
+	</checkbox>
+	
+	<checkbox id="check_grid" label="Grid" checked="false" x="32%" label_width="60">
+		<anchor y="butt_4.top" x-flush="top"/>
+		<param type="string" value="grid"/>
 	</checkbox>
 	
 	<text id="text" center_x="true" y="65%" align="center" width="100%" color="0xFFFFFF" text="Tab/Shift+Tab to move, Enter to click"/>

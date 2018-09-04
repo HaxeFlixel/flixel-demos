@@ -50,6 +50,8 @@ class MenuState extends FlxUIState
 			{
 				case "wrap": 
 					cursor.wrap = checked;
+				case "grid":
+					cursor.traversalMethod = checked ? GRID : LINEAR;
 				case "tab","arrows","wasd","numpad","dpad","lstick","rstick","bumpers":
 					updateInputMethod();
 			}
