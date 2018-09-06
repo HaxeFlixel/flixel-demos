@@ -70,55 +70,55 @@ class Player extends FlxSprite
 		FlxG.state.add(_analogWidget);
 		
 		//digital actions allow for on/off directional movement
-		up    = new FlxActionDigital("up");
-		down  = new FlxActionDigital("down");
-		left  = new FlxActionDigital("left");
-		right = new FlxActionDigital("right");
+		up = new FlxActionDigital();
+		down = new FlxActionDigital();
+		left = new FlxActionDigital();
+		right = new FlxActionDigital();
 		
 		//these actions don't do anything, but their values are exposed in the analog visualizer
-		trigger1 = new FlxActionAnalog("trigger1");
-		trigger2 = new FlxActionAnalog("trigger2");
+		trigger1 = new FlxActionAnalog();
+		trigger2 = new FlxActionAnalog();
 		
 		//this analog action allows for smooth movement
-		move = new FlxActionAnalog("move");
+		move = new FlxActionAnalog();
 		
 		//Add keyboard inputs
-		up.addInput   (new FlxActionInputDigitalKeyboard(FlxKey.UP, PRESSED));
-		up.addInput   (new FlxActionInputDigitalKeyboard(FlxKey.W, PRESSED));
-		down.addInput (new FlxActionInputDigitalKeyboard(FlxKey.DOWN, PRESSED));
-		down.addInput (new FlxActionInputDigitalKeyboard(FlxKey.S, PRESSED));
-		left.addInput (new FlxActionInputDigitalKeyboard(FlxKey.LEFT, PRESSED));
-		left.addInput (new FlxActionInputDigitalKeyboard(FlxKey.A, PRESSED));
-		right.addInput(new FlxActionInputDigitalKeyboard(FlxKey.RIGHT, PRESSED));
-		right.addInput(new FlxActionInputDigitalKeyboard(FlxKey.D, PRESSED));
+		up.addKey(UP, PRESSED);
+		up.addKey(W, PRESSED);
+		down.addKey(DOWN, PRESSED);
+		down.addKey(S, PRESSED);
+		left.addKey(LEFT, PRESSED);
+		left.addKey(A, PRESSED);
+		right.addKey(RIGHT, PRESSED);
+		right.addKey(D, PRESSED);
 		
 		//Add virtual pad (on-screen button) inputs
-		up.addInput   (new FlxActionInputDigitalIFlxInput(_virtualPad.buttonUp, PRESSED));
-		down.addInput (new FlxActionInputDigitalIFlxInput(_virtualPad.buttonDown, PRESSED));
-		left.addInput (new FlxActionInputDigitalIFlxInput(_virtualPad.buttonLeft, PRESSED));
-		right.addInput(new FlxActionInputDigitalIFlxInput(_virtualPad.buttonRight, PRESSED));
+		up.addInput(_virtualPad.buttonUp, PRESSED);
+		down.addInput(_virtualPad.buttonDown, PRESSED);
+		left.addInput(_virtualPad.buttonLeft, PRESSED);
+		right.addInput(_virtualPad.buttonRight, PRESSED);
 		
 		//Add gamepad DPAD inputs
-		up.addInput   (new FlxActionInputDigitalGamepad(FlxGamepadInputID.DPAD_UP, PRESSED));
-		down.addInput (new FlxActionInputDigitalGamepad(FlxGamepadInputID.DPAD_DOWN, PRESSED));
-		left.addInput (new FlxActionInputDigitalGamepad(FlxGamepadInputID.DPAD_LEFT, PRESSED));
-		right.addInput(new FlxActionInputDigitalGamepad(FlxGamepadInputID.DPAD_RIGHT, PRESSED));
+		up.addGamepad(DPAD_UP, PRESSED);
+		down.addGamepad(DPAD_DOWN, PRESSED);
+		left.addGamepad(DPAD_LEFT, PRESSED);
+		right.addGamepad(DPAD_RIGHT, PRESSED);
 		
 		//Add gamepad analog stick (as simulated DPAD) inputs
-		up.addInput   (new FlxActionInputDigitalGamepad(FlxGamepadInputID.LEFT_STICK_DIGITAL_UP,     PRESSED));
-		down.addInput (new FlxActionInputDigitalGamepad(FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN,   PRESSED));
-		left.addInput (new FlxActionInputDigitalGamepad(FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT,   PRESSED));
-		right.addInput(new FlxActionInputDigitalGamepad(FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT,  PRESSED));
+		up.addGamepad(LEFT_STICK_DIGITAL_UP, PRESSED);
+		down.addGamepad(LEFT_STICK_DIGITAL_DOWN, PRESSED);
+		left.addGamepad(LEFT_STICK_DIGITAL_LEFT, PRESSED);
+		right.addGamepad(LEFT_STICK_DIGITAL_RIGHT, PRESSED);
 		
 		//Add gamepad analog trigger inputs
-		trigger1.addInput  (new FlxActionInputAnalogGamepad(FlxGamepadInputID.LEFT_TRIGGER,  MOVED));
-		trigger2.addInput (new FlxActionInputAnalogGamepad(FlxGamepadInputID.RIGHT_TRIGGER, MOVED));
+		trigger1.addGamepad(LEFT_TRIGGER,  MOVED);
+		trigger2.addGamepad(RIGHT_TRIGGER, MOVED);
 		
 		//Add gamepad analog stick (as actual analog value) motion input
-		move.addInput (new FlxActionInputAnalogGamepad(FlxGamepadInputID.RIGHT_ANALOG_STICK, MOVED, FlxAnalogAxis.EITHER));
+		move.addGamepad(RIGHT_ANALOG_STICK, MOVED, EITHER);
 		
 		//Add relative mouse movement as motion input
-		move.addInput (new FlxActionInputAnalogMouseMotion(MOVED, FlxAnalogAxis.EITHER));
+		move.addMouseMotion(MOVED, EITHER);
 		
 		FlxG.mouse.visible = true;
 	}
