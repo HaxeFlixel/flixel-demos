@@ -4,6 +4,8 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.input.actions.FlxAction.FlxActionAnalog;
 import flixel.input.actions.FlxAction.FlxActionDigital;
+import flixel.input.actions.FlxActionManager;
+import flixel.input.actions.FlxActionSet;
 import flixel.input.actions.FlxActionInputAnalog;
 import flixel.input.actions.FlxActionInputDigital.FlxActionInputDigitalIFlxInput;
 import flixel.input.actions.FlxActionInputDigital.FlxActionInputDigitalKeyboard;
@@ -82,6 +84,10 @@ class Player extends FlxSprite
 		//this analog action allows for smooth movement
 		move = new FlxActionAnalog();
 		
+		var manager = new FlxActionManager();
+		FlxG.inputs.add(manager);
+		manager.addActions([up,down,left,right,trigger1,trigger2,move]);
+		
 		//Add keyboard inputs
 		up.addKey(UP, PRESSED);
 		up.addKey(W, PRESSED);
@@ -147,23 +153,23 @@ class Player extends FlxSprite
 		_virtualPad.buttonLeft.color = FlxColor.WHITE;
 		_virtualPad.buttonRight.color = FlxColor.WHITE;
 		
-		if (down.check())
+		if (down.triggered)
 		{
 			_virtualPad.buttonDown.color = FlxColor.LIME;
 			moveY = 1;
 		}
-		else if (up.check())
+		else if (up.triggered)
 		{
 			_virtualPad.buttonUp.color = FlxColor.LIME;
 			moveY = -1;
 		}
 		
-		if (left.check())
+		if (left.triggered)
 		{
 			_virtualPad.buttonLeft.color = FlxColor.LIME;
 			moveX = -1;
 		}
-		else if (right.check())
+		else if (right.triggered)
 		{
 			_virtualPad.buttonRight.color = FlxColor.LIME;
 			moveX = 1;
@@ -178,11 +184,6 @@ class Player extends FlxSprite
 	
 	function updateAnalog():Void
 	{
-		//update analog actions
-		trigger1.update();
-		trigger2.update();
-		move.update();
-		
 		_analogWidget.setValues(move.x, move.y);
 		_analogWidget.l = trigger1.x;
 		_analogWidget.r = trigger2.x;
