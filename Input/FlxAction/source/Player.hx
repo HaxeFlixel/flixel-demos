@@ -8,46 +8,39 @@ import flixel.input.actions.FlxActionInputAnalog;
 import flixel.input.actions.FlxActionInputDigital.FlxActionInputDigitalIFlxInput;
 import flixel.input.actions.FlxActionInputDigital.FlxActionInputDigitalKeyboard;
 import flixel.input.actions.FlxActionInputDigital.FlxActionInputDigitalGamepad;
-import flixel.input.gamepad.FlxGamepad;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
-import flixel.ui.FlxButton;
 import flixel.ui.FlxVirtualPad;
 import flixel.util.FlxColor;
-
-/**
- * ...
- * @author .:BuzzJeux:.
- */
 
 class Player extends FlxSprite
 {
 	/**
 	 * How big the tiles of the tilemap are.
 	 */
-	private static inline var TILE_SIZE:Int = 32;
+	static inline var TILE_SIZE:Int = 32;
 	/**
 	 * How many pixels to move each frame.
 	 */
-	private static inline var MOVEMENT_SPEED:Int = 2;
+	static inline var MOVEMENT_SPEED:Int = 2;
 	
-	private var up:FlxActionDigital;
-	private var down:FlxActionDigital;
-	private var left:FlxActionDigital;
-	private var right:FlxActionDigital;
+	var up:FlxActionDigital;
+	var down:FlxActionDigital;
+	var left:FlxActionDigital;
+	var right:FlxActionDigital;
 	
-	private var moveAnalog:FlxActionAnalog;
+	var moveAnalog:FlxActionAnalog;
 	
-	private var trigger1:FlxActionAnalog;
-	private var trigger2:FlxActionAnalog;
+	var trigger1:FlxActionAnalog;
+	var trigger2:FlxActionAnalog;
 	
-	private var move:FlxActionAnalog;
+	var move:FlxActionAnalog;
 	
-	private var _virtualPad:FlxVirtualPad;
-	private var _analogWidget:AnalogWidget;
+	var _virtualPad:FlxVirtualPad;
+	var _analogWidget:AnalogWidget;
 	
-	private var moveX:Float = 0;
-	private var moveY:Float = 0;
+	var moveX:Float = 0;
+	var moveY:Float = 0;
 	
 	public function new(X:Int, Y:Int)
 	{
@@ -60,7 +53,7 @@ class Player extends FlxSprite
 		addInputs();
 	}
 	
-	private function addInputs():Void
+	function addInputs():Void
 	{
 		//Add on screen virtual pad to demonstrate UI buttons tied to actions
 		_virtualPad = new FlxVirtualPad(FULL, NONE);
@@ -147,7 +140,7 @@ class Player extends FlxSprite
 		updateAnalog();
 	}
 	
-	private function updateDigital():Void
+	function updateDigital():Void
 	{
 		_virtualPad.buttonUp.color = FlxColor.WHITE;
 		_virtualPad.buttonDown.color = FlxColor.WHITE;
@@ -183,7 +176,7 @@ class Player extends FlxSprite
 		}
 	}
 	
-	private function updateAnalog():Void
+	function updateAnalog():Void
 	{
 		//update analog actions
 		trigger1.update();
@@ -194,12 +187,10 @@ class Player extends FlxSprite
 		_analogWidget.l = trigger1.x;
 		_analogWidget.r = trigger2.x;
 		
-		if(Math.abs(moveX) < 0.001) {
+		if (Math.abs(moveX) < 0.001)
 			moveX = move.x;
-		}
 		
-		if(Math.abs(moveY) < 0.001) {
+		if (Math.abs(moveY) < 0.001)
 			moveY = move.y;
-		}
 	}
 }

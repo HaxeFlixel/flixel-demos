@@ -1,14 +1,9 @@
 package;
+
 import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
 import flixel.ui.FlxBar;
 
-/**
- * ...
- * @author ...
- */
 class AnalogWidget extends FlxSpriteGroup
 {
 	public var xPos:Float = 0;
@@ -17,20 +12,13 @@ class AnalogWidget extends FlxSpriteGroup
 	public var yNeg:Float = 0;
 	public var l:Float = 0;
 	public var r:Float = 0;
-	
-	public function setValues(X:Float, Y:Float):Void
-	{
-		xPos = 0;
-		xNeg = 0;
-		yPos = 0;
-		yNeg = 0;
-		
-		if (X > 0) xPos = X;
-		else xNeg = -X;
-		
-		if (Y > 0) yPos = Y;
-		else yNeg = -Y;
-	}
+
+	var xAxisPos:FlxBar;
+	var yAxisPos:FlxBar;
+	var xAxisNeg:FlxBar;
+	var yAxisNeg:FlxBar;
+	var lBar:FlxBar;
+	var rBar:FlxBar;
 	
 	public function new() 
 	{
@@ -72,12 +60,18 @@ class AnalogWidget extends FlxSpriteGroup
 		x = xoff;
 		y = yoff;
 	}
-	
-	private var xAxisPos:FlxBar;
-	private var yAxisPos:FlxBar;
-	private var xAxisNeg:FlxBar;
-	private var yAxisNeg:FlxBar;
-	private var lBar:FlxBar;
-	private var rBar:FlxBar;
-	
+
+	public function setValues(X:Float, Y:Float):Void
+	{
+		xPos = 0;
+		xNeg = 0;
+		yPos = 0;
+		yNeg = 0;
+		
+		if (X > 0) xPos = X;
+		else xNeg = -X;
+		
+		if (Y > 0) yPos = Y;
+		else yNeg = -Y;
+	}
 }
