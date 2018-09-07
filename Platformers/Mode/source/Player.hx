@@ -125,10 +125,8 @@ class Player extends FlxSprite
 		_shoot.addInput(virtualPad.buttonB, PRESSED);
 		#end
 
-		if(actions == null)
-		{
+		if (actions == null)
 			actions = FlxG.inputs.add(new FlxActionManager());
-		}
 		actions.addActions([_up, _down, _left, _right, _jump, _shoot]);
 	}
 
