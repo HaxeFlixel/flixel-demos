@@ -5,13 +5,6 @@ import flixel.FlxSprite;
 import flixel.input.actions.FlxAction.FlxActionAnalog;
 import flixel.input.actions.FlxAction.FlxActionDigital;
 import flixel.input.actions.FlxActionManager;
-import flixel.input.actions.FlxActionSet;
-import flixel.input.actions.FlxActionInputAnalog;
-import flixel.input.actions.FlxActionInputDigital.FlxActionInputDigitalIFlxInput;
-import flixel.input.actions.FlxActionInputDigital.FlxActionInputDigitalKeyboard;
-import flixel.input.actions.FlxActionInputDigital.FlxActionInputDigitalGamepad;
-import flixel.input.gamepad.FlxGamepadInputID;
-import flixel.input.keyboard.FlxKey;
 import flixel.ui.FlxVirtualPad;
 import flixel.util.FlxColor;
 
