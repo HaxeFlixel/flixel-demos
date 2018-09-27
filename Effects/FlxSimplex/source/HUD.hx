@@ -6,8 +6,8 @@ import flixel.group.FlxGroup;
 /**
  * A group of FlxTexts containing the instructions and current parameter values of the noise.
  */
-class HUD extends FlxGroup {
-	
+class HUD extends FlxGroup
+{	
 	var titleText:FlxText;
 	var xText:FlxText;
 	var yText:FlxText;
@@ -18,7 +18,8 @@ class HUD extends FlxGroup {
 	var seedText:FlxText;
 	var supportText:FlxText;
 	
-	public function new() {
+	public function new()
+	{
 	    super();
 	    
 	    titleText = new FlxText(420, 10, 210, "FlxSimplex", 24);
@@ -45,31 +46,38 @@ class HUD extends FlxGroup {
 	    add(supportText);
 	}
 	
-	public function updateX(x:Int):Void {
+	public function updateX(x:Int):Void
+	{
 		xText.text = 'X: $x';
 	}
 	
-	public function updateY(y:Int):Void {
+	public function updateY(y:Int):Void
+	{
 		yText.text = 'Y: $y';
 	}
 	
-	public function updateScale(scale:Float):Void {
+	public function updateScale(scale:Float):Void
+	{
 		scaleText.text = 'Scale: $scale';
 	}
 	
-	public function updatePersistence(persistence:Float):Void {
+	public function updatePersistence(persistence:Float):Void
+	{
 		persistenceText.text = 'Persistence: $persistence';
 	}
 	
-	public function updateOctaves(octaves:Int):Void {
+	public function updateOctaves(octaves:Int):Void
+	{
 		octavesText.text = 'Octaves: $octaves';
 	}
 	
-	public function updateTiles(tiles:Bool):Void {
+	public function updateTiles(tiles:Bool):Void
+	{
 		tileText.text = "Tiling: " + (tiles ? "ON" : "OFF");
 	}
 	
-	public function updateSeed(seed:Int):Void {
+	public function updateSeed(seed:Int):Void
+	{
 		seedText.text = 'Seed: $seed';
 	}
 }
