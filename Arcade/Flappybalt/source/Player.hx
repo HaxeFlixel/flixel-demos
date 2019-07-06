@@ -30,7 +30,7 @@ class Player extends FlxSprite
 			velocity.y = -240;
 			
 			animation.play("flap", true);
-			FlxG.sound.play("assets/Flap.ogg");
+			FlxG.sound.play("Flap");
 		}
 		
 		super.update(elapsed);
@@ -45,7 +45,7 @@ class Player extends FlxSprite
 		
 		super.kill();
 
-		FlxG.sound.play("assets/Explosion.ogg");
+		FlxG.sound.play("Explosion");
 		FlxG.camera.flash(0xffFFFFFF, 1, onFlashDone);
 		FlxG.camera.shake(0.02, 0.35);
 	}

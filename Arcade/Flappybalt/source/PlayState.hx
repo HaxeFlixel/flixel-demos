@@ -127,12 +127,16 @@ class PlayState extends FlxState
 
 		// Sound Handler for the paddles
 
-		_paddleSound = FlxG.sound.load(null,1.0,true,null,false,false,"assets/Stone.ogg",null);
+		#if flash
+		_paddleSound = FlxG.sound.load(null,1.0,true,null,false,false,"assets/stone.mp3",null);
+		#else
+		_paddleSound = FlxG.sound.load(null,1.0,true,null,false,false,"assets/stone.ogg",null);
+		#end
 		add(_paddleSound);
 
 		// Play background music
 
-		FlxG.sound.playMusic("assets/Music.ogg");
+		FlxG.sound.playMusic("Music");
 	}
 	
 	override public function update(elapsed:Float):Void

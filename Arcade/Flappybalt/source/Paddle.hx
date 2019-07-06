@@ -39,7 +39,7 @@ class Paddle extends FlxSprite
 			velocity.y = 0;
 			y = targetY;
 			Reg.PS.stopPaddleSound();
-			FlxG.sound.play("assets/Stone Stop.ogg");
+			FlxG.sound.play("StoneStop");
 		}
 		
 		super.update(elapsed);
