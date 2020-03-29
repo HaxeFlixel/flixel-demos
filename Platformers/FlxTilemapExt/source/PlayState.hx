@@ -62,6 +62,8 @@ class PlayState extends FlxState
 
 		// set cloud tiles
 		level.setTileProperties(4, FlxObject.NONE, fallInClouds);
+		
+		level.setGlue(true);
 
 		// set wallJump tiles
 		level.setTileProperties(3, level.getTileCollisions(3), wallJump);
