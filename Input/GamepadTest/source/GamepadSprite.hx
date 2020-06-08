@@ -152,7 +152,7 @@ class GamepadSprite extends FlxSpriteGroup
 		return line;
 	}
 	
-	inline function createStick(x:Float, y:Float, input:InputID)
+	function createStick(x:Float, y:Float, input:InputID)
 	{
 		var isLeft = input == InputID.LEFT_ANALOG_STICK;
 		var stick = createInputSprite(x, y, "Stick", input, Stick);
@@ -172,7 +172,7 @@ class GamepadSprite extends FlxSpriteGroup
 		}
 	}
 	
-	inline function createDirectionArrows(x:Float, y:Float, radius:Float, up:InputID, down:InputID, left:InputID, right:InputID)
+	function createDirectionArrows(x:Float, y:Float, radius:Float, up:InputID, down:InputID, left:InputID, right:InputID)
 	{
 		createArrow(x, y - radius, up, -90);
 		createArrow(x, y + radius, down, 90);
@@ -190,7 +190,7 @@ class GamepadSprite extends FlxSpriteGroup
 		updateLabels();
 	}
 	
-	public inline function updateLabels():Void
+	public function updateLabels():Void
 	{
 		for (data in inputSprites)
 		{
