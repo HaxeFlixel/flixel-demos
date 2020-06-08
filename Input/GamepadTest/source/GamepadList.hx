@@ -81,7 +81,6 @@ class GamepadList extends FlxUIRadioGroup
 			button.button.over_color = FlxColor.BLACK;
 			button.button.down_color = FlxColor.BLACK;
 			button.button.getLabel().color = FlxColor.BLACK;
-			// button.textY = -4;
 		}
 	}
 }
