@@ -1,5 +1,6 @@
 package;
 
+import flixel.ui.FlxButton;
 import flixel.addons.ui.FlxUIDropDownMenu;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUIRadioGroup;
@@ -23,27 +24,45 @@ class PlayState extends FlxState
 	var attachmentLabel:FlxText;
 	var deadZoneStepper:FlxUINumericStepper;
 	var deadZoneModeDropDown:FlxUIDropDownMenu;
-	var connectedGamepads:FlxUIRadioGroup;
+	var connectedGamepads:GamepadList;
 	var disconnectedOverlay:FlxTypedGroup<FlxSprite>;
 	var gamepads:Array<FlxGamepad> = [];
+	var controller:Gamepad;
+	var useLatest = true;
 
-	var modelDropDownLoc = new FlxPoint(210, 345);
+	var modelDropDownLoc = new FlxPoint(250, 400);
 
 	override public function create()
 	{
 		FlxG.cameras.bgColor = FlxColor.WHITE;
 
-		add(new Gamepad());
-
+		add(controller = new Gamepad(50, 50));
+		
+		createLabelToggle();
 		createAttachmentControls();
 		createModelControls();
 		showAttachment(false);
 
 		createDeadZoneControls();
-		nameLabel = addLabel(175, 418);
+		nameLabel = addLabel(235, 470);
 
 		createDisconnectedOverlay();
-		add(connectedGamepads = new FlxUIRadioGroup(500, 10, null, null, null, 25, 125, 25, 125));
+		
+		add(connectedGamepads = new GamepadList(FlxG.width - 150, 10, onGamepadChange));
+	}
+	
+	function createLabelToggle():Void
+	{
+		controller.inputLabels.visible = false;
+		var btn:FlxButton = null;
+		btn = new FlxButton(20, 20, "Show Labels",
+			function ()
+			{
+				btn.text = controller.inputLabels.visible ? "Show Labels" : "Hide Labels";
+				controller.inputLabels.visible = !controller.inputLabels.visible;
+			}
+		);
+		add(btn);
 	}
 
 	function createAttachmentControls():Void
@@ -53,10 +72,8 @@ class PlayState extends FlxState
 		add(attachmentDropDown = new FlxUIDropDownMenu(modelDropDownLoc.x, modelDropDownLoc.y - 30,
 			FlxUIDropDownMenu.makeStrIdLabelArray(FlxGamepadAttachment.getConstructors()), function(attachment)
 		{
-			var gamepad = FlxG.gamepads.lastActive;
-			if (gamepad != null)
-				gamepad.attachment = FlxGamepadAttachment.createByName(attachment);
-			updateConnectedGamepads(true);
+			if (controller.gamepad != null)
+				controller.gamepad.attachment = FlxGamepadAttachment.createByName(attachment);
 		}, new FlxUIDropDownHeader(150)));
 		attachmentDropDown.selectedId = "None";
 		attachmentDropDown.dropDirection = Up;
@@ -67,28 +84,29 @@ class PlayState extends FlxState
 		add(modelDropDown = new FlxUIDropDownMenu(modelDropDownLoc.x, modelDropDownLoc.y,
 			FlxUIDropDownMenu.makeStrIdLabelArray(FlxGamepadModel.getConstructors()), function(model)
 		{
-			var gamepad = FlxG.gamepads.lastActive;
-			if (gamepad != null)
-				gamepad.model = FlxGamepadModel.createByName(model);
-			updateConnectedGamepads(true);
-			showAttachment(gamepad.model == FlxGamepadModel.WII_REMOTE);
+			if (controller.gamepad != null)
+			{
+				controller.gamepad.model = FlxGamepadModel.createByName(model);
+				controller.updateLabels();
+			}
+			showAttachment(controller.gamepad.model == FlxGamepadModel.WII_REMOTE);
 		}, new FlxUIDropDownHeader(150)));
 	}
 
 	function createDeadZoneControls():Void
 	{
-		var x = 175;
-		addLabel(x, 375, "Deadzone:");
-		add(deadZoneStepper = new FlxUINumericStepper(x, 395, 0.05, 0.15, 0, 1, 2, FlxUINumericStepper.STACK_HORIZONTAL));
+		var x = modelDropDownLoc.x;
+		var y = modelDropDownLoc.y + 20;
+		addLabel(x, y, "Deadzone:");
+		add(deadZoneStepper = new FlxUINumericStepper(x, y + 20, 0.05, 0.15, 0, 1, 2, FlxUINumericStepper.STACK_HORIZONTAL));
 
 		x += 70;
-		addLabel(x, 375, "Deadzone Mode:");
-		add(deadZoneModeDropDown = new FlxUIDropDownMenu(x, 391, FlxUIDropDownMenu.makeStrIdLabelArray(FlxGamepadDeadZoneMode.getConstructors()),
+		addLabel(x, y, "Deadzone Mode:");
+		add(deadZoneModeDropDown = new FlxUIDropDownMenu(x, y + 16, FlxUIDropDownMenu.makeStrIdLabelArray(FlxGamepadDeadZoneMode.getConstructors()),
 		function(mode)
 		{
-			var gamepad = FlxG.gamepads.lastActive;
-			if (gamepad != null)
-				gamepad.deadZoneMode = FlxGamepadDeadZoneMode.createByName(mode);
+			if (controller.gamepad != null)
+				controller.gamepad.deadZoneMode = FlxGamepadDeadZoneMode.createByName(mode);
 		}, new FlxUIDropDownHeader(130)));
 	}
 
@@ -105,7 +123,7 @@ class PlayState extends FlxState
 		disconnectedOverlay.add(disconnectedText);
 		add(disconnectedOverlay);
 	}
-
+	
 	function addLabel(x:Float, y:Float, ?text:String):FlxText
 	{
 		var label = new FlxText(x, y, 0, text);
@@ -118,20 +136,19 @@ class PlayState extends FlxState
 	{
 		attachmentLabel.visible = attachmentDropDown.visible = attachmentDropDown.active = b;
 	}
-
-	override public function update(elapsed:Float)
+	
+	function onGamepadChange(gamepad:FlxGamepad):Void
 	{
-		super.update(elapsed);
-		updateConnectedGamepads();
-
-		var gamepad = FlxG.gamepads.lastActive;
-		if (gamepad == null)
-		{
+		if (controller.gamepad == null && gamepad != null)
+			setEnabled(true);
+		else if(FlxG.gamepads.numActiveGamepads == 0)
 			setEnabled(false);
+		
+		controller.setActiveGamepad(gamepad);
+		
+		if (gamepad == null)
 			return;
-		}
-
-		setEnabled(true);
+		
 		modelDropDown.selectedLabel = gamepad.model.getName();
 		if (gamepad.model == FlxGamepadModel.WII_REMOTE || gamepad.model == FlxGamepadModel.MAYFLASH_WII_REMOTE)
 		{
@@ -139,10 +156,10 @@ class PlayState extends FlxState
 		}
 		gamepad.deadZone = deadZoneStepper.value;
 		deadZoneModeDropDown.selectedLabel = gamepad.deadZoneMode.getName();
-		connectedGamepads.selectedIndex = getGamepadIndex(gamepad);
 
 		#if FLX_GAMEINPUT_API
 		nameLabel.text = 'Name: "${gamepad.name}"';
+		nameLabel.screenCenter(X);
 		#end
 	}
 
@@ -151,55 +168,5 @@ class PlayState extends FlxState
 		disconnectedOverlay.visible = !enabled;
 		deadZoneStepper.active = enabled;
 		modelDropDown.active = enabled;
-	}
-
-	function getGamepadIndex(gamepad:FlxGamepad)
-	{
-		return [for (i in 0...10) FlxG.gamepads.getByID(i)].indexOf(gamepad);
-	}
-
-	function updateConnectedGamepads(force:Bool = false)
-	{
-		var gamepads = [for (i in 0...10) FlxG.gamepads.getByID(i)];
-		var maxIndex = gamepads.length;
-		while (maxIndex-- > 0)
-		{
-			if (gamepads[maxIndex] != null)
-				break;
-		}
-
-		gamepads.splice(maxIndex + 1, gamepads.length);
-
-		if (force || !this.gamepads.equals(gamepads))
-		{
-			this.gamepads = gamepads;
-			updateGamepadRadioGroup();
-		}
-	}
-
-	function updateGamepadRadioGroup()
-	{
-		var gamepadNames = [];
-		for (i in 0...gamepads.length)
-		{
-			var gamepad = gamepads[i];
-			var name = (gamepad == null) ? "None" : gamepad.model.getName();
-			gamepadNames.push('$i - $name');
-		}
-
-		connectedGamepads.updateRadios(gamepadNames, gamepadNames);
-		setRadioGroupLabelStyle();
-	}
-
-	function setRadioGroupLabelStyle()
-	{
-		for (button in connectedGamepads.getRadios())
-		{
-			button.button.up_color = FlxColor.BLACK;
-			button.button.over_color = FlxColor.BLACK;
-			button.button.down_color = FlxColor.BLACK;
-			button.button.getLabel().color = FlxColor.BLACK;
-			button.textY = -4;
-		}
 	}
 }

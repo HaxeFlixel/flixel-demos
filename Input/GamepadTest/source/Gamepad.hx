@@ -2,195 +2,274 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxGroup;
+import flixel.group.FlxSpriteGroup;
 import flixel.input.gamepad.FlxGamepad;
-import flixel.math.FlxPoint;
+import flixel.input.gamepad.FlxGamepadInputID as InputID;
+import flixel.math.FlxMath;
+import flixel.math.FlxVector;
 import flixel.text.FlxText;
 import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
 
-class Gamepad extends FlxTypedGroup<FlxSprite>
+class Gamepad extends FlxSpriteGroup
 {
-	static inline var STICK_MOVEMENT_RANGE = 10;
+	static inline var STICK_MOVEMENT_RANGE = 20;
 	static inline var TRIGGER_MOVEMENT_RANGE = 20;
+	static inline var BUMPER_MOVEMENT = 5;
 
 	static inline var ALPHA_OFF = 0.5;
 	static inline var ALPHA_ON = 1;
-	static inline var ALPHA_INVISIBLE = 0;
 
-	static inline var LB_Y = 16;
-	static inline var RB_Y = 16;
+	static inline var LABEL_OFF = 0xFF808080;
+	static inline var LABEL_ON = 0xFF000000;
+	
+	public var inputLabels = new FlxSpriteGroup();
+	
+	var inputSprites:Array<InputSprite> = [];
 
-	static inline var LT_Y = -6;
-	static inline var RT_Y = -6;
-
-	static var LEFT_STICK_POS = FlxPoint.get(80, 62);
-	static var RIGHT_STICK_POS = FlxPoint.get(304, 150);
-
-	var leftStick:FlxSprite;
-	var rightStick:FlxSprite;
 	var dpad:FlxSprite;
+	var dpadArrow:FlxSprite;
 
-	var aButton:FlxSprite;
-	var bButton:FlxSprite;
-	var xButton:FlxSprite;
-	var yButton:FlxSprite;
-
-	var extraButton0:FlxSprite;
-	var extraButton1:FlxSprite;
-	var extraButton2:FlxSprite;
-	var extraButton3:FlxSprite;
-
-	var motionPitch:FlxBar;
-	var motionRoll:FlxBar;
-
-	var labelPitch:FlxText;
-	var labelRoll:FlxText;
-
-	var backButton:FlxSprite;
-	var guideButton:FlxSprite;
-	var startButton:FlxSprite;
-
-	var leftShoulder:FlxSprite;
-	var rightShoulder:FlxSprite;
-	var leftTrigger:FlxSprite;
-	var rightTrigger:FlxSprite;
+	var motionPitch:Bar;
+	var motionRoll:Bar;
 
 	var crosshairs:FlxSprite;
 
-	public var gamepad:FlxGamepad;
+	public var gamepad(default, null):FlxGamepad;
 
-	public function new()
+	public function new(x:Float = 0, y:Float = 0)
 	{
-		super();
+		super(x, y);
 
-		leftTrigger = createSprite(128, LT_Y, "LTrigger", 1);
-		rightTrigger = createSprite(380, RT_Y, "RTrigger", 1);
-		updateTrigger(0, leftTrigger, LT_Y);
-		updateTrigger(0, rightTrigger, RT_Y);
+		createInputSprite(128, -7, "LTrigger", LEFT_TRIGGER, Trigger);
+		createInputSprite(380, -7, "RTrigger", RIGHT_TRIGGER, Trigger);
+		createInputSprite(71, 16, "LB", LEFT_SHOULDER, Bumper);
+		createInputSprite(367, 16, "RB", RIGHT_SHOULDER, Bumper);
 
-		leftShoulder = createSprite(71, LB_Y, "LB", 1);
-		rightShoulder = createSprite(367, RB_Y, "RB", 1);
+		createSprite(0, 0, "gamepad");
 
-		createSprite(0, 0, "gamepad", 1);
+		createStick(80, 62, LEFT_ANALOG_STICK);
+		createStick(304, 150, RIGHT_ANALOG_STICK);
 
-		leftStick = createSprite(LEFT_STICK_POS.x, LEFT_STICK_POS.y, "Stick");
-		rightStick = createSprite(RIGHT_STICK_POS.x, RIGHT_STICK_POS.y, "Stick");
+		var dpad = createSprite(144, 140, "DPad");
+		createDirectionArrows(dpad.x - x, dpad.y - y, dpad.width * 0.35, DPAD_UP, DPAD_DOWN, DPAD_LEFT, DPAD_RIGHT);
 
-		dpad = createSprite(144, 140);
-		dpad.loadGraphic("assets/DPad.png", true, 87, 87);
+		createInputSprite(357, 84, "X", X);
+		createInputSprite(395, 48, "Y", Y);
+		createInputSprite(395, 123, "A", A);
+		createInputSprite(433, 84, "B", B);
 
-		xButton = createSprite(357, 84, "X");
-		yButton = createSprite(395, 48, "Y");
-		aButton = createSprite(395, 123, "A");
-		bButton = createSprite(433, 84, "B");
+		createInputSprite(357, 234, "Extra0", EXTRA_0, Invisible);
+		createInputSprite(395, 234, "Extra1", EXTRA_1, Invisible);
+		createInputSprite(433, 234, "Extra2", EXTRA_2, Invisible);
+		createInputSprite(471, 234, "Extra3", EXTRA_3, Invisible);
 
-		extraButton0 = createSprite(357, 84 + 150, "Extra0");
-		extraButton1 = createSprite(395, 84 + 150, "Extra1");
-		extraButton2 = createSprite(433, 84 + 150, "Extra2");
-		extraButton3 = createSprite(471, 84 + 150, "Extra3");
+		createInputSprite(199, 93, "Back", BACK);
+		createInputSprite(235, 73, "Guide", GUIDE, FlxVector.weak(0, -40));
+		createInputSprite(306, 93, "Start", START);
 
-		backButton = createSprite(199, 93, "Back");
-		guideButton = createSprite(235, 73, "Guide");
-		startButton = createSprite(306, 93, "Start");
+		motionPitch = createBar(534, 310, "Pitch");
+		motionRoll = createBar(534, 330, "Roll");
 
-		motionPitch = createBar(534, 310);
-		labelPitch = createLabel(534, 310, "Pitch");
-		motionRoll = createBar(534, 330);
-		labelRoll = createLabel(534, 330, "Roll");
-
-		crosshairs = createSprite(0, 0, "crosshairs", 1);
+		crosshairs = createSprite(0, 0, "crosshairs");
 		crosshairs.visible = false;
+		
+		updateInputSprites();
+		add(inputLabels);
+		inputLabels.x = 0;
+		inputLabels.y = 0;
 	}
 
-	function createSprite(x:Float, y:Float, ?fileName:String, alpha:Float = -1):FlxSprite
+	function createSprite(x:Float, y:Float, ?fileName:String):FlxSprite
 	{
-		if (alpha == -1)
-			alpha = ALPHA_OFF;
 		if (fileName != null)
 			fileName = 'assets/$fileName.png';
 
 		var sprite = new FlxSprite(x, y, fileName);
-		sprite.alpha = alpha;
 		sprite.antialiasing = true;
-		return add(sprite);
+		sprite.offset.set(sprite.width / 2, sprite.height / 2);
+		sprite.x += sprite.offset.x;
+		sprite.y += sprite.offset.y;
+		add(sprite);
+		return sprite;
+	}
+	
+	function createInputSprite(x:Float, y:Float, ?fileName:String, input:InputID, type:InputType = Digital, offset:FlxVector = null):FlxSprite
+	{
+		var sprite = createSprite(x, y, fileName);
+		var label = createLabel(sprite.x, sprite.y, "", 16);
+		label.borderColor = LABEL_OFF;
+		if (offset != null)
+		{
+			inputLabels.add(drawLine(label.x, label.y, offset, LABEL_OFF));
+			label.x += offset.x;
+			label.y += offset.y;
+			offset.putWeak();
+		}
+		inputLabels.add(label);
+		
+		switch(type)
+		{
+			case Digital: sprite.alpha = ALPHA_OFF;
+			case Invisible: sprite.visible = false;
+			default:
+		}
+		
+		inputSprites.push({ sprite:sprite, input:input, type:type, label:label });
+		return sprite;
 	}
 
-	function createBar(x:Float, y:Float):FlxBar
+	function createBar(x:Float, y:Float, label:String):Bar
 	{
 		var bar = new FlxBar(x, y, FlxBarFillDirection.LEFT_TO_RIGHT, 100, 14, null, "", 0, 100, true);
 		bar.createGradientBar([FlxColor.BLACK], [FlxColor.RED, FlxColor.BLUE], 1, 180, true, FlxColor.BLACK);
 		add(bar);
-		return bar;
+		var label = createLabel(x, y, label);
+		add(label);
+		return { bar:bar, label:label };
 	}
 
-	function createLabel(x:Float, y:Float, ?label:String):FlxText
+	function createLabel(x:Float, y:Float, label:String, size:Int = 8):FlxText
 	{
-		var label = new FlxText(x, y, 0, label);
+		var label = new FlxText(x, y, 0, label, size);
 		label.color = FlxColor.WHITE;
-		label.setBorderStyle(FlxTextBorderStyle.OUTLINE_FAST, FlxColor.BLACK, 1, 1);
-		add(label);
+		label.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, size/8, size/8);
+		label.autoSize = true;
 		return label;
 	}
-
+	
+	function drawLine(x:Float, y:Float, offset:FlxVector, color:FlxColor):FlxSprite
+	{
+		var line = new FlxSprite(x, y);
+		line.makeGraphic(Math.floor(offset.length), 2, color);
+		line.angle = offset.degrees;
+		line.origin.set(1, 1);
+		return line;
+	}
+	
+	inline function createStick(x:Float, y:Float, input:InputID)
+	{
+		var isLeft = input == LEFT_ANALOG_STICK;
+		var stick = createInputSprite(x, y, "Stick", input, Stick);
+		x = stick.x - this.x;// prevent double nested offset from spritegroup
+		y = stick.y - this.y;
+		var click = isLeft ? LEFT_STICK_CLICK : RIGHT_STICK_CLICK;
+		createInputSprite(x - 10, y - 10, "StickClick", click, Invisible, FlxVector.get(isLeft ? -70 : 80, 20));
+		if (isLeft)
+		{
+			createDirectionArrows(x, y, 40,
+				LEFT_STICK_DIGITAL_UP, LEFT_STICK_DIGITAL_DOWN, LEFT_STICK_DIGITAL_LEFT, LEFT_STICK_DIGITAL_RIGHT);
+		}
+		else
+		{
+			createDirectionArrows(x, y, 40,
+				RIGHT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_RIGHT);
+		}
+	}
+	
+	inline function createDirectionArrows(x:Float, y:Float, radius:Float, up:InputID, down:InputID, left:InputID, right:InputID)
+	{
+		createArrow(x, y - radius, up, -90);
+		createArrow(x, y + radius, down, 90);
+		createArrow(x - radius, y, left, 180);
+		createArrow(x + radius, y, right, 0);
+	}
+	inline function createArrow(x:Float, y:Float, input:InputID, angle:Float)
+	{
+		createInputSprite(x - 10, y - 10, "Arrow", input, Invisible).angle = angle;
+	}
+	
+	public function setActiveGamepad(gamepad:FlxGamepad):Void
+	{
+		this.gamepad = gamepad;
+		updateLabels();
+	}
+	
+	public inline function updateLabels():Void
+	{
+		for (data in inputSprites)
+		{
+			var label = "";
+			if (gamepad != null)
+			{
+				label = switch(gamepad.getInputLabel(data.input))
+				{
+					case "square": "[]";
+					case "circle": "()";
+					case "triangle": "/\\";
+					case "plus": "+";
+					case "minus": "-";
+					case "up": "u";
+					case "down": "d";
+					case "left": "l";
+					case "right": "r";
+					case stick if (~/[rl]s-[udlr]/.match(stick)): stick.substr(0, 4);
+					case label: label;
+				}
+			}
+			data.label.text = label != null ? label.toUpperCase() : "";
+			data.label.offset.x = data.label.width / 2;
+			data.label.offset.y = data.label.height / 2;
+		}
+	}
+	
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-
-		gamepad = FlxG.gamepads.lastActive;
-
+		
+		if (gamepad != null && FlxG.gamepads.getByID(gamepad.id) == null)
+			gamepad = null;
+		
 		if (gamepad == null)
 			return;
+		
+		updateInputSprites();
+		
+		var motion = gamepad.motion;
 
+		updateBar(motionPitch, motion.isSupported, motion.TILT_PITCH);
+		updateBar(motionRoll, motion.isSupported, motion.TILT_ROLL);
+
+		var pointer = gamepad.pointer;
+
+		updatePointer(crosshairs, pointer.isSupported, pointer.X, pointer.Y);
+		
 		#if FLX_DEBUG
 		FlxG.watch.addQuick("pressed ID", gamepad.firstJustPressedID());
 		FlxG.watch.addQuick("released ID", gamepad.firstJustReleasedID());
 		FlxG.watch.addQuick("justPressed ID", gamepad.firstJustPressedID());
 		#end
-
-		var pressed = gamepad.pressed;
-
-		updateButton(aButton, pressed.A);
-		updateButton(bButton, pressed.B);
-		updateButton(xButton, pressed.X);
-		updateButton(yButton, pressed.Y);
-
-		updateButtonInvisible(extraButton0, pressed.EXTRA_0);
-		updateButtonInvisible(extraButton1, pressed.EXTRA_1);
-		updateButtonInvisible(extraButton2, pressed.EXTRA_2);
-		updateButtonInvisible(extraButton3, pressed.EXTRA_3);
-
-		updateButton(startButton, pressed.START);
-		updateButton(guideButton, pressed.GUIDE);
-		updateButton(backButton, pressed.BACK);
-
-		updateShoulderButton(leftShoulder, pressed.LEFT_SHOULDER, LB_Y);
-		updateShoulderButton(rightShoulder, pressed.RIGHT_SHOULDER, RB_Y);
-		updateDpad();
-
-		var motion = gamepad.motion;
-
-		updateBar(motionPitch, labelPitch, motion.isSupported, motion.TILT_PITCH);
-		updateBar(motionRoll, labelRoll, motion.isSupported, motion.TILT_ROLL);
-
-		var value = gamepad.analog.value;
-
-		updateTrigger(value.LEFT_TRIGGER, leftTrigger, LT_Y);
-		updateTrigger(value.RIGHT_TRIGGER, rightTrigger, RT_Y);
-
-		updateStick(leftStick, value.LEFT_STICK_X, value.LEFT_STICK_Y, LEFT_STICK_POS);
-		updateStick(rightStick, value.RIGHT_STICK_X, value.RIGHT_STICK_Y, RIGHT_STICK_POS);
-
-		if (leftStick.alpha == ALPHA_OFF)
-			updateButton(leftStick, pressed.LEFT_STICK_CLICK);
-		if (rightStick.alpha == ALPHA_OFF)
-			updateButton(rightStick, pressed.RIGHT_STICK_CLICK);
-
-		var pointer = gamepad.pointer;
-
-		updatePointer(crosshairs, pointer.isSupported, pointer.X, pointer.Y);
 	}
 
+	function updateInputSprites()
+	{
+		for (data in inputSprites)
+		{
+			var digital = gamepad == null ? false : gamepad.checkStatus(data.input, PRESSED);
+			var analog = gamepad == null ?  0 : gamepad.getAxis(data.input);
+			data.label.borderColor = digital || analog != 0 ? LABEL_ON : LABEL_OFF;
+			
+			switch(data.type)
+			{
+				case Digital:
+					data.sprite.alpha = digital ? ALPHA_ON : ALPHA_OFF;
+				case Invisible:
+					data.sprite.visible = digital;
+				case Bumper:
+					data.sprite.offset.y = data.sprite.origin.y - (digital ? BUMPER_MOVEMENT : 0);
+				case Trigger:
+					data.sprite.offset.y = data.sprite.origin.y - analog * TRIGGER_MOVEMENT_RANGE;
+				case Stick:
+					var axes = gamepad == null ? FlxVector.get() : gamepad.getAnalogAxes(data.input);
+					data.sprite.alpha = axes.isZero() ? ALPHA_OFF : ALPHA_ON;
+					data.sprite.offset.x = data.sprite.origin.x - axes.x * STICK_MOVEMENT_RANGE;
+					data.sprite.offset.y = data.sprite.origin.y - axes.y * STICK_MOVEMENT_RANGE;
+					axes.put();
+			}
+		}
+	}
+	
 	function updatePointer(sprite:FlxSprite, isSupported:Bool, x:Float, y:Float)
 	{
 		if (!isSupported)
@@ -202,72 +281,26 @@ class Gamepad extends FlxTypedGroup<FlxSprite>
 			sprite.visible = true;
 			sprite.x = FlxG.width * x;
 			sprite.y = FlxG.height * y;
-			sprite.x -= Std.int(sprite.width / 2);
-			sprite.y -= Std.int(sprite.height / 2);
 		}
 	}
 
-	function updateBar(bar:FlxBar, label:FlxText, isSupported:Bool, value:Float)
+	function updateBar(data:Bar, isSupported:Bool, value:Float)
 	{
-		bar.visible = label.visible = isSupported;
+		data.bar.visible = data.label.visible = isSupported;
 		if (isSupported)
-			bar.value = ((value + 1.0) / 2.0) * 100; // motion value range is from -1.0 to 1.0
+			data.bar.value = ((value + 1.0) / 2.0) * 100; // motion value range is from -1.0 to 1.0
 	}
+}
 
-	function updateButton(button:FlxSprite, pressed:Bool)
-	{
-		button.alpha = pressed ? ALPHA_ON : ALPHA_OFF;
-	}
+typedef Bar = { bar:FlxBar, label:FlxText };
 
-	function updateButtonInvisible(button:FlxSprite, pressed:Bool)
-	{
-		button.alpha = pressed ? ALPHA_ON : ALPHA_INVISIBLE;
-	}
+typedef InputSprite = { sprite:FlxSprite, input:InputID, type:InputType, ?label:FlxText };
 
-	function updateShoulderButton(button:FlxSprite, pressed:Bool, pos:Int)
-	{
-		button.y = pos;
-		if (pressed)
-			button.y += 5;
-	}
-
-	function updateStick(stick:FlxSprite, xValue:Float, yValue:Float, pos:FlxPoint)
-	{
-		var angle:Float = 0;
-
-		if (xValue != 0 || yValue != 0)
-		{
-			angle = Math.atan2(yValue, xValue);
-			stick.x = pos.x + STICK_MOVEMENT_RANGE * Math.cos(angle);
-			stick.y = pos.y + STICK_MOVEMENT_RANGE * Math.sin(angle);
-			stick.alpha = ALPHA_ON;
-		}
-		else
-		{
-			stick.x = pos.x;
-			stick.y = pos.y;
-			stick.alpha = ALPHA_OFF;
-		}
-	}
-
-	function updateTrigger(yAxisValue:Float, sprite:FlxSprite, pos:Float)
-	{
-		yAxisValue = (yAxisValue + 1) / 2;
-		sprite.y = pos + (TRIGGER_MOVEMENT_RANGE * yAxisValue);
-	}
-
-	function updateDpad()
-	{
-		var pressed = gamepad.pressed;
-
-		var left = pressed.DPAD_LEFT;
-		var right = pressed.DPAD_RIGHT;
-		var up = pressed.DPAD_UP;
-		var down = pressed.DPAD_DOWN;
-
-		dpad.animation.frameIndex = if (right && up) 5; else if (right && down) 6; else if (left && down) 7; else if (left && up) 8; else if (up) 1; else
-			if (right) 2; else if (down) 3; else if (left) 4; else 0;
-
-		updateButton(dpad, dpad.animation.frameIndex > 0);
-	}
+enum InputType
+{
+	Digital;
+	Invisible;
+	Bumper;
+	Trigger;
+	Stick;
 }
