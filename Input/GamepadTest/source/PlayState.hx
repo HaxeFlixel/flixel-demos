@@ -54,15 +54,15 @@ class PlayState extends FlxState
 	function createLabelToggle():Void
 	{
 		gamepadSprite.inputLabels.visible = false;
-		var btn:FlxButton = null;
-		btn = new FlxButton(20, 20, "Show Labels",
+		var button:FlxButton = null;
+		button = new FlxButton(20, 20, "Show Labels",
 			function ()
 			{
-				btn.text = gamepadSprite.inputLabels.visible ? "Show Labels" : "Hide Labels";
+				button.text = gamepadSprite.inputLabels.visible ? "Show Labels" : "Hide Labels";
 				gamepadSprite.inputLabels.visible = !gamepadSprite.inputLabels.visible;
 			}
 		);
-		add(btn);
+		add(button);
 	}
 
 	function createAttachmentControls():Void
