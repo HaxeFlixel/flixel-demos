@@ -95,8 +95,12 @@ class GamepadSprite extends FlxSpriteGroup
 		return sprite;
 	}
 	
-	function createInputSprite(x:Float, y:Float, ?fileName:String, input:InputID, type:InputType = Digital, offset:FlxVector = null):FlxSprite
+	function createInputSprite(x:Float, y:Float, ?fileName:String, input:InputID, ?type:InputType, offset:FlxVector = null):FlxSprite
 	{
+		//haxe 3.4.7 backwards compatibility
+		if (type == null)
+			type = Digital;
+		//
 		var sprite = createSprite(x, y, fileName);
 		var label = createLabel(sprite.x, sprite.y, "", 16);
 		label.borderColor = LABEL_OFF;
@@ -150,11 +154,11 @@ class GamepadSprite extends FlxSpriteGroup
 	
 	inline function createStick(x:Float, y:Float, input:InputID)
 	{
-		var isLeft = input == LEFT_ANALOG_STICK;
+		var isLeft = input == InputID.LEFT_ANALOG_STICK;
 		var stick = createInputSprite(x, y, "Stick", input, Stick);
 		x = stick.x - this.x;// prevent double nested offset from spritegroup
 		y = stick.y - this.y;
-		var click = isLeft ? LEFT_STICK_CLICK : RIGHT_STICK_CLICK;
+		var click = isLeft ? InputID.LEFT_STICK_CLICK : InputID.RIGHT_STICK_CLICK;
 		createInputSprite(x - 10, y - 10, "StickClick", click, Invisible, FlxVector.get(isLeft ? -70 : 80, 20));
 		if (isLeft)
 		{
