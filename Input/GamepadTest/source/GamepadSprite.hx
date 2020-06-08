@@ -296,11 +296,11 @@ class GamepadSprite extends FlxSpriteGroup
 	}
 }
 
-typedef Bar = { bar:FlxBar, label:FlxText };
+private typedef Bar = { bar:FlxBar, label:FlxText };
 
-typedef InputSprite = { sprite:FlxSprite, input:InputID, type:InputType, ?label:FlxText };
+private typedef InputSprite = { sprite:FlxSprite, input:InputID, type:InputType, ?label:FlxText };
 
-enum InputType
+private enum InputType
 {
 	Digital;
 	Invisible;
