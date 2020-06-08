@@ -5,44 +5,42 @@ import flixel.input.gamepad.FlxGamepad;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUIRadioGroup;
 
-
 class GamepadList extends FlxUIRadioGroup
 {
 	var ids:Array<String> = [];
 	var labels:Array<String> = [];
-	
+
 	var onChange:Null<FlxGamepad>->Void;
-	
+
 	public function new(x:Float, y:Float, onChange:Null<FlxGamepad>->Void)
 	{
 		super(x, y, ids, labels, null, 25, 200, 25, 200);
 		this.onChange = onChange;
-		
+
 		FlxG.gamepads.deviceConnected.add(onDeviceConnected);
 		FlxG.gamepads.deviceDisconnected.add(onDeviceDisconnected);
 		callback = onSelect;
 	}
-	
-	
+
 	function onDeviceConnected(gamepad:FlxGamepad):Void
 	{
 		updateList();
 		select(gamepad.id);
 	}
-	
+
 	function onDeviceDisconnected(gamepad:FlxGamepad):Void
 	{
 		updateList();
 		if (FlxG.gamepads.numActiveGamepads > 0)
 			select(FlxG.gamepads.lastActive.id);
 	}
-	
+
 	function select(i:Int)
 	{
 		selectedIndex = i;
 		onSelect(selectedId);
 	}
-	
+
 	function onSelect(_)
 	{
 		var gamepad = FlxG.gamepads.getByID(selectedIndex);
@@ -51,7 +49,7 @@ class GamepadList extends FlxUIRadioGroup
 		else
 			onChange(null);
 	}
-	
+
 	function updateList()
 	{
 		@:privateAccess
@@ -63,16 +61,12 @@ class GamepadList extends FlxUIRadioGroup
 		updateRadios(ids, labels);
 		updateStyle();
 	}
-	
+
 	inline function getModel(gamepad:FlxGamepad)
 	{
-		return
-			if (gamepad != null && gamepad.connected)
-				gamepad.model.getName();
-			else
-				"None";
+		return (gamepad != null && gamepad.connected) ? gamepad.model.getName() : "None";
 	}
-	
+
 	function updateStyle()
 	{
 		for (button in getRadios())

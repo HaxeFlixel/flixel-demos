@@ -37,7 +37,7 @@ class PlayState extends FlxState
 		FlxG.cameras.bgColor = FlxColor.WHITE;
 
 		add(gamepadSprite = new GamepadSprite(50, 50));
-		
+
 		createLabelToggle();
 		createAttachmentControls();
 		createModelControls();
@@ -47,21 +47,19 @@ class PlayState extends FlxState
 		nameLabel = addLabel(235, 470);
 
 		createDisconnectedOverlay();
-		
+
 		add(connectedGamepads = new GamepadList(FlxG.width - 150, 10, onGamepadChange));
 	}
-	
+
 	function createLabelToggle():Void
 	{
 		gamepadSprite.inputLabels.visible = false;
 		var button:FlxButton = null;
-		button = new FlxButton(20, 20, "Show Labels",
-			function ()
-			{
-				button.text = gamepadSprite.inputLabels.visible ? "Show Labels" : "Hide Labels";
-				gamepadSprite.inputLabels.visible = !gamepadSprite.inputLabels.visible;
-			}
-		);
+		button = new FlxButton(20, 20, "Show Labels", function()
+		{
+			button.text = gamepadSprite.inputLabels.visible ? "Show Labels" : "Hide Labels";
+			gamepadSprite.inputLabels.visible = !gamepadSprite.inputLabels.visible;
+		});
 		add(button);
 	}
 
@@ -103,11 +101,11 @@ class PlayState extends FlxState
 		x += 70;
 		addLabel(x, y, "Deadzone Mode:");
 		add(deadZoneModeDropDown = new FlxUIDropDownMenu(x, y + 16, FlxUIDropDownMenu.makeStrIdLabelArray(FlxGamepadDeadZoneMode.getConstructors()),
-		function(mode)
-		{
-			if (gamepadSprite.gamepad != null)
-				gamepadSprite.gamepad.deadZoneMode = FlxGamepadDeadZoneMode.createByName(mode);
-		}, new FlxUIDropDownHeader(130)));
+			function(mode)
+			{
+				if (gamepadSprite.gamepad != null)
+					gamepadSprite.gamepad.deadZoneMode = FlxGamepadDeadZoneMode.createByName(mode);
+			}, new FlxUIDropDownHeader(130)));
 	}
 
 	function createDisconnectedOverlay():Void
@@ -123,7 +121,7 @@ class PlayState extends FlxState
 		disconnectedOverlay.add(disconnectedText);
 		add(disconnectedOverlay);
 	}
-	
+
 	function addLabel(x:Float, y:Float, ?text:String):FlxText
 	{
 		var label = new FlxText(x, y, 0, text);
@@ -136,19 +134,19 @@ class PlayState extends FlxState
 	{
 		attachmentLabel.visible = attachmentDropDown.visible = attachmentDropDown.active = b;
 	}
-	
+
 	function onGamepadChange(gamepad:FlxGamepad):Void
 	{
 		if (gamepadSprite.gamepad == null && gamepad != null)
 			setEnabled(true);
-		else if(FlxG.gamepads.numActiveGamepads == 0)
+		else if (FlxG.gamepads.numActiveGamepads == 0)
 			setEnabled(false);
-		
+
 		gamepadSprite.setActiveGamepad(gamepad);
-		
+
 		if (gamepad == null)
 			return;
-		
+
 		modelDropDown.selectedLabel = gamepad.model.getName();
 		if (gamepad.model == FlxGamepadModel.WII_REMOTE || gamepad.model == FlxGamepadModel.MAYFLASH_WII_REMOTE)
 		{

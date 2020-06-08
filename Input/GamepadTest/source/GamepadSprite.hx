@@ -74,7 +74,7 @@ class GamepadSprite extends FlxSpriteGroup
 
 		crosshairs = createSprite(0, 0, "crosshairs");
 		crosshairs.visible = false;
-		
+
 		updateInputSprites();
 		add(inputLabels);
 		inputLabels.x = 0;
@@ -94,10 +94,10 @@ class GamepadSprite extends FlxSpriteGroup
 		add(sprite);
 		return sprite;
 	}
-	
+
 	function createInputSprite(x:Float, y:Float, ?fileName:String, input:InputID, ?type:InputType, offset:FlxVector = null):FlxSprite
 	{
-		//haxe 3.4.7 backwards compatibility
+		// haxe 3.4.7 backwards compatibility
 		if (type == null)
 			type = Digital;
 		//
@@ -112,15 +112,22 @@ class GamepadSprite extends FlxSpriteGroup
 			offset.putWeak();
 		}
 		inputLabels.add(label);
-		
-		switch(type)
+
+		switch (type)
 		{
-			case Digital: sprite.alpha = ALPHA_OFF;
-			case Invisible: sprite.visible = false;
+			case Digital:
+				sprite.alpha = ALPHA_OFF;
+			case Invisible:
+				sprite.visible = false;
 			default:
 		}
-		
-		inputSprites.push({ sprite:sprite, input:input, type:type, label:label });
+
+		inputSprites.push({
+			sprite: sprite,
+			input: input,
+			type: type,
+			label: label
+		});
 		return sprite;
 	}
 
@@ -131,18 +138,18 @@ class GamepadSprite extends FlxSpriteGroup
 		add(bar);
 		var label = createLabel(x, y, label);
 		add(label);
-		return { bar:bar, label:label };
+		return {bar: bar, label: label};
 	}
 
 	function createLabel(x:Float, y:Float, label:String, size:Int = 8):FlxText
 	{
 		var label = new FlxText(x, y, 0, label, size);
 		label.color = FlxColor.WHITE;
-		label.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, size/8, size/8);
+		label.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, size / 8, size / 8);
 		label.autoSize = true;
 		return label;
 	}
-	
+
 	function drawLine(x:Float, y:Float, offset:FlxVector, color:FlxColor):FlxSprite
 	{
 		var line = new FlxSprite(x, y);
@@ -151,7 +158,7 @@ class GamepadSprite extends FlxSpriteGroup
 		line.origin.set(1, 1);
 		return line;
 	}
-	
+
 	function createStick(x:Float, y:Float, input:InputID)
 	{
 		var isLeft = input == InputID.LEFT_ANALOG_STICK;
@@ -162,16 +169,14 @@ class GamepadSprite extends FlxSpriteGroup
 		createInputSprite(x - 10, y - 10, "StickClick", click, Invisible, FlxVector.get(isLeft ? -70 : 80, 20));
 		if (isLeft)
 		{
-			createDirectionArrows(x, y, 40,
-				LEFT_STICK_DIGITAL_UP, LEFT_STICK_DIGITAL_DOWN, LEFT_STICK_DIGITAL_LEFT, LEFT_STICK_DIGITAL_RIGHT);
+			createDirectionArrows(x, y, 40, LEFT_STICK_DIGITAL_UP, LEFT_STICK_DIGITAL_DOWN, LEFT_STICK_DIGITAL_LEFT, LEFT_STICK_DIGITAL_RIGHT);
 		}
 		else
 		{
-			createDirectionArrows(x, y, 40,
-				RIGHT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_RIGHT);
+			createDirectionArrows(x, y, 40, RIGHT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_RIGHT);
 		}
 	}
-	
+
 	function createDirectionArrows(x:Float, y:Float, radius:Float, up:InputID, down:InputID, left:InputID, right:InputID)
 	{
 		createArrow(x, y - radius, up, -90);
@@ -179,17 +184,18 @@ class GamepadSprite extends FlxSpriteGroup
 		createArrow(x - radius, y, left, 180);
 		createArrow(x + radius, y, right, 0);
 	}
+
 	inline function createArrow(x:Float, y:Float, input:InputID, angle:Float)
 	{
 		createInputSprite(x - 10, y - 10, "Arrow", input, Invisible).angle = angle;
 	}
-	
+
 	public function setActiveGamepad(gamepad:FlxGamepad):Void
 	{
 		this.gamepad = gamepad;
 		updateLabels();
 	}
-	
+
 	public function updateLabels():Void
 	{
 		for (data in inputSprites)
@@ -197,7 +203,7 @@ class GamepadSprite extends FlxSpriteGroup
 			var label = "";
 			if (gamepad != null)
 			{
-				label = switch(gamepad.getInputLabel(data.input))
+				label = switch (gamepad.getInputLabel(data.input))
 				{
 					case "square": "[]";
 					case "circle": "()";
@@ -217,19 +223,19 @@ class GamepadSprite extends FlxSpriteGroup
 			data.label.offset.y = data.label.height / 2;
 		}
 	}
-	
+
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-		
+
 		if (gamepad != null && FlxG.gamepads.getByID(gamepad.id) == null)
 			gamepad = null;
-		
+
 		if (gamepad == null)
 			return;
-		
+
 		updateInputSprites();
-		
+
 		var motion = gamepad.motion;
 
 		updateBar(motionPitch, motion.isSupported, motion.TILT_PITCH);
@@ -238,7 +244,7 @@ class GamepadSprite extends FlxSpriteGroup
 		var pointer = gamepad.pointer;
 
 		updatePointer(crosshairs, pointer.isSupported, pointer.X, pointer.Y);
-		
+
 		#if FLX_DEBUG
 		FlxG.watch.addQuick("pressed ID", gamepad.firstJustPressedID());
 		FlxG.watch.addQuick("released ID", gamepad.firstJustReleasedID());
@@ -251,10 +257,10 @@ class GamepadSprite extends FlxSpriteGroup
 		for (data in inputSprites)
 		{
 			var digital = gamepad == null ? false : gamepad.checkStatus(data.input, PRESSED);
-			var analog = gamepad == null ?  0 : gamepad.getAxis(data.input);
+			var analog = gamepad == null ? 0 : gamepad.getAxis(data.input);
 			data.label.borderColor = digital || analog != 0 ? LABEL_ON : LABEL_OFF;
-			
-			switch(data.type)
+
+			switch (data.type)
 			{
 				case Digital:
 					data.sprite.alpha = digital ? ALPHA_ON : ALPHA_OFF;
@@ -273,7 +279,7 @@ class GamepadSprite extends FlxSpriteGroup
 			}
 		}
 	}
-	
+
 	function updatePointer(sprite:FlxSprite, isSupported:Bool, x:Float, y:Float)
 	{
 		if (!isSupported)
@@ -296,9 +302,19 @@ class GamepadSprite extends FlxSpriteGroup
 	}
 }
 
-private typedef Bar = { bar:FlxBar, label:FlxText };
+private typedef Bar =
+{
+	bar:FlxBar,
+	label:FlxText
+};
 
-private typedef InputSprite = { sprite:FlxSprite, input:InputID, type:InputType, ?label:FlxText };
+private typedef InputSprite =
+{
+	sprite:FlxSprite,
+	input:InputID,
+	type:InputType,
+	?label:FlxText
+};
 
 private enum InputType
 {
