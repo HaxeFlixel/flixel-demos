@@ -12,7 +12,7 @@ import flixel.text.FlxText;
 import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
 
-class Gamepad extends FlxSpriteGroup
+class GamepadSprite extends FlxSpriteGroup
 {
 	static inline var STICK_MOVEMENT_RANGE = 20;
 	static inline var TRIGGER_MOVEMENT_RANGE = 20;

@@ -27,7 +27,7 @@ class PlayState extends FlxState
 	var connectedGamepads:GamepadList;
 	var disconnectedOverlay:FlxTypedGroup<FlxSprite>;
 	var gamepads:Array<FlxGamepad> = [];
-	var controller:Gamepad;
+	var gamepadSprite:GamepadSprite;
 	var useLatest = true;
 
 	var modelDropDownLoc = new FlxPoint(250, 400);
@@ -36,7 +36,7 @@ class PlayState extends FlxState
 	{
 		FlxG.cameras.bgColor = FlxColor.WHITE;
 
-		add(controller = new Gamepad(50, 50));
+		add(gamepadSprite = new GamepadSprite(50, 50));
 		
 		createLabelToggle();
 		createAttachmentControls();
@@ -53,13 +53,13 @@ class PlayState extends FlxState
 	
 	function createLabelToggle():Void
 	{
-		controller.inputLabels.visible = false;
+		gamepadSprite.inputLabels.visible = false;
 		var btn:FlxButton = null;
 		btn = new FlxButton(20, 20, "Show Labels",
 			function ()
 			{
-				btn.text = controller.inputLabels.visible ? "Show Labels" : "Hide Labels";
-				controller.inputLabels.visible = !controller.inputLabels.visible;
+				btn.text = gamepadSprite.inputLabels.visible ? "Show Labels" : "Hide Labels";
+				gamepadSprite.inputLabels.visible = !gamepadSprite.inputLabels.visible;
 			}
 		);
 		add(btn);
@@ -72,8 +72,8 @@ class PlayState extends FlxState
 		add(attachmentDropDown = new FlxUIDropDownMenu(modelDropDownLoc.x, modelDropDownLoc.y - 30,
 			FlxUIDropDownMenu.makeStrIdLabelArray(FlxGamepadAttachment.getConstructors()), function(attachment)
 		{
-			if (controller.gamepad != null)
-				controller.gamepad.attachment = FlxGamepadAttachment.createByName(attachment);
+			if (gamepadSprite.gamepad != null)
+				gamepadSprite.gamepad.attachment = FlxGamepadAttachment.createByName(attachment);
 		}, new FlxUIDropDownHeader(150)));
 		attachmentDropDown.selectedId = "None";
 		attachmentDropDown.dropDirection = Up;
@@ -84,12 +84,12 @@ class PlayState extends FlxState
 		add(modelDropDown = new FlxUIDropDownMenu(modelDropDownLoc.x, modelDropDownLoc.y,
 			FlxUIDropDownMenu.makeStrIdLabelArray(FlxGamepadModel.getConstructors()), function(model)
 		{
-			if (controller.gamepad != null)
+			if (gamepadSprite.gamepad != null)
 			{
-				controller.gamepad.model = FlxGamepadModel.createByName(model);
-				controller.updateLabels();
+				gamepadSprite.gamepad.model = FlxGamepadModel.createByName(model);
+				gamepadSprite.updateLabels();
 			}
-			showAttachment(controller.gamepad.model == FlxGamepadModel.WII_REMOTE);
+			showAttachment(gamepadSprite.gamepad.model == FlxGamepadModel.WII_REMOTE);
 		}, new FlxUIDropDownHeader(150)));
 	}
 
@@ -105,8 +105,8 @@ class PlayState extends FlxState
 		add(deadZoneModeDropDown = new FlxUIDropDownMenu(x, y + 16, FlxUIDropDownMenu.makeStrIdLabelArray(FlxGamepadDeadZoneMode.getConstructors()),
 		function(mode)
 		{
-			if (controller.gamepad != null)
-				controller.gamepad.deadZoneMode = FlxGamepadDeadZoneMode.createByName(mode);
+			if (gamepadSprite.gamepad != null)
+				gamepadSprite.gamepad.deadZoneMode = FlxGamepadDeadZoneMode.createByName(mode);
 		}, new FlxUIDropDownHeader(130)));
 	}
 
@@ -139,12 +139,12 @@ class PlayState extends FlxState
 	
 	function onGamepadChange(gamepad:FlxGamepad):Void
 	{
-		if (controller.gamepad == null && gamepad != null)
+		if (gamepadSprite.gamepad == null && gamepad != null)
 			setEnabled(true);
 		else if(FlxG.gamepads.numActiveGamepads == 0)
 			setEnabled(false);
 		
-		controller.setActiveGamepad(gamepad);
+		gamepadSprite.setActiveGamepad(gamepad);
 		
 		if (gamepad == null)
 			return;

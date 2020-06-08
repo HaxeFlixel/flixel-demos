@@ -18,19 +18,19 @@ class GamepadList extends FlxUIRadioGroup
 		super(x, y, ids, labels, null, 25, 200, 25, 200);
 		this.onChange = onChange;
 		
-		FlxG.gamepads.deviceConnected.add(onDeviceConnect);
-		FlxG.gamepads.deviceDisconnected.add(onDeviceDisconnect);
+		FlxG.gamepads.deviceConnected.add(onDeviceConnected);
+		FlxG.gamepads.deviceDisconnected.add(onDeviceDisconnected);
 		callback = onSelect;
 	}
 	
 	
-	function onDeviceConnect(gamepad:FlxGamepad):Void
+	function onDeviceConnected(gamepad:FlxGamepad):Void
 	{
 		updateList();
 		select(gamepad.id);
 	}
 	
-	function onDeviceDisconnect(gamepad:FlxGamepad):Void
+	function onDeviceDisconnected(gamepad:FlxGamepad):Void
 	{
 		updateList();
 		if (FlxG.gamepads.numActiveGamepads > 0)
