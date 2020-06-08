@@ -156,8 +156,8 @@ class GamepadSprite extends FlxSpriteGroup
 	{
 		var isLeft = input == InputID.LEFT_ANALOG_STICK;
 		var stick = createInputSprite(x, y, "Stick", input, Stick);
-		x = stick.x - this.x;// prevent double nested offset from spritegroup
-		y = stick.y - this.y;
+		x += stick.width / 2;
+		y += stick.height / 2;
 		var click = isLeft ? InputID.LEFT_STICK_CLICK : InputID.RIGHT_STICK_CLICK;
 		createInputSprite(x - 10, y - 10, "StickClick", click, Invisible, FlxVector.get(isLeft ? -70 : 80, 20));
 		if (isLeft)
