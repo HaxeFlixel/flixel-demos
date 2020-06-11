@@ -23,9 +23,9 @@ class GamepadSprite extends FlxSpriteGroup
 
 	static inline var LABEL_OFF = 0xFF808080;
 	static inline var LABEL_ON = 0xFF000000;
-	
+
 	public var inputLabels = new FlxSpriteGroup();
-	
+
 	var inputSprites:Array<InputSprite> = [];
 
 	var dpad:FlxSprite;
@@ -100,7 +100,7 @@ class GamepadSprite extends FlxSpriteGroup
 		// haxe 3.4.7 backwards compatibility
 		if (type == null)
 			type = Digital;
-		//
+
 		var sprite = createSprite(x, y, fileName);
 		var label = createLabel(sprite.x, sprite.y, "", 16);
 		label.borderColor = LABEL_OFF;
@@ -214,7 +214,7 @@ class GamepadSprite extends FlxSpriteGroup
 					case "down": "d";
 					case "left": "l";
 					case "right": "r";
-					case stick if (~/[rl]s-[udlr]/.match(stick)): stick.substr(0, 4);
+					case stick if (stick != null && ~/[rl]s-[udlr]/.match(stick)): stick.substr(0, 4);
 					case label: label;
 				}
 			}
@@ -306,7 +306,7 @@ private typedef Bar =
 {
 	bar:FlxBar,
 	label:FlxText
-};
+}
 
 private typedef InputSprite =
 {
@@ -314,7 +314,7 @@ private typedef InputSprite =
 	input:InputID,
 	type:InputType,
 	?label:FlxText
-};
+}
 
 private enum InputType
 {
