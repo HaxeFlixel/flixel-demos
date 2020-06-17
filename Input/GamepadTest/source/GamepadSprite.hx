@@ -214,7 +214,8 @@ class GamepadSprite extends FlxSpriteGroup
 					case "down": "d";
 					case "left": "l";
 					case "right": "r";
-					case stick if (stick != null && ~/[rl]s-[udlr]/.match(stick)): stick.substr(0, 4);
+					case null: null;
+					case stick if (~/[rl]s-[udlr]/.match(stick)): stick.substr(0, 4);
 					case label: label;
 				}
 			}
