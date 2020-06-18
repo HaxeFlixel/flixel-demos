@@ -17,12 +17,12 @@ class GamepadList extends FlxUIRadioGroup
 		super(x, y, ids, labels, null, 25, 200, 25, 200);
 		this.onChange = onChange;
 
-		for(i in 0...FlxG.gamepads.numActiveGamepads)
+		for (i in 0...FlxG.gamepads.numActiveGamepads)
 		{
 			var gamepad = FlxG.gamepads.getByID(i);
 			if (gamepad == null)
 				throw 'Unexpected null gamepad. id:$i';
-			
+
 			onDeviceConnected(gamepad);
 		}
 
