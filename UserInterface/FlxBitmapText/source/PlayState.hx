@@ -37,8 +37,7 @@ class PlayState extends FlxState
 		var charSize = FlxPoint.get(48, 50);
 		var fontMonospace = FlxBitmapFont.fromMonospace("assets/260.png", monospaceLetters, charSize);
 
-		var fontDiacrit:FlxBitmapFont = FlxBitmapFont.fromAngelCode("assets/diacritical_text.png", "assets/diacritical_text.xml");
-
+		var fontDiacrit:FlxBitmapFont = FlxBitmapFont.fromAngelCode("assets/ucdm_font.png", "assets/ucdm_font.xml");
 
 		tf = new FlxBitmapText(fontXNA);
 		tf.text = "Mouse X/Y";
@@ -78,7 +77,7 @@ class PlayState extends FlxState
 		add(tf3);
 
 		var tf4 = new FlxBitmapText(fontDiacrit);
-		tf4.y = tf3.y+tf3.height + 50;
+		tf4.y = tf3.y + tf3.height + 50;
 		tf4.alignment = FlxTextAlign.CENTER;
 		tf4.text = "!\u20e4 You can e\u0332v\u0332e\u0332n\u0332 define and use\nUnicode Combining Diacritical Marks!";
 		tf4.multiLine =  true;
