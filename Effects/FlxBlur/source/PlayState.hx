@@ -9,16 +9,14 @@ import flixel.util.FlxColor;
 
 class PlayState extends FlxState
 {
-	var _enabled:Bool;
-
 	override public function create():Void
 	{
 		FlxG.mouse.visible = false;
 
-		// Required for the blur effect - flash only!
-		FlxG.camera.useBgAlphaBlending = true;
+		FlxG.camera.setFilters([new BlurFilter()]);
 
 		// Title text, nothing crazy here!
+
 		var text:FlxText;
 		text = new FlxText(FlxG.width / 4, FlxG.height / 2 - 20, Math.floor(FlxG.width / 2), "FlxBlur");
 		text.setFormat(null, 32, FlxColor.WHITE, CENTER);
@@ -57,27 +55,15 @@ class PlayState extends FlxState
 		emitter.start(false, 0.1);
 		add(emitter);
 
-		// Let the player toggle the effect with the space bar.  Effect starts on.
-		_enabled = true;
+		// Let the player toggle the effect with the space bar.  Effect starts off.
+		FlxG.camera.filtersEnabled = false;
 	}
 
 	override public function update(elapsed:Float):Void
 	{
 		if (FlxG.keys.justPressed.SPACE)
 		{
-			_enabled = !_enabled;
-		}
-
-		if (_enabled)
-		{
-			// By setting the background color to a value with a low transparency,
-			// we can generate a cool "blur" effect.
-			FlxG.cameras.bgColor = 0x11000000;
-		}
-		else
-		{
-			// Setting it to an opaque color will turn the effect back off.
-			FlxG.cameras.bgColor = FlxColor.BLACK;
+			FlxG.camera.filtersEnabled = !FlxG.camera.filtersEnabled;
 		}
 
 		super.update(elapsed);
