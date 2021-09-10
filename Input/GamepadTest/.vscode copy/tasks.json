@@ -1,0 +1,35 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "debug: html5",
+			"command": "haxelib",
+			"args": [ "run", "lime", "build", "html5", "-debug" ],
+			"problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "debug: flash",
+			"command": "haxelib",
+			"args": [ "run", "lime", "build", "flash", "-debug", "-D fdb" ],
+			"problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "debug: neko",
+			"command": "haxelib",
+			"args": [ "run", "lime", "build", "neko" ],
+			"problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}
