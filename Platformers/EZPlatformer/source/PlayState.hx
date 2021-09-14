@@ -11,7 +11,6 @@ import flixel.tile.FlxTilemap;
 import flixel.util.FlxColor;
 
 /**
- * ...
  * @author Zaphod
  */
 class PlayState extends FlxState
@@ -130,7 +129,7 @@ class PlayState extends FlxState
 			_player.acceleration.x = _player.maxVelocity.x * 4;
 		}
 
-		if (FlxG.keys.anyJustPressed([SPACE, UP, W]) && _player.isTouching(FlxObject.FLOOR))
+		if (FlxG.keys.anyJustPressed([SPACE, UP, W]) && _player.isTouching(FLOOR))
 		{
 			_player.velocity.y = -_player.maxVelocity.y / 2;
 		}

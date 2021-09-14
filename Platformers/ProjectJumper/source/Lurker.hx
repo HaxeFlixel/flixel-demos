@@ -1,13 +1,11 @@
 package;
 
 import flixel.FlxG;
-import flixel.FlxObject;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
 import flixel.util.FlxSpriteUtil;
 
 /**
- * ...
  * @author David Bell
  */
 class Lurker extends EnemyTemplate
@@ -55,7 +53,7 @@ class Lurker extends EnemyTemplate
 
 	override public function update(elapsed:Float):Void
 	{
-		if (touching == FlxObject.DOWN)
+		if (touching == DOWN)
 		{
 			if (health <= 0 && _playdeathsound)
 			{

@@ -11,7 +11,6 @@ import haxe.xml.Fast as Access;
 #end
 
 /**
- * ...
  * @author Lars Doucet
  */
 class SaveSlot extends FlxUI
@@ -25,7 +24,7 @@ class SaveSlot extends FlxUI
 		super(null, _ptr);
 		if (_ptr != null)
 		{
-			if (Std.is(_ptr, FlxUI))
+			if ((_ptr is FlxUI))
 			{
 				var ui:FlxUI = cast _ptr;
 				_ptr_tongue = ui.tongue;
@@ -47,7 +46,7 @@ class SaveSlot extends FlxUI
 	override public function getEvent(event:String, sender:IFlxUIWidget, data:Dynamic, ?params:Array<Dynamic>):Void
 	{
 		super.getEvent(event, sender, data);
-		if (Std.is(data, String))
+		if ((data is String))
 		{
 			var str:String = cast(data, String);
 			switch (str)

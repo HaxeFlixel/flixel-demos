@@ -1,7 +1,6 @@
 package;
 
 import flixel.FlxG;
-import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.math.FlxVelocity;
@@ -9,27 +8,33 @@ import flixel.system.FlxSound;
 
 using flixel.util.FlxSpriteUtil;
 
+enum EnemyType
+{
+	REGULAR;
+	BOSS;
+}
+
 class Enemy extends FlxSprite
 {
-	public var speed:Float = 80;
-	public var etype(default, null):Int;
+	static inline var SPEED:Float = 140;
 
-	var _brain:FSM;
-	var _idleTmr:Float;
-	var _moveDir:Float;
+	var brain:FSM;
+	var idleTimer:Float;
+	var moveDirection:Float;
+	var stepSound:FlxSound;
 
-	public var seesPlayer:Bool = false;
-	public var playerPos(default, null):FlxPoint;
+	public var type(default, null):EnemyType;
+	public var seesPlayer:Bool;
+	public var playerPosition:FlxPoint;
 
-	var _sndStep:FlxSound;
-
-	public function new(X:Float = 0, Y:Float = 0, EType:Int)
+	public function new(x:Float, y:Float, type:EnemyType)
 	{
-		super(X, Y);
-		etype = EType;
-		loadGraphic("assets/images/enemy-" + etype + ".png", true, 16, 16);
-		setFacingFlip(FlxObject.LEFT, false, false);
-		setFacingFlip(FlxObject.RIGHT, true, false);
+		super(x, y);
+		this.type = type;
+		var graphic = if (type == BOSS) AssetPaths.boss__png else AssetPaths.enemy__png;
+		loadGraphic(graphic, true, 16, 16);
+		setFacingFlip(LEFT, false, false);
+		setFacingFlip(RIGHT, true, false);
 		animation.add("d", [0, 1, 0, 2], 6, false);
 		animation.add("lr", [3, 4, 3, 5], 6, false);
 		animation.add("u", [6, 7, 6, 8], 6, false);
@@ -38,108 +43,108 @@ class Enemy extends FlxSprite
 		height = 14;
 		offset.x = 4;
 		offset.y = 2;
-		_brain = new FSM(idle);
-		_idleTmr = 0;
-		playerPos = FlxPoint.get();
 
-		_sndStep = FlxG.sound.load(AssetPaths.step__wav, .4);
-		_sndStep.proximity(x, y, FlxG.camera.target, FlxG.width * .6);
+		brain = new FSM(idle);
+		idleTimer = 0;
+		seesPlayer = false;
+		playerPosition = FlxPoint.get();
+
+		stepSound = FlxG.sound.load(AssetPaths.step__wav, 0.4);
+		stepSound.proximity(x, y, FlxG.camera.target, FlxG.width * 0.6);
 	}
 
-	override public function update(elapsed:Float):Void
+	override public function update(elapsed:Float)
 	{
 		if (this.isFlickering())
 			return;
 
-		_brain.update();
-		super.update(elapsed);
-
-		if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE)
-		{
-			_sndStep.setPosition(x + frameWidth / 2, y + height);
-			_sndStep.play();
-		}
-	}
-
-	public function idle():Void
-	{
-		if (seesPlayer)
-		{
-			_brain.activeState = chase;
-		}
-		else if (_idleTmr <= 0)
-		{
-			if (FlxG.random.bool(1))
-			{
-				_moveDir = -1;
-				velocity.x = velocity.y = 0;
-			}
-			else
-			{
-				_moveDir = FlxG.random.int(0, 8) * 45;
-
-				velocity.set(speed * 0.5, 0);
-				velocity.rotate(FlxPoint.weak(), _moveDir);
-			}
-			_idleTmr = FlxG.random.int(1, 4);
-		}
-		else
-			_idleTmr -= FlxG.elapsed;
-	}
-
-	public function chase():Void
-	{
-		if (!seesPlayer)
-		{
-			_brain.activeState = idle;
-		}
-		else
-		{
-			FlxVelocity.moveTowardsPoint(this, playerPos, Std.int(speed));
-		}
-	}
-
-	override public function draw():Void
-	{
-		if ((velocity.x != 0 || velocity.y != 0) && touching != FlxObject.NONE)
+		if ((velocity.x != 0 || velocity.y != 0) && touching == NONE)
 		{
 			if (Math.abs(velocity.x) > Math.abs(velocity.y))
 			{
 				if (velocity.x < 0)
-					facing = FlxObject.LEFT;
+					facing = LEFT;
 				else
-					facing = FlxObject.RIGHT;
+					facing = RIGHT;
 			}
 			else
 			{
 				if (velocity.y < 0)
-					facing = FlxObject.UP;
+					facing = UP;
 				else
-					facing = FlxObject.DOWN;
+					facing = DOWN;
 			}
 
 			switch (facing)
 			{
-				case FlxObject.LEFT, FlxObject.RIGHT:
+				case LEFT, RIGHT:
 					animation.play("lr");
 
-				case FlxObject.UP:
+				case UP:
 					animation.play("u");
 
-				case FlxObject.DOWN:
+				case DOWN:
 					animation.play("d");
+
+				case _:
 			}
 		}
 
-		super.draw();
+		if ((velocity.x != 0 || velocity.y != 0) && touching == NONE)
+		{
+			stepSound.setPosition(x + frameWidth / 2, y + height);
+			stepSound.play();
+		}
+
+		brain.update(elapsed);
+		super.update(elapsed);
 	}
 
-	public function changeEnemy(EType:Int):Void
+	function idle(elapsed:Float)
 	{
-		if (etype != EType)
+		if (seesPlayer)
 		{
-			etype = EType;
-			loadGraphic("assets/images/enemy-" + etype + ".png", true, 16, 16);
+			brain.activeState = chase;
+		}
+		else if (idleTimer <= 0)
+		{
+			if (FlxG.random.bool(1))
+			{
+				moveDirection = -1;
+				velocity.x = velocity.y = 0;
+			}
+			else
+			{
+				moveDirection = FlxG.random.int(0, 8) * 45;
+
+				velocity.set(SPEED * 0.5, 0);
+				velocity.rotate(FlxPoint.weak(), moveDirection);
+			}
+			idleTimer = FlxG.random.int(1, 4);
+		}
+		else
+			idleTimer -= elapsed;
+	}
+
+	function chase(elapsed:Float)
+	{
+		if (!seesPlayer)
+		{
+			brain.activeState = idle;
+		}
+		else
+		{
+			FlxVelocity.moveTowardsPoint(this, playerPosition, Std.int(SPEED));
+		}
+	}
+
+	public function changeType(type:EnemyType)
+	{
+		if (this.type != type)
+		{
+			this.type = type;
+			var graphic = if (type == BOSS) AssetPaths.boss__png else AssetPaths.enemy__png;
+			loadGraphic(graphic, true, 16, 16);
 		}
 	}
 }

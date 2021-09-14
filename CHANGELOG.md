@@ -1,3 +1,24 @@
+2.8.0 (September 12, 2021)
+------------------------------
+* Compatibility with flixel 4.10.0
+* FlxBitmapText: added an example of unicode combining diacritical marks (#282)
+
+2.7.4 (April 17, 2021)
+------------------------------
+* Added Lime XSD schema references to enable completion
+
+2.7.3 (July 2, 2020)
+------------------------------
+* FileBrowse: fixed compilation on HashLink
+* Updated some demos' sounds for compatibility with Apple devices (#276)
+* FlxTilemapExt: make use of the new `setDownwardsGlue()` method
+* GamepadTest: added a gamepad list and increased the window size
+* Fixed `Std.is()` deprecation warnings with Haxe 4.2
+
+2.7.2 (March 28, 2020)
+------------------------------
+* Modernized the TurnBasedRPG tutorial
+
 2.7.1 (May 1, 2019)
 ------------------------------
 * Replaced `nape` in `Project.xml` with `nape-haxe4`
