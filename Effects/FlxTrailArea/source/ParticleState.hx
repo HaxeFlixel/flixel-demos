@@ -21,6 +21,9 @@ class ParticleState extends FlxState
 	{
 		// Sets up the FlxTrail area on the top left of the screen with an area over the whole black part of the screen
 		var trailArea = new FlxTrailArea(0, 0, FlxG.width - 200, FlxG.height);
+		#if html5
+		trailArea.simpleRender = true;
+		#end
 
 		// Sets up the emitter for the particle explosion
 		_emitter = new FlxEmitter(200, FlxG.height / 2, PARTICLE_AMOUNT);
