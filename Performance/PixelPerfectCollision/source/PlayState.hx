@@ -1,6 +1,5 @@
 package;
 
-import flash.system.System;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -8,10 +7,12 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.math.FlxPoint;
+import flixel.math.FlxVector;
 import flixel.math.FlxAngle;
 import flixel.util.FlxColor;
 import flixel.util.FlxCollision;
 import flixel.group.FlxGroup;
+import flash.system.System;
 import openfl.display.FPS;
 
 using flixel.util.FlxSpriteUtil;
@@ -25,20 +26,35 @@ class PlayState extends FlxState
 	// how many aliens are created initially
 	inline static var NUM_ALIENS:Int = 50;
 
-	// How fast the player moves
-	inline static var PLAYER_SPEED:Int = 75;
+	inline static var INFO_FULL:String
+		= "Collisions: |hits|\n"
+		#if debug + "Checks: |checks|\n" #end
+		+ "FPS: |fps|\n\n"
+		+ "[W/S]           Objects: |objects|\n"
+		+ "[A/D]           Alpha tolerance: |alpha|\n"
+		+ "[ARROWS]    Move\n"
+		+ "[R]               Randomize\n"
+		+ "[SPACE]       |rotate| rotation\n"
+		+ "[T]               |scale| scale\n"
+		+ "[H]               Toggle instructions";
 
-	inline static var INFO:String = "Collisions: |hits|\n" + "FPS: |fps| \n\n" + "[W/S]           Objects: |objects|\n"
-		+ "[A/D]           Alpha tolerance: |alpha|\n" + "[ARROWS]    Move\n" + "[R]               Randomize\n" + "[SPACE]       Toggle rotations";
+	inline static var INFO_MIN:String
+		= "Objects: |objects|\n"
+		#if debug + "Checks: |checks|\n" #end
+		+ "Collisions: |hits|\n"
+		+ "FPS: |fps|";
 
 	// group holding the player and the aliens
-	var aliens:FlxTypedGroup<FlxSprite>;
+	var aliens:FlxTypedGroup<Alien>;
 
 	// the player ship
 	var player:Player;
 
 	// number of collisions at any given time
 	var numCollisions:Int = 0;
+
+	// number of collisions at any given time
+	var numChecks:Int = 0;
 
 	// setting this to 255 means two object will collide only if totally opaque
 	var alphaTolerance:Int = 1;
@@ -49,27 +65,40 @@ class PlayState extends FlxState
 	// to track fps
 	var fps:FPS;
 
-	// wether the objects should rotate
-	var rotate(default, set):Bool = true;
+	// whether the objects should rotate
+	var rotate:Bool = false;
+	// whether the objects should be scaled
+	var scale:Bool = false;
+	// whether the key instructions will show
+	var showFullInfo = true;
 
 	override public function create():Void
 	{
 		super.create();
+		FlxG.camera.bgColor = FlxG.stage.color;
 
 		// the group containing all the objects
-		add(aliens = new FlxTypedGroup<FlxSprite>());
+		add(aliens = new FlxTypedGroup<Alien>());
 
 		// create the player
 		add(player = new Player());
+		FlxG.camera.follow(player);
+		FlxG.camera.setScrollBounds(0, FlxG.width * 10, 0, FlxG.height);
+		FlxG.worldBounds.set(-10, -10, FlxG.camera.maxScrollX + 20, FlxG.camera.maxScrollY + 20);
+		
+		updateSpriteAngles();
+		updateSpriteScales();
 
 		// add objects for more interstellar fun!
 		for (i in 1...NUM_ALIENS)
 			addAlien();
+		
 
 		// add in some text so we know what's happening
-		infoText = new FlxText(2, 0, 400, INFO);
+		infoText = new FlxText(2, 0, 400, INFO_FULL);
 		infoText.y = FlxG.height - infoText.height;
-		infoText.setBorderStyle(OUTLINE);
+		infoText.setBorderStyle(OUTLINE, FlxColor.BLACK);
+		infoText.scrollFactor.x = 0;
 		add(infoText);
 
 		// just need this to get the fps, so we display it outside view range
@@ -77,9 +106,6 @@ class PlayState extends FlxState
 
 		// makes low fps less noticable
 		FlxG.fixedTimestep = false;
-
-		// don't need the cursor
-		FlxG.mouse.visible = false;
 	}
 
 	/**
@@ -87,35 +113,20 @@ class PlayState extends FlxState
 	 */
 	function addAlien():FlxSprite
 	{
-		var alien = aliens.recycle(FlxSprite);
-		alien.loadGraphic("assets/alien.png", true); // load graphics from asset
-		alien.animation.add("dance", [0, 1, 0, 2], FlxG.random.int(6, 10)); // set dance dance interstellar animation
-		alien.animation.play("dance"); // dance!
-		randomize(alien); // set position, angle and alpha to random values
-		return alien;
-	}
-
-	/**
-	 * Randomize position, angle and alpha of `obj`.
-	 */
-	function randomize(obj:FlxSprite):FlxSprite
-	{
-		// The start position of the alien is offscreen on a circle
-		var point = getRandomCirclePos();
-		obj.setPosition(point.x, point.y);
-		point.put(); // recycle point
-
-		var destX = FlxG.random.int(0, Std.int(FlxG.width - obj.width));
-		var destY = FlxG.random.int(0, Std.int(FlxG.height - obj.height));
-		obj.alpha = FlxG.random.float(0.3, 1.0);
-
-		// Neat tweening effect for new aliens appearing
-		FlxTween.tween(obj, {x: destX, y: destY}, 2, {ease: FlxEase.expoOut});
-
+		var alien = aliens.recycle(Alien);
+		alien.randomize();
+		
 		if (rotate)
-			randomizeRotation(obj);
-
-		return obj;
+			alien.randomAngle();
+		else
+			alien.resetAngle();
+		
+		if (scale)
+			alien.randomScale();
+		else
+			alien.resetScale();
+		
+		return alien;
 	}
 
 	/**
@@ -124,47 +135,33 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-
+		
 		handleInput();
 		checkCollisions();
 		updateInfo();
-
-		player.screenWrap(); // make sure the player can't go offscreen
 	}
 
 	function handleInput():Void
 	{
-		// Reset velocity to (0,0)
-		player.velocity.set();
-
-		// player movement
-		if (FlxG.keys.pressed.LEFT)
-			player.velocity.x = -PLAYER_SPEED;
-		if (FlxG.keys.pressed.RIGHT)
-			player.velocity.x = PLAYER_SPEED;
-		if (FlxG.keys.pressed.UP)
-			player.velocity.y = -PLAYER_SPEED;
-		if (FlxG.keys.pressed.DOWN)
-			player.velocity.y = PLAYER_SPEED;
-
 		// toggle rotation
 		if (FlxG.keys.justReleased.SPACE)
 		{
 			rotate = !rotate;
-			rotate ? randomizeRotation(player) : resetRotation(player);
+			updateSpriteAngles();
+		}
+		
+		// toggle scale
+		if (FlxG.keys.justReleased.T)
+		{
+			scale = !scale;
+			updateSpriteScales();
 		}
 
 		// randomize
 		if (FlxG.keys.justReleased.R)
 		{
-			for (obj in aliens)
-			{
-				// Don't randomize the player's position
-				if (obj != player)
-				{
-					randomize(obj);
-				}
-			}
+			for (a in aliens)
+				a.randomize();
 		}
 
 		// increment/decrement number of objects
@@ -173,6 +170,7 @@ class PlayState extends FlxState
 			for (i in 0...3)
 				addAlien();
 		}
+		
 		if (FlxG.keys.justReleased.S)
 		{
 			for (i in 0...3)
@@ -181,6 +179,13 @@ class PlayState extends FlxState
 				if (alien != null)
 					alien.kill();
 			}
+		}
+		
+		if (FlxG.keys.justReleased.H)
+		{
+			showFullInfo = !showFullInfo;
+			updateInfo();
+			infoText.y = FlxG.height - infoText.height;
 		}
 
 		// increment/decrement alpha tolerance
@@ -205,105 +210,94 @@ class PlayState extends FlxState
 	 */
 	function checkCollisions():Void
 	{
+		numChecks = 0;
 		numCollisions = 0;
-		player.color = FlxColor.GREEN;
+		player.color = 0xFF6abe30;
 
-		for (i in 0...aliens.length)
+		for (alien in aliens)
+			alien.cameraWrap(WALL);
+		
+		for (alien1 in aliens)
 		{
-			var obj1 = aliens.members[i];
 			var collides = false;
 
 			// Only collide alive members
-			if (!obj1.alive)
+			if (!alien1.alive)
 				continue;
-
-			for (j in 0...aliens.length)
-			{
-				var obj2 = aliens.members[j];
-
-				// Only collide alive members and don't collide an object with itself
-				if (!obj2.alive || (i == j))
-					continue;
-
-				// this is how we check if obj1 and obj2 are colliding
-				if (FlxCollision.pixelPerfectCheck(obj1, obj2, alphaTolerance))
-				{
-					collides = true;
-					numCollisions++;
-					break;
-				}
-			}
-
+			
+			numChecks++;
 			// We check collisions with the player seperately, since he's not in the group
-			if (FlxCollision.pixelPerfectCheck(obj1, player, alphaTolerance))
+			if (FlxCollision.pixelPerfectCheck(alien1, player, alphaTolerance))
 			{
 				collides = true;
 				numCollisions++;
-				player.color = FlxColor.RED;
+				player.color = 0xFFac3232;
 			}
-
-			obj1.color = collides ? FlxColor.RED : FlxColor.WHITE;
+			else
+			{
+				for (alien2 in aliens)
+				{
+					// Only collide alive members and don't collide an object with itself
+					if (!alien2.alive || alien1 == alien2)
+						continue;
+					
+					numChecks++;
+					// this is how we check if obj1 and obj2 are colliding
+					if (FlxCollision.pixelPerfectCheck(alien1, alien2, alphaTolerance))
+					{
+						collides = true;
+						numCollisions++;
+						break;
+					}
+				}
+			}
+			
+			alien1.setCollides(collides);
+		}
+	}
+	
+	function updateSpriteAngles()
+	{
+		if (rotate)
+		{
+			for (alien in aliens)
+				alien.randomAngle();
+			
+			player.randomAngle();
+		}
+		else
+		{
+			for (alien in aliens)
+				alien.resetAngle();
+			
+			player.resetAngle();
+		}
+	}
+	
+	function updateSpriteScales()
+	{
+		if (scale)
+		{
+			for (alien in aliens)
+				alien.randomScale();
+		}
+		else
+		{
+			for (alien in aliens)
+				alien.resetScale();
 		}
 	}
 
 	function updateInfo():Void
 	{
-		infoText.text = INFO // + 1 for the player that is not in the group
-			.replace("|objects|", Std.string(aliens.countLiving() + 1))
-			.replace("|alpha|", Std.string(alphaTolerance))
+		infoText.text = (showFullInfo ? INFO_FULL : INFO_MIN)
+			.replace("|checks|", Std.string(numChecks))
 			.replace("|hits|", Std.string(numCollisions))
-			.replace("|fps|", Std.string(fps.currentFPS));
-	}
-
-	function set_rotate(Value:Bool):Bool
-	{
-		if (Value)
-			aliens.forEach(randomizeRotation);
-		else
-			aliens.forEach(resetRotation);
-
-		return rotate = Value;
-	}
-
-	function randomizeRotation(obj:FlxSprite):Void
-	{
-		obj.angle = FlxG.random.float() * 360;
-		obj.angularVelocity = 100;
-	}
-
-	function resetRotation(obj:FlxSprite):Void
-	{
-		obj.angle = 0;
-		obj.angularVelocity = 0;
-	}
-
-	/**
-	 * Returns a random position on an offscreen circle to tween the aliens from / to
-	 */
-	function getRandomCirclePos():FlxPoint
-	{
-		// choose a random position on our circle, from 1° to 360°
-		var startAngle = FlxG.random.int(1, 360);
-
-		// make sure the radius of our circle is 200 px bigger than the game's width / height (whichever is bigger)
-		var startRadius = (FlxG.width > FlxG.height) ? (FlxG.height + 200) : (FlxG.width + 200);
-
-		var coords:FlxPoint = FlxAngle.getCartesianCoords(startRadius, startAngle);
-		// Currently, the coords represent a circle with its center at (0,0) - let's move them!
-		coords.x += FlxG.width / 2;
-		coords.y += FlxG.height / 2;
-
-		return coords;
-	}
-}
-
-class Player extends FlxSprite
-{
-	public function new()
-	{
-		super();
-		loadGraphic("assets/ship.png");
-		screenCenter();
-		angularVelocity = 50;
+			.replace("|fps|", Std.string(fps.currentFPS))
+			.replace("|objects|", Std.string(aliens.countLiving() + 1))// + 1 for the player
+			.replace("|alpha|", Std.string(alphaTolerance))
+			.replace("|rotate|", rotate ? "Disable" : "Enable")
+			.replace("|scale|", scale ? "Disable" : "Enable");
+		
 	}
 }
