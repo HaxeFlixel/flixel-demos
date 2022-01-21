@@ -12,11 +12,11 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.math.FlxMath;
 import flixel.system.FlxAssets;
-#if flash
-import flash.display.Loader;
-import flash.display.LoaderInfo;
-import flash.net.FileReference;
-import flash.net.FileFilter;
+#if (flash || html5)
+import openfl.display.Loader;
+import openfl.display.LoaderInfo;
+import openfl.net.FileReference;
+import openfl.net.FileFilter;
 #elseif (sys && !hl)
 import systools.Dialogs;
 #end
@@ -139,7 +139,7 @@ class PlayState extends FlxState
 
 	function _showFileDialog():Void
 	{
-		#if flash
+		#if (flash || html5)
 		var fr:FileReference = new FileReference();
 		fr.addEventListener(Event.SELECT, _onSelect, false, 0, true);
 		fr.addEventListener(Event.CANCEL, _onCancel, false, 0, true);
@@ -159,7 +159,7 @@ class PlayState extends FlxState
 		#end
 	}
 
-	#if flash
+	#if (flash || html5)
 	function _onSelect(E:Event):Void
 	{
 		var fr:FileReference = cast(E.target, FileReference);
