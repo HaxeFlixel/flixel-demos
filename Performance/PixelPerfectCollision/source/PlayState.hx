@@ -27,8 +27,8 @@ class PlayState extends FlxState
 	inline static var NUM_ALIENS:Int = 50;
 
 	inline static var INFO_FULL:String
-		= "Checks: |checks|\n"
-		+ "Collisions: |hits|\n"
+		= "Collisions: |hits|\n"
+		#if debug + "Checks: |checks|\n" #end
 		+ "FPS: |fps|\n\n"
 		+ "[W/S]           Objects: |objects|\n"
 		+ "[A/D]           Alpha tolerance: |alpha|\n"
@@ -40,7 +40,7 @@ class PlayState extends FlxState
 
 	inline static var INFO_MIN:String
 		= "Objects: |objects|\n"
-		+ "Checks: |checks|\n"
+		#if debug + "Checks: |checks|\n" #end
 		+ "Collisions: |hits|\n"
 		+ "FPS: |fps|";
 
