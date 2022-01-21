@@ -48,7 +48,7 @@ class Alien extends DemoSprite
 		super.randomAngle();
 		var ran = FlxG.random;
 		offset.set(ran.float(0, width), ran.float(0, height));
-		origin.set(ran.float(0, width), ran.float(0, height));
+		// origin.set(ran.float(0, width), ran.float(0, height));
 	}
 	
 	override function resetAngle()
