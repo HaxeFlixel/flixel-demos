@@ -1,5 +1,0 @@
-{
-	"search.exclude": {
-		"export/**/*.hx": true
-	}
-}
