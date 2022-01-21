@@ -42,21 +42,7 @@ class Alien extends DemoSprite
 		y = (y < FlxG.height / 2) ? -20 : FlxG.height + 20;
 		FlxTween.tween(this, {y: toY}, 1.0, { ease: FlxEase.expoOut, startDelay: ran.float() * 0.5 });
 	}
-	
-	override function randomAngle()
-	{
-		super.randomAngle();
-		var ran = FlxG.random;
-		offset.set(ran.float(0, width), ran.float(0, height));
-		// origin.set(ran.float(0, width), ran.float(0, height));
-	}
-	
-	override function resetAngle()
-	{
-		super.resetAngle();
-		offset.set();
-		centerOrigin();
-	}
+
 	/**
 	 * Switches the between the red/white color to show whether an overlap is occurring.
 	 * @param value 
