@@ -12,12 +12,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.math.FlxMath;
 import flixel.system.FlxAssets;
-#if flash
-import flash.display.Loader;
-import flash.display.LoaderInfo;
-import flash.net.FileReference;
-import flash.net.FileFilter;
-#elseif html5
+#if (flash || html5)
 import openfl.display.Loader;
 import openfl.display.LoaderInfo;
 import openfl.net.FileReference;
