@@ -40,4 +40,27 @@ class DemoSprite extends FlxSprite
 		scale.x = FlxG.random.float(0.5, 2.0);
 		scale.y = scale.x;
 	}
+	
+	#if debug
+	override function draw()
+	{
+		// For debugging
+		// drawDebugScreenBounds();
+		
+		super.draw();
+	}
+	
+	function drawDebugScreenBounds()
+	{
+		for (camera in cameras)
+		{
+			var rect = getScreenBounds(camera);
+			var gfx = beginDrawDebug(camera);
+			// fill static graphics object with square shape
+			gfx.lineStyle(1, 0x0000ff, 0.5);
+			gfx.drawRect(rect.x, rect.y, rect.width, rect.height);
+			endDrawDebug(camera);
+		}
+	}
+	#end
 }
