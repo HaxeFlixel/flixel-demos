@@ -1,3 +1,9 @@
+2.8.1 (Janurary 26, 2022)
+------------------------------
+* Enabled FileBrowse on html5
+* PixelPerfectCollision: Add `scale` toggle, make some style changes
+* BlurState: enable `simpleRender` on html5 for better performance
+
 2.8.0 (September 12, 2021)
 ------------------------------
 * Compatibility with flixel 4.10.0
