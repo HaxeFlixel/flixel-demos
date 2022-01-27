@@ -1,5 +1,6 @@
 2.8.1 (Janurary 26, 2022)
 ------------------------------
+* Deprecate haxe 3
 * Enabled FileBrowse on html5
 * PixelPerfectCollision: Add `scale` toggle, make some style changes
 * BlurState: enable `simpleRender` on html5 for better performance
