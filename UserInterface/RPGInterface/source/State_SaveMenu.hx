@@ -3,11 +3,7 @@ import flixel.addons.ui.FlxUIState;
 
 using flixel.util.FlxStringUtil;
 
-#if haxe4
 import haxe.xml.Access;
-#else
-import haxe.xml.Fast as Access;
-#end
 
 /**
  * @author Lars Doucet
@@ -23,11 +19,7 @@ class State_SaveMenu extends FlxUIState
 	override public function getRequest(id:String, target:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Dynamic
 	{
 		var xml:Access;
-		#if (haxe_ver < "4.0.0")
-		if ((data is Access))
-		#else
 		if ((data is Xml))
-		#end
 		{
 			xml = cast data;
 		}
