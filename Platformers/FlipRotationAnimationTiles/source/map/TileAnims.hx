@@ -2,11 +2,7 @@ package map;
 
 import flixel.addons.tile.FlxTileSpecial;
 import openfl.Assets;
-#if haxe4
 import haxe.xml.Access;
-#else
-import haxe.xml.Fast as Access;
-#end
 
 typedef AnimData =
 {

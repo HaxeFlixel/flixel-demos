@@ -4,11 +4,7 @@ import flixel.addons.ui.interfaces.IFlxUIButton;
 import flixel.addons.ui.interfaces.IFlxUIWidget;
 import flixel.addons.ui.U;
 import flixel.FlxG;
-#if haxe4
 import haxe.xml.Access;
-#else
-import haxe.xml.Fast as Access;
-#end
 
 /**
  * @author Lars Doucet
