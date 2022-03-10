@@ -157,12 +157,14 @@ class PlayState extends FlxState
 			// You can also do something like gameSave.data.randomBool = true;
 			// and if randomBool didn't exist before, then flash will create a boolean there.
 			// though it's best to make a new type() before setting it, so you know the correct type is kept
-			_gameSave.data.boxPositions = new Array();
+			var boxPositions = new Array();
 
 			for (box in _boxGroup)
 			{
-				_gameSave.data.boxPositions.push(FlxPoint.get(box.x, box.y));
+				boxPositions.push(FlxPoint.get(box.x, box.y));
 			}
+
+			_gameSave.data.boxPositions = boxPositions;
 
 			_topText.text = "Created a new save, and saved positions";
 			_topText.alpha = 1;
