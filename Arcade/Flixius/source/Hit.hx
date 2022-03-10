@@ -12,7 +12,7 @@ class Hit extends FlxSprite
 	public function new(P:Player)
 	{
 		super(0, 0);
-		loadGraphic(AssetPaths.hit__png, true, 9, 9);
+		loadGraphic(AssetPaths.hitEffect__png, true, 9, 9);
 		animation.add("hit", [0, 1, 2], 12, false);
 		_pos = FlxPoint.get();
 		_player = P;
