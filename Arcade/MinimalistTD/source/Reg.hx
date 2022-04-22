@@ -30,9 +30,9 @@ class Reg
 	static function get_enemyImage():BitmapData
 	{
 		var enemy:BitmapData = new BitmapData(6, 6, false, FlxColor.BLACK);
-		var eye:BitmapData = new BitmapData(1, 2, false, FlxColor.WHITE);
-		enemy.draw(eye, new Matrix(1, 0, 0, 1, 1, 1));
-		enemy.draw(eye, new Matrix(1, 0, 0, 1, 4, 1));
+		var eye:BitmapData = new BitmapData(2, 1, false, FlxColor.WHITE);
+		enemy.draw(eye, new Matrix(1, 0, 0, 1, 3, 1));
+		enemy.draw(eye, new Matrix(1, 0, 0, 1, 3, 4));
 
 		return enemy;
 	}
