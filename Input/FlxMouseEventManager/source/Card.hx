@@ -69,12 +69,12 @@ class Card extends FlxNapeSprite
 
 	function onOver(_)
 	{
-		color = 0x00FF00;
+		scale.x = scale.y = 1.2;
 	}
 
 	function onOut(_)
 	{
-		color = FlxColor.WHITE;
+		scale.x = scale.y = 1.0;
 	}
 
 	function pickCard(_):Void
