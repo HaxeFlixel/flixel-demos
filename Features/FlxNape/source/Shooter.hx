@@ -5,7 +5,7 @@ import flixel.addons.nape.FlxNapeSpace;
 import flixel.effects.particles.FlxEmitter;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.input.mouse.FlxMouseEventManager;
+import flixel.input.mouse.FlxMouseEvent;
 import flixel.math.FlxPoint;
 import flixel.group.FlxGroup;
 import nape.callbacks.CbEvent;
@@ -43,7 +43,7 @@ class Shooter extends FlxTypedGroup<FlxNapeSprite>
 		background.makeGraphic(640, 480, 0xFF000000);
 		background.alpha = 1;
 		FlxG.state.insert(0, background);
-		FlxMouseEventManager.add(background, launchProjectile);
+		FlxMouseEvent.add(background, launchProjectile);
 
 		for (i in 0...maxSize)
 		{
@@ -91,7 +91,7 @@ class Shooter extends FlxTypedGroup<FlxNapeSprite>
 
 	public inline function registerPhysSprite(spr:FlxNapeSprite)
 	{
-		FlxMouseEventManager.add(spr, createMouseJoint);
+		FlxMouseEvent.add(spr, createMouseJoint);
 	}
 
 	function createMouseJoint(spr:FlxNapeSprite)

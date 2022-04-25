@@ -5,7 +5,7 @@ import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
-import flixel.input.mouse.FlxMouseEventManager;
+import flixel.input.mouse.FlxMouseEvent;
 import flixel.math.FlxRect;
 import flixel.text.FlxText;
 
@@ -36,7 +36,7 @@ class UILayer extends FlxSpriteGroup
 		bg = new FlxSprite();
 		bg.makeGraphic(250, FlxG.height, FlxColor.BLACK); // should this change based on the selected color palette?
 
-		FlxMouseEventManager.add(bg, null, null, onPanelOver, onPanelOut, true, true,
+		FlxMouseEvent.add(bg, null, null, onPanelOver, onPanelOut, true, true,
 			true); // pixel-perfect because we will be using a clipRect and need the extra checks
 
 		add(bg);
@@ -55,7 +55,7 @@ class UILayer extends FlxSpriteGroup
 		mute.animation.add("muted", [1], 0, false);
 		mute.animation.play("unmuted");
 
-		FlxMouseEventManager.add(mute, null, toggleMute, onMOver, onMOut, true, true, false);
+		FlxMouseEvent.add(mute, null, toggleMute, onMOver, onMOut, true, true, false);
 
 		add(mute);
 
@@ -68,7 +68,7 @@ class UILayer extends FlxSpriteGroup
 			fullscreen.animation.add("unfullscreen", [1], 0, false);
 			fullscreen.animation.play("fullscreen");
 
-			FlxMouseEventManager.add(fullscreen, null, toggleFullscreen, onMOver, onMOut, true, true, false);
+			FlxMouseEvent.add(fullscreen, null, toggleFullscreen, onMOver, onMOut, true, true, false);
 
 			add(fullscreen);
 		 */
@@ -76,21 +76,21 @@ class UILayer extends FlxSpriteGroup
 		var restart = new FlxSprite(0, 69 + 100);
 		restart.loadGraphic(AssetPaths.return__png, false);
 
-		FlxMouseEventManager.add(restart, null, onRestart, onMOver, onMOut, true, true, false);
+		FlxMouseEvent.add(restart, null, onRestart, onMOver, onMOut, true, true, false);
 
 		add(restart);
 
 		source = new FlxText(100, 50, 150, "Click for the source code", 14);
-		FlxMouseEventManager.add(source, null, onSource, onMOver, onMOut, true, true, false);
+		FlxMouseEvent.add(source, null, onSource, onMOver, onMOut, true, true, false);
 		add(source);
 
 		patreon = new FlxSprite(125, 125, AssetPaths.haxeflixel__png); // "click to learn more"?
-		FlxMouseEventManager.add(patreon, null, onPatreon, onMOver, onMOut, true, true, false);
+		FlxMouseEvent.add(patreon, null, onPatreon, onMOver, onMOut, true, true, false);
 		add(patreon);
 
 		credits = new FlxText(60, 216, 180, "Made by MSGhero for HaxeFlixel\nArt from Kenney.nl\nWaltz in G minor by Strimlarn87", 8);
 		credits.alignment = "center";
-		FlxMouseEventManager.add(credits, null, onCredits, onMOver, onMOut, true, true, false);
+		FlxMouseEvent.add(credits, null, onCredits, onMOver, onMOut, true, true, false);
 		add(credits);
 
 		source.visible = patreon.visible = credits.visible = false;
@@ -126,13 +126,13 @@ class UILayer extends FlxSpriteGroup
 
 	public function forceMenuExpand(?_):Void
 	{
-		FlxMouseEventManager.setObjectMouseEnabled(bg, false);
+		FlxMouseEvent.setObjectMouseEnabled(bg, false);
 		onPanelOver(bg);
 	}
 
 	public function unforceMenuExpand(?_):Void
 	{
-		FlxMouseEventManager.setObjectMouseEnabled(bg, true);
+		FlxMouseEvent.setObjectMouseEnabled(bg, true);
 
 		// the one time this gets called in the game, the mouse will be within the 50 px menu, over the reset button
 		// we don't really want onPanelOut to be called just for onPanelOver to be called one frame later, or the menu will flicker
