@@ -1,13 +1,16 @@
 package;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
+import flixel.util.FlxDestroyUtil;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.graphics.FlxGraphic;
-import flixel.tile.FlxTilemap;
 import flixel.math.FlxPoint;
 import flixel.math.FlxVector;
+import flixel.tile.FlxTilemap;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxCollision;
+import flixel.util.FlxDirectionFlags;
 
 class TestState extends FlxState
 {
@@ -16,7 +19,8 @@ class TestState extends FlxState
 	var start = FlxVector.get(0, -10);
 	var end = FlxVector.get(0, -10);
 	
-	var line:FlxSprite;
+	var lineRed:FlxSprite;
+	var lineWhite:FlxSprite;
 	
 	override function create():Void
 	{
@@ -29,10 +33,15 @@ class TestState extends FlxState
 		add(bg);
 		add(map);
 		
-		line = new FlxSprite(0, -10);
-		line.makeGraphic(FlxG.width, 3);
-		line.origin.x = 1;
-		add(line);
+		lineRed = new FlxSprite(0, -10);
+		lineRed.makeGraphic(FlxG.width, 1, 0xFFff0000);
+		lineRed.origin.set();
+		add(lineRed);
+		
+		lineWhite = new FlxSprite(0, -10);
+		lineWhite.makeGraphic(FlxG.width, 1);
+		lineWhite.origin.set();
+		add(lineWhite);
 	}
 	
 	override function update(elapsed:Float)
@@ -49,37 +58,72 @@ class TestState extends FlxState
 			FlxG.mouse.getWorldPosition(null, end);
 		}
 		
-		var tempStart:FlxVector = null;
-		var tempEnd:FlxVector = null;
+		var displayStart:FlxVector = null;
+		var displayEnd:FlxVector = null;
 		
 		final trim = true;
 		if (trim)
 		{
-			tempStart = map.getRayEntry(start, end);
-			tempEnd = map.getRayExit(start, end);
+			displayStart = map.calcRayEntry(start, end);
+			displayEnd = map.calcRayExit(start, end);
 			
-			if (tempStart == null || tempEnd == null)
+			if (displayStart == null || displayEnd == null)
 			{
-				tempStart = start.clone();
-				tempEnd = end.clone();
+				displayStart = start.clone();
+				displayEnd = end.clone();
 			}
 		}
 		else
 		{
-			tempStart = start.clone();
-			tempEnd = end.clone();
+			displayStart = start.clone();
+			displayEnd = end.clone();
 		}
 		
-		var dif = tempEnd.subtractNew(tempStart);
-		line.x = tempStart.x;
-		line.y = tempStart.y;
-		var length = dif.isZero() ? line.frameHeight : Std.int(dif.length);
-		line.setGraphicSize(length, line.frameHeight);
-		line.angle = dif.degrees;
-		map.highlightRay(start, tempEnd);
+		checkRay(displayStart, displayEnd);
+		// checkRayStep(displayStart, displayEnd);
+		// drawRayTiles();
 		
-		tempStart.put();
-		tempEnd.put();
+		var dif = end.subtractNew(start);
+		lineRed.x = start.x;
+		lineRed.y = start.y;
+		var length = dif.isZero() ? lineRed.frameHeight : Std.int(dif.length);
+		lineRed.setGraphicSize(length, lineRed.frameHeight);
+		lineRed.angle = dif.degrees;
+		dif.put();
+		
+		dif = displayEnd.subtractNew(displayStart);
+		lineWhite.x = displayStart.x;
+		lineWhite.y = displayStart.y;
+		length = dif.isZero() ? lineWhite.frameHeight : Std.int(dif.length);
+		lineWhite.setGraphicSize(length, lineWhite.frameHeight);
+		lineWhite.angle = dif.degrees;
+		dif.put();
+		
+		displayStart.put();
+		displayEnd.put();
+	}
+	
+	function checkRay(displayStart:FlxVector, displayEnd:FlxVector)
+	{
+		var result = FlxVector.get();
+		if (map.ray(start, end, result) == false)
+			displayEnd.copyFrom(result);
+		
+		result.put();
+	}
+	
+	function checkRayStep(displayStart:FlxVector, displayEnd:FlxVector)
+	{
+		var result = FlxVector.get();
+		if (map.rayStep(start, end, result) == false)
+			displayEnd.copyFrom(result);
+		
+		result.put();
+	}
+	
+	function drawRayTiles()
+	{
+		map.highlightRay(start, end);
 	}
 }
 
@@ -92,7 +136,7 @@ private class Tilemap extends FlxTilemap
 		var width = Math.floor(FlxG.width / 16 / 2);
 		var height = Math.floor(FlxG.height / 16 / 2);
 		loadMapFromArray(
-			[for (i in 0...width * height) 0],
+			[for (i in 0...width * height) FlxG.random.bool(10) ? 1 : 0],
 			width,
 			height, 
 			FlxGraphic.fromClass(GraphicAutoFull),
@@ -101,14 +145,14 @@ private class Tilemap extends FlxTilemap
 			FULL
 		);
 	}
-	
+
 	public function highlightRay(start:FlxPoint, end:FlxPoint)
 	{
 		for (i in 0...totalTiles)
 			setTileByIndex(i, 0);
 		
-		var tempStart = getRayEntry(start, end);
-		var tempEnd = getRayExit(start, end);
+		var tempStart = calcRayEntry(start, end);
+		var tempEnd = calcRayExit(start, end);
 		
 		if (tempStart == null || tempEnd == null)
 			return;
@@ -124,41 +168,31 @@ private class Tilemap extends FlxTilemap
 		var endX = endIndex % widthInTiles;
 		var endY = Std.int(endIndex / widthInTiles);
 		
-		if (start.x == end.x)
+		if (startX == endX)
 		{
 			highlightColumn(startX, startY, endY);
 		}
 		else
 		{
 			// Use y = mx + b formula
-			var m = (start.y - end.y) / (start.x - end.x);
+			final m = (start.y - end.y) / (start.x - end.x);
 			// y - mx = b
-			var b = start.y - m * start.x;
+			final b = start.y - m * start.x;
 			
+			final movesRight = start.x < end.x;
+			var inc = movesRight ? 1 : -1;
+			var offset = movesRight ? 1 : 0;
+			var tileX = startX;
 			var lastTileY = startY;
 			
-			if (start.x < end.x)
+			while (tileX != endX)
 			{
-				for (tileX in startX...endX)
-				{
-					var xPos = x + (tileX + 1) * _scaledTileWidth;
-					var yPos = m * xPos + b;
-					var tileY = Math.floor((yPos - y) / _scaledTileHeight);
-					highlightColumn(tileX, lastTileY, tileY);
-					lastTileY = tileY;
-				}
-			}
-			else
-			{
-				for (i in 0...startX - endX)
-				{
-					var tileX = startX - i;
-					var xPos = x + tileX * _scaledTileWidth;
-					var yPos = m * xPos + b;
-					var tileY = Math.floor((yPos - y) / _scaledTileHeight);
-					highlightColumn(tileX, lastTileY, tileY);
-					lastTileY = tileY;
-				}
+				var xPos = x + (tileX + offset) * scaledTileWidth;
+				var yPos = m * xPos + b;
+				var tileY = Math.floor((yPos - y) / scaledTileHeight);
+				highlightColumn(tileX, lastTileY, tileY);
+				lastTileY = tileY;
+				tileX += inc;
 			}
 			
 			highlightColumn(endX, lastTileY, endY);
@@ -181,75 +215,5 @@ private class Tilemap extends FlxTilemap
 		
 		for (y in startY...endY + 1)
 			setTileByIndex(y * widthInTiles + x, 1);
-	}
-	
-	public function getRayEntry(start:FlxPoint, end:FlxPoint):Null<FlxPoint>
-	{
-		final get = FlxPoint.get;
-		
-		var bounds = getBounds();
-		if (bounds.containsPoint(start))
-			return start.copyTo();
-		
-		if ((end.y < bounds.top && start.y < bounds.top) || (end.y >= bounds.bottom && start.y >= bounds.bottom))
-			return null;
-		
-		if (start.x == end.x)
-		{
-			if (start.y < y)
-				return get(start.x, bounds.top);
-			
-			return get(start.x, bounds.bottom);
-		}
-		
-		// Use y = mx + b formula
-		var m = (start.y - end.y) / (start.x - end.x);
-		// y - mx = b
-		var b = start.y - m * start.x;
-		
-		// y = mx + b
-		var leftY = m * bounds.left + b;
-		var rightY = m * bounds.right + b;
-		// never intercepts
-		if ((leftY < bounds.top && rightY < bounds.top) || (leftY >= bounds.bottom && rightY >= bounds.bottom))
-			return null;
-		
-		if (start.x < end.x)
-		{
-			if (start.x > bounds.right || end.x < bounds.left)
-				return null;
-			
-			if (leftY < bounds.top)
-			{
-				// x = (y - b)/m
-				return get((bounds.top - b) / m, bounds.top);
-			}
-			else if (leftY >= bounds.bottom)
-			{
-				// x = (y - b)/m
-				return get((bounds.bottom - b - 1) / m, bounds.bottom - 1);
-			}
-			return get(bounds.left, leftY);
-		}
-		
-		if (start.x < bounds.left || end.x > bounds.right)
-			return null;
-		
-		if (rightY < bounds.top)
-		{
-			// x = (y - b)/m
-			return get((bounds.top - b) / m, bounds.top);
-		}
-		else if (rightY >= bounds.bottom)
-		{
-			// x = (y - b)/m
-			return get((bounds.bottom - b - 1) / m, bounds.bottom - 1);
-		}
-		return get(bounds.right - 1, rightY);
-	}
-	
-	public function getRayExit(start:FlxPoint, end:FlxPoint):Null<FlxPoint>
-	{
-		return getRayEntry(end, start);
 	}
 }
