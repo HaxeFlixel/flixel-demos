@@ -1,11 +1,13 @@
 package;
 
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup;
 import flixel.text.FlxText;
+import flixel.tile.FlxBaseTilemap;
 import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
@@ -48,9 +50,10 @@ class PlayState extends FlxState
 	var action:Action = IDLE;
 
 	// pathfinder settings
-	var pathfinder = new BigMoverPathfinder(2, 2, WIDE);
+	var pathfinder = new BigMoverPathfinder(1, 1, WIDE);
 	var diagonalPolicy:FlxTilemapDiagonalPolicy = WIDE;
 	var simplify = FlxPathSimplifier.LINE;
+	var size = Size.S1_1;
 
 	/**
 	 * Button to move unit to Goal
@@ -61,11 +64,21 @@ class PlayState extends FlxState
 	 * Button to reset unit to start point
 	 */
 	var resetUnitButton:FlxButton;
-	
+
 	/**
 	 * Button to set the unit to immovable
 	 */
 	var immovableButton:FlxButton;
+
+	/**
+	 * Button to set the path simlifier
+	 */
+	var simplifyButton:FlxButton;
+
+	/**
+	 * Button to set the unit's size
+	 */
+	var sizeButton:FlxButton;
 
 	/**
 	 * Instructions
@@ -119,11 +132,113 @@ class PlayState extends FlxState
 		add(resetUnitButton);
 		uiY += 20;
 
+		inline function updateImmovableLabel()
+		{
+			immovableButton.text = "Immovable:" + (unit.path.immovable ? "ON" : "OFF");
+		}
+
 		// Add button reset unit to PlayState
-		immovableButton = new FlxButton(buttonX, uiY, "Immovable", ()->{ unit.path.immovable = !unit.path.immovable; });
+		immovableButton = new FlxButton(buttonX, uiY, "Immovable",
+			function toggleImmovable()
+			{
+				unit.path.immovable = !unit.path.immovable;
+				updateImmovableLabel();
+			}
+		);
+		updateImmovableLabel();
 		add(immovableButton);
 		uiY += 20;
 
+		function updateSimplifyLabel()
+		{
+			simplifyButton.text = "Simplify:"
+				+ switch(simplify)
+				{
+					case NONE         : "NONE";
+					case LINE         : "LINE";
+					case RAY          : "RAY";
+					case RAY_BOX(_, _): "BOX";
+					default: throw "Invalid simplify";
+				}
+		}
+
+		// Add button reset unit to PlayState
+		simplifyButton = new FlxButton(buttonX, uiY, "Simplify",
+			function toggleSimplify()
+			{
+				simplify = switch(simplify)
+				{
+					case NONE         : LINE;
+					case LINE         : RAY;
+					case RAY          : RAY_BOX(unit.width, unit.height);
+					case RAY_BOX(_, _): NONE;
+					default: throw "Invalid simplify";
+				};
+
+				redrawPath();
+
+				updateSimplifyLabel();
+			}
+		);
+		updateSimplifyLabel();
+		add(simplifyButton);
+		uiY += 20;
+		
+		function updateSize()
+		{
+			sizeButton.text = "Size:"
+				+ switch(size)
+				{
+					case S1_1: "1x1";
+					case S1_2: "1x2";
+					case S2_1: "2x1";
+					case S2_2: "2x2";
+				};
+
+			// set unit size
+			unit.scale.x = goal.scale.x = pathfinder.widthInTiles;
+			unit.scale.y = goal.scale.y = pathfinder.heightInTiles;
+			unit.updateHitbox();
+			goal.updateHitbox();
+			
+			if (simplify.match(RAY_BOX(_, _)))
+				simplify = RAY_BOX(unit.width, unit.height);
+		}
+
+		// Add button reset unit to PlayState
+		
+		sizeButton = new FlxButton(buttonX, uiY, "Size",
+			function toggleSize()
+			{
+				switch(size)
+				{
+					case S1_1:
+						size = S1_2;
+						pathfinder.widthInTiles = 1;
+						pathfinder.heightInTiles = 2;
+					case S1_2:
+						size = S2_1;
+						pathfinder.widthInTiles = 2;
+						pathfinder.heightInTiles = 1;
+					case S2_1:
+						size = S2_2;
+						pathfinder.widthInTiles = 2;
+						pathfinder.heightInTiles = 2;
+					case S2_2:
+						size = S1_1;
+						pathfinder.widthInTiles = 1;
+						pathfinder.heightInTiles = 1;
+					default: throw "Invalid size";
+				};
+
+				redrawPath();
+				updateSize();
+			}
+		);
+		updateSize();
+		add(sizeButton);
+		uiY += 20;
+		
 		// Add some texts
 		var textWidth:Int = 85;
 		var textX:Int = FlxG.width - textWidth - 5;
@@ -199,16 +314,10 @@ class PlayState extends FlxState
 		{
 			// Check if reach goal
 			if (unit.path.finished)
-			{
 				resetUnit();
-				stopUnit();
-			}
 			// update the path when the map changes
 			else if (mapChanged)
-			{
-				stopUnit();
-				moveToGoal();
-			}
+				redrawPath();
 		}
 	}
 
@@ -220,6 +329,15 @@ class PlayState extends FlxState
 				moveToGoal();
 			case GO:
 				stopUnit();
+		}
+	}
+
+	function redrawPath()
+	{
+		if (action == GO)
+		{
+			stopUnit();
+			moveToGoal();
 		}
 	}
 
@@ -240,13 +358,12 @@ class PlayState extends FlxState
 			unit.path.start(pathPoints);
 			action = GO;
 			instructions.text = INSTRUCTIONS;
+			startStopButton.text = STOP_UNIT;
 		}
 		else
 		{
 			instructions.text = INSTRUCTIONS + "\n\n" + NO_PATH_FOUND;
 		}
-		
-		startStopButton.text = STOP_UNIT;
 	}
 
 	function stopUnit():Void
@@ -322,6 +439,53 @@ class BigMoverPathfinder extends FlxDiagonalPathfinder
 		super(diagonalPolicy);
 	}
 	
+	override function findPath(map:FlxBaseTilemap<FlxObject>, start:FlxPoint, end:FlxPoint, simplify:FlxPathSimplifier = LINE):Null<Array<FlxPoint>>
+	{
+		final offset = FlxPoint.get(
+			(widthInTiles  - 1) / 2 * map.width  / map.widthInTiles,
+			(heightInTiles - 1) / 2 * map.height / map.heightInTiles
+		);
+		// offset to center of top-left tile
+		var startIndex = map.getTileIndexByCoords(FlxPoint.weak(start.x - offset.x, start.y - offset.y));
+		var endIndex   = map.getTileIndexByCoords(FlxPoint.weak(end.x   - offset.x, end.y   - offset.y));
+
+		var data = createData(map, startIndex, endIndex);
+		var indices = findPathIndicesHelper(data);
+		if (indices == null)
+			return null;
+
+		var path = getPathPointsFromIndices(data, indices);
+
+		// Reset the start and end points to be exact
+		path[0].copyFrom(start);
+		path[path.length - 1].copyFrom(end);
+
+		// Some simple path cleanup options
+		simplifyPath(data, path, simplify);
+		
+		start.putWeak();
+		end.putWeak();
+		offset.put();
+		
+		return path;
+	}
+	
+	override function getPathPointsFromIndices(data:FlxPathfinderData, indices:Array<Int>):Array<FlxPoint>
+	{
+		var path = super.getPathPointsFromIndices(data, indices);
+		final offset = FlxPoint.get(
+			(widthInTiles  - 1) / 2 * data.map.width  / data.map.widthInTiles,
+			(heightInTiles - 1) / 2 * data.map.height / data.map.heightInTiles
+		);
+
+		for (p in path)
+			p.addPoint(offset);
+		
+		offset.put();
+
+		return path;
+	}
+	
 	override function getInBoundDirections(data:FlxPathfinderData, from:Int)
 	{
 		var x = data.getX(from);
@@ -331,36 +495,45 @@ class BigMoverPathfinder extends FlxDiagonalPathfinder
 			x > 0,
 			x < data.map.widthInTiles - widthInTiles,
 			y > 0,
-			y < data.map.heightInTiles - widthInTiles
+			y < data.map.heightInTiles - heightInTiles
 		);
 	}
 	
-	override function canGo(data:FlxPathfinderData, to:Int, dir:FlxDirectionFlags)
+	override function canGo(data:FlxPathfinderData, to:Int, dir:FlxDirectionFlags = ANY)
 	{
-		var cols = data.map.widthInTiles;
-		return super.canGo(data, to           , dir)
-			&& super.canGo(data, to + 1       , dir)
-			&& super.canGo(data, to + cols    , dir)
-			&& super.canGo(data, to + cols + 1, dir);
+		final cols = data.map.widthInTiles;
+		
+		for (x in 0...widthInTiles)
+		{
+			for (y in 0...heightInTiles)
+			{
+				if (!super.canGo(data, to + x + (y * cols), dir))
+					return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	override function hasValidInitialData(data:FlxPathfinderData):Bool
 	{
-		var cols = data.map.widthInTiles;
-		var maxX = data.map.widthInTiles - widthInTiles;
-		var maxY = data.map.heightInTiles - heightInTiles;
+		final cols = data.map.widthInTiles;
+		final maxX = data.map.widthInTiles - widthInTiles;
+		final maxY = data.map.heightInTiles - heightInTiles;
 		return data.hasValidStartEnd()
 			&& data.getX(data.startIndex) <= maxX
 			&& data.getY(data.startIndex) <= maxY
 			&& data.getX(data.endIndex) <= maxX
 			&& data.getY(data.endIndex) <= maxY
-			&& data.getTileCollisionsByIndex(data.startIndex) == NONE
-			&& data.getTileCollisionsByIndex(data.startIndex + 1) == NONE
-			&& data.getTileCollisionsByIndex(data.startIndex + cols) == NONE
-			&& data.getTileCollisionsByIndex(data.startIndex + cols + 1) == NONE
-			&& data.getTileCollisionsByIndex(data.endIndex) == NONE
-			&& data.getTileCollisionsByIndex(data.endIndex + 1) == NONE
-			&& data.getTileCollisionsByIndex(data.endIndex + cols) == NONE
-			&& data.getTileCollisionsByIndex(data.endIndex + cols + 1) == NONE;
+			&& canGo(data, data.startIndex)
+			&& canGo(data, data.endIndex);
 	}
+}
+
+enum abstract Size(Int)
+{
+	var S1_1 = 0;
+	var S1_2 = 1;
+	var S2_1 = 2;
+	var S2_2 = 3;
 }
