@@ -2,7 +2,7 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.util.FlxPath;
+import flixel.path.FlxPath;
 import flixel.math.FlxPoint;
 
 class Enemy extends FlxSprite
