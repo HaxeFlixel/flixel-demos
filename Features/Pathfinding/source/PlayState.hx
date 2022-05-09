@@ -190,7 +190,7 @@ class PlayState extends FlxState
 
 		function updateSize()
 		{
-			sizeButton.text = "Size:" + switch (size)
+			sizeButton.text = "Unit Size:" + switch (size)
 			{
 				case S1_1: "1x1";
 				case S1_2: "1x2";
@@ -210,7 +210,7 @@ class PlayState extends FlxState
 
 		// Add button reset unit to PlayState
 
-		sizeButton = new FlxButton(buttonX, uiY, "Size",
+		sizeButton = new FlxButton(buttonX, uiY, "Unit Size",
 			function toggleSize()
 			{
 				switch (size)
