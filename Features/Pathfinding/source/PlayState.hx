@@ -5,17 +5,14 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.graphics.FlxGraphic;
-import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
 import flixel.path.FlxPath;
 import flixel.path.FlxPathfinder;
 import flixel.text.FlxText;
-import flixel.tile.FlxBaseTilemap;
 import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
-import flixel.util.FlxDirectionFlags;
-import openfl.Assets;
+// import openfl.Assets;
 
 class PlayState extends FlxState
 {
@@ -25,9 +22,6 @@ class PlayState extends FlxState
 	static inline var MOVE_SPEED:Int = 50;
 
 	static inline var INSTRUCTIONS = "Click in map to place or remove a tile.";
-	static inline var NO_PATH_FOUND = "No path found!";
-	static inline var MOVE_TO_GOAL = "Move To Goal";
-	static inline var STOP_UNIT = "Stop unit";
 
 	/**
 	 * Map
@@ -68,12 +62,12 @@ class PlayState extends FlxState
 	/**
 	 * Button to set the unit to immovable
 	 */
-	var immovableButton:FlxButton;
+	var immovableButton:ImmovableButton;
 
 	/**
 	 * Button to set the path simlifier
 	 */
-	var simplifyButton:FlxButton;
+	var simplifyButton:SimplifyButton;
 
 	/**
 	 * Button to set the path simlifier
@@ -83,7 +77,7 @@ class PlayState extends FlxState
 	/**
 	 * Button to set the unit's size
 	 */
-	var sizeButton:FlxButton;
+	var sizeButton:SizeButton;
 
 	/**
 	 * Instructions
@@ -127,7 +121,22 @@ class PlayState extends FlxState
 		var uiY = 10;
 
 		// Add button move to goal to PlayState
-		startStopButton = new FlxButton(buttonX, uiY, MOVE_TO_GOAL, startStopPress);
+		startStopButton = new FlxButton(buttonX, uiY, "Move To Goal", 
+			function startStopPress()
+			{
+				switch (action)
+				{
+					case IDLE: moveToGoal();
+					case GO  : stopUnit();
+				}
+				
+				startStopButton.text = switch (action)
+				{
+					case IDLE: "Move To Goal";
+					case GO  : "Stop Unit";
+				}
+			}
+		);
 		add(startStopButton);
 		uiY += 20;
 
@@ -136,110 +145,53 @@ class PlayState extends FlxState
 		add(resetUnitButton);
 		uiY += 20;
 
-		inline function updateImmovableLabel()
-		{
-			immovableButton.text = "Immovable:" + (unit.path.immovable ? "ON" : "OFF");
-		}
-
 		// Add button reset unit to PlayState
-		immovableButton = new FlxButton(buttonX, uiY, "Immovable",
-			function toggleImmovable()
+		immovableButton = new ImmovableButton(buttonX, uiY, unit.path.immovable,
+			function toggleImmovable(immovable)
 			{
-				unit.path.immovable = !unit.path.immovable;
-				updateImmovableLabel();
+				unit.path.immovable = immovable;
 			}
 		);
-		updateImmovableLabel();
 		add(immovableButton);
 		uiY += 20;
 
-		function updateSimplifyLabel()
-		{
-			simplifyButton.text = "Simplify:" + switch (simplify)
-			{
-				case NONE         : "NONE";
-				case LINE         : "LINE";
-				case RAY          : "RAY";
-				case RAY_STEP(_)  : "STEP";
-				case RAY_BOX(_, _): "BOX";
-				default: throw "Invalid simplify";
-			}
-		}
-
 		// Add button reset unit to PlayState
-		simplifyButton = new FlxButton(buttonX, uiY, "Simplify",
-			function toggleSimplify()
+		simplifyButton = new SimplifyButton(buttonX, uiY, simplify,
+			function onSimplifyChange(simplify)
 			{
-				simplify = switch (simplify)
+				this.simplify = switch (simplify)
 				{
-					case NONE         : LINE;
-					case LINE         : RAY;
-					case RAY          : RAY_BOX(unit.width, unit.height);
-					case RAY_BOX(_, _): NONE;
-					default: throw "Invalid simplify";
-				};
+					case RAY_BOX(_, _): RAY_BOX(unit.width, unit.height);
+					default: simplify;
+				}
 
 				redrawPath();
-
-				updateSimplifyLabel();
 			}
 		);
-		updateSimplifyLabel();
 		add(simplifyButton);
 		uiY += 20;
 
-		function updateSize()
-		{
-			sizeButton.text = "Unit Size:" + switch (size)
-			{
-				case S1_1: "1x1";
-				case S1_2: "1x2";
-				case S2_1: "2x1";
-				case S2_2: "2x2";
-			};
-
-			// set unit size
-			unit.scale.x = goal.scale.x = pathfinder.widthInTiles;
-			unit.scale.y = goal.scale.y = pathfinder.heightInTiles;
-			unit.updateHitbox();
-			goal.updateHitbox();
-
-			if (simplify.match(RAY_BOX(_, _)))
-				simplify = RAY_BOX(unit.width, unit.height);
-		}
-
 		// Add button reset unit to PlayState
 
-		sizeButton = new FlxButton(buttonX, uiY, "Unit Size",
-			function toggleSize()
+		sizeButton = new SizeButton(buttonX, uiY, size,
+			function onSizeChange(size:Size)
 			{
-				switch (size)
-				{
-					case S1_1:
-						size = S1_2;
-						pathfinder.widthInTiles = 1;
-						pathfinder.heightInTiles = 2;
-					case S1_2:
-						size = S2_1;
-						pathfinder.widthInTiles = 2;
-						pathfinder.heightInTiles = 1;
-					case S2_1:
-						size = S2_2;
-						pathfinder.widthInTiles = 2;
-						pathfinder.heightInTiles = 2;
-					case S2_2:
-						size = S1_1;
-						pathfinder.widthInTiles = 1;
-						pathfinder.heightInTiles = 1;
-					default:
-						throw "Invalid size";
-				};
+				this.size = size;
+				pathfinder.widthInTiles = size.widthInTiles;
+				pathfinder.heightInTiles = size.heightInTiles;
 
-				updateSize();
+				// set unit size
+				unit.scale.x = goal.scale.x = size.widthInTiles;
+				unit.scale.y = goal.scale.y = size.heightInTiles;
+				unit.updateHitbox();
+				goal.updateHitbox();
+
+				if (simplify.match(RAY_BOX(_, _)))
+					simplify = RAY_BOX(unit.width, unit.height);
+
 				redrawPath();
 			}
 		);
-		updateSize();
 		add(sizeButton);
 		uiY += 20;
 
@@ -338,17 +290,6 @@ class PlayState extends FlxState
 		}
 	}
 
-	function startStopPress()
-	{
-		switch (action)
-		{
-			case IDLE:
-				moveToGoal();
-			case GO:
-				stopUnit();
-		}
-	}
-
 	function redrawPath()
 	{
 		if (action == GO)
@@ -375,17 +316,15 @@ class PlayState extends FlxState
 			unit.path.start(pathPoints);
 			action = GO;
 			instructions.text = INSTRUCTIONS;
-			startStopButton.text = STOP_UNIT;
 		}
 		else
 		{
-			instructions.text = INSTRUCTIONS + "\n\n" + NO_PATH_FOUND;
+			instructions.text = INSTRUCTIONS + "\n\nNo path found!";
 		}
 	}
 
 	function stopUnit():Void
 	{
-		startStopButton.text = MOVE_TO_GOAL;
 		// Stop unit and destroy unit path
 		action = IDLE;
 		unit.path.cancel();
@@ -403,6 +342,39 @@ class PlayState extends FlxState
 		{
 			stopUnit();
 		}
+	}
+}
+
+
+private enum abstract Action(Int)
+{
+	var IDLE = 0;
+	var GO = 1;
+}
+
+private enum abstract Size(Int)
+{
+	var S1_1 = 0;//Bx00
+	var S1_2 = 1;//Bx01
+	var S2_1 = 2;//Bx10
+	var S2_2 = 3;//Bx11
+
+	/**
+	 * The width of the size, in tiles
+	 */
+	public var widthInTiles(get, never):Int;
+	inline function get_widthInTiles()
+	{
+		return (this & 1) + 1;
+	}
+
+	/**
+	 * The height of the size, in tiles
+	 */
+	public var heightInTiles(get, never):Int;
+	inline function get_heightInTiles()
+	{
+		return ((this & 2) >> 1) + 1;
 	}
 }
 
@@ -439,119 +411,116 @@ private abstract Tilemap(FlxTilemap) from FlxTilemap to FlxTilemap
 	}
 }
 
-enum abstract Action(Int)
+/**
+ * Helper button that enumerates certain `FlxPathSimplifier` values and updates the
+ * label to show the currently selected value.
+ */
+private abstract ImmovableButton(FlxButton) to FlxButton
 {
-	var IDLE = 0;
-	var GO = 1;
-}
-
-class BigMoverPathfinder extends FlxDiagonalPathfinder
-{
-	public var widthInTiles:Int;
-	public var heightInTiles:Int;
-
-	public function new(widthInTiles:Int, heightInTiles:Int, diagonalPolicy:FlxTilemapDiagonalPolicy = NONE)
+	public function new(x:Float, y:Float, immovable:Bool, ?callback:(Bool)->Void)
 	{
-		this.widthInTiles = widthInTiles;
-		this.heightInTiles = heightInTiles;
-		super(diagonalPolicy);
-	}
-
-	override function findPath(map:FlxBaseTilemap<FlxObject>, start:FlxPoint, end:FlxPoint, simplify:FlxPathSimplifier = LINE):Null<Array<FlxPoint>>
-	{
-		final offset = FlxPoint.get(
-			(widthInTiles  - 1) / 2 * map.width  / map.widthInTiles,
-			(heightInTiles - 1) / 2 * map.height / map.heightInTiles
-		);
-		// offset to center of top-left tile
-		var startIndex = map.getTileIndexByCoords(FlxPoint.weak(start.x - offset.x, start.y - offset.y));
-		var endIndex   = map.getTileIndexByCoords(FlxPoint.weak(end.x   - offset.x, end.y   - offset.y));
-
-		var data = createData(map, startIndex, endIndex);
-		var indices = findPathIndicesHelper(data);
-		if (indices == null)
-			return null;
-
-		var path = getPathPointsFromIndices(data, indices);
-
-		// Reset the start and end points to be exact
-		path[0].copyFrom(start);
-		path[path.length - 1].copyFrom(end);
-
-		// Some simple path cleanup options
-		simplifyPath(data, path, simplify);
-
-		start.putWeak();
-		end.putWeak();
-		offset.put();
-
-		return path;
-	}
-
-	override function getPathPointsFromIndices(data:FlxPathfinderData, indices:Array<Int>):Array<FlxPoint>
-	{
-		var path = super.getPathPointsFromIndices(data, indices);
-		final offset = FlxPoint.get(
-			(widthInTiles  - 1) / 2 * data.map.width  / data.map.widthInTiles,
-			(heightInTiles - 1) / 2 * data.map.height / data.map.heightInTiles
-		);
-
-		for (p in path)
-			p.addPoint(offset);
-
-		offset.put();
-
-		return path;
-	}
-
-	override function getInBoundDirections(data:FlxPathfinderData, from:Int)
-	{
-		var x = data.getX(from);
-		var y = data.getY(from);
-		return FlxDirectionFlags.fromBools
-		(
-			x > 0,
-			x < data.map.widthInTiles - widthInTiles,
-			y > 0,
-			y < data.map.heightInTiles - heightInTiles
-		);
-	}
-
-	override function canGo(data:FlxPathfinderData, to:Int, dir:FlxDirectionFlags = ANY)
-	{
-		final cols = data.map.widthInTiles;
-
-		for (x in 0...widthInTiles)
+		this = null;
+		function updateLabel()
 		{
-			for (y in 0...heightInTiles)
-			{
-				if (!super.canGo(data, to + x + (y * cols), dir))
-					return false;
-			}
+			this.text = immovable ? "Immovable" : "Colliding";
 		}
+		
+		function onClick()
+		{
+			immovable = !immovable;
 
-		return true;
-	}
+			updateLabel();
 
-	override function hasValidInitialData(data:FlxPathfinderData):Bool
-	{
-		final cols = data.map.widthInTiles;
-		final maxX = data.map.widthInTiles - widthInTiles;
-		final maxY = data.map.heightInTiles - heightInTiles;
-		return data.hasValidStartEnd()
-			&& data.getX(data.startIndex) <= maxX
-			&& data.getY(data.startIndex) <= maxY
-			&& data.getX(data.endIndex) <= maxX
-			&& data.getY(data.endIndex) <= maxY
-			&& canGo(data, data.startIndex)
-			&& canGo(data, data.endIndex);
+			if (callback != null)
+				callback(immovable);
+		}
+		
+		this = new FlxButton(x, y, "", onClick);
+		updateLabel();
 	}
 }
 
-enum abstract Size(Int)
+/**
+ * Helper button that enumerates certain `FlxPathSimplifier` values and updates the
+ * label to show the currently selected value.
+ */
+private abstract SimplifyButton(FlxButton) to FlxButton
 {
-	var S1_1 = 0;
-	var S1_2 = 1;
-	var S2_1 = 2;
-	var S2_2 = 3;
+	public function new(x:Float, y:Float, simplify:FlxPathSimplifier, ?callback:(FlxPathSimplifier)->Void)
+	{
+		this = null;
+		function updateLabel()
+		{
+			this.text = "Simplify:" + switch (simplify)
+			{
+				case NONE         : "NONE";
+				case LINE         : "LINE";
+				case RAY          : "RAY";
+				case RAY_STEP(_)  : "STEP";
+				case RAY_BOX(_, _): "BOX";
+				default: throw "Invalid simplify";
+			};
+		}
+		
+		function onClick()
+		{
+			simplify = switch (simplify)
+			{
+				case NONE         : LINE;
+				case LINE         : RAY;
+				case RAY          : RAY_BOX(0, 0);
+				case RAY_BOX(_, _): NONE;
+				default: throw "Invalid simplify";
+			};
+
+			updateLabel();
+
+			if (callback != null)
+				callback(simplify);
+		}
+		
+		this = new FlxButton(x, y, "", onClick);
+		updateLabel();
+	}
+}
+
+/**
+ * Helper button that enumerates all possible size values and updates the
+ * label to show the currently selected value.
+ */
+private abstract SizeButton(FlxButton) to FlxButton
+{
+	public function new (x:Float, y:Float, size:Size, ?callback:(Size)->Void)
+	{
+		this = null;
+		function updateLabel()
+		{
+			this.text = "Unit Size:" + switch (size)
+			{
+				case S1_1: "1x1";
+				case S1_2: "1x2";
+				case S2_1: "2x1";
+				case S2_2: "2x2";
+			};
+		}
+		
+		function onClick()
+		{
+			size = switch (size)
+			{
+				case S1_1: S1_2;
+				case S1_2: S2_1;
+				case S2_1: S2_2;
+				case S2_2: S1_1;
+			};
+
+			updateLabel();
+
+			if (callback != null)
+				callback(size);
+		}
+		
+		this = new FlxButton(x, y, "", onClick);
+		updateLabel();
+	}
 }
