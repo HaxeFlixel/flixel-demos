@@ -8,6 +8,6 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
-		addChild(new FlxGame(400, 300, PlayState));
+		addChild(new FlxGame(600, 400, PlayState));
 	}
 }

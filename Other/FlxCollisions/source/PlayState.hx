@@ -6,7 +6,7 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
-import flixel.util.FlxPath;
+import flixel.path.FlxPath;
 import flixel.math.FlxPoint;
 import flixel.util.FlxStringUtil;
 
