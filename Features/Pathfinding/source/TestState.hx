@@ -1,7 +1,6 @@
 package;
-import flixel.util.FlxDestroyUtil;
-import flixel.FlxSprite;
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.graphics.FlxGraphic;
 import flixel.math.FlxPoint;
@@ -10,8 +9,13 @@ import flixel.tile.FlxTilemap;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxCollision;
+import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxDirectionFlags;
 
+/**
+ * This is a secret FlxState I use to test various pathfinding features.
+ * I'll find a way to showcase it, someday.
+ */
 class TestState extends FlxState
 {
 	var map:Tilemap;

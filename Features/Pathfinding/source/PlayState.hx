@@ -235,8 +235,8 @@ class PlayState extends FlxState
 						throw "Invalid size";
 				};
 
-				redrawPath();
 				updateSize();
+				redrawPath();
 			}
 		);
 		updateSize();
