@@ -6,15 +6,15 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup;
+import flixel.math.FlxPoint;
+import flixel.path.FlxPath;
+import flixel.path.FlxPathfinder;
 import flixel.text.FlxText;
 import flixel.tile.FlxBaseTilemap;
 import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxDirectionFlags;
-import flixel.path.FlxPath;
-import flixel.path.FlxPathfinder;
-import flixel.math.FlxPoint;
 import openfl.Assets;
 
 class PlayState extends FlxState
@@ -84,7 +84,7 @@ class PlayState extends FlxState
 	 * Instructions
 	 */
 	var instructions:FlxText;
-	
+
 	/**
 	 * Whether the user is adding tiles or removing them
 	 */
@@ -151,26 +151,27 @@ class PlayState extends FlxState
 
 		function updateSimplifyLabel()
 		{
-			simplifyButton.text = "Simplify:"
-				+ switch(simplify)
-				{
-					case NONE         : "NONE";
-					case LINE         : "LINE";
-					case RAY          : "RAY";
-					case RAY_BOX(_, _): "BOX";
-					default: throw "Invalid simplify";
-				}
+			simplifyButton.text = "Simplify:" + switch (simplify)
+			{
+				case NONE         : "NONE";
+				case LINE         : "LINE";
+				case RAY          : "RAY";
+				case RAY_STEP(_) : "STEP";
+				case RAY_BOX(_, _): "BOX";
+				default: throw "Invalid simplify";
+			}
 		}
 
 		// Add button reset unit to PlayState
 		simplifyButton = new FlxButton(buttonX, uiY, "Simplify",
 			function toggleSimplify()
 			{
-				simplify = switch(simplify)
+				simplify = switch (simplify)
 				{
 					case NONE         : LINE;
 					case LINE         : RAY;
-					case RAY          : RAY_BOX(unit.width, unit.height);
+					case RAY          : RAY_STEP(1);
+					case RAY_STEP(_)  : RAY_BOX(unit.width, unit.height);
 					case RAY_BOX(_, _): NONE;
 					default: throw "Invalid simplify";
 				};
@@ -183,34 +184,33 @@ class PlayState extends FlxState
 		updateSimplifyLabel();
 		add(simplifyButton);
 		uiY += 20;
-		
+
 		function updateSize()
 		{
-			sizeButton.text = "Size:"
-				+ switch(size)
-				{
-					case S1_1: "1x1";
-					case S1_2: "1x2";
-					case S2_1: "2x1";
-					case S2_2: "2x2";
-				};
+			sizeButton.text = "Size:" + switch (size)
+			{
+				case S1_1: "1x1";
+				case S1_2: "1x2";
+				case S2_1: "2x1";
+				case S2_2: "2x2";
+			};
 
 			// set unit size
 			unit.scale.x = goal.scale.x = pathfinder.widthInTiles;
 			unit.scale.y = goal.scale.y = pathfinder.heightInTiles;
 			unit.updateHitbox();
 			goal.updateHitbox();
-			
+
 			if (simplify.match(RAY_BOX(_, _)))
 				simplify = RAY_BOX(unit.width, unit.height);
 		}
 
 		// Add button reset unit to PlayState
-		
+
 		sizeButton = new FlxButton(buttonX, uiY, "Size",
 			function toggleSize()
 			{
-				switch(size)
+				switch (size)
 				{
 					case S1_1:
 						size = S1_2;
@@ -228,7 +228,8 @@ class PlayState extends FlxState
 						size = S1_1;
 						pathfinder.widthInTiles = 1;
 						pathfinder.heightInTiles = 1;
-					default: throw "Invalid size";
+					default:
+						throw "Invalid size";
 				};
 
 				redrawPath();
@@ -238,11 +239,11 @@ class PlayState extends FlxState
 		updateSize();
 		add(sizeButton);
 		uiY += 20;
-		
+
 		// Add some texts
 		var textWidth:Int = 85;
 		var textX:Int = FlxG.width - textWidth - 5;
-		uiY += 20;// gap between buttons and text
+		uiY += 20; // gap between buttons and text
 
 		instructions = new FlxText(textX, uiY, textWidth, INSTRUCTIONS);
 		add(instructions);
@@ -396,14 +397,15 @@ private abstract Tilemap(FlxTilemap) from FlxTilemap to FlxTilemap
 	 * Tile width and height
 	 */
 	static inline var TILE_SIZE:Int = 16;
-	
+
 	public var tileSize(get, never):Int;
+
 	inline function get_tileSize()
 	{
 		return TILE_SIZE;
 	}
-	
-	inline public function new (mapData:String)
+
+	inline public function new(mapData:String)
 	{
 		this = new FlxTilemap();
 		this.loadMapFromGraphic(
@@ -431,14 +433,14 @@ class BigMoverPathfinder extends FlxDiagonalPathfinder
 {
 	public var widthInTiles:Int;
 	public var heightInTiles:Int;
-	
+
 	public function new(widthInTiles:Int, heightInTiles:Int, diagonalPolicy:FlxTilemapDiagonalPolicy = NONE)
 	{
 		this.widthInTiles = widthInTiles;
 		this.heightInTiles = heightInTiles;
 		super(diagonalPolicy);
 	}
-	
+
 	override function findPath(map:FlxBaseTilemap<FlxObject>, start:FlxPoint, end:FlxPoint, simplify:FlxPathSimplifier = LINE):Null<Array<FlxPoint>>
 	{
 		final offset = FlxPoint.get(
@@ -462,14 +464,14 @@ class BigMoverPathfinder extends FlxDiagonalPathfinder
 
 		// Some simple path cleanup options
 		simplifyPath(data, path, simplify);
-		
+
 		start.putWeak();
 		end.putWeak();
 		offset.put();
-		
+
 		return path;
 	}
-	
+
 	override function getPathPointsFromIndices(data:FlxPathfinderData, indices:Array<Int>):Array<FlxPoint>
 	{
 		var path = super.getPathPointsFromIndices(data, indices);
@@ -480,12 +482,12 @@ class BigMoverPathfinder extends FlxDiagonalPathfinder
 
 		for (p in path)
 			p.addPoint(offset);
-		
+
 		offset.put();
 
 		return path;
 	}
-	
+
 	override function getInBoundDirections(data:FlxPathfinderData, from:Int)
 	{
 		var x = data.getX(from);
@@ -498,11 +500,11 @@ class BigMoverPathfinder extends FlxDiagonalPathfinder
 			y < data.map.heightInTiles - heightInTiles
 		);
 	}
-	
+
 	override function canGo(data:FlxPathfinderData, to:Int, dir:FlxDirectionFlags = ANY)
 	{
 		final cols = data.map.widthInTiles;
-		
+
 		for (x in 0...widthInTiles)
 		{
 			for (y in 0...heightInTiles)
@@ -511,10 +513,10 @@ class BigMoverPathfinder extends FlxDiagonalPathfinder
 					return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	override function hasValidInitialData(data:FlxPathfinderData):Bool
 	{
 		final cols = data.map.widthInTiles;
