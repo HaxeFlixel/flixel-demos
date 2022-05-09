@@ -160,7 +160,7 @@ class PlayState extends FlxState
 				case NONE         : "NONE";
 				case LINE         : "LINE";
 				case RAY          : "RAY";
-				case RAY_STEP(_) : "STEP";
+				case RAY_STEP(_)  : "STEP";
 				case RAY_BOX(_, _): "BOX";
 				default: throw "Invalid simplify";
 			}
@@ -174,8 +174,7 @@ class PlayState extends FlxState
 				{
 					case NONE         : LINE;
 					case LINE         : RAY;
-					case RAY          : RAY_STEP(1);
-					case RAY_STEP(_)  : RAY_BOX(unit.width, unit.height);
+					case RAY          : RAY_BOX(unit.width, unit.height);
 					case RAY_BOX(_, _): NONE;
 					default: throw "Invalid simplify";
 				};
