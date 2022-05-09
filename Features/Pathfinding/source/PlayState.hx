@@ -76,6 +76,11 @@ class PlayState extends FlxState
 	var simplifyButton:FlxButton;
 
 	/**
+	 * Button to set the path simlifier
+	 */
+	var clearButton:FlxButton;
+
+	/**
 	 * Button to set the unit's size
 	 */
 	var sizeButton:FlxButton;
@@ -238,6 +243,19 @@ class PlayState extends FlxState
 		);
 		updateSize();
 		add(sizeButton);
+		uiY += 20;
+
+		// Add button reset unit to PlayState
+		clearButton = new FlxButton(buttonX, uiY, "Clear Map",
+			function clearMap()
+			{
+				for (i in 0...map.totalTiles)
+					map.setTileByIndex(i, 0);
+				
+				redrawPath();
+			}
+		);
+		add(clearButton);
 		uiY += 20;
 
 		// Add some texts
