@@ -119,7 +119,6 @@ class PlayState extends FlxState
 		unit = new FlxSprite(0, 0);
 		unit.makeGraphic(map.tileSize, map.tileSize, 0xffff0000);
 		action = IDLE;
-		unit.maxVelocity.x = unit.maxVelocity.y = MOVE_SPEED;
 		unit.path = new FlxPath();
 		unit.path.immovable = false;
 		add(unit);
