@@ -69,7 +69,7 @@ class CustomNapeTilemap extends FlxNapeTilemap
 
 		for (point in getTileCoords(TileType.SPAWN, false))
 		{
-			point.x += _scaledTileHeight * 0.5;
+			point.x += scaledTileHeight * 0.5;
 			spawnPoints.push(point);
 		}
 	}
