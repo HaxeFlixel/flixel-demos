@@ -57,7 +57,7 @@ class Alien extends FlxSprite
 		{
 			x = _originalX - 8;
 			velocity.x = -velocity.x;
-			velocity.y++;
+			velocity.y += 1;
 		}
 
 		// If alien has moved too far to the right, reverse direction
