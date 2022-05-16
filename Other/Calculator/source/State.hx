@@ -106,7 +106,6 @@ class State extends FlxState
 					"y = Math.pow(x,3)",
 					"0x10 & 0x110 == 16",
 					"x = []; for (i in [3,9,7]) { x[i] = 7; } x",
-					"FlxPoint.get(0,1).addPoint(FlxPoint.get(-1,3))",
 					"var animal = \"dogs \"; animal + animal.slice(0,2) + \" tricks!\"",
 					"x = \"past\"; if (1 != 2) { x = 3 > 4 ? false : true; }",
 					"Math.sin( FlxG.game.ticks / 1000 ) * 10",
@@ -156,7 +155,6 @@ class State extends FlxState
 		interp.variables.set("FlxG", FlxG);
 		interp.variables.set("FlxMath", FlxMath);
 		interp.variables.set("FlxAngle", FlxAngle);
-		interp.variables.set("FlxPoint", FlxPoint);
 		interp.variables.set("FlxRandom", FlxRandom);
 		interp.variables.set("FlxRect", FlxRect);
 		interp.variables.set("FlxVelocity", FlxVelocity);
