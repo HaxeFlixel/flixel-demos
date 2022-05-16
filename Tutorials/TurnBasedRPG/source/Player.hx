@@ -94,8 +94,7 @@ class Player extends FlxSprite
 			}
 
 			// determine our velocity based on angle and speed
-			velocity.set(SPEED, 0);
-			velocity.rotate(FlxPoint.weak(0, 0), newAngle);
+			velocity.setPolarDegrees(SPEED, newAngle);
 
 			// if the player is moving (velocity is not 0 for either axis), we need to change the animation to match their facing
 			if ((velocity.x != 0 || velocity.y != 0) && touching == NONE)

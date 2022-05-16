@@ -1,6 +1,7 @@
+import firetongue.FireTongue;
 import flixel.FlxG;
-import flixel.addons.ui.FlxUIState;
 import flixel.addons.ui.FlxUIRadioGroup;
+import flixel.addons.ui.FlxUIState;
 
 /**
  * @author Lars Doucet
@@ -14,7 +15,7 @@ class State_Title extends FlxUIState
 		if (Main.tongue == null)
 		{
 			Main.tongue = new FireTongueEx();
-			Main.tongue.init("en-US");
+			Main.tongue.initialize({locale: "en-US"});
 			FlxUIState.static_tongue = Main.tongue;
 		}
 
@@ -50,7 +51,7 @@ class State_Title extends FlxUIState
 				var id:String = cast data;
 				if (Main.tongue != null)
 				{
-					Main.tongue.init(id, reloadState);
+					Main.tongue.initialize({locale: id, finishedCallback: reloadState});
 				}
 		}
 	}

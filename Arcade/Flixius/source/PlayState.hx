@@ -476,8 +476,7 @@ class PlayState extends FlxState
 	{
 		var eB:EBulletBubble = _grpEBulletBubbles.recycle(EBulletBubble.new);
 		eB.reset(E.x + (eB.width / 2) - (eB.width / 2), E.y + (E.height / 2) - (eB.height / 2));
-		eB.velocity.set(100, 0);
-		eB.velocity.rotate(FlxPoint.weak(), FlxG.random.int(0, 360));
+		eB.velocity.setPolarDegrees(100, FlxG.random.int(0, 360));
 		_grpEBulletBubbles.add(eB);
 		FlxG.sound.play(AssetPaths.bubble__wav, .66);
 	}

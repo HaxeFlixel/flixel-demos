@@ -45,8 +45,7 @@ class PlayerShip extends FlxSprite
 
 		if (FlxG.keys.anyPressed([W, UP]))
 		{
-			acceleration.set(90, 0);
-			acceleration.rotate(FlxPoint.weak(0, 0), angle);
+			acceleration.setPolarDegrees(90, angle);
 		}
 
 		if (FlxG.keys.justPressed.SPACE)
@@ -55,8 +54,7 @@ class PlayerShip extends FlxSprite
 			bullet.reset(x + (width - bullet.width) / 2, y + (height - bullet.height) / 2);
 			bullet.angle = angle;
 
-			bullet.velocity.set(150, 0);
-			bullet.velocity.rotate(FlxPoint.weak(0, 0), bullet.angle);
+			bullet.velocity.setPolarDegrees(150, bullet.angle);
 
 			bullet.velocity.x *= 2;
 			bullet.velocity.y *= 2;

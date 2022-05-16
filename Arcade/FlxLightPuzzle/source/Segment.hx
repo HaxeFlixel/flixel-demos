@@ -1,7 +1,7 @@
 package;
 
 import flixel.FlxSprite;
-import flixel.math.FlxVector;
+import flixel.math.FlxPoint;
 
 /**
  * A colored line segment, made up of a starting point and a magnitude + direction vector
@@ -9,30 +9,30 @@ import flixel.math.FlxVector;
  */
 class Segment
 {
-	public var start:FlxVector;
-	public var vector:FlxVector;
+	public var start:FlxPoint;
+	public var vector:FlxPoint;
 	public var color:Color;
 
 	public var graphic:FlxSprite;
 
-	public function new(start:FlxVector, vector:FlxVector, color:Color)
+	public function new(start:FlxPoint, vector:FlxPoint, color:Color)
 	{
 		this.start = start;
 		this.vector = vector;
 		this.color = color;
 	}
 
-	public function setEnd(end:FlxVector):Void
+	public function setEnd(end:FlxPoint):Void
 	{
 		vector.set(end.x - start.x, end.y - start.y);
 	}
 
-	public function getEnd():FlxVector
+	public function getEnd():FlxPoint
 	{
-		return FlxVector.get(start.x + vector.x, start.y + vector.y);
+		return FlxPoint.get(start.x + vector.x, start.y + vector.y);
 	}
 
-	public function findIntersection(segment:Segment, ?intersection:FlxVector):FlxVector
+	public function findIntersection(segment:Segment, ?intersection:FlxPoint):FlxPoint
 	{
 		// check if collinear and intersecting: this is if the player clicks the same location multiple times with multiple colors
 		if (isCollinearIntersection(segment))
@@ -54,7 +54,7 @@ class Segment
 		var v1 = segment.start.clone();
 		v1.subtractPoint(start);
 
-		if (v1.crossProductLength(vector) > FlxVector.EPSILON_SQUARED)
+		if (v1.crossProductLength(vector) > FlxPoint.EPSILON_SQUARED)
 		{
 			// not collinear: perfectly parallel and non-intersecting
 			return false;
@@ -72,7 +72,7 @@ class Segment
 		return start.toString() + "," + vector.toString() + "," + Std.string(color);
 	}
 
-	public static inline function fromEndpoints(start:FlxVector, end:FlxVector, color:Color):Segment
+	public static inline function fromEndpoints(start:FlxPoint, end:FlxPoint, color:Color):Segment
 	{
 		return new Segment(start, end.subtractNew(start), color);
 	}

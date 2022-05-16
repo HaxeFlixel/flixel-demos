@@ -1,12 +1,13 @@
 package;
 
+import StringTools;
 import flash.display.StageQuality;
-import flixel.addons.ui.FlxUIButton;
-import flixel.addons.ui.FlxUIInputText;
-import flixel.addons.ui.FlxUIText;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.addons.ui.FlxUIButton;
+import flixel.addons.ui.FlxUIInputText;
+import flixel.addons.ui.FlxUIText;
 import flixel.math.FlxAngle;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
@@ -20,7 +21,6 @@ import flixel.util.FlxSpriteUtil;
 import hscript.Expr;
 import hscript.Interp;
 import hscript.Parser;
-import StringTools;
 
 /** This state class draws some GUI widgets, and links them to the hscript interpretor, @author @cwkx **/
 class State extends FlxState
@@ -106,7 +106,6 @@ class State extends FlxState
 					"y = Math.pow(x,3)",
 					"0x10 & 0x110 == 16",
 					"x = []; for (i in [3,9,7]) { x[i] = 7; } x",
-					"FlxPoint.get(0,1).addPoint(FlxPoint.get(-1,3))",
 					"var animal = \"dogs \"; animal + animal.slice(0,2) + \" tricks!\"",
 					"x = \"past\"; if (1 != 2) { x = 3 > 4 ? false : true; }",
 					"Math.sin( FlxG.game.ticks / 1000 ) * 10",
@@ -156,7 +155,6 @@ class State extends FlxState
 		interp.variables.set("FlxG", FlxG);
 		interp.variables.set("FlxMath", FlxMath);
 		interp.variables.set("FlxAngle", FlxAngle);
-		interp.variables.set("FlxPoint", FlxPoint);
 		interp.variables.set("FlxRandom", FlxRandom);
 		interp.variables.set("FlxRect", FlxRect);
 		interp.variables.set("FlxVelocity", FlxVelocity);
@@ -235,7 +233,10 @@ class State extends FlxState
 
 					if (x != 0)
 						FlxSpriteUtil.drawLine(graph, graph.width * ((x - 1) / 150), (graph.height - prvY) + graph.height / 2, graph.width * (x / 150),
-							(graph.height - (interp.variables.get("y") * 0.5 + 1.0) * graph.height) + graph.height / 2, {thickness: 1, color: 0xff566153});
+							(graph.height - (interp.variables.get("y") * 0.5 + 1.0) * graph.height) + graph.height / 2, {
+								thickness: 1,
+								color: 0xff566153
+							});
 				}
 		}
 
