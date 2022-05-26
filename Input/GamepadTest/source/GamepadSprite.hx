@@ -7,7 +7,7 @@ import flixel.group.FlxSpriteGroup;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.input.gamepad.FlxGamepadInputID as InputID;
 import flixel.math.FlxMath;
-import flixel.math.FlxVector;
+import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
@@ -66,7 +66,7 @@ class GamepadSprite extends FlxSpriteGroup
 		createInputSprite(471, 234, "Extra3", EXTRA_3, Invisible);
 
 		createInputSprite(199, 93, "Back", BACK);
-		createInputSprite(235, 73, "Guide", GUIDE, FlxVector.weak(0, -40));
+		createInputSprite(235, 73, "Guide", GUIDE, FlxPoint.weak(0, -40));
 		createInputSprite(306, 93, "Start", START);
 
 		motionPitch = createBar(534, 310, "Pitch");
@@ -95,7 +95,7 @@ class GamepadSprite extends FlxSpriteGroup
 		return sprite;
 	}
 
-	function createInputSprite(x:Float, y:Float, ?fileName:String, input:InputID, ?type:InputType, offset:FlxVector = null):FlxSprite
+	function createInputSprite(x:Float, y:Float, ?fileName:String, input:InputID, ?type:InputType, offset:FlxPoint = null):FlxSprite
 	{
 		// haxe 3.4.7 backwards compatibility
 		if (type == null)
@@ -150,7 +150,7 @@ class GamepadSprite extends FlxSpriteGroup
 		return label;
 	}
 
-	function drawLine(x:Float, y:Float, offset:FlxVector, color:FlxColor):FlxSprite
+	function drawLine(x:Float, y:Float, offset:FlxPoint, color:FlxColor):FlxSprite
 	{
 		var line = new FlxSprite(x, y);
 		line.makeGraphic(Math.floor(offset.length), 2, color);
@@ -166,7 +166,7 @@ class GamepadSprite extends FlxSpriteGroup
 		x += stick.width / 2;
 		y += stick.height / 2;
 		var click = isLeft ? InputID.LEFT_STICK_CLICK : InputID.RIGHT_STICK_CLICK;
-		createInputSprite(x - 10, y - 10, "StickClick", click, Invisible, FlxVector.get(isLeft ? -70 : 80, 20));
+		createInputSprite(x - 10, y - 10, "StickClick", click, Invisible, FlxPoint.get(isLeft ? -70 : 80, 20));
 		if (isLeft)
 		{
 			createDirectionArrows(x, y, 40, LEFT_STICK_DIGITAL_UP, LEFT_STICK_DIGITAL_DOWN, LEFT_STICK_DIGITAL_LEFT, LEFT_STICK_DIGITAL_RIGHT);
@@ -272,7 +272,7 @@ class GamepadSprite extends FlxSpriteGroup
 				case Trigger:
 					data.sprite.offset.y = data.sprite.origin.y - analog * TRIGGER_MOVEMENT_RANGE;
 				case Stick:
-					var axes = gamepad == null ? FlxVector.get() : gamepad.getAnalogAxes(data.input);
+					var axes = gamepad == null ? FlxPoint.get() : gamepad.getAnalogAxes(data.input);
 					data.sprite.alpha = axes.isZero() ? ALPHA_OFF : ALPHA_ON;
 					data.sprite.offset.x = data.sprite.origin.x - axes.x * STICK_MOVEMENT_RANGE;
 					data.sprite.offset.y = data.sprite.origin.y - axes.y * STICK_MOVEMENT_RANGE;

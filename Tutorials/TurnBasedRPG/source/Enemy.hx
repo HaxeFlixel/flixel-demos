@@ -117,8 +117,7 @@ class Enemy extends FlxSprite
 			{
 				moveDirection = FlxG.random.int(0, 8) * 45;
 
-				velocity.set(SPEED * 0.5, 0);
-				velocity.rotate(FlxPoint.weak(), moveDirection);
+				velocity.setPolarDegrees(SPEED * 0.5, moveDirection);
 			}
 			idleTimer = FlxG.random.int(1, 4);
 		}

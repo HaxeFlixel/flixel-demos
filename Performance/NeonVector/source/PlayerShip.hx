@@ -127,7 +127,7 @@ class PlayerShip extends Entity
 		multiplierTimeLeft = 0;
 	}
 
-	public function shoot(Aim:FlxPoint):Void
+	public function shoot(aim:FlxPoint):Void
 	{
 		cooldownTimer.cancel();
 		cooldownTimer.start(cooldown);
@@ -136,24 +136,24 @@ class PlayerShip extends Entity
 
 		if (GameInput.aimWithMouse)
 		{
-			Aim.x -= x;
-			Aim.y -= y;
+			aim.x -= x;
+			aim.y -= y;
 		}
 
-		Aim.rotate(FlxPoint.weak(0, 0), RandomSpread);
+		aim.degrees += RandomSpread;
 
-		var Angle:Float = Entity.angleInDegrees(Aim);
+		var angle:Float = Entity.angleInDegrees(aim);
 		_point.set(8, -25);
-		_point.rotate(FlxPoint.weak(0, 0), Angle + 90);
-		var PositionX:Float = _point.x + position.x;
-		var PositionY:Float = _point.y + position.y;
-		ScreenState.makeBullet(PositionX, PositionY, Angle, bulletSpeed);
+		_point.degrees += angle + 90;
+		var positionX:Float = _point.x + position.x;
+		var positionY:Float = _point.y + position.y;
+		ScreenState.makeBullet(positionX, positionY, angle, bulletSpeed);
 
 		_point.set(-8, -25);
-		_point.rotate(FlxPoint.weak(0, 0), Angle + 90);
-		PositionX = _point.x + position.x;
-		PositionY = _point.y + position.y;
-		ScreenState.makeBullet(PositionX, PositionY, Angle, bulletSpeed);
+		_point.degrees += angle + 90;
+		positionX = _point.x + position.x;
+		positionY = _point.y + position.y;
+		ScreenState.makeBullet(positionX, positionY, angle, bulletSpeed);
 
 		GameSound.randomSound(GameSound.sfxShoot, 0.4);
 	}

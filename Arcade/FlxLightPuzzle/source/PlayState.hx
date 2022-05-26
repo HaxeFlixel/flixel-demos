@@ -3,11 +3,11 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.math.FlxVector;
+import flixel.math.FlxPoint;
 import flixel.system.FlxAssets;
 import flixel.tweens.FlxTween;
-import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxColor;
+import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxTimer;
 import openfl.Assets;
 
@@ -20,7 +20,7 @@ class PlayState extends FlxState
 	var lights:Array<Segment>;
 
 	var player:FlxSprite;
-	var playerPosition:FlxVector;
+	var playerPosition:FlxPoint;
 
 	var game:GameLayer;
 	var ui:UILayer;
@@ -53,7 +53,7 @@ class PlayState extends FlxState
 		player.pixelPerfectRender = false;
 		player.antialiasing = true;
 
-		playerPosition = FlxVector.get(75, 144);
+		playerPosition = FlxPoint.get(75, 144);
 
 		currLevelIndex = -1;
 		blockLevelReset = false;
@@ -172,7 +172,7 @@ class PlayState extends FlxState
 		if (currLevelIndex >= numLevels)
 		{
 			// win the game
-			var endCircle = new Circle(FlxVector.get(300, 144), 350, Color.WHITE);
+			var endCircle = new Circle(FlxPoint.get(300, 144), 350, Color.WHITE);
 			game.drawCircle(endCircle, 1, 4.32);
 
 			openSubState(new WinState());
@@ -190,7 +190,7 @@ class PlayState extends FlxState
 	function shineLight():Void
 	{
 		// get the path that the light follows as individual segments
-		var path = Optics.getLightPath(new Segment(playerPosition, FlxVector.get(FlxG.mouse.x - playerPosition.x, FlxG.mouse.y - playerPosition.y),
+		var path = Optics.getLightPath(new Segment(playerPosition, FlxPoint.get(FlxG.mouse.x - playerPosition.x, FlxG.mouse.y - playerPosition.y),
 			currLevel.colors[0]),
 			currLevel.mirrors);
 		// edit the path based on any colors that get combined

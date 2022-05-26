@@ -1,7 +1,7 @@
 package;
 
 import flixel.FlxG;
-import flixel.math.FlxVector;
+import flixel.math.FlxPoint;
 
 /**
  * The physics of light. Contains light bouncing and color combining.
@@ -15,12 +15,12 @@ class Optics
 	public static function getLightPath(firstRay:Segment, mirrors:Array<Segment>):Array<Segment>
 	{
 		var pathSegment:Segment = firstRay; // haven't found the endpoint of the segment yet, so it's a ray of light
-		var closestIntersection:FlxVector = null;
-		var tempIntersection = FlxVector.get();
-		var intersectingVector:FlxVector = null;
+		var closestIntersection:FlxPoint = null;
+		var tempIntersection = FlxPoint.get();
+		var intersectingVector:FlxPoint = null;
 		var minDist2:Float;
 		var dist2:Float;
-		var normal = FlxVector.get();
+		var normal = FlxPoint.get();
 
 		var path:Array<Segment> = [];
 
@@ -66,14 +66,14 @@ class Optics
 					dist2 = pathSegment.start.distSquared(tempIntersection);
 
 					// if the light has just reflected off an obstacle, there would be zero distance between the path and that obstacle, so ignore that obstacle
-					if (dist2 < FlxVector.EPSILON_SQUARED)
+					if (dist2 < FlxPoint.EPSILON_SQUARED)
 						continue;
 
 					// find the closest intersection by checking each squared distance
 					if (closestIntersection == null)
 					{
 						intersectingVector = mirror.vector;
-						closestIntersection = FlxVector.get(tempIntersection.x, tempIntersection.y);
+						closestIntersection = FlxPoint.get(tempIntersection.x, tempIntersection.y);
 						minDist2 = dist2;
 					}
 					else if (dist2 < minDist2)
@@ -97,7 +97,7 @@ class Optics
 	public static function combineColors(path:Array<Segment>, lights:Array<Segment>):Void
 	{
 		// look for any intersections with existing colors
-		var tempIntersection = FlxVector.get();
+		var tempIntersection = FlxPoint.get();
 		var segment:Segment;
 		var i = 0;
 		while (i < path.length)
@@ -109,7 +109,7 @@ class Optics
 			// so we go through each intersecting beam and pick the closest intersection, which is the first intersection
 
 			var minLight:Segment = null,
-				firstIntersection:FlxVector = null,
+				firstIntersection:FlxPoint = null,
 				minDist2:Float = Math.POSITIVE_INFINITY;
 
 			for (light in lights)
@@ -148,7 +148,7 @@ class Optics
 				var end = segment.getEnd();
 				segment.setEnd(firstIntersection);
 
-				var newSegment = new Segment(firstIntersection, FlxVector.get(), newColor);
+				var newSegment = new Segment(firstIntersection, FlxPoint.get(), newColor);
 				newSegment.setEnd(end);
 
 				if (segment.vector.isZero())

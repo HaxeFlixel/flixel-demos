@@ -1,13 +1,13 @@
 package;
 
-import flixel.addons.nape.FlxNapeSprite;
-import flixel.addons.nape.FlxNapeSpace;
-import flixel.effects.particles.FlxEmitter;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.addons.nape.FlxNapeSpace;
+import flixel.addons.nape.FlxNapeSprite;
+import flixel.effects.particles.FlxEmitter;
+import flixel.group.FlxGroup;
 import flixel.input.mouse.FlxMouseEvent;
 import flixel.math.FlxPoint;
-import flixel.group.FlxGroup;
 import nape.callbacks.CbEvent;
 import nape.callbacks.CbType;
 import nape.callbacks.InteractionCallback;
@@ -75,9 +75,8 @@ class Shooter extends FlxTypedGroup<FlxNapeSprite>
 
 		spr.body.position.y = 30;
 		spr.body.position.x = 30 + Std.random(640 - 30);
-		var angle = FlxG.mouse.getPosition().angleBetween(FlxPoint.get(spr.body.position.x, spr.body.position.y));
-		angle += 90;
-		spr.body.velocity.setxy(impulse * Math.cos(angle * 3.14 / 180), impulse * Math.sin(angle * 3.14 / 180));
+		spr.body.velocity.setxy(FlxG.mouse.x - spr.body.position.x, FlxG.mouse.y - spr.body.position.y);
+		spr.body.velocity.length = impulse;
 
 		spr.body.angularVel = 30;
 	}

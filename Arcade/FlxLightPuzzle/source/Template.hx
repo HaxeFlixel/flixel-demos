@@ -1,7 +1,7 @@
 package;
 
 import flixel.FlxG;
-import flixel.math.FlxVector;
+import flixel.math.FlxPoint;
 
 /**
  * The template for all levels, driven by txt file data.
@@ -24,10 +24,10 @@ class Template
 		colorsDefault = [];
 
 		addPolyMirror([
-			FlxVector.get(50, 0),
-			FlxVector.get(FlxG.width, 0),
-			FlxVector.get(FlxG.width, FlxG.height),
-			FlxVector.get(50, FlxG.height)
+			FlxPoint.get(50, 0),
+			FlxPoint.get(FlxG.width, 0),
+			FlxPoint.get(FlxG.width, FlxG.height),
+			FlxPoint.get(50, FlxG.height)
 		], false); // border walls
 
 		parseData(data);
@@ -54,7 +54,7 @@ class Template
 		for (targetData in targetsData)
 		{
 			var params = targetData.split(" ");
-			targetsDefault.push(new Circle(FlxVector.get(Std.parseFloat(params[0]), Std.parseFloat(params[1])), Std.parseFloat(params[2]),
+			targetsDefault.push(new Circle(FlxPoint.get(Std.parseFloat(params[0]), Std.parseFloat(params[1])), Std.parseFloat(params[2]),
 				getColorFromData(params[3])));
 		}
 
@@ -70,7 +70,7 @@ class Template
 
 			for (i in 0...numVerts)
 			{
-				verts.push(FlxVector.get(Std.parseFloat(params[2 * i]), Std.parseFloat(params[2 * i + 1])));
+				verts.push(FlxPoint.get(Std.parseFloat(params[2 * i]), Std.parseFloat(params[2 * i + 1])));
 			}
 
 			if (numVerts == 2)
@@ -106,10 +106,10 @@ class Template
 		}
 	}
 
-	function addPolyMirror(verts:Array<FlxVector>, visible:Bool = true):Void
+	function addPolyMirror(verts:Array<FlxPoint>, visible:Bool = true):Void
 	{
 		// connects all the vertices with mirror segments, including the first and last ones
-		var start = verts[verts.length - 1], vert:FlxVector, segment:Segment;
+		var start = verts[verts.length - 1], vert:FlxPoint, segment:Segment;
 		for (i in 0...verts.length)
 		{
 			vert = verts[i];

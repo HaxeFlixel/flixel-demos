@@ -47,15 +47,12 @@ class EnemyBullet extends FlxSprite
 		animation.play("poof");
 	}
 
-	public function shoot(Location:FlxPoint, Angle:Float):Void
+	public function shoot(Location:FlxPoint, angle:Float):Void
 	{
 		FlxG.sound.play(FlxAssets.getSound("assets/sounds/enemy"), 0.5);
 
 		super.reset(Location.x - width / 2, Location.y - height / 2);
-		_point.set(0, -speed);
-		_point.rotate(FlxPoint.weak(0, 0), Angle);
-		velocity.x = _point.x;
-		velocity.y = _point.y;
+		velocity.setPolarDegrees(speed, angle);
 		solid = true;
 		animation.play("idle");
 	}

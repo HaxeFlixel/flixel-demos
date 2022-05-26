@@ -1,7 +1,7 @@
 package;
 
 import flixel.FlxSprite;
-import flixel.math.FlxVector;
+import flixel.math.FlxPoint;
 
 /**
  * A colored circle object, used as the targets in the game.
@@ -9,23 +9,23 @@ import flixel.math.FlxVector;
  */
 class Circle
 {
-	public var center:FlxVector;
+	public var center:FlxPoint;
 	public var radius:Float;
 	public var color:Color;
 
 	public var graphic:FlxSprite;
 
-	public function new(center:FlxVector, radius:Float, color:Color)
+	public function new(center:FlxPoint, radius:Float, color:Color)
 	{
 		this.center = center;
 		this.radius = radius;
 		this.color = color;
 	}
 
-	public function intersectingSegment(segment:Segment):FlxVector
+	public function intersectingSegment(segment:Segment):FlxPoint
 	{
 		// circle-segment intersection algorithm
-		var closest:FlxVector = null;
+		var closest:FlxPoint = null;
 		var proj = center.subtractNew(segment.start).dotProdWithNormalizing(segment.vector);
 
 		if (proj < 0)

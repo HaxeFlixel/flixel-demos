@@ -3,20 +3,19 @@ package;
 import flixel.FlxSprite;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
-import flixel.math.FlxVector;
 
 class Seeker extends FlxSprite
 {
 	public var moving:Bool = false;
 
 	var dest:FlxPoint;
-	var vec:FlxVector;
+	var vec:FlxPoint;
 
 	public function new()
 	{
 		super(0, 0, "assets/images/seeker.png");
 		dest = FlxPoint.get();
-		vec = FlxVector.get();
+		vec = FlxPoint.get();
 		setSize(12, 12);
 		offset.set(2, 2);
 		setPosition(2, 2);

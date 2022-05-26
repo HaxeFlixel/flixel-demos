@@ -1,12 +1,13 @@
 package;
 
+import StringTools;
 import flash.display.StageQuality;
-import flixel.addons.ui.FlxUIButton;
-import flixel.addons.ui.FlxUIInputText;
-import flixel.addons.ui.FlxUIText;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.addons.ui.FlxUIButton;
+import flixel.addons.ui.FlxUIInputText;
+import flixel.addons.ui.FlxUIText;
 import flixel.math.FlxAngle;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
@@ -20,7 +21,6 @@ import flixel.util.FlxSpriteUtil;
 import hscript.Expr;
 import hscript.Interp;
 import hscript.Parser;
-import StringTools;
 
 /** This state class draws some GUI widgets, and links them to the hscript interpretor, @author @cwkx **/
 class State extends FlxState
@@ -233,7 +233,10 @@ class State extends FlxState
 
 					if (x != 0)
 						FlxSpriteUtil.drawLine(graph, graph.width * ((x - 1) / 150), (graph.height - prvY) + graph.height / 2, graph.width * (x / 150),
-							(graph.height - (interp.variables.get("y") * 0.5 + 1.0) * graph.height) + graph.height / 2, {thickness: 1, color: 0xff566153});
+							(graph.height - (interp.variables.get("y") * 0.5 + 1.0) * graph.height) + graph.height / 2, {
+								thickness: 1,
+								color: 0xff566153
+							});
 				}
 		}
 

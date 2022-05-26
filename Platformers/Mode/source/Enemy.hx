@@ -1,13 +1,13 @@
 package;
 
-import flixel.effects.particles.FlxEmitter;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.effects.particles.FlxEmitter;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
 import flixel.math.FlxVelocity;
-import flixel.util.FlxSpriteUtil;
 import flixel.system.FlxAssets;
+import flixel.util.FlxSpriteUtil;
 
 class Enemy extends FlxSprite
 {
@@ -154,8 +154,7 @@ class Enemy extends FlxSprite
 		// Set the bot's movement speed and direction
 		// based on angle and whether the jets are on.
 		_thrust = FlxVelocity.computeVelocity(_thrust, (jetsOn ? 90 : 0), drag.x, 60, elapsed);
-		velocity.set(0, -_thrust);
-		velocity.rotate(FlxPoint.weak(0, 0), angle);
+		velocity.setPolarDegrees(_thrust, angle);
 
 		// Shooting - three shots every few seconds
 		if (isOnScreen())
@@ -209,7 +208,7 @@ class Enemy extends FlxSprite
 			// Then, position the jets at the center of the Enemy,
 			// and point the jets the opposite way from where we're moving.
 			_jets.focusOn(this);
-			_jets.launchAngle.set(angle - 270);
+			_jets.launchAngle.set(angle - 180);
 			_jets.velocity.set(-velocity.x - 30, -velocity.y - 30, -velocity.x + 30, -velocity.y + 30);
 		}
 		// If jets are supposed to be off, just turn em off.
@@ -274,6 +273,6 @@ class Enemy extends FlxSprite
 	 */
 	function angleTowardPlayer():Float
 	{
-		return getMidpoint(_point).angleBetween(_player.getMidpoint(_playerMidpoint));
+		return getMidpoint(_point).degreesTo(_player.getMidpoint(_playerMidpoint));
 	}
 }
