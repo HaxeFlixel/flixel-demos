@@ -31,7 +31,8 @@
 
 	<set name="BUILD_DIR" value="export" />
 	<source path="source" />
-	<assets path="assets" />
+	<assets path="assets" exclude="*.ogg" if="flash"/>
+	<assets path="assets" exclude="*.mp3" unless="flash"/>
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
