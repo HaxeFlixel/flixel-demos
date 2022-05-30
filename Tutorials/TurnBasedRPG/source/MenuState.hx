@@ -41,7 +41,11 @@ class MenuState extends FlxState
 
 		if (FlxG.sound.music == null) // don't restart the music if it's already playing
 		{
+			#if flash
+			FlxG.sound.playMusic(AssetPaths.HaxeFlixel_Tutorial_Game__mp3, 1, true);
+			#else
 			FlxG.sound.playMusic(AssetPaths.HaxeFlixel_Tutorial_Game__ogg, 1, true);
+			#end
 		}
 
 		FlxG.camera.fade(FlxColor.BLACK, 0.33, true);

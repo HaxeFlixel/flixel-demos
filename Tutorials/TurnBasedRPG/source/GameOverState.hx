@@ -84,15 +84,14 @@ class GameOverState extends FlxState
 	function checkHighscore(score:Int):Int
 	{
 		var highscore:Int = score;
-		var saveData = FlxG.save.data;
-		if (saveData.highscore != null && saveData.highscore > highscore)
+		if (FlxG.save.data.highscore != null && FlxG.save.data.highscore > highscore)
 		{
-			highscore = saveData.highscore;
+			highscore = FlxG.save.data.highscore;
 		}
 		else
 		{
 			// data is less or there is no data; save current score
-			saveData.highscore = highscore;
+			FlxG.save.data.highscore = highscore;
 		}
 		return highscore;
 	}
