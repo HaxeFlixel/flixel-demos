@@ -1,19 +1,19 @@
 package;
 
-import flash.filters.BitmapFilterQuality;
-import flash.filters.BlurFilter;
-import flash.geom.Point;
-import flash.geom.Rectangle;
-import flash.Lib;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
+import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import flixel.math.FlxPoint;
 import flixel.util.FlxSpriteUtil;
+import openfl.Lib;
+import openfl.filters.BitmapFilterQuality;
+import openfl.filters.BlurFilter;
+import openfl.geom.Point;
+import openfl.geom.Rectangle;
 
 /**
  * @author Masadow
@@ -139,9 +139,15 @@ class ScreenState extends FlxState
 
 		if (PlayerShip.isGameOver)
 		{
+			var newHighScore = PlayerShip.score > UserSettings.highScore;
+
 			displayText.alignment = CENTER;
 			displayText.offset.y = 16 - 0.5 * FlxG.height;
-			displayText.text = "Game Over\n" + "Your Score: " + PlayerShip.score + "\n" + "High Score: " + PlayerShip.highScore;
+			displayText.text = 'Game Over\nYour Score: ${PlayerShip.score}\nHigh Score: ${UserSettings.highScore}';
+			if (newHighScore)
+				displayText.text += 'New High Score!';
+			else
+				displayText.text += 'High Score: ${UserSettings.highScore}';
 		}
 		else
 		{
