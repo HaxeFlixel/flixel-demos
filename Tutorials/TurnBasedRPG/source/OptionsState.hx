@@ -7,7 +7,6 @@ import flixel.ui.FlxBar;
 import flixel.ui.FlxButton;
 import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
-import flixel.util.FlxSave;
 
 class OptionsState extends FlxState
 {
@@ -23,9 +22,6 @@ class OptionsState extends FlxState
 	#if desktop
 	var fullscreenButton:FlxButton;
 	#end
-
-	// a save object for saving settings
-	var save:FlxSave;
 
 	override public function create():Void
 	{
@@ -78,10 +74,6 @@ class OptionsState extends FlxState
 		backButton.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(backButton);
 
-		// create and bind our save object to "flixel-tutorial"
-		save = new FlxSave();
-		save.bind("TurnBasedRPG");
-
 		// update our bar to show the current volume level
 		updateVolume();
 
@@ -95,7 +87,7 @@ class OptionsState extends FlxState
 	{
 		FlxG.fullscreen = !FlxG.fullscreen;
 		fullscreenButton.text = FlxG.fullscreen ? "FULLSCREEN" : "WINDOWED";
-		save.data.fullscreen = FlxG.fullscreen;
+		FlxG.save.data.fullscreen = FlxG.fullscreen;
 	}
 	#end
 
@@ -104,7 +96,7 @@ class OptionsState extends FlxState
 	 */
 	function clickClearData()
 	{
-		save.erase();
+		FlxG.save.erase();
 		FlxG.sound.volume = 0.5;
 		updateVolume();
 	}
@@ -114,7 +106,7 @@ class OptionsState extends FlxState
 	 */
 	function clickBack()
 	{
-		save.close();
+		FlxG.save.flush();
 		FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
 		{
 			FlxG.switchState(new MenuState());
@@ -127,7 +119,7 @@ class OptionsState extends FlxState
 	function clickVolumeDown()
 	{
 		FlxG.sound.volume -= 0.1;
-		save.data.volume = FlxG.sound.volume;
+		FlxG.save.data.volume = FlxG.sound.volume;
 		updateVolume();
 	}
 
@@ -137,7 +129,7 @@ class OptionsState extends FlxState
 	function clickVolumeUp()
 	{
 		FlxG.sound.volume += 0.1;
-		save.data.volume = FlxG.sound.volume;
+		FlxG.save.data.volume = FlxG.sound.volume;
 		updateVolume();
 	}
 

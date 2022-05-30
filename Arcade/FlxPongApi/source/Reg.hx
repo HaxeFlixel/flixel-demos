@@ -6,7 +6,6 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.tweens.FlxTween;
-import flixel.util.FlxSave;
 
 class Reg
 {
@@ -105,17 +104,4 @@ class Reg
 	 * Example usage: Storing the current score.
 	 */
 	public static var score:Int = 0;
-
-	/**
-	 * Generic bucket for storing different <code>FlxSaves</code>.
-	 * Especially useful for setting up multiple save slots.
-	 */
-	public static var saves:Array<FlxSave> = [];
-
-	/**
-	 * Generic container for a <code>FlxSave</code>. You might want to
-	 * consider assigning <code>FlxG._game._prefsSave</code> to this in
-	 * your state if you want to use the same save flixel uses internally
-	 */
-	public static var save:FlxSave;
 }
