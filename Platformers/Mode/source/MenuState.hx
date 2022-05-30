@@ -1,12 +1,11 @@
 package;
 
-import flixel.effects.particles.FlxEmitter;
 import flixel.FlxG;
 import flixel.FlxState;
+import flixel.effects.particles.FlxEmitter;
+import flixel.system.FlxAssets;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
-import flixel.util.FlxSave;
-import flixel.system.FlxAssets;
 import openfl.Assets;
 
 /**
@@ -34,18 +33,14 @@ class MenuState extends FlxState
 
 		// Simple use of flixel save game object.
 		// Tracks number of times the game has been played.
-		var save:FlxSave = new FlxSave();
 
-		if (save.bind("Mode"))
-		{
-			if (save.data.plays == null)
-				save.data.plays = 0.0;
-			else
-				save.data.plays++;
+		if (FlxG.save.data.plays == null)
+			FlxG.save.data.plays = 0.0;
+		else
+			FlxG.save.data.plays++;
 
-			FlxG.log.add("Number of plays: " + save.data.plays);
-			save.close();
-		}
+		FlxG.log.add("Number of plays: " + FlxG.save.data.plays);
+		FlxG.save.close();
 
 		// All the bits that blow up when the text smooshes together
 		_gibs = new FlxEmitter(FlxG.width / 2 - 50, FlxG.height / 2 - 10);

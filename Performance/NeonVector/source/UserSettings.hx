@@ -1,30 +1,31 @@
 package;
 
-import flixel.util.FlxSave;
+import flixel.FlxG;
 
 /**
  * @author Masadow
  */
 class UserSettings
 {
-	static var _save:FlxSave; // The FlxSave instance
-	static var _loaded:Bool = false; // Did bind() work? Do we have a valid SharedObject?
+	/** Whether bind() was successful */
+	static var _saveLoaded(get, never):Bool;
+
 	static var _highScore:UInt = 0;
 	static var _tempHighScore:UInt;
 	public static var highScore(get, set):UInt;
 
 	public static function get_highScore():UInt
 	{
-		if (_loaded)
-			return _save.data.highScore;
+		if (_saveLoaded)
+			return FlxG.save.data.highScore;
 		else
 			return _highScore;
 	}
 
 	public static function set_highScore(value:UInt):UInt
 	{
-		if (_loaded)
-			_save.data.highScore = value;
+		if (_saveLoaded)
+			FlxG.save.data.highScore = value;
 		else
 			_tempHighScore = value;
 		return value;
@@ -32,22 +33,19 @@ class UserSettings
 
 	public static function load():Void
 	{
-		_save = new FlxSave();
-		_loaded = _save.bind("ShapeBlasterSaveFile");
-
-		if (_loaded)
+		if (_saveLoaded)
 		{
-			// if (_save.data.levels == null) _save.data.levels = 0;
-			if (_save.data.highScore == null)
+			// if (FlxG.save.data.levels == null) FlxG.save.data.levels = 0;
+			if (FlxG.save.data.highScore == null)
 			{
 				// FlxG.log("loading default high score of 0 ...");
-				_save.data.highScore = 0;
+				FlxG.save.data.highScore = 0;
 				PlayerShip.highScore = 0;
 			}
 			else
 			{
 				// FlxG.log("loading previous high score ...");
-				_save.data.highScore = UserSettings.highScore;
+				FlxG.save.data.highScore = UserSettings.highScore;
 				PlayerShip.highScore = UserSettings.highScore;
 			}
 		}
@@ -55,6 +53,11 @@ class UserSettings
 
 	public static function save():Void
 	{
-		_save.flush();
+		FlxG.save.flush();
+	}
+
+	static inline function get__saveLoaded()
+	{
+		return FlxG.save.status == SUCCESS;
 	}
 }

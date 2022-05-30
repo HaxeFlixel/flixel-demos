@@ -4,18 +4,14 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
+import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
-import flixel.math.FlxPoint;
-import flixel.util.FlxSave;
 
 class PlayState extends FlxState
 {
 	static inline var NUM_BOXES:Int = 20;
-
-	// Here's the FlxSave variable this is what we're going to be saving to.
-	var _gameSave:FlxSave;
 
 	// We're just going to drop a bunch of boxes into a group
 	var _boxGroup:FlxTypedGroup<FlxButton>;
@@ -35,12 +31,6 @@ class PlayState extends FlxState
 
 	override public function create():Void
 	{
-		// So here's the core of this demo - the FlxSave you have to instantiate a new one before you can use it
-		_gameSave = new FlxSave();
-		// And then you have to bind it to the save data, you can use different bind strings in different parts of your game
-		// you MUST bind the save before it can be used.
-		_gameSave.bind("SaveDemo");
-
 		// Since we need the text before the usual end of the demo we'll initialize it up here.
 		_topText = new FlxText(0, 2, FlxG.width, "Welcome!");
 		_topText.alignment = 'center';
@@ -63,9 +53,9 @@ class PlayState extends FlxState
 		{
 			var box:FlxButton;
 			// If we already have some save data to work with, then let's go ahead and put it to use
-			if (_gameSave.data.boxPositions != null)
+			if (FlxG.save.data.boxPositions != null)
 			{
-				box = new FlxButton(_gameSave.data.boxPositions[i].x, _gameSave.data.boxPositions[i].y, Std.string(i + 1));
+				box = new FlxButton(FlxG.save.data.boxPositions[i].x, FlxG.save.data.boxPositions[i].y, Std.string(i + 1));
 				// I'm using a FlxButton in this instance because I can use if (button.pressed)
 				// to detect if the mouse is held down on a button
 				_topText.text = "Loaded positions";
@@ -150,7 +140,7 @@ class PlayState extends FlxState
 	function onSave():Void
 	{
 		// Do we already have a save? if not then we need to make one
-		if (_gameSave.data.boxPositions == null)
+		if (FlxG.save.data.boxPositions == null)
 		{
 			// Let's make a new array at the location data/
 			// don't worry, if its not there - then flash will make a new variable there
@@ -164,7 +154,7 @@ class PlayState extends FlxState
 				boxPositions.push(FlxPoint.get(box.x, box.y));
 			}
 
-			_gameSave.data.boxPositions = boxPositions;
+			FlxG.save.data.boxPositions = boxPositions;
 
 			_topText.text = "Created a new save, and saved positions";
 			_topText.alpha = 1;
@@ -178,14 +168,14 @@ class PlayState extends FlxState
 			// For each button in the group boxGroup - I'm sure you see why I like this already
 			for (box in _boxGroup)
 			{
-				_gameSave.data.boxPositions[tempCount] = FlxPoint.get(box.x, box.y);
+				FlxG.save.data.boxPositions[tempCount] = FlxPoint.get(box.x, box.y);
 				tempCount++;
 			}
 
 			_topText.text = "Overwrote old positions";
 			_topText.alpha = 1;
 		}
-		_gameSave.flush();
+		FlxG.save.flush();
 	}
 
 	/**
@@ -194,7 +184,7 @@ class PlayState extends FlxState
 	function onLoad():Void
 	{
 		// Loading what? Theres no save data!
-		if (_gameSave.data.boxPositions == null)
+		if (FlxG.save.data.boxPositions == null)
 		{
 			_topText.text = "Failed to load - There's no save";
 			_topText.alpha = 1;
@@ -208,8 +198,8 @@ class PlayState extends FlxState
 
 			for (box in _boxGroup)
 			{
-				box.x = _gameSave.data.boxPositions[tempCount].x;
-				box.y = _gameSave.data.boxPositions[tempCount].y;
+				box.x = FlxG.save.data.boxPositions[tempCount].x;
+				box.y = FlxG.save.data.boxPositions[tempCount].y;
 				tempCount++;
 			}
 
@@ -223,9 +213,7 @@ class PlayState extends FlxState
 	 */
 	function onClear():Void
 	{
-		// Lets just wipe the whole boxPositions array
-		_gameSave.data.boxPositions = null;
-		_gameSave.flush();
+		FlxG.save.erase();
 		_topText.text = "Save erased";
 		_topText.alpha = 1;
 	}

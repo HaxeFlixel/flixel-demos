@@ -22,11 +22,6 @@ class Reg
 	static public var PS:PlayState;
 
 	/**
-	 * Used for saving and loading high scores.
-	 */
-	static public var save:FlxSave;
-
-	/**
 	 * Just a 2px by 2px transparent piece of "dust".
 	 */
 	static public function dustMote():BitmapData

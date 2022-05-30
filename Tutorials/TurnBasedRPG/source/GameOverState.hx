@@ -7,7 +7,6 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
-import flixel.util.FlxSave;
 
 class GameOverState extends FlxState
 {
@@ -85,20 +84,16 @@ class GameOverState extends FlxState
 	function checkHighscore(score:Int):Int
 	{
 		var highscore:Int = score;
-		var save = new FlxSave();
-		if (save.bind("TurnBasedRPG"))
+		var saveData = FlxG.save.data;
+		if (saveData.highscore != null && saveData.highscore > highscore)
 		{
-			if (save.data.highscore != null && save.data.highscore > highscore)
-			{
-				highscore = save.data.highscore;
-			}
-			else
-			{
-				// data is less or there is no data; save current score
-				save.data.highscore = highscore;
-			}
+			highscore = saveData.highscore;
 		}
-		save.close();
+		else
+		{
+			// data is less or there is no data; save current score
+			saveData.highscore = highscore;
+		}
 		return highscore;
 	}
 

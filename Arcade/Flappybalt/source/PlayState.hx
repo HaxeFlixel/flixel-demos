@@ -20,8 +20,6 @@ class PlayState extends FlxState
 	var _feathers:FlxEmitter;
 	var _highScore:FlxText;
 
-	inline static var SAVE_DATA:String = "FLAPPYBALT";
-
 	override public function create():Void
 	{
 		super.create();
@@ -202,17 +200,12 @@ class PlayState extends FlxState
 	 */
 	static public function saveScore():Void
 	{
-		Reg.save = new FlxSave();
-
-		if (Reg.save.bind(SAVE_DATA))
-		{
-			if ((Reg.save.data.score == null) || (Reg.save.data.score < Reg.score))
-				Reg.save.data.score = Reg.score;
-		}
+		if ((FlxG.save.data.score == null) || (FlxG.save.data.score < Reg.score))
+			FlxG.save.data.score = Reg.score;
 
 		// Have to do this in order for saves to work on native targets!
 
-		Reg.save.flush();
+		FlxG.save.flush();
 	}
 
 	/**
@@ -222,13 +215,8 @@ class PlayState extends FlxState
 	 */
 	static public function loadScore():Int
 	{
-		Reg.save = new FlxSave();
-
-		if (Reg.save.bind(SAVE_DATA))
-		{
-			if ((Reg.save.data != null) && (Reg.save.data.score != null))
-				return Reg.save.data.score;
-		}
+		if ((FlxG.save.data != null) && (FlxG.save.data.score != null))
+			return FlxG.save.data.score;
 
 		return 0;
 	}
@@ -238,9 +226,6 @@ class PlayState extends FlxState
 	 */
 	static public function clearSave():Void
 	{
-		Reg.save = new FlxSave();
-
-		if (Reg.save.bind(SAVE_DATA))
-			Reg.save.erase();
+		FlxG.save.erase();
 	}
 }
