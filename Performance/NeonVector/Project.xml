@@ -80,7 +80,7 @@
 	
 	<!-- _________________________________ Custom _______________________________ -->
 	
-	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
+	<!-- Place custom nodes like icons here -->
 	<assets path="assets/images" rename="images" />
 
 	<section if="flash || html5">
