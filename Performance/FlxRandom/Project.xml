@@ -77,6 +77,6 @@
 	
 	<!-- _________________________________ Custom _______________________________ -->
 	
-	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
+	<!-- Place custom nodes like icons here -->
 	<haxeflag name="-D" value="swf-script-timeout=65" />
 </project>

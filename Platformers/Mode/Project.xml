@@ -79,7 +79,7 @@
 	
 	<!-- _________________________________ Custom _______________________________ -->
 	
-	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
+	<!-- Place custom nodes like icons here -->
 	
 	<assets path="assets" exclude="*.ogg|*.mp3" />
 	<assets path="assets" include="*.mp3" if="web || air" />
