@@ -26,7 +26,7 @@ class Player extends FlxSprite
 
 		drag.x = drag.y = 800;
 		setSize(8, 8);
-		offset.set(4, 4);
+		offset.set(4, 8);
 
 		stepSound = FlxG.sound.load(AssetPaths.step__wav);
 	}

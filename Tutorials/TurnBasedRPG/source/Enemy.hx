@@ -43,10 +43,9 @@ class Enemy extends FlxSprite
 		animation.add("lr_walk", [3, 4, 3, 5], 6);
 		animation.add("u_walk", [6, 7, 6, 8], 6);
 		drag.x = drag.y = 10;
-		width = 8;
-		height = 14;
+		setSize(8, 8);
 		offset.x = 4;
-		offset.y = 2;
+		offset.y = 8;
 
 		brain = new FSM(idle);
 		idleTimer = 0;
