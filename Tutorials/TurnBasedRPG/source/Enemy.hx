@@ -16,7 +16,8 @@ enum EnemyType
 
 class Enemy extends FlxSprite
 {
-	static inline var SPEED:Float = 140;
+	static inline var WALK_SPEED:Float = 40;
+	static inline var CHASE_SPEED:Float = 70;
 
 	var brain:FSM;
 	var idleTimer:Float;
@@ -35,14 +36,16 @@ class Enemy extends FlxSprite
 		loadGraphic(graphic, true, 16, 16);
 		setFacingFlip(LEFT, false, false);
 		setFacingFlip(RIGHT, true, false);
-		animation.add("d", [0, 1, 0, 2], 6, false);
-		animation.add("lr", [3, 4, 3, 5], 6, false);
-		animation.add("u", [6, 7, 6, 8], 6, false);
+		animation.add("d_idle", [0]);
+		animation.add("lr_idle", [3]);
+		animation.add("u_idle", [6]);
+		animation.add("d_walk", [0, 1, 0, 2], 6);
+		animation.add("lr_walk", [3, 4, 3, 5], 6);
+		animation.add("u_walk", [6, 7, 6, 8], 6);
 		drag.x = drag.y = 10;
-		width = 8;
-		height = 14;
+		setSize(8, 8);
 		offset.x = 4;
-		offset.y = 2;
+		offset.y = 8;
 
 		brain = new FSM(idle);
 		idleTimer = 0;
@@ -58,8 +61,10 @@ class Enemy extends FlxSprite
 		if (this.isFlickering())
 			return;
 
-		if ((velocity.x != 0 || velocity.y != 0) && touching == NONE)
+		var action = "idle";
+		if (velocity.x != 0 || velocity.y != 0)
 		{
+			action = "walk";
 			if (Math.abs(velocity.x) > Math.abs(velocity.y))
 			{
 				if (velocity.x < 0)
@@ -75,25 +80,22 @@ class Enemy extends FlxSprite
 					facing = DOWN;
 			}
 
-			switch (facing)
-			{
-				case LEFT, RIGHT:
-					animation.play("lr");
-
-				case UP:
-					animation.play("u");
-
-				case DOWN:
-					animation.play("d");
-
-				case _:
-			}
-		}
-
-		if ((velocity.x != 0 || velocity.y != 0) && touching == NONE)
-		{
 			stepSound.setPosition(x + frameWidth / 2, y + height);
 			stepSound.play();
+		}
+
+		switch (facing)
+		{
+			case LEFT, RIGHT:
+				animation.play("lr_" + action);
+
+			case UP:
+				animation.play("u_" + action);
+
+			case DOWN:
+				animation.play("d_" + action);
+
+			case _:
 		}
 
 		brain.update(elapsed);
@@ -108,16 +110,17 @@ class Enemy extends FlxSprite
 		}
 		else if (idleTimer <= 0)
 		{
-			if (FlxG.random.bool(1))
-			{
-				moveDirection = -1;
-				velocity.x = velocity.y = 0;
-			}
-			else
+			// 95% chance to move
+			if (FlxG.random.bool(95))
 			{
 				moveDirection = FlxG.random.int(0, 8) * 45;
 
-				velocity.setPolarDegrees(SPEED * 0.5, moveDirection);
+				velocity.setPolarDegrees(WALK_SPEED, moveDirection);
+			}
+			else
+			{
+				moveDirection = -1;
+				velocity.x = velocity.y = 0;
 			}
 			idleTimer = FlxG.random.int(1, 4);
 		}
@@ -133,7 +136,7 @@ class Enemy extends FlxSprite
 		}
 		else
 		{
-			FlxVelocity.moveTowardsPoint(this, playerPosition, Std.int(SPEED));
+			FlxVelocity.moveTowardsPoint(this, playerPosition, CHASE_SPEED);
 		}
 	}
 
