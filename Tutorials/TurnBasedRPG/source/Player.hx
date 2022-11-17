@@ -17,9 +17,12 @@ class Player extends FlxSprite
 		loadGraphic(AssetPaths.player__png, true, 16, 16);
 		setFacingFlip(LEFT, false, false);
 		setFacingFlip(RIGHT, true, false);
-		animation.add("lr", [3, 4, 3, 5], 6, false);
-		animation.add("u", [6, 7, 6, 8], 6, false);
-		animation.add("d", [0, 1, 0, 2], 6, false);
+		animation.add("d_idle", [0]);
+		animation.add("lr_idle", [3]);
+		animation.add("u_idle", [6]);
+		animation.add("d_walk", [0, 1, 0, 2], 6);
+		animation.add("lr_walk", [3, 4, 3, 5], 6);
+		animation.add("u_walk", [6, 7, 6, 8], 6);
 
 		drag.x = drag.y = 800;
 		setSize(8, 8);
@@ -95,23 +98,25 @@ class Player extends FlxSprite
 
 			// determine our velocity based on angle and speed
 			velocity.setPolarDegrees(SPEED, newAngle);
+		}
 
-			// if the player is moving (velocity is not 0 for either axis), we need to change the animation to match their facing
-			if ((velocity.x != 0 || velocity.y != 0) && touching == NONE)
-			{
-				stepSound.play();
+		var action = "idle";
+		// check if the player is moving, and not walking into walls
+		if ((velocity.x != 0 || velocity.y != 0) && touching == NONE)
+		{
+			stepSound.play();
+			action = "walk";
+		}
 
-				switch (facing)
-				{
-					case LEFT, RIGHT:
-						animation.play("lr");
-					case UP:
-						animation.play("u");
-					case DOWN:
-						animation.play("d");
-					case _:
-				}
-			}
+		switch (facing)
+		{
+			case LEFT, RIGHT:
+				animation.play("lr_" + action);
+			case UP:
+				animation.play("u_" + action);
+			case DOWN:
+				animation.play("d_" + action);
+			case _:
 		}
 	}
 }
