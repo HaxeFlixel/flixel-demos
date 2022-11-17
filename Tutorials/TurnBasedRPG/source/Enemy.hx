@@ -80,6 +80,9 @@ class Enemy extends FlxSprite
 				else
 					facing = DOWN;
 			}
+
+			stepSound.setPosition(x + frameWidth / 2, y + height);
+			stepSound.play();
 		}
 
 		switch (facing)
@@ -94,12 +97,6 @@ class Enemy extends FlxSprite
 				animation.play("d_" + action);
 
 			case _:
-		}
-
-		if ((velocity.x != 0 || velocity.y != 0) && touching == NONE)
-		{
-			stepSound.setPosition(x + frameWidth / 2, y + height);
-			stepSound.play();
 		}
 
 		brain.update(elapsed);
