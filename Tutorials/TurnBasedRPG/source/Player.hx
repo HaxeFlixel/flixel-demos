@@ -7,7 +7,7 @@ import flixel.system.FlxSound;
 
 class Player extends FlxSprite
 {
-	static inline var SPEED:Float = 200;
+	static inline var SPEED:Float = 100;
 
 	var stepSound:FlxSound;
 
@@ -21,7 +21,7 @@ class Player extends FlxSprite
 		animation.add("u", [6, 7, 6, 8], 6, false);
 		animation.add("d", [0, 1, 0, 2], 6, false);
 
-		drag.x = drag.y = 1600;
+		drag.x = drag.y = 800;
 		setSize(8, 8);
 		offset.set(4, 4);
 

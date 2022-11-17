@@ -16,7 +16,8 @@ enum EnemyType
 
 class Enemy extends FlxSprite
 {
-	static inline var SPEED:Float = 140;
+	static inline var WALK_SPEED:Float = 40;
+	static inline var CHASE_SPEED:Float = 70;
 
 	var brain:FSM;
 	var idleTimer:Float;
@@ -108,16 +109,17 @@ class Enemy extends FlxSprite
 		}
 		else if (idleTimer <= 0)
 		{
-			if (FlxG.random.bool(1))
-			{
-				moveDirection = -1;
-				velocity.x = velocity.y = 0;
-			}
-			else
+			// 95% chance to move
+			if (FlxG.random.bool(95))
 			{
 				moveDirection = FlxG.random.int(0, 8) * 45;
 
-				velocity.setPolarDegrees(SPEED * 0.5, moveDirection);
+				velocity.setPolarDegrees(WALK_SPEED, moveDirection);
+			}
+			else
+			{
+				moveDirection = -1;
+				velocity.x = velocity.y = 0;
 			}
 			idleTimer = FlxG.random.int(1, 4);
 		}
@@ -133,7 +135,7 @@ class Enemy extends FlxSprite
 		}
 		else
 		{
-			FlxVelocity.moveTowardsPoint(this, playerPosition, Std.int(SPEED));
+			FlxVelocity.moveTowardsPoint(this, playerPosition, CHASE_SPEED);
 		}
 	}
 
