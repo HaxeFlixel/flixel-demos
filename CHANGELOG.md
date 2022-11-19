@@ -1,4 +1,12 @@
-2.8.1 (Janurary 26, 2022)
+2.9.0 (November 19, 2022)
+------------------------------
+* Flixel 5.0.0-alpha compatibility
+* Fix errors in Save (#294)
+* Rename hit.png to fix HTML5 preloading? (#295)
+* Remove mention of icon priorities. (#303) 
+* Tutorial updates (#305)
+
+2.8.1 (January 26, 2022)
 ------------------------------
 * Deprecate haxe 3
 * Enabled FileBrowse on html5
