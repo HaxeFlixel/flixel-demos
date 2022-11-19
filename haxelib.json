@@ -6,6 +6,6 @@
     "description": "Demo Projects for HaxeFlixel",
     "version": "2.9.0",
     "releasenote": "flixel 5.0.0-alpha compatibility",
-    "contributors": ["haxeflixel", "Gama11"],
+    "contributors": ["haxeflixel", "Gama11", "GeoKureli"],
     "dependencies": {}
 }
