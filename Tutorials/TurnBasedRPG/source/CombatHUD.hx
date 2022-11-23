@@ -13,6 +13,13 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.ui.FlxBar;
+#if (openfl >= "8.0.0")
+import openfl8.effects.*;
+import openfl8.effects.WiggleEffect.WiggleEffectType;
+#else
+import openfl3.effects.*;
+import openfl3.effects.WiggleEffect.WiggleEffectType;
+#end
 import flixel.util.FlxColor;
 
 using flixel.util.FlxSpriteUtil;
@@ -41,7 +48,9 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 	public var enemy:Enemy; // we will pass the enemySprite that the playerSprite touched to initialize combat, and this will let us also know which enemySprite to kill, etc.
 	public var playerHealth(default, null):Int; // when combat has finished, we will need to know how much remaining health the playerSprite has
 	public var outcome(default, null):Outcome; // when combat has finished, we will need to know if the playerSprite killed the enemySprite or fled
-
+	
+	// These are the Shaders used to define a prettier look in Battle; Simliar to Earthbounds Combat HUD using GLSL Shaders (e.g; Flag Shaders)
+	var wiggleEffect:WiggleEffect = new WiggleEffect();
 	// These are the sprites that we will use to show the combat hud interface
 	var background:FlxSprite; // this is the background sprite
 	var playerSprite:Player; // this is a sprite of the playerSprite
@@ -78,11 +87,14 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 	public function new()
 	{
 		super();
-
+		wiggleEffect.effectType = WiggleEffectType.WAVY;
+		wiggleEffect.waveAmplitude = 0.2;
+		wiggleEffect.waveFrequency = 7;
+		wiggleEffect.waveSpeed = 1;
+		screen.shader = wiggleEffect.shader();
+		
 		screen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT);
-		var waveEffect = new FlxWaveEffect(FlxWaveMode.ALL, 4, -1, 4);
-		var waveSprite = new FlxEffectSprite(screen, [waveEffect]);
-		add(waveSprite);
+		add(screen);
 
 		// first, create our background. Make a black square, then draw borders onto it in white. Add it to our group.
 		background = new FlxSprite().makeGraphic(120, 120, FlxColor.WHITE);
