@@ -2,10 +2,12 @@
 
 [flixel](https://github.com/HaxeFlixel/flixel) | [addons](https://github.com/HaxeFlixel/flixel-addons) | [ui](https://github.com/HaxeFlixel/flixel-ui) | [demos](https://github.com/HaxeFlixel/flixel-demos) | [tools](https://github.com/HaxeFlixel/flixel-tools) | [templates](https://github.com/HaxeFlixel/flixel-templates) | [docs](https://github.com/HaxeFlixel/flixel-docs) | [haxeflixel.com](https://github.com/HaxeFlixel/haxeflixel.com)
 
-[![CI](https://img.shields.io/github/workflow/status/HaxeFlixel/flixel-demos/CI.svg?logo=github)](https://github.com/HaxeFlixel/flixel-demos/actions?query=workflow%3ACI)
+[![CI](https://img.shields.io/github/actions/workflow/status/HaxeFlixel/flixel-demos/main.yml?branch=dev&logo=github)](https://github.com/HaxeFlixel/flixel-demos/actions?query=workflow%3ACI)
+[![Discord](https://img.shields.io/discord/162395145352904705.svg?logo=discord)](https://discordapp.com/invite/rqEBAgF)
 [![Haxelib Version](https://badgen.net/haxelib/v/flixel-demos)](https://lib.haxe.org/p/flixel-demos)
 [![Haxelib Downloads](https://badgen.net/haxelib/d/flixel-demos?color=blue)](https://lib.haxe.org/p/flixel-demos)
 [![Haxelib License](https://badgen.net/haxelib/license/flixel-demos)](LICENSE.md)
+[![Patreon](https://img.shields.io/badge/donate-patreon-blue.svg)](https://www.patreon.com/haxeflixel)
 
 ## About
 
