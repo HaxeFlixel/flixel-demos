@@ -39,6 +39,11 @@ class PlayState extends FlxState
 	static inline var OVERLAY_COLOR = 0xff887fff;
 
 	/**
+	 * The radius around the gem that will be illuminated
+	 */
+	var lightRadius:Float = 50.0;
+
+	/**
 	 * Only contains non-collidabe tiles
 	 */
 	var background:FlxTilemap;
@@ -117,6 +122,23 @@ class PlayState extends FlxState
 		fps = new FPS(10, 10, 0xffffff);
 		FlxG.stage.addChild(fps);
 		fps.visible = false;
+
+		initializeWalls();
+	}
+
+	function initializeWalls()
+	{
+		// The walls are on the egdes and don't need shadows
+		for(body in FlxNapeSpace.space.bodies)
+		{
+			for(shape in body.shapes)
+			{
+				if(shape.bounds.x <= TILE_SIZE || shape.bounds.y <= TILE_SIZE || shape.bounds.y >= FlxG.height - 2*TILE_SIZE || shape.bounds.x >= FlxG.width - 2*TILE_SIZE)
+				{
+					shape.userData.type = "Wall";
+				}
+			}
+		}
 	}
 
 	function createProps():Void
@@ -154,13 +176,22 @@ class PlayState extends FlxState
 
 	override public function update(elapsed:Float):Void
 	{
-		infoText.text = "FPS: " + fps.currentFPS + "\n\nObjects can be dragged/thrown around.\n\nPress 'R' to restart.";
+		infoText.text = "FPS: " + fps.currentFPS + "\n\nObjects can be dragged/thrown around.\n\nPress 'R' to restart.\n\nUse LEFT or RIGHT buttons to increase or decrease the illuminated radius of the Gem";
 
 		if (FlxG.keys.justPressed.R)
 			FlxG.resetState();
 
 		if (FlxG.keys.justPressed.D)
 			FlxNapeSpace.drawDebug = !FlxNapeSpace.drawDebug;
+		
+		if(FlxG.keys.pressed.LEFT)
+		{
+			lightRadius -= 2;
+		}
+		if(FlxG.keys.pressed.RIGHT)
+		{
+			lightRadius += 2;
+		}
 
 		processShadows();
 		super.update(elapsed);
@@ -168,9 +199,13 @@ class PlayState extends FlxState
 
 	public function processShadows():Void
 	{
-		shadowCanvas.fill(FlxColor.TRANSPARENT);
+		shadowCanvas.fill(SHADOW_COLOR);
 		shadowOverlay.fill(OVERLAY_COLOR);
 
+		shadowCanvas.drawCircle( // radius of light around the Gem
+			gem.body.position.x + FlxG.random.float(-.25, .25), gem.body.position.y + FlxG.random.float(-.25, .25),
+			(FlxG.random.bool(5) ? lightRadius : lightRadius + 0.5), OVERLAY_COLOR);
+		
 		shadowOverlay.drawCircle( // outer red circle
 			gem.body.position.x + FlxG.random.float(-.6, .6), gem.body.position.y + FlxG.random.float(-.6, .6),
 			(FlxG.random.bool(5) ? 16 : 16.5), 0xffff5f5f);
@@ -179,18 +214,14 @@ class PlayState extends FlxState
 			gem.body.position.x + FlxG.random.float(-.25, .25), gem.body.position.y + FlxG.random.float(-.25, .25),
 			(FlxG.random.bool(5) ? 13 : 13.5), 0xffff7070);
 
-		for (body in FlxNapeSpace.space.bodies)
+		var tempLightOrigin:Vec2 = Vec2.get(gem.body.position.x + FlxG.random.float(-.3, 3), gem.body.position.y + FlxG.random.float(-.3, .3));
+		for (shape in FlxNapeSpace.space.shapesInCircle(tempLightOrigin, lightRadius))
 		{
-			// We don't want to draw any shadows around the gem, since it's the light source
-			if (body.userData.type != "Gem")
-				processBodyShapes(body);
-		}
-	}
-
-	function processBodyShapes(body:Body)
-	{
-		for (shape in body.shapes)
-		{
+			if(shape.userData.type == "Wall" || shape.body.userData.type == "Gem") // don't draw shadows behind the walls (which aren't gonna be visible to us) or around the Gem itself
+			{
+				continue;
+			}
+			
 			var verts:Vec2List = shape.castPolygon.worldVerts;
 
 			for (i in 0...verts.length)
@@ -224,9 +255,10 @@ class PlayState extends FlxState
 	{
 		var lightToPoint:Vec2 = point.copy();
 		lightToPoint.subeq(light);
+		lightToPoint.normalise();
 
 		var projectedPoint:Vec2 = point.copy();
-		return projectedPoint.addeq(lightToPoint.muleq(.45));
+		return projectedPoint.addeq(lightToPoint.muleq(lightRadius));
 	}
 
 	function doesEdgeCastShadow(start:Vec2, end:Vec2, light:Vec2):Bool
