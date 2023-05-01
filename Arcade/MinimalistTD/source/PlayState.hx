@@ -1,19 +1,19 @@
 package;
 
-import flash.display.Sprite;
+import Reg.TILE_SIZE;
 import flash.display.BlendMode;
+import flash.display.Sprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
-import flixel.text.FlxText;
-import flixel.tile.FlxTilemap;
-import flixel.tweens.FlxTween;
-import flixel.tweens.FlxEase;
-import flixel.util.FlxColor;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
-import Reg.TILE_SIZE;
+import flixel.text.FlxText;
+import flixel.tile.FlxTilemap;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
 
 enum MenuType
 {
@@ -536,6 +536,10 @@ class PlayState extends FlxState
 	 */
 	function buildTowerCallback(Skip:Bool = false):Void
 	{
+		if (!_towerButton.visible)
+		{
+			return;
+		}
 		if (towerPrice > money)
 			return;
 
