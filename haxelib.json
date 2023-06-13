@@ -4,8 +4,8 @@
     "license": "MIT",
     "tags": ["game", "openfl", "flash", "neko", "cpp", "android", "ios", "demo", "cross"],
     "description": "Demo Projects for HaxeFlixel",
-    "version": "2.9.0",
-    "releasenote": "flixel 5.0.0-alpha compatibility",
+    "version": "2.9.1",
+    "releasenote": "Prettier BSPMapGen and FlxSkewedSprite",
     "contributors": ["haxeflixel", "Gama11", "GeoKureli"],
     "dependencies": {}
 }

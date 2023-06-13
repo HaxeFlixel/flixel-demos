@@ -1,3 +1,9 @@
+2.9.1 (June 13, 2023)
+------------------------------
+* Deprecate haxe versions older than 4.2.5
+* Fix BSPMapGen rendering on html5
+* Make FlxSkewedSprite prettier
+
 2.9.0 (November 19, 2022)
 ------------------------------
 * Flixel 5.0.0-alpha compatibility
