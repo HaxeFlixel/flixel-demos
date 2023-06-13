@@ -24,9 +24,6 @@ class PlayState extends FlxState
 		
 		var grass:Grass;
 		
-		// add(grass = new Grass(0, 0, -1, 0));
-		// grass.y = FlxG.height - grass.height;
-		
 		add(grass = new Grass(0, 0, 0, 0));
 		grass.y = bottom.y - grass.height;
 		
