@@ -1,3 +1,7 @@
+2.9.2 (June 13, 2023)
+------------------------------
+* Fix seam in FlxSkewedSprite on html5
+
 2.9.1 (June 13, 2023)
 ------------------------------
 * Deprecate haxe versions older than 4.2.5
