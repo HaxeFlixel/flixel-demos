@@ -123,7 +123,7 @@ class Leaf
 			// Place the room within leaf, but not against sides (would merge)
 			var roomPos = new FlxPoint(FlxG.random.float(1, width - roomSize.x - 1), FlxG.random.float(1, height - roomSize.y - 1));
 
-			room = new Rectangle(x + roomPos.x, y + roomPos.y, roomSize.x, roomSize.y);
+			room = new Rectangle(Math.floor(x + roomPos.x), Math.floor(y + roomPos.y), Math.floor(roomSize.x), Math.floor(roomSize.y));
 		}
 	}
 
@@ -144,31 +144,31 @@ class Leaf
 			{
 				if (FlxG.random.float() > 0.5)
 				{
-					hallways.push(new Rectangle(point2.x, point1.y, Math.abs(w), 1));
-					hallways.push(new Rectangle(point2.x, point2.y, 1, Math.abs(h)));
+					hallways.push(new Rectangle(Math.ceil(point2.x), Math.ceil(point1.y), Math.ceil(Math.abs(w)), 1));
+					hallways.push(new Rectangle(Math.ceil(point2.x), Math.ceil(point2.y), 1, Math.ceil(Math.abs(h))));
 				}
 				else
 				{
-					hallways.push(new Rectangle(point2.x, point2.y, Math.abs(w), 1));
-					hallways.push(new Rectangle(point1.x, point2.y, 1, Math.abs(h)));
+					hallways.push(new Rectangle(Math.ceil(point2.x), Math.ceil(point2.y), Math.ceil(Math.abs(w)), 1));
+					hallways.push(new Rectangle(Math.ceil(point1.x), Math.ceil(point2.y), 1, Math.ceil(Math.abs(h))));
 				}
 			}
 			else if (h > 0)
 			{
 				if (FlxG.random.float() > 0.5)
 				{
-					hallways.push(new Rectangle(point2.x, point1.y, Math.abs(w), 1));
-					hallways.push(new Rectangle(point2.x, point1.y, 1, Math.abs(h)));
+					hallways.push(new Rectangle(Math.ceil(point2.x), Math.ceil(point1.y), Math.ceil(Math.abs(w)), 1));
+					hallways.push(new Rectangle(Math.ceil(point2.x), Math.ceil(point1.y), 1, Math.ceil(Math.abs(h))));
 				}
 				else
 				{
-					hallways.push(new Rectangle(point2.x, point2.y, Math.abs(w), 1));
-					hallways.push(new Rectangle(point1.x, point1.y, 1, Math.abs(h)));
+					hallways.push(new Rectangle(Math.ceil(point2.x), Math.ceil(point2.y), Math.ceil(Math.abs(w)), 1));
+					hallways.push(new Rectangle(Math.ceil(point1.x), Math.ceil(point1.y), 1, Math.ceil(Math.abs(h))));
 				}
 			}
 			else
 			{
-				hallways.push(new Rectangle(point2.x, point2.y, Math.abs(w), 1));
+				hallways.push(new Rectangle(Math.ceil(point2.x), Math.ceil(point2.y), Math.ceil(Math.abs(w)), 1));
 			}
 		}
 		else if (w > 0)
@@ -177,42 +177,42 @@ class Leaf
 			{
 				if (FlxG.random.float() > 0.5)
 				{
-					hallways.push(new Rectangle(point1.x, point2.y, Math.abs(w), 1));
-					hallways.push(new Rectangle(point1.x, point2.y, 1, Math.abs(h)));
+					hallways.push(new Rectangle(Math.ceil(point1.x), Math.ceil(point2.y), Math.ceil(Math.abs(w)), 1));
+					hallways.push(new Rectangle(Math.ceil(point1.x), Math.ceil(point2.y), 1, Math.ceil(Math.abs(h))));
 				}
 				else
 				{
-					hallways.push(new Rectangle(point1.x, point1.y, Math.abs(w), 1));
-					hallways.push(new Rectangle(point2.x, point2.y, 1, Math.abs(h)));
+					hallways.push(new Rectangle(Math.ceil(point1.x), Math.ceil(point1.y), Math.ceil(Math.abs(w)), 1));
+					hallways.push(new Rectangle(Math.ceil(point2.x), Math.ceil(point2.y), 1, Math.ceil(Math.abs(h))));
 				}
 			}
 			else if (h > 0)
 			{
 				if (FlxG.random.float() > 0.5)
 				{
-					hallways.push(new Rectangle(point1.x, point1.y, Math.abs(w), 1));
-					hallways.push(new Rectangle(point2.x, point1.y, 1, Math.abs(h)));
+					hallways.push(new Rectangle(Math.ceil(point1.x), Math.ceil(point1.y), Math.ceil(Math.abs(w)), 1));
+					hallways.push(new Rectangle(Math.ceil(point2.x), Math.ceil(point1.y), 1, Math.ceil(Math.abs(h))));
 				}
 				else
 				{
-					hallways.push(new Rectangle(point1.x, point2.y, Math.abs(w), 1));
-					hallways.push(new Rectangle(point1.x, point1.y, 1, Math.abs(h)));
+					hallways.push(new Rectangle(Math.ceil(point1.x), Math.ceil(point2.y), Math.ceil(Math.abs(w)), 1));
+					hallways.push(new Rectangle(Math.ceil(point1.x), Math.ceil(point1.y), 1, Math.ceil(Math.abs(h))));
 				}
 			}
 			else
 			{
-				hallways.push(new Rectangle(point1.x, point1.y, Math.abs(w), 1));
+				hallways.push(new Rectangle(Math.ceil(point1.x), Math.ceil(point1.y), Math.ceil(Math.abs(w)), 1));
 			}
 		}
 		else
 		{
 			if (h < 0)
 			{
-				hallways.push(new Rectangle(point2.x, point2.y, 1, Math.abs(h)));
+				hallways.push(new Rectangle(Math.ceil(point2.x), Math.ceil(point2.y), 1, Math.ceil(Math.abs(h))));
 			}
 			else if (h > 0)
 			{
-				hallways.push(new Rectangle(point1.x, point1.y, 1, Math.abs(h)));
+				hallways.push(new Rectangle(Math.ceil(point1.x), Math.ceil(point1.y), 1, Math.ceil(Math.abs(h))));
 			}
 		}
 	}
