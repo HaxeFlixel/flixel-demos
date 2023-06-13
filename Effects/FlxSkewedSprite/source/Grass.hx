@@ -2,6 +2,8 @@ package;
 
 import flixel.FlxG;
 import flixel.addons.effects.FlxSkewedSprite;
+import flixel.graphics.frames.FlxTileFrames;
+import flixel.math.FlxPoint;
 
 /**
  * @author Zaphod
@@ -19,14 +21,18 @@ class Grass extends FlxSkewedSprite
 		this.time = timeOffset * SKEW_FREQ;
 		super(x, y);
 		
-		if (frame < 0)
-			loadGraphic("assets/grass.png");
-		else
-		{
-			loadGraphic("assets/grass.png", true, 600, 56);
-			animation.frameIndex = frame;
-		}
+		loadGraphic("assets/grass.png", true, 600, 56);
+		// extrude the edge pixels beyond the frame to avoid seams on html5
+		frames = FlxTileFrames.fromBitmapAddSpacesAndBorders(
+			graphic,
+			FlxPoint.get(600, 56),
+			null,
+			FlxPoint.get(1, 1)
+		);
+		// set the frame
+		animation.frameIndex = frame;
 		
+		// set origin to the bottom so it stays attached to the same ground
 		origin.set(0, height);
 		antialiasing = true;
 	}
@@ -36,6 +42,9 @@ class Grass extends FlxSkewedSprite
 		super.update(elapsed);
 		time += elapsed;
 		
-		skew.x = SKEW_MIN + (Math.cos(time / SKEW_FREQ * Math.PI) + 1) / 2 * (SKEW_MAX - SKEW_MIN);
+		// simple sine wave going from 0 to 1
+		final skewFactor = Math.cos(time / SKEW_FREQ * Math.PI) / 2 + 0.5;
+		// set skew based on min, max and factor
+		skew.x = SKEW_MIN + skewFactor * (SKEW_MAX - SKEW_MIN);
 	}
 }
