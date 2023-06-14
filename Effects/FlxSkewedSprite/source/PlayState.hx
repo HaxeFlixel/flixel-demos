@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.util.FlxColor;
 
@@ -12,18 +13,24 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		FlxG.mouse.visible = false;
-
+		
 		// Sky-colored background
-		FlxG.cameras.bgColor = FlxColor.CYAN;
-
-		var grassY:Int = FlxG.height - 28;
-
-		var grass1:Grass = new Grass(0, grassY, 0, 0);
-		var grass2:Grass = new Grass(0, grassY, 1, -5);
-		var grass3:Grass = new Grass(0, grassY, 2, 5);
-
-		add(grass1);
-		add(grass2);
-		add(grass3);
+		FlxG.cameras.bgColor = 0xFF4D9BD3;
+		
+		var bottom = new FlxSprite();
+		bottom.makeGraphic(FlxG.width, 5, 0xFF161b3a);
+		bottom.y = FlxG.height - bottom.height;
+		add(bottom);
+		
+		var grass:Grass;
+		
+		add(grass = new Grass(0, 0, 0, 0));
+		grass.y = bottom.y - grass.height;
+		
+		add(grass = new Grass(0, 0, 1, -0.2));
+		grass.y = bottom.y - grass.height;
+		
+		add(grass = new Grass(0, 0, 2, 0.2));
+		grass.y = bottom.y - grass.height;
 	}
 }
