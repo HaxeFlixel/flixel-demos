@@ -56,7 +56,7 @@ class Bullet extends FlxSprite
 
 		// Move toward the target that was assigned in init().
 
-		if (target != null && _target.alive)
+		if (_target != null && _target.alive)
 		{
 			FlxVelocity.moveTowardsObject(this, _target, 200);
 		}
