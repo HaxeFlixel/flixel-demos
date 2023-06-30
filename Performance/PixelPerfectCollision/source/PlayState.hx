@@ -1,22 +1,22 @@
 package;
 
+import flash.system.System;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.group.FlxGroup;
+import flixel.math.FlxAngle;
+import flixel.math.FlxPoint;
+import flixel.math.FlxVector;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import flixel.math.FlxPoint;
-import flixel.math.FlxVector;
-import flixel.math.FlxAngle;
-import flixel.util.FlxColor;
 import flixel.util.FlxCollision;
-import flixel.group.FlxGroup;
-import flash.system.System;
+import flixel.util.FlxColor;
 import openfl.display.FPS;
 
-using flixel.util.FlxSpriteUtil;
 using StringTools;
+using flixel.util.FlxSpriteUtil;
 
 /**
  * @author azrafe7
@@ -36,7 +36,8 @@ class PlayState extends FlxState
 		+ "[R]               Randomize\n"
 		+ "[SPACE]       |rotate| rotation\n"
 		+ "[T]               |scale| scale\n"
-		+ "[H]               Toggle instructions";
+		+ "[H]               Toggle instructions\n"
+		+ "[Q]               |quadTrees| QuadTrees";
 
 	inline static var INFO_MIN:String
 		= "Objects: |objects|\n"
@@ -45,7 +46,7 @@ class PlayState extends FlxState
 		+ "FPS: |fps|";
 
 	// group holding the player and the aliens
-	var aliens:FlxTypedGroup<Alien>;
+	var group:FlxTypedGroup<DemoSprite>;
 
 	// the player ship
 	var player:Player;
@@ -71,6 +72,8 @@ class PlayState extends FlxState
 	var scale:Bool = false;
 	// whether the key instructions will show
 	var showFullInfo = true;
+	
+	var useQuadTrees = true;
 
 	override public function create():Void
 	{
@@ -78,10 +81,10 @@ class PlayState extends FlxState
 		FlxG.camera.bgColor = FlxG.stage.color;
 
 		// the group containing all the objects
-		add(aliens = new FlxTypedGroup<Alien>());
+		add(group = new FlxTypedGroup<DemoSprite>());
 
 		// create the player
-		add(player = new Player());
+		group.add(player = new Player());
 		FlxG.camera.follow(player);
 		FlxG.camera.setScrollBounds(0, FlxG.width * 10, 0, FlxG.height);
 		FlxG.worldBounds.set(-10, -10, FlxG.camera.maxScrollX + 20, FlxG.camera.maxScrollY + 20);
@@ -113,7 +116,7 @@ class PlayState extends FlxState
 	 */
 	function addAlien():FlxSprite
 	{
-		var alien = aliens.recycle(Alien);
+		var alien:Alien = cast group.recycle(Alien);
 		alien.randomize();
 		
 		if (rotate)
@@ -143,6 +146,9 @@ class PlayState extends FlxState
 
 	function handleInput():Void
 	{
+		if (FlxG.keys.justReleased.Q)
+			useQuadTrees = !useQuadTrees;
+		
 		// toggle rotation
 		if (FlxG.keys.justReleased.SPACE)
 		{
@@ -160,8 +166,11 @@ class PlayState extends FlxState
 		// randomize
 		if (FlxG.keys.justReleased.R)
 		{
-			for (a in aliens)
-				a.randomize();
+			for (obj in group)
+			{
+				if (obj is Alien)
+					Std.downcast(obj, Alien).randomize();
+			}
 		}
 
 		// increment/decrement number of objects
@@ -173,11 +182,14 @@ class PlayState extends FlxState
 		
 		if (FlxG.keys.justReleased.S)
 		{
-			for (i in 0...3)
+			if (group.length >= 4)
 			{
-				var alien = aliens.getFirstAlive();
-				if (alien != null)
-					alien.kill();
+				for (i in 0...3)
+				{
+					final alien = group.getFirst((obj)->obj.alive && obj is Alien);
+					if (alien != null)
+						alien.kill();
+				}
 			}
 		}
 		
@@ -212,47 +224,66 @@ class PlayState extends FlxState
 	{
 		numChecks = 0;
 		numCollisions = 0;
-		player.color = 0xFF6abe30;
-
-		for (alien in aliens)
-			alien.cameraWrap(WALL);
 		
-		for (alien1 in aliens)
+		function pixelPerfectCheck(a:DemoSprite, b:DemoSprite)
 		{
-			var collides = false;
-
-			// Only collide alive members
-			if (!alien1.alive)
-				continue;
+			if (a.isOverlapping && b.isOverlapping)
+				return false;
 			
 			numChecks++;
-			// We check collisions with the player seperately, since he's not in the group
-			if (FlxCollision.pixelPerfectCheck(alien1, player, alphaTolerance))
-			{
-				collides = true;
+			final overlapping = FlxCollision.pixelPerfectCheck(a, b, alphaTolerance);
+			if (overlapping)
 				numCollisions++;
-				player.color = 0xFFac3232;
-			}
-			else
+			
+			return overlapping;
+		}
+
+		for (alien in group)
+			alien.cameraWrap(WALL);
+		
+		if (useQuadTrees)
+		{
+			for (obj in group)
+				obj.isOverlapping = false;
+			
+			FlxG.overlap(group, group,
+				function onOverlap(a, b)
+				{
+					a.isOverlapping = true;
+					b.isOverlapping = true;
+				},
+				pixelPerfectCheck
+			);
+		}
+		else
+		{
+			for (obj in group)
+				obj.isOverlapping = false;
+			
+			for (obj1 in group)
 			{
-				for (alien2 in aliens)
+				// Only collide alive members
+				if (!obj1.alive)// || obj1.isOverlapping)
+					continue;
+				
+				// We check collisions with the player seperately, since he's not in the group
+				for (obj2 in group)
 				{
 					// Only collide alive members and don't collide an object with itself
-					if (!alien2.alive || alien1 == alien2)
+					if (!obj1.alive || obj1 == obj2)
 						continue;
 					
-					numChecks++;
 					// this is how we check if obj1 and obj2 are colliding
-					if (FlxCollision.pixelPerfectCheck(alien1, alien2, alphaTolerance))
+					if (pixelPerfectCheck(obj1, obj2))
 					{
-						collides = true;
-						numCollisions++;
+						obj1.isOverlapping = true;
+						obj2.isOverlapping = true;
 						break;
 					}
 				}
+				
+				// obj1.setCollides(collides);
 			}
-			
-			alien1.setCollides(collides);
 		}
 	}
 	
@@ -260,17 +291,13 @@ class PlayState extends FlxState
 	{
 		if (rotate)
 		{
-			for (alien in aliens)
-				alien.randomAngle();
-			
-			player.randomAngle();
+			for (obj in group)
+				obj.randomAngle();
 		}
 		else
 		{
-			for (alien in aliens)
-				alien.resetAngle();
-			
-			player.resetAngle();
+			for (obj in group)
+				obj.resetAngle();
 		}
 	}
 	
@@ -278,13 +305,19 @@ class PlayState extends FlxState
 	{
 		if (scale)
 		{
-			for (alien in aliens)
-				alien.randomScale();
+			for (obj in group)
+			{
+				if (obj is Alien)
+					Std.downcast(obj, Alien).randomScale();
+			}
 		}
 		else
 		{
-			for (alien in aliens)
-				alien.resetScale();
+			for (obj in group)
+			{
+				if (obj is Alien)
+					Std.downcast(obj, Alien).resetScale();
+			}
 		}
 	}
 
@@ -294,10 +327,11 @@ class PlayState extends FlxState
 			.replace("|checks|", Std.string(numChecks))
 			.replace("|hits|", Std.string(numCollisions))
 			.replace("|fps|", Std.string(fps.currentFPS))
-			.replace("|objects|", Std.string(aliens.countLiving() + 1))// + 1 for the player
+			.replace("|objects|", Std.string(group.countLiving()))
 			.replace("|alpha|", Std.string(alphaTolerance))
 			.replace("|rotate|", rotate ? "Disable" : "Enable")
-			.replace("|scale|", scale ? "Disable" : "Enable");
+			.replace("|scale|", scale ? "Disable" : "Enable")
+			.replace("|quadTrees|", useQuadTrees ? "Disable" : "Enable");
 		
 	}
 }

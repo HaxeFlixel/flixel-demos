@@ -5,6 +5,9 @@ import flixel.math.FlxRect;
 
 class DemoSprite extends FlxSprite
 {
+	public var isOverlapping = false;
+	public var wasOverlapping = false;
+	
 	public function new (x = 0.0, y = 0.0)
 	{
 		super(x, y);
@@ -13,7 +16,7 @@ class DemoSprite extends FlxSprite
 	/**
 	 * Switches the between the red/white color to show whether an overlap is occurring.
 	 */
-	public function setCollides(value:Bool)
+	function setCollides(value:Bool)
 	{
 		color = value ? 0xFFac3232 : 0xFF6abe30;
 	}
@@ -46,6 +49,12 @@ class DemoSprite extends FlxSprite
 	{
 		// For debugging
 		// drawDebugScreenBounds();
+		
+		if (isOverlapping != wasOverlapping)
+		{
+			setCollides(isOverlapping);
+			wasOverlapping = isOverlapping;
+		}
 		
 		super.draw();
 	}
