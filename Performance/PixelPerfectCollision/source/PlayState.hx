@@ -227,9 +227,11 @@ class PlayState extends FlxState
 		
 		function pixelPerfectCheck(a:DemoSprite, b:DemoSprite)
 		{
+			// reduce redundant checks
 			if (a.isOverlapping && b.isOverlapping)
 				return false;
 			
+			// track checks and collisions
 			numChecks++;
 			final overlapping = FlxCollision.pixelPerfectCheck(a, b, alphaTolerance);
 			if (overlapping)
