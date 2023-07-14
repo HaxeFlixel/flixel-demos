@@ -4,8 +4,8 @@
     "license": "MIT",
     "tags": ["game", "openfl", "flash", "neko", "cpp", "android", "ios", "demo", "cross"],
     "description": "Demo Projects for HaxeFlixel",
-    "version": "2.9.2",
-    "releasenote": "Fix seam in FlxSkewedSprite on html5",
+    "version": "2.9.3",
+    "releasenote": "Create FlxMouseEvent demo to replace FlxMouseEventManager",
     "contributors": ["haxeflixel", "Gama11", "GeoKureli"],
     "dependencies": {}
 }
