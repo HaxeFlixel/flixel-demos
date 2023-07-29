@@ -1,3 +1,7 @@
+2.9.3 (July 14, 2023)
+------------------------------
+* Create "FlxMouseEvent" demo to replace "FlxMouseEventManager" (will remove old demo later)
+
 2.9.2 (June 13, 2023)
 ------------------------------
 * Fix seam in FlxSkewedSprite on html5
