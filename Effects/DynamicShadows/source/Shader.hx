@@ -47,7 +47,7 @@ class Shader extends flixel.system.FlxAssets.FlxShader
 		{
 			// Not an effecient way to do this, but just scaling up the texture and put shadow if any part of it is "blocked"
 			float shadowAmount = 0.0;
-			for (float scale = 1.0; scale < 3.0; scale += 0.01)
+			for (float scale = 1.0; scale < 2.0; scale += 0.02) 
 			{
 				shadowAmount = max(shadowAmount, texture2D(bitmap, scalePos(p, scale)).a);
 			}
