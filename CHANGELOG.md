@@ -1,3 +1,7 @@
+2.9.4 (August 7, 2023)
+------------------------------
+* Fix performance issues in DynamicShadows by using shaders
+
 2.9.3 (July 14, 2023)
 ------------------------------
 * Create "FlxMouseEvent" demo to replace "FlxMouseEventManager" (will remove old demo later)
