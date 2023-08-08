@@ -11,15 +11,6 @@ class Shader extends flixel.system.FlxAssets.FlxShader
 	public var originY(get, never):Float;
 	inline function get_originY() return this.uOrigin.value[1];
 	
-	public var shade(get, set):Float;
-	inline function get_shade() return this.uShade.value[0];
-	inline function set_shade(value:Float)
-	{
-		this.uShade.value = [Math.min(1, Math.max(0, value))];
-		FlxG.watch.addQuick("shade", value);
-		return value;
-	}
-	
 	public var glowRadius(get, set):Float;
 	inline function get_glowRadius() return this.uGlowRadius.value[0];
 	inline function set_glowRadius(value:Float)
@@ -32,9 +23,9 @@ class Shader extends flixel.system.FlxAssets.FlxShader
 	@:glFragmentSource('
 		#pragma header
 		
+		uniform sampler2D bgImage;
 		uniform vec2 uOrigin;
 		uniform float uScale;
-		uniform float uShade;
 		uniform float uGlowRadius;
 		
 		vec2 scalePos(vec2 p, float scale)
@@ -70,26 +61,28 @@ class Shader extends flixel.system.FlxAssets.FlxShader
 			vec3 add = fg.rgb + glowRgb;
 			return vec4((mult + add)/2.0, fg.a);
 		}
-		
+		const vec3 unshadedRgb = vec3(0.6, 0.6, 1.0);
+		const vec4 shadeColor = vec4(0.0, 0.0, 0.4, 0.6);
 		const vec4 bgGlow = vec4(1.0, 0.125, 0.0, 0.25);
-		vec4 applyBgGlow(vec4 bg, float glowAmount)
+		vec4 applyBgGlow(vec4 bg, float shadeAmount, float glowAmount)
 		{
+			vec3 shadeRgb = mix(unshadedRgb, shadeColor.rgb, shadeColor.a * shadeAmount);
 			vec3 glowRgb = bgGlow.rgb * bgGlow.a * glowAmount;
-			vec3 mult = bg.rgb * glowRgb;
-			vec3 add = bg.rgb + glowRgb;
-			return vec4((mult + add)/2.0, bg.a + (bgGlow.a * glowAmount));
+			vec3 mult = (bg.rgb + glowRgb / 2.0) * (glowRgb + shadeRgb);
+			return vec4(mult, bg.a);
 		}
 		
 		void main()
 		{
 			vec2 uv = openfl_TextureCoordv;
 			
+			vec4 bg = texture2D(bgImage, uv);
 			vec4 fg = texture2D(bitmap, uv);
-			vec4 shadow = vec4(0.0, 0.0, 0.02, uShade * getShadow(uv));
+			float shadowAmount = getShadow(uv);
 			float glowAmount = getGlow(uv);
 			
-			gl_FragColor = mix(applyBgGlow(shadow, glowAmount), applyFgGlow(fg, glowAmount), fg.a);
-			// gl_FragColor = glow;
+			// gl_FragColor = applyBgGlow(bg, shadowAmount, glowAmount);
+			gl_FragColor = mix(applyBgGlow(bg, shadowAmount, glowAmount), applyFgGlow(fg, glowAmount), fg.a);
 		}
 	')
 	
@@ -97,7 +90,6 @@ class Shader extends flixel.system.FlxAssets.FlxShader
 	{
 		super();
 		
-		shade = 0.6;
 		setOrigin(FlxG.width, FlxG.height);
 		glowRadius = 0.05;
 	}
