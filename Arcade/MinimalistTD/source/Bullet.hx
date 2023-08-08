@@ -56,9 +56,14 @@ class Bullet extends FlxSprite
 
 		// Move toward the target that was assigned in init().
 
-		if (_target.alive)
+		if (_target != null && _target.alive)
 		{
 			FlxVelocity.moveTowardsObject(this, _target, 200);
+		}
+		else
+		{
+			// Target may be recycled, so we no longer want to point to it.
+			_target = null;
 		}
 
 		super.update(elapsed);
