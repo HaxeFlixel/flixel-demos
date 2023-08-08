@@ -1,9 +1,9 @@
 package;
 
-import flixel.addons.editors.pex.FlxPexParser;
-import flixel.effects.particles.FlxEmitter;
 import flixel.FlxG;
 import flixel.FlxState;
+import flixel.addons.editors.pex.FlxPexParser;
+import flixel.effects.particles.FlxEmitter;
 import flixel.text.FlxText;
 
 class PlayState extends FlxState
@@ -15,30 +15,29 @@ class PlayState extends FlxState
 		FlxG.mouse.visible = false;
 
 		emitter = new FlxEmitter(FlxG.width / 2, FlxG.height / 2);
-		initEmitter();
+		initEmitter(0.5);
 		emitter.start(false, 0.01);
 		add(emitter);
 
-		var instructions = new FlxText(0, 10, 0, "Drag left mouse to move the fire\nHold right mouse to increase scale");
+		var instructions = new FlxText(0, 10, 0, "Drag to move the fire\npress to increase scale");
 		instructions.alignment = CENTER;
 		instructions.screenCenter(X);
 		add(instructions);
 	}
 
-	function initEmitter(scale:Int = 1):Void
+	function initEmitter(scale:Float):Void
 	{
 		FlxPexParser.parse("assets/data/particle.pex", "assets/images/texture.png", emitter, scale);
 	}
 
 	override public function update(elapsed:Float):Void
 	{
-		if (FlxG.mouse.pressed)
-			emitter.setPosition(FlxG.mouse.x, FlxG.mouse.y);
+		emitter.setPosition(FlxG.mouse.x, FlxG.mouse.y);
 
-		if (FlxG.mouse.justPressedRight)
-			initEmitter(2);
-		else if (FlxG.mouse.justReleasedRight)
-			initEmitter(1);
+		if (FlxG.mouse.justPressed)
+			initEmitter(1.0);
+		else if (FlxG.mouse.justReleased)
+			initEmitter(0.5);
 
 		super.update(elapsed);
 	}
