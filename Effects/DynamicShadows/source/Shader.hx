@@ -61,6 +61,7 @@ class Shader extends flixel.system.FlxAssets.FlxShader
 			vec3 add = fg.rgb + glowRgb;
 			return vec4((mult + add)/2.0, fg.a);
 		}
+		
 		const vec3 unshadedRgb = vec3(0.6, 0.6, 1.0);
 		const vec4 shadeColor = vec4(0.0, 0.0, 0.4, 0.6);
 		const vec4 bgGlow = vec4(1.0, 0.125, 0.0, 0.25);
@@ -81,7 +82,6 @@ class Shader extends flixel.system.FlxAssets.FlxShader
 			float shadowAmount = getShadow(uv);
 			float glowAmount = getGlow(uv);
 			
-			// gl_FragColor = applyBgGlow(bg, shadowAmount, glowAmount);
 			gl_FragColor = mix(applyBgGlow(bg, shadowAmount, glowAmount), applyFgGlow(fg, glowAmount), fg.a);
 		}
 	')
