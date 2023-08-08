@@ -85,7 +85,7 @@ class Shader extends flixel.system.FlxAssets.FlxShader
 			vec2 uv = openfl_TextureCoordv;
 			
 			vec4 fg = texture2D(bitmap, uv);
-			vec4 shadow = vec4(0.0, 0.0, 0.0, uShade * getShadow(uv));
+			vec4 shadow = vec4(0.0, 0.0, 0.02, uShade * getShadow(uv));
 			float glowAmount = getGlow(uv);
 			
 			gl_FragColor = mix(applyBgGlow(shadow, glowAmount), applyFgGlow(fg, glowAmount), fg.a);
