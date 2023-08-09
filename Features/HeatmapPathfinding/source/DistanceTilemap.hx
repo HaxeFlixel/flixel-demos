@@ -82,10 +82,10 @@ class DistanceTilemap extends FlxTilemap
 		final start = (targetY * collisionMap.widthInTiles) + targetX;
 		final end = start == 0 ? 1 : 0;
 		// compute distances from the target to every tile, without stopping at the end
-		final distances = collisionMap.computePathDistance(start, end, NONE, false);
+		var distances = collisionMap.computePathDistance(start, start, NONE, false);
 		if (distances == null)
-			return;
-
+			distances = [for (i in 0...totalTiles) -1];
+		
 		this.distances = distances;
 
 		var maxDistance:Int = 1;

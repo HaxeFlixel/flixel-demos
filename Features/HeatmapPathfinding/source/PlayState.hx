@@ -149,8 +149,6 @@ class PlayState extends FlxState
 
 	function updateSeekers(elapsed:Float):Void
 	{
-		FlxG.collide(tilemap, seekers);
-		
 		final targetX = mcguffin.tileX;
 		final targetY = mcguffin.tileY;
 		for (seeker in seekers)
