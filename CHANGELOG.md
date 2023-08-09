@@ -1,3 +1,11 @@
+3.0.0 (August 9, 2023)
+------------------------------
+- `FlxMouseEventManager`: Removed
+- `HeatmapPathfinder`: Make mobile-friendly [#321](https://github.com/HaxeFlixel/flixel-demos/pull/321)
+- `FlxPexParser`: Use HD particle, make mobile friendly [#320](https://github.com/HaxeFlixel/flixel-demos/pull/320)
+- `DynamicShadows`: Add blue tint to bg, make shadows flicker [#319](https://github.com/HaxeFlixel/flixel-demos/pull/319)
+- `MinimalistTD`: Fix overlapping buttons and recycled sprites [#309](https://github.com/HaxeFlixel/flixel-demos/pull/309)
+
 2.9.4 (August 7, 2023)
 ------------------------------
 * Fix performance issues in DynamicShadows by using shaders

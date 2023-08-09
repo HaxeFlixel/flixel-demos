@@ -4,8 +4,8 @@
     "license": "MIT",
     "tags": ["game", "openfl", "flash", "neko", "cpp", "android", "ios", "demo", "cross"],
     "description": "Demo Projects for HaxeFlixel",
-    "version": "2.9.4",
-    "releasenote": "Fix performance issues in DynamicShadows by using shaders",
+    "version": "3.0.0",
+    "releasenote": "Make some demos mobile-friendly",
     "contributors": ["haxeflixel", "Gama11", "GeoKureli"],
     "dependencies": {}
 }
