@@ -12,15 +12,16 @@ class InstructionState extends FlxSubState
 	{
 		bgColor = 0xAA000000;
 
-		var t = new FlxText(0, 90, FlxG.width, "HeatmapPathfinding", 32);
+		var t = new FlxText(0, 10, FlxG.width, "Heatmap\nPathfinding", 36);
 		t.alignment = CENTER;
 		add(t);
 
-		var t2 = new FlxText(0, 170, FlxG.width, "Left Click: Place Wall\nRight Click: Erase Wall\nMiddle Click: Move McGuffin\nSpace: Add Seeker", 16);
+		var t2 = new FlxText(0, 120, FlxG.width, "Click to drag objects\n or place / erase walls\nElephants seek when placed", 16);
 		t2.alignment = CENTER;
 		add(t2);
 
-		var closeButton = new FlxButton(0, 300, "Ok", function() close());
+		var closeButton = new FlxButton(0, 0, "Ok", function() close());
+		closeButton.y = FlxG.height - closeButton.height - 4;
 		closeButton.screenCenter(FlxAxes.X);
 		add(closeButton);
 	}

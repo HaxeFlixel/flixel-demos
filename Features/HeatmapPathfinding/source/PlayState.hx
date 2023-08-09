@@ -1,5 +1,6 @@
 package;
 
+import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -13,13 +14,13 @@ import flixel.util.FlxColor;
  */
 class PlayState extends FlxState
 {
-	public static inline var SPEED:Int = 64;
+	public static inline var TILE_SIZE = 16;
 
 	public var tilemap:FlxTilemap;
-	public var distmap:FlxTilemap;
-	public var distances:Array<Int>;
-	public var mcguffin:FlxPoint;
-	public var mcguffinSprite:FlxSprite;
+	public var distmap:DistanceTilemap;
+
+	public var mcguffin:TileSprite;
+	public var mouseState:MouseState = NONE;
 
 	public var seekers:FlxTypedGroup<Seeker>;
 
@@ -35,184 +36,169 @@ class PlayState extends FlxState
 		openSubState(new InstructionState());
 	}
 
+	function makeTiles():Void
+	{
+		tilemap = new FlxTilemap();
+		distmap = new DistanceTilemap(tilemap);
+		tilemap.scale.set(TILE_SIZE, TILE_SIZE);
+		distmap.scale.set(TILE_SIZE, TILE_SIZE);
+
+		final cols = Std.int(FlxG.width / TILE_SIZE);
+		final rows = Std.int(FlxG.height / TILE_SIZE);
+		final mapData = [for (i in 0...cols * rows) 0];
+		
+		FlxTypedTilemap.defaultFramePadding = 0;
+		
+		distmap.createEmptyHeatmap(cols, rows);
+		add(distmap);
+		
+		final tileSize = 16;
+		tilemap.loadMapFromArray(mapData, cols, rows, FlxGraphic.fromClass(GraphicAutoFull), tileSize, tileSize, FULL, 0, 0, 1);
+		add(tilemap);
+		tilemap.scale.set(TILE_SIZE / tileSize, TILE_SIZE / tileSize);
+
+		seekers = new FlxTypedGroup<Seeker>();
+		add(seekers);
+
+		mcguffin = new TileSprite(0, 0, "assets/images/mcguffin.png");
+		add(mcguffin);
+
+		mcguffin.setTile(0, 0);
+		updateDistanceMap();
+		
+		placeInactiveSeeker();
+	}
+
 	/**
 	 * Function that is called once every frame.
 	 */
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-
-		if (FlxG.keys.justPressed.DELETE)
-		{
-			var seeker = seekers.getFirstAlive();
-			seeker.kill();
-		}
-		else if (FlxG.keys.justPressed.SPACE)
-			placeSeeker();
-
-		if (FlxG.mouse.pressed)
-			clickTile(1);
-		else if (FlxG.mouse.pressedRight)
-			clickTile(0);
-		else if (FlxG.mouse.pressedMiddle)
-			placeMcguffin(FlxG.mouse.x, FlxG.mouse.y);
-
-		updateSeekers();
+		
+		updateInput(elapsed);
+		updateSeekers(elapsed);
 	}
-
-	function updateSeekers():Void
+	
+	function updateInput(elapsed:Float)
 	{
-		FlxG.collide(tilemap, seekers);
-
-		for (seeker in seekers)
+		final mouse = FlxG.mouse.getWorldPosition();
+		
+		if (FlxG.mouse.justPressed)
 		{
-			if (!seeker.moving)
+			if (mcguffin.tileOverlaps(mouse.x, mouse.y))
+				mouseState = DRAG(mcguffin);
+			else
 			{
-				var tx:Int = Std.int((seeker.x - seeker.offset.x) / 16);
-				var ty:Int = Std.int((seeker.y - seeker.offset.y) / 16);
-
-				var bestX:Int = 0;
-				var bestY:Int = 0;
-				var bestDist:Float = Math.POSITIVE_INFINITY;
-				var neighbors:Array<Array<Float>> = [[999, 999, 999], [999, 999, 999], [999, 999, 999]];
-				for (yy in -1...2)
+				for (seeker in seekers)
 				{
-					for (xx in -1...2)
+					if (seeker.tileOverlaps(mouse.x, mouse.y))
 					{
-						var theX:Int = tx + xx;
-						var theY:Int = ty + yy;
-
-						if (theX >= 0 && theY < distmap.widthInTiles)
-						{
-							if (theY >= 0 && theY < distmap.heightInTiles)
-							{
-								if (xx == 0 || yy == 0)
-								{
-									var distance:Float = distances[theY * distmap.widthInTiles + theX];
-									neighbors[yy + 1][xx + 1] = distance;
-									if (distance > 0)
-									{
-										if (distance < bestDist || (bestX == 0 && bestY == 0))
-										{
-											bestDist = distance;
-											bestX = xx;
-											bestY = yy;
-										}
-									}
-								}
-							}
-						}
+						mouseState = DRAG(seeker);
+						break;
 					}
 				}
+			}
 
-				if (!(bestX == 0 && bestY == 0))
+			if (mouseState.match(NONE))
+			{
+				final tile = getTileAt(mouse.x, mouse.y);
+				mouseState = tile == 0 ? PLACING_WALLS : REMOVING_WALLS;
+			}
+		}
+
+		if (FlxG.mouse.justReleased)
+		{
+			switch (mouseState)
+			{
+				case DRAG(obj) if (obj is Seeker):
+					obj.active = true;
+				default:
+			}
+			mouseState = NONE;
+		}
+
+		if (FlxG.mouse.pressed)
+		{
+			switch (mouseState)
+			{
+				case DRAG(obj):
+					obj.setNearestTile(mouse.x, mouse.y);
+					if (obj == mcguffin)
+						updateDistanceMap();
+					else if (obj is Seeker && obj.active == false)
+					{
+						// add a new seeker to be placed
+						if (obj.active == false)
+							placeInactiveSeeker();
+						
+						obj.active = false;
+						
+						// add a new seeker to be placed
+						placeInactiveSeeker();
+					}
+				case REMOVING_WALLS:
+					setTileAt(mouse.x, mouse.y, 0);
+				case PLACING_WALLS:
+					setTileAt(mouse.x, mouse.y, 1);
+				case NONE:
+					throw "Unexpected mouseState: NONE";
+			}
+		}
+	}
+
+	function updateSeekers(elapsed:Float):Void
+	{
+		final targetX = mcguffin.tileX;
+		final targetY = mcguffin.tileY;
+		for (seeker in seekers)
+		{
+			if (seeker.exists && seeker.active && !seeker.moves)
+			{
+				if (seeker.tileX == targetX && seeker.tileY == targetY)
 				{
-					seeker.moveTo((tx * 16) + (bestX * 16) + seeker.offset.x, (ty * 16) + (bestY * 16) + seeker.offset.y, SPEED);
+					seeker.kill();
+				}
+				else
+				{
+					final toIndex = distmap.getIndexOfBestNeighbor(seeker.tileX, seeker.tileY);
+					final tileX = toIndex % distmap.widthInTiles;
+					final tileY = Std.int(toIndex / distmap.widthInTiles);
+					seeker.moveToTile(tileX, tileY);
 				}
 			}
 		}
 	}
 
-	function placeSeeker():Void
+	function placeInactiveSeeker():Void
 	{
-		var x:Float = FlxG.mouse.x - (FlxG.mouse.x % 16);
-		var y:Float = FlxG.mouse.y - (FlxG.mouse.y % 16);
-
-		var seeker = seekers.recycle(Seeker.new);
-		seeker.reset(x, y);
+		final seeker = seekers.recycle(Seeker.new);
+		seeker.resetToTile(distmap.widthInTiles - 2, distmap.heightInTiles - 2);
+		seeker.active = false;
 	}
 
-	function placeMcguffin(X:Float, Y:Float):Void
+	function updateDistanceMap():Void
 	{
-		mcguffin.x = Std.int(X / 16);
-		mcguffin.y = Std.int(Y / 16);
-
-		mcguffinSprite.x = Std.int(mcguffin.x * 16);
-		mcguffinSprite.y = Std.int(mcguffin.y * 16);
-
-		updateDistance();
+		distmap.redraw(mcguffin.tileX, mcguffin.tileY);
 	}
 
-	function updateDistance():Void
+	function getTileAt(x:Float, y:Float):Int
 	{
-		var startX:Int = Std.int((mcguffin.y * tilemap.widthInTiles) + mcguffin.x);
-		var endX:Int = 0;
-		if (startX == endX)
-			endX = 1;
-
-		var tempDistances = tilemap.computePathDistance(startX, endX, NONE, false);
-
-		if (tempDistances == null)
-			return;
-		else
-			distances = tempDistances; // safe to assign
-
-		var maxDistance:Int = 1;
-		for (dist in distances)
-		{
-			if (dist > maxDistance)
-				maxDistance = dist;
-		}
-
-		for (i in 0...distances.length)
-		{
-			var disti:Int = 0;
-			if (distances[i] < 0)
-				disti = 1000;
-			else
-				disti = Std.int(999 * (distances[i] / maxDistance));
-
-			distmap.setTileByIndex(i, disti, true);
-		}
+		return tilemap.getTile(Std.int(x / TILE_SIZE), Std.int(y / TILE_SIZE));
 	}
 
-	function clickTile(value:Int):Void
+	function setTileAt(x:Float, y:Float, value:Int):Void
 	{
-		var tx:Int = Std.int(FlxG.mouse.x / 16);
-		var ty:Int = Std.int(FlxG.mouse.y / 16);
-		tilemap.setTile(tx, ty, value, true);
+		tilemap.setTile(Std.int(x / TILE_SIZE), Std.int(y / TILE_SIZE), value, true);
 
-		tilemap.setTileProperties(0, NONE);
-		tilemap.setTileProperties(1, ANY);
-
-		updateDistance();
+		updateDistanceMap();
 	}
+}
 
-	function makeTiles():Void
-	{
-		tilemap = new FlxTilemap();
-		distmap = new FlxTilemap();
-		tilemap.scale.set(16, 16);
-		distmap.scale.set(16, 16);
-
-		var tw:Int = Std.int(FlxG.width / 16);
-		var th:Int = Std.int(FlxG.height / 16);
-
-		var arr:Array<Int> = [];
-		var arr2:Array<Int> = [];
-		for (_ in 0...tw)
-		{
-			for (_ in 0...th)
-			{
-				arr.push(0);
-				arr2.push(0);
-			}
-		}
-
-		tilemap.loadMapFromArray(arr, tw, th, "assets/images/tileset.png", 1, 1);
-		distmap.loadMapFromArray(arr2, tw, th, "assets/images/heat.png", 1, 1);
-		add(distmap);
-
-		tilemap.setTileProperties(0, NONE);
-		tilemap.setTileProperties(1, ANY);
-
-		seekers = new FlxTypedGroup<Seeker>();
-		add(seekers);
-
-		mcguffin = FlxPoint.get();
-		mcguffinSprite = new FlxSprite(0, 0, "assets/images/mcguffin.png");
-		add(mcguffinSprite);
-
-		placeMcguffin(0, 0);
-	}
+enum MouseState
+{
+	PLACING_WALLS;
+	REMOVING_WALLS;
+	DRAG(obj:TileSprite);
+	NONE;
 }
