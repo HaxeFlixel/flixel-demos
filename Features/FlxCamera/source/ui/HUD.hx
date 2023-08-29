@@ -28,7 +28,7 @@ class HUD extends FlxGroup
 		
 		add(new Text(left, startY, "[W,A,S,D] or arrows to control the orb."));
 
-		add(new Text(left, startY + 20, "[H] to change follow style."));
+		add(new Text(left, startY + 20, "[H] or [Y] to change follow style."));
 		add(txtStyle = new GreenText(left, startY + 33, "LOCKON"));
 
 		add(new Text(left, startY + 55, "[U] or [J] to change lerp."));
