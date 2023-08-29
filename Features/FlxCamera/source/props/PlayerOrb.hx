@@ -19,7 +19,7 @@ class PlayerOrb extends Orb
 	 */
 	static final impulseHelper = new Vec2();
 	
-	public var controls:Controls;
+	public var controls:PlayerControls;
 	
 	public function new(x = 0.0, y = 0.0)
 	{
@@ -27,7 +27,7 @@ class PlayerOrb extends Orb
 		// small amount of drag
 		setDrag(0.98);
 		
-		controls = new Controls();
+		controls = new PlayerControls();
 	}
 	
 	override function update(elapsed:Float)

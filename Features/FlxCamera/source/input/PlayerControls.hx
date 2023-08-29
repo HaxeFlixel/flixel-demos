@@ -5,17 +5,17 @@ import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
 import flixel.ui.FlxVirtualPad;
 
-class Controls
+class PlayerControls
 {
 	/**
 	 * Maps input types to their corresponding keyboard button
 	 */
 	static public var keyMap:Map<Input, Array<FlxKey>> =
 	[
-		Input.LEFT  => [FlxKey.A, FlxKey.LEFT],
-		Input.DOWN  => [FlxKey.S, FlxKey.DOWN],
+		Input.LEFT  => [FlxKey.A, FlxKey.LEFT ],
+		Input.DOWN  => [FlxKey.S, FlxKey.DOWN ],
 		Input.RIGHT => [FlxKey.D, FlxKey.RIGHT],
-		Input.UP    => [FlxKey.W, FlxKey.UP]
+		Input.UP    => [FlxKey.W, FlxKey.UP   ]
 	];
 	
 	#if FLX_GAMEPAD
@@ -42,6 +42,15 @@ class Controls
 		final useVirtualPad = #if html5 FlxG.html5.onMobile #elseif mobile true #else false #end;
 		if (useVirtualPad)
 			virtualPad = new VirtualPad();
+	}
+	
+	public function isGamepadConnected()
+	{
+		#if FLX_GAMEPAD
+		return FlxG.gamepads.numActiveGamepads > 0;
+		#else
+		return false;
+		#end
 	}
 	
 	/**
@@ -100,6 +109,7 @@ abstract VirtualPad(FlxVirtualPad) from FlxVirtualPad to FlxVirtualPad
 			case Input.RIGHT: this.buttonRight.pressed;
 			case Input.UP   : this.buttonUp.pressed;
 			case Input.DOWN : this.buttonDown.pressed;
+			default: false;
 		}
 	}
 }
