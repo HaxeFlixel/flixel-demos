@@ -1,7 +1,7 @@
 package props;
 
 import flixel.FlxG;
-import input.Controls;
+import input.PlayerControls;
 import nape.geom.Vec2;
 
 /**
