@@ -74,9 +74,9 @@ class HUD extends FlxGroup
 @:forward
 abstract Text(FlxText) from FlxText to FlxText
 {
-	inline public function new (x = 0.0, y = 0.0, fieldWidth = WIDTH, ?text:String, size = 8)
+	inline public function new (x = 0.0, y = 0.0, ?text:String, size = 8)
 	{
-		this = new FlxText(x, y, fieldWidth, text, size);
+		this = new FlxText(x, y, WIDTH, text, size);
 		#if debug
 		this.ignoreDrawDebug = true;
 		#end
@@ -89,9 +89,9 @@ abstract Text(FlxText) from FlxText to FlxText
 @:forward
 abstract GreenText(Text) from Text to Text
 {
-	inline public function new (x = 0.0, y = 0.0, fieldWidth = WIDTH, ?text:String)
+	inline public function new (x = 0.0, y = 0.0, ?text:String)
 	{
-		this = new Text(x, y, WIDTH, text);
+		this = new Text(x, y, text);
 		this.setFormat(null, 11, 0x55FF55);
 	}
 }
