@@ -57,7 +57,7 @@ class PlayState extends FlxState
 		
 		// create nape wall colliders
 		final border = 10;
-		FlxNapeSpace.createWalls(levelMinX + border, levelMinY + border, levelMaxX - border, levelMaxY - border, new Material(1.0, 0.0, 0.0, 1));
+		FlxNapeSpace.createWalls(levelMinX + border, levelMinY + border, levelMaxX - border, levelMaxY - border, border, new Material(1.0, 0.0, 0.0, 1));
 		
 		// Walls border sprite
 		add(new BorderSprite(levelMinX, levelMinY, levelWidth, levelHeight));
