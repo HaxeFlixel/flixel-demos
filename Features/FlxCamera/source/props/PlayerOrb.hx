@@ -1,6 +1,7 @@
 package props;
 
 import flixel.FlxG;
+import input.Controls;
 import nape.geom.Vec2;
 
 /**
@@ -18,11 +19,15 @@ class PlayerOrb extends Orb
 	 */
 	static final impulseHelper = new Vec2();
 	
+	public var controls:Controls;
+	
 	public function new(x = 0.0, y = 0.0)
 	{
 		super(x, y, 18, "assets/Orb.png", "assets/OrbShadow.png");
 		// small amount of drag
 		setDrag(0.98);
+		
+		controls = new Controls();
 	}
 	
 	override function update(elapsed:Float)
@@ -31,16 +36,16 @@ class PlayerOrb extends Orb
 		
 		// apply impusles to the body based on key presses
 		
-		if (FlxG.keys.anyPressed([A, LEFT]))
+		if (controls.inputPressed(LEFT))
 			applyImpulseXY(-IMPULSE, 0);
 		
-		if (FlxG.keys.anyPressed([S, DOWN]))
+		if (controls.inputPressed(DOWN))
 			applyImpulseXY(0, IMPULSE);
 		
-		if (FlxG.keys.anyPressed([D, RIGHT]))
+		if (controls.inputPressed(RIGHT))
 			applyImpulseXY(IMPULSE, 0);
 		
-		if (FlxG.keys.anyPressed([W, UP]))
+		if (controls.inputPressed(UP))
 			applyImpulseXY(0, -IMPULSE);
 	}
 	

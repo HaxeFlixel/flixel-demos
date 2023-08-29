@@ -65,7 +65,10 @@ class PlayState extends FlxState
 		// Player orb
 		player = new PlayerOrb(levelMinX + levelWidth / 2, levelMinY + levelHeight / 2);
 		add(player);
-
+		// if the player is using a virtual pad, add it to the state
+		if (player.controls.virtualPad != null)
+			add(player.controls.virtualPad);
+		
 		// Other orbs
 		for (i in 0...5)
 		{
