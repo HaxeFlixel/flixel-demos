@@ -9,6 +9,7 @@ import flixel.addons.display.FlxBackdrop;
 import flixel.addons.nape.FlxNapeSpace;
 import flixel.math.FlxMath;
 import nape.phys.Material;
+import props.BorderSlice;
 import props.Orb;
 import props.OtherOrb;
 import props.PlayerOrb;
@@ -60,9 +61,8 @@ class PlayState extends FlxState
 		FlxNapeSpace.createWalls(levelMinX + border, levelMinY + border, levelMaxX - border, levelMaxY - border, border, new Material(1.0, 0.0, 0.0, 1));
 		
 		// Walls border sprite
-		final border = new FlxSprite(levelMinX, levelMinY, "assets/Border.png");
-		border.setGraphicSize(levelWidth, levelHeight);
-		add(border);
+		final borderSprite = new BorderSlice(levelMinX, levelMinY, levelWidth, levelHeight);
+		add(borderSprite);
 
 		// Player orb
 		player = new PlayerOrb(levelMinX + levelWidth / 2, levelMinY + levelHeight / 2);
