@@ -1,5 +1,6 @@
-{ "frames": {
-   "player 0.ase": {
+{ "frames": [
+   {
+    "filename": "idle:0",
     "frame": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
@@ -7,7 +8,8 @@
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 1.ase": {
+   {
+    "filename": "jump:1",
     "frame": { "x": 80, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
@@ -15,7 +17,8 @@
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 2.ase": {
+   {
+    "filename": "fall:2",
     "frame": { "x": 160, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
@@ -23,7 +26,8 @@
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 3.ase": {
+   {
+    "filename": "duck:3",
     "frame": { "x": 240, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
@@ -31,7 +35,8 @@
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 4.ase": {
+   {
+    "filename": "fall:4",
     "frame": { "x": 320, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
@@ -39,165 +44,184 @@
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 5.ase": {
-    "frame": { "x": 0, "y": 110, "w": 80, "h": 110 },
+   {
+    "filename": "climb:5",
+    "frame": { "x": 400, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 6.ase": {
-    "frame": { "x": 80, "y": 110, "w": 80, "h": 110 },
+   {
+    "filename": "climb:6",
+    "frame": { "x": 480, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 7.ase": {
-    "frame": { "x": 160, "y": 110, "w": 80, "h": 110 },
+   {
+    "filename": "cheer:7",
+    "frame": { "x": 560, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 8.ase": {
-    "frame": { "x": 240, "y": 110, "w": 80, "h": 110 },
+   {
+    "filename": "cheer:8",
+    "frame": { "x": 640, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 9.ase": {
-    "frame": { "x": 320, "y": 110, "w": 80, "h": 110 },
+   {
+    "filename": "walk:9",
+    "frame": { "x": 720, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 10.ase": {
-    "frame": { "x": 0, "y": 220, "w": 80, "h": 110 },
+   {
+    "filename": "walk:10",
+    "frame": { "x": 800, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 11.ase": {
-    "frame": { "x": 80, "y": 220, "w": 80, "h": 110 },
+   {
+    "filename": "hold:11",
+    "frame": { "x": 880, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 12.ase": {
-    "frame": { "x": 160, "y": 220, "w": 80, "h": 110 },
+   {
+    "filename": "hold:12",
+    "frame": { "x": 960, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 13.ase": {
-    "frame": { "x": 240, "y": 220, "w": 80, "h": 110 },
+   {
+    "filename": "action:13",
+    "frame": { "x": 1040, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 14.ase": {
-    "frame": { "x": 320, "y": 220, "w": 80, "h": 110 },
+   {
+    "filename": "action:14",
+    "frame": { "x": 1120, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 15.ase": {
-    "frame": { "x": 0, "y": 330, "w": 80, "h": 110 },
+   {
+    "filename": "kick:15",
+    "frame": { "x": 1200, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 16.ase": {
-    "frame": { "x": 80, "y": 330, "w": 80, "h": 110 },
+   {
+    "filename": "swim:16",
+    "frame": { "x": 1280, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 17.ase": {
-    "frame": { "x": 160, "y": 330, "w": 80, "h": 110 },
+   {
+    "filename": "swim:17",
+    "frame": { "x": 1360, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 18.ase": {
-    "frame": { "x": 240, "y": 330, "w": 80, "h": 110 },
+   {
+    "filename": "talk:18",
+    "frame": { "x": 1440, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 19.ase": {
-    "frame": { "x": 320, "y": 330, "w": 80, "h": 110 },
+   {
+    "filename": "slide:19",
+    "frame": { "x": 1520, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 20.ase": {
-    "frame": { "x": 0, "y": 440, "w": 80, "h": 110 },
+   {
+    "filename": "hang:20",
+    "frame": { "x": 1600, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 21.ase": {
-    "frame": { "x": 80, "y": 440, "w": 80, "h": 110 },
+   {
+    "filename": "skid:21",
+    "frame": { "x": 1680, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 22.ase": {
-    "frame": { "x": 160, "y": 440, "w": 80, "h": 110 },
+   {
+    "filename": "back:22",
+    "frame": { "x": 1760, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    },
-   "player 23.ase": {
-    "frame": { "x": 240, "y": 440, "w": 80, "h": 110 },
+   {
+    "filename": "stand:23",
+    "frame": { "x": 1840, "y": 0, "w": 80, "h": 110 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
     "duration": 100
    }
- },
+ ],
  "meta": {
-  "app": "http://www.aseprite.org/",
-  "version": "1.3-rc6-x64",
+  "app": "https://www.aseprite.org/",
+  "version": "1.3-rc4-x64",
   "image": "player.png",
   "format": "RGBA8888",
-  "size": { "w": 400, "h": 550 },
+  "size": { "w": 1920, "h": 110 },
   "scale": "1",
   "frameTags": [
    { "name": "idle", "from": 0, "to": 0, "direction": "forward", "color": "#000000ff" },
