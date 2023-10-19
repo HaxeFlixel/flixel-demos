@@ -17,9 +17,10 @@ Demonstrates how to utilize Aseprite art files with the built-in FlxAsepriteUtil
 
 There are two main ways of exporting sprite sheets from Aseprite:
 
-	* UI
-    	* See the [Official UI Docs](https://www.aseprite.org/docs/sprite-sheet/#export)
-    	* Requires user interaction, but allows fore preview to visualize sprite sheet settings
-	* CLI
-    	* See the [Official CLI Docs](https://www.aseprite.org/docs/cli/)
-    	* Useful for automated workflows
+* UI
+    * See the [Official UI Docs](https://www.aseprite.org/docs/sprite-sheet/#export)
+    * Requires user interaction, but allows for preview to visualize sprite sheet settings
+    * Good default settings are provided when using the [Flixel Aseprite Export Plugin](https://github.com/MondayHopscotch/aseprite-scripts/releases/latest)
+* CLI
+    * See the [Official CLI Docs](https://www.aseprite.org/docs/cli/)
+    * Useful for automated workflows

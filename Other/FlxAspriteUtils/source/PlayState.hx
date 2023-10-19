@@ -1,5 +1,6 @@
 package;
 
+import flixel.math.FlxMath;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -25,7 +26,6 @@ class PlayState extends FlxState
 	var curAnimIndex = 0;
 	var pointer:FlxSprite;
 
-	var loadAtlasButton:FlxButton;
 	var nextButton:FlxButton;
 	var previousButton:FlxButton;
 
@@ -54,37 +54,20 @@ class PlayState extends FlxState
 		previousButton.setPosition(0, FlxG.height - previousButton.height);
 		add(previousButton);
 
-
 		nextButton = new FlxButton(0, 0, "Next", () -> {
 			setPlayerAnim(curAnimIndex+1);
 		});
 		nextButton.setPosition(FlxG.width - nextButton.width, FlxG.height - nextButton.height);
 		add(nextButton);
 
-		loadAtlasButton = new FlxButton(0, 0, "", () -> {
-			loadAnims(BY_PREFIX);
-		});
-		loadAtlasButton.setPosition(FlxG.width - loadAtlasButton.width, 0);
-		add(loadAtlasButton);
-
-		loadAnims(BY_INDEX);
+		loadAnims();
 	}
 
-	function loadAnims(parseType:AseParseType) {
-		switch parseType {
-			case BY_INDEX:
-				loadTitle.text = "Anims by Index";
-				FlxAsepriteUtil.loadAseAtlasAndTagsByIndex(player, "assets/player.png", "assets/player.json");
-				loadAtlasButton.text = "Load by Prefix";
-				loadAtlasButton.onUp.callback = () -> loadAnims(BY_PREFIX);
-			case BY_PREFIX:
-				loadTitle.text = "Anims by Prefix";
-				FlxAsepriteUtil.loadAseAtlasAndTagsByPrefix(player, "assets/player.png", "assets/player.json");
-				loadAtlasButton.text = "Load by Index";
-				loadAtlasButton.onUp.callback = () -> loadAnims(BY_INDEX);
-		}
+	function loadAnims() {
+		loadTitle.text = "Anims by Index";
+		FlxAsepriteUtil.loadAseAtlasAndTagsByIndex(player, "assets/player.png", "assets/player.json");
+		// Can also call FlxAsepriteUtil.loadAseAtlasAndTagsByPrefix(player, "assets/player.png", "assets/player.json");
 
-		loadTitle.screenCenter(X);
 		player.screenCenter();
 
 		animList = player.animation.getAnimationList();
@@ -96,7 +79,7 @@ class PlayState extends FlxState
 	}
 
 	function setPlayerAnim(index:Int) {
-		curAnimIndex = index % animList.length;
+		curAnimIndex = FlxMath.wrap(index, 0, animList.length - 1);
 		player.animation.play(animList[curAnimIndex].name);
 
 		pointer.setPosition(0, POINTER_VERTICAL_OFFSET + loadedAnimations.y + ANIM_NAME_LINE_SPACING * curAnimIndex);
@@ -108,9 +91,4 @@ class PlayState extends FlxState
 		currentAnimationLabel.text = 'Current Animation: ${player.animation.name}';
 		currentAnimationLabel.screenCenter(X);
 	}
-}
-
-enum AseParseType {
-	BY_INDEX;
-	BY_PREFIX;
 }
