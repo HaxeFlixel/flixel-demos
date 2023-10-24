@@ -6,7 +6,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "jump:1",
@@ -15,7 +15,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "fall:2",
@@ -24,7 +24,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "duck:3",
@@ -33,7 +33,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "fall:4",
@@ -42,7 +42,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "climb:5",
@@ -51,7 +51,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "climb:6",
@@ -60,7 +60,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "cheer:7",
@@ -69,7 +69,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "cheer:8",
@@ -78,7 +78,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "walk:9",
@@ -87,7 +87,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "walk:10",
@@ -96,7 +96,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "hold:11",
@@ -105,7 +105,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "hold:12",
@@ -114,7 +114,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "action:13",
@@ -123,7 +123,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "action:14",
@@ -132,7 +132,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "kick:15",
@@ -141,7 +141,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "swim:16",
@@ -150,7 +150,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "swim:17",
@@ -159,7 +159,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "talk:18",
@@ -168,7 +168,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "slide:19",
@@ -177,7 +177,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "hang:20",
@@ -186,7 +186,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "skid:21",
@@ -195,7 +195,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "back:22",
@@ -204,7 +204,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    },
    {
     "filename": "stand:23",
@@ -213,7 +213,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
     "sourceSize": { "w": 80, "h": 110 },
-    "duration": 100
+    "duration": 250
    }
  ],
  "meta": {
