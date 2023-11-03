@@ -4,8 +4,8 @@
     "license": "MIT",
     "tags": ["game", "openfl", "flash", "neko", "cpp", "android", "ios", "demo", "cross"],
     "description": "Demo Projects for HaxeFlixel",
-    "version": "3.0.0",
-    "releasenote": "Make some demos mobile-friendly",
+    "version": "3.1.0",
+    "releasenote": "New FlxAsepriteUtils demo",
     "contributors": ["haxeflixel", "Gama11", "GeoKureli"],
     "dependencies": {}
 }
