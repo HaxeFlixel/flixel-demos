@@ -1,3 +1,13 @@
+3.1.0 (November 3, 2023)
+------------------------------
+- `FlxFSM`:fix jump after superjump pickup, add groundpound pickup ([#323](https://github.com/HaxeFlixel/flixel-demos/pull/323))
+- `FlxCamera`: Various changes ([#324](https://github.com/HaxeFlixel/flixel-demos/pull/324))
+   - add gamepad controls
+   - dynamic level sizing
+   - improve HUD and overlays
+   - reorganize code
+- `FlxAsepriteUtils`: New demo! ([#326](https://github.com/HaxeFlixel/flixel-demos/pull/326))
+
 3.0.0 (August 9, 2023)
 ------------------------------
 - `FlxMouseEventManager`: Removed
