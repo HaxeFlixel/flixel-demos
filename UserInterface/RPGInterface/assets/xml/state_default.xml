@@ -52,10 +52,10 @@
 			</radio_group>
 		</group>
 		<group id="tab_2">
-			<checkbox x="10" y="10"label="$MENU_THING_1">
+			<checkbox x="10" y="10" label="$MENU_THING_1">
 				<param type="string" value="thing 1"/>
 			</checkbox>	
-			<checkbox x="10" y="40"label="$MENU_THING_2">
+			<checkbox x="10" y="40" label="$MENU_THING_2">
 				<param type="string" value="thing 2"/>
 			</checkbox>
 		</group>
