@@ -1,3 +1,7 @@
+import flixel.addons.ui.FlxUI;
+import flixel.addons.ui.interfaces.IFlxUIState;
+import flixel.addons.ui.FlxUITypedButton;
+import flixel.addons.ui.interfaces.IFlxUIWidget;
 import flixel.addons.ui.FlxUIPopup;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUIState;
@@ -29,7 +33,7 @@ class State_DefaultTest extends FlxUIState
 					{
 						case "back": FlxG.switchState(new State_Title());
 						case "popup":
-							var popup:FlxUIPopup = new FlxUIPopup(); // create the popup
+							var popup:FlxUIPopup = new PopupFix(); // create the popup
 							popup.quickSetup // set it up
 							(Main.tongue.get("$POPUP_DEMO_2_TITLE", "ui"), // title text
 								Main.tongue.get("$POPUP_DEMO_2_BODY", "ui"), // body text
@@ -52,6 +56,47 @@ class State_DefaultTest extends FlxUIState
 						case 2: FlxG.log.add("Cancel was clicked");
 					}
 			}
+		}
+	}
+}
+
+/**
+ * An extension to `FlxUIPopup` that fixes a bug in `getEvent` where the event was not being broadcast correctly to the parent widget
+ */
+class PopupFix extends FlxUIPopup
+{
+	override function getEvent(id:String, sender:IFlxUIWidget, data:Dynamic, ?eventParams:Array<Dynamic>)
+	{
+		if (eventParams == null)
+		{
+			if (params != null)
+			{
+				eventParams = [];
+			}
+		}
+		if (params != null)
+		{
+			eventParams = eventParams.concat(params);
+		}
+
+		switch (id)
+		{
+			case FlxUITypedButton.CLICK_EVENT:
+				if (eventParams != null)
+				{
+					var buttonAmount:Int = Std.int(eventParams[0]); // 0 is Yes, 1 is No and 2 is Cancel
+					if ((_parentState is IFlxUIState))
+					{
+						// This fixes a bug where the event was being sent to this popup rather than the state that created it
+						castParent().getEvent(FlxUIPopup.CLICK_EVENT, this, buttonAmount, eventParams);
+					}
+					else
+					{
+						// This is a generic fallback in case something goes wrong
+						FlxUI.event(FlxUIPopup.CLICK_EVENT, this, buttonAmount, eventParams);
+					}
+					close();
+				}
 		}
 	}
 }
