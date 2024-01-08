@@ -75,7 +75,7 @@ class PlayState3 extends FlxState
 
 		if (FlxG.keys.justReleased.ENTER)
 		{
-			FlxG.switchState(new PlayState());
+			FlxG.switchState(PlayState.new);
 		}
 	}
 }

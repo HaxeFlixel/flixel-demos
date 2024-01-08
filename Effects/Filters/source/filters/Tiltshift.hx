@@ -1,4 +1,4 @@
-package openfl8;
+package filters;
 
 import flixel.system.FlxAssets.FlxShader;
 

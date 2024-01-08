@@ -34,7 +34,7 @@ class PlayStateShader extends PlayState
 		// add the bg camera as an image to the shader so we can add color effects to it
 		bgCam.buffer = new BitmapData(bgCam.width, bgCam.height);
 		shader.bgImage.input = bgCam.buffer;
-		shaderCam.setFilters([new openfl.filters.ShaderFilter(shader)]);
+		shaderCam.filters = [new openfl.filters.ShaderFilter(shader)];
 		
 		// draws anything above the shadows, in this case infoText
 		uiCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);

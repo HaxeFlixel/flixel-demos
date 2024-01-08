@@ -20,6 +20,6 @@ class MenuStateB extends MenuState
 
 	override function transition():Void
 	{
-		FlxG.switchState(new MenuState());
+		FlxG.switchState(() -> new MenuState());
 	}
 }

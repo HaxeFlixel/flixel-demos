@@ -36,7 +36,7 @@ class State_CodeTest extends FlxUIState
 				case "click_button":
 					switch (Std.string(params[0]))
 					{
-						case "back": FlxG.switchState(new State_Title());
+						case "back": FlxG.switchState(() -> new State_Title());
 					}
 			}
 		}

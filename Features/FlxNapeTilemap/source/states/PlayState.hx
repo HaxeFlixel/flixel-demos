@@ -91,7 +91,7 @@ class PlayState extends FlxState
 	}
 }
 
-@:enum abstract Level(String) to String
+enum abstract Level(String) to String
 {
 	var FIRST = "assets/testmap.csv";
 	var SECOND = "assets/testmap2.csv";

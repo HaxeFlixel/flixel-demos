@@ -10,11 +10,7 @@ import openfl.filters.BitmapFilter;
 import openfl.filters.BlurFilter;
 import openfl.filters.ColorMatrixFilter;
 #if shaders_supported
-#if (openfl >= "8.0.0")
-import openfl8.*;
-#else
-import openfl3.*;
-#end
+import filters.*;
 import openfl.filters.ShaderFilter;
 import openfl.Lib;
 #end
@@ -113,8 +109,8 @@ class PlayState extends FlxState
 		backdrop.velocity.set(150, 150);
 		add(backdrop);
 
-		FlxG.camera.setFilters(filters);
-		FlxG.game.setFilters(filters);
+		FlxG.camera.filters = filters;
+		FlxG.game.filters = filters;
 
 		FlxG.game.filtersEnabled = false;
 

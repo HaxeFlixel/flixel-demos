@@ -4,7 +4,7 @@ import flixel.FlxG;
 import flixel.FlxState;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxColor;
 #if mobile
@@ -159,7 +159,7 @@ class PlayState extends FlxState
 
 	function doneFadeOut()
 	{
-		FlxG.switchState(new GameOverState(won, money));
+		FlxG.switchState(() -> new GameOverState(won, money));
 	}
 
 	function playerTouchCoin(player:Player, coin:Coin)

@@ -4,7 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.math.FlxVelocity;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 
 using flixel.util.FlxSpriteUtil;
 

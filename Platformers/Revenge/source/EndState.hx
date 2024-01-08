@@ -72,6 +72,6 @@ class EndState extends FlxState
 
 	function onFade():Void
 	{
-		FlxG.switchState(new MenuState());
+		FlxG.switchState(MenuState.new);
 	}
 }

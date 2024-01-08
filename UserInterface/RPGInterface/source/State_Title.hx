@@ -39,11 +39,11 @@ class State_Title extends FlxUIState
 				{
 					switch (Std.string(params[0]))
 					{
-						case "saves": FlxG.switchState(new State_SaveMenu());
-						case "menu": FlxG.switchState(new State_TestMenu());
-						case "battle": FlxG.switchState(new State_Battle());
-						case "default_test": FlxG.switchState(new State_DefaultTest());
-						case "code_test": FlxG.switchState(new State_CodeTest());
+						case "saves": FlxG.switchState(() -> new State_SaveMenu());
+						case "menu": FlxG.switchState(() -> new State_TestMenu());
+						case "battle": FlxG.switchState(() -> new State_Battle());
+						case "default_test": FlxG.switchState(() -> new State_DefaultTest());
+						case "code_test": FlxG.switchState(() -> new State_CodeTest());
 						case "popup": openSubState(new Popup_Demo());
 					}
 				}
@@ -58,6 +58,6 @@ class State_Title extends FlxUIState
 
 	function reloadState():Void
 	{
-		FlxG.switchState(new State_Title());
+		FlxG.switchState(() -> new State_Title());
 	}
 }

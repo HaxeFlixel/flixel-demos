@@ -26,7 +26,7 @@ import openfl.filters.ShaderFilter;
 import flixel.text.FlxText;
 #end
 
-@:enum abstract LogoColor(FlxColor) to FlxColor
+enum abstract LogoColor(FlxColor) to FlxColor
 {
 	static var LIST(default, null) = [RED, BLUE, YELLOW, CYAN, GREEN];
 	var RED = 0xff3366;
@@ -126,7 +126,7 @@ class PlayState extends FlxState
 		color.alphaFloat = 0.5;
 
 		var effect = new BlendModeEffect(effects[blendEffect], color);
-		FlxG.camera.setFilters([new ShaderFilter(cast effect.shader)]);
+		FlxG.camera.filters = [new ShaderFilter(cast effect.shader)];
 	}
 
 	function createShutterEffect():Void

@@ -148,6 +148,6 @@ class GenerateState extends FlxState
 
 	function play():Void
 	{
-		FlxG.switchState(new PlayState());
+		FlxG.switchState(PlayState.new);
 	}
 }

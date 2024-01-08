@@ -76,7 +76,7 @@ class State_Battle extends FlxUIState
 				case FlxUITypedButton.CLICK_EVENT:
 					switch (Std.string(params[0]))
 					{
-						case "back": FlxG.switchState(new State_Title());
+						case "back": FlxG.switchState(() -> new State_Title());
 					}
 			}
 		}

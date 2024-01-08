@@ -34,11 +34,11 @@ class State_DemoCode extends FlxUIState
 				var str:String = (params != null && params.length >= 1) ? cast params[0] : "";
 				if (str == "defaults")
 				{
-					FlxG.switchState(new State_Demo2());
+					FlxG.switchState(() -> new State_Demo2());
 				}
 				if (str == "no_defaults")
 				{
-					FlxG.switchState(new State_Demo());
+					FlxG.switchState(() -> new State_Demo());
 				}
 		}
 	}
@@ -94,7 +94,7 @@ class State_DemoCode extends FlxUIState
 
 		b = addBtn("goback", new FlxUIButton(b.x, b.y + b.height + 10, "Go Back", function()
 		{
-			FlxG.switchState(new State_Demo());
+			FlxG.switchState(() -> new State_Demo());
 		}), "Go Back", "This button takes you back to the first screen");
 	}
 

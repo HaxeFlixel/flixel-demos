@@ -306,7 +306,7 @@ class PlayState extends FlxState
 		if (FlxG.keys.justReleased.ESCAPE)
 		{
 			FlxG.sound.destroy(true);
-			FlxG.switchState(new MenuState());
+			FlxG.switchState(MenuState.new);
 		}
 		if (FlxG.keys.justReleased.N)
 		{

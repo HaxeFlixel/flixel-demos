@@ -242,7 +242,7 @@ class MenuState extends FlxUIState
 
 	function transition():Void
 	{
-		FlxG.switchState(new MenuStateB());
+		FlxG.switchState(() -> new MenuStateB());
 	}
 
 	override public function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Void
