@@ -17,12 +17,12 @@ class WinState extends FlxSubState
 	{
 		var bg = ColorMaps.defaultColorMap[Color.WHITE] == FlxColor.BLACK ? FlxColor.WHITE : FlxColor.BLACK; // if the background is black, we want white text, and vice-versa
 
-		winMessage = new FlxText(256, 40, 250,
+		winMessage = new FlxText(256 * 2, 40 * 2, 250 * 2,
 			"Want more?\n\nYou can copy the code to make more levels or change it however you want.\n\n" +
 			"This project is open source and released under MIT license thanks to HaxeFlixel supporters.\n\n" +
 			"Grab the code and become a HaxeFlixel supporter to help make more cool open-source demos like this.",
-			14);
-		winMessage.setFormat(null, 12, bg);
+			14 * 2);
+		winMessage.setFormat(null, 12 * 2, bg);
 		winMessage.alignment = "center";
 
 		// delay to match up with the expanding circle background

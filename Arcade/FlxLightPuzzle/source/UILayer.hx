@@ -34,23 +34,25 @@ class UILayer extends FlxSpriteGroup
 
 		// a black background helps the UI buttons stand out
 		bg = new FlxSprite();
-		bg.makeGraphic(250, FlxG.height, FlxColor.BLACK); // should this change based on the selected color palette?
+		bg.makeGraphic(250 * 2, FlxG.height, FlxColor.BLACK); // should this change based on the selected color palette?
 
 		FlxMouseEvent.add(bg, null, null, onPanelOver, onPanelOut, true, true,
 			true); // pixel-perfect because we will be using a clipRect and need the extra checks
 
 		add(bg);
 
-		ammo = new FlxSprite(5, 223);
-		ammo.makeGraphic(40, 60, 0x0, true);
+		ammo = new FlxSprite(5 * 2, 223 * 2);
+		ammo.makeGraphic(40 * 2, 60 * 2, 0x0, true);
 
 		add(ammo);
 
 		// the original art files from Kenney.nl are in multiple pngs: I combined several using an image editor to make a spritesheet that I can easily load as an animation
 		// tools like TexturePacker do all that for you plus more: check out the TexturePackerDemo too!
 
-		var mute = new FlxSprite(0, 69);
+		var mute = new FlxSprite(0, 69 * 2);
 		mute.loadGraphic(AssetPaths.music__png, true, 50, 50);
+		mute.setGraphicSize(Std.int(mute.width * 2));
+		mute.updateHitbox();
 		mute.animation.add("unmuted", [0], 0, false);
 		mute.animation.add("muted", [1], 0, false);
 		mute.animation.play("unmuted");
@@ -73,22 +75,27 @@ class UILayer extends FlxSpriteGroup
 			add(fullscreen);
 		 */
 
-		var restart = new FlxSprite(0, 69 + 100);
+		var restart = new FlxSprite(0, (69 + 100) * 2);
 		restart.loadGraphic(AssetPaths.return__png, false);
+		restart.setGraphicSize(Std.int(restart.width * 2));
+		restart.updateHitbox();
 
 		FlxMouseEvent.add(restart, null, onRestart, onMOver, onMOut, true, true, false);
 
 		add(restart);
 
-		source = new FlxText(100, 50, 150, "Click for the source code", 14);
+		source = new FlxText(100 * 2, 50 * 2, 150 * 2, "Click for the source code", 14 * 2);
 		FlxMouseEvent.add(source, null, onSource, onMOver, onMOut, true, true, false);
 		add(source);
 
-		patreon = new FlxSprite(125, 125, AssetPaths.haxeflixel__png); // "click to learn more"?
+		patreon = new FlxSprite(125 * 2, 125 * 2, AssetPaths.haxeflixel__png); // "click to learn more"?
+		patreon.antialiasing = true;
+		patreon.setGraphicSize(Std.int(patreon.width * 2));
+		patreon.updateHitbox();
 		FlxMouseEvent.add(patreon, null, onPatreon, onMOver, onMOut, true, true, false);
 		add(patreon);
 
-		credits = new FlxText(60, 216, 180, "Made by MSGhero for HaxeFlixel\nArt from Kenney.nl\nWaltz in G minor by Strimlarn87", 8);
+		credits = new FlxText(60 * 2, 216 * 2, 180 * 2, "Made by MSGhero for HaxeFlixel\nArt from Kenney.nl\nWaltz in G minor by Strimlarn87", 8 * 2);
 		credits.alignment = "center";
 		FlxMouseEvent.add(credits, null, onCredits, onMOver, onMOut, true, true, false);
 		add(credits);
@@ -97,8 +104,8 @@ class UILayer extends FlxSpriteGroup
 
 		// the UI panel will expand when moused over, and that will be controlled by a clipRect
 		// which will hide the right side of the panel until the left is moused over
-		clipRect = new FlxRect(0, 0, 50, FlxG.height);
-		bg.width = 50;
+		clipRect = new FlxRect(0, 0, 50 * 2, FlxG.height);
+		bg.width = 50 * 2;
 	}
 
 	public function setAmmo(remainingAmmo:Array<Color>):Void
@@ -107,7 +114,7 @@ class UILayer extends FlxSpriteGroup
 		// you could also manage separate sprites, each being one unit of ammo (photons?)
 
 		var color:FlxColor = 0x0;
-		var rect = new Rectangle(0, 0, 40, 20);
+		var rect = new Rectangle(0, 0, 40 * 2, 20 * 2);
 
 		for (i in 0...3)
 		{
@@ -116,7 +123,7 @@ class UILayer extends FlxSpriteGroup
 			else
 				color = FlxColor.BLACK;
 
-			rect.y = 40 - i * 20;
+			rect.y = 80 - i * 40;
 
 			ammo.pixels.fillRect(rect, color);
 		}
@@ -176,7 +183,7 @@ class UILayer extends FlxSpriteGroup
 
 	function onPanelOver(target:FlxSprite):Void
 	{
-		clipRect.width = bg.width = 250;
+		clipRect.width = bg.width = 250 * 2;
 		clipRect = clipRect; // you have to set the clipRect for it to update, just changing a property doesn't do anything
 
 		source.visible = patreon.visible = credits.visible = true; // we don't want these responding to mouse clicks when covered up, so we have to manually set their visibility
@@ -184,7 +191,7 @@ class UILayer extends FlxSpriteGroup
 
 	function onPanelOut(target:FlxSprite):Void
 	{
-		clipRect.width = bg.width = 50;
+		clipRect.width = bg.width = 50 * 2;
 		clipRect = clipRect;
 
 		source.visible = patreon.visible = credits.visible = false;
@@ -218,14 +225,12 @@ class UILayer extends FlxSpriteGroup
 
 	function onMOver(target:FlxSprite):Void
 	{
-		target.scale.x = 1.25;
-		target.scale.y = 1.25;
+		target.setGraphicSize(Std.int(target.width * 1.25));
 	}
 
 	function onMOut(target:FlxSprite):Void
 	{
-		target.scale.x = 1;
-		target.scale.y = 1;
+		target.setGraphicSize(Std.int(target.width));
 	}
 
 	override function get_width():Float

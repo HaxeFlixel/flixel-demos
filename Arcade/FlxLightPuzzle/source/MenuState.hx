@@ -20,24 +20,30 @@ class MenuState extends FlxSubState
 
 	override public function create():Void
 	{
-		title = new FlxText(50, 10, 512 - 50, "FlxLightPuzzle", 20);
+		title = new FlxText(50 * 2, 10 * 2, (512 - 50) * 2, "FlxLightPuzzle", 20 * 2);
 		title.color = FlxColor.WHITE;
 		title.alignment = "center";
 		add(title);
 
 		// barsHorizontal.png from Kenney.nl were colored to make them more appropriate for this game
 
-		playRYB = new FlxSprite(300, 72 - 25, AssetPaths.ryb__png);
+		playRYB = new FlxSprite(300 * 2, (72 - 25) * 2, AssetPaths.ryb__png);
+		playRYB.setGraphicSize(Std.int(playRYB.width * 2));
+		playRYB.updateHitbox();
 		FlxMouseEvent.add(playRYB, null, onSelect, onMOver, onMOut, false, true, false);
 		FlxMouseEvent.setMouseClickCallback(playRYB, onSelect);
 		add(playRYB);
 
-		playRGB = new FlxSprite(300, 144 - 25, AssetPaths.rgb__png);
+		playRGB = new FlxSprite(300 * 2, (144 - 25) * 2, AssetPaths.rgb__png);
+		playRGB.setGraphicSize(Std.int(playRGB.width * 2));
+		playRGB.updateHitbox();
 		FlxMouseEvent.add(playRGB, null, onSelect, onMOver, onMOut, false, true, false);
 		FlxMouseEvent.setMouseClickCallback(playRGB, onSelect);
 		add(playRGB);
 
-		playCMY = new FlxSprite(300, 216 - 25, AssetPaths.cmy__png);
+		playCMY = new FlxSprite(300 * 2, (216 - 25) * 2, AssetPaths.cmy__png);
+		playCMY.setGraphicSize(Std.int(playCMY.width * 2));
+		playCMY.updateHitbox();
 		FlxMouseEvent.add(playCMY, null, onSelect, onMOver, onMOut, false, true, false);
 		FlxMouseEvent.setMouseClickCallback(playCMY, onSelect);
 		add(playCMY);
@@ -84,13 +90,11 @@ class MenuState extends FlxSubState
 	function onMOver(target:FlxSprite):Void
 	{
 		// make the buttons more noticeable by expanding them on mouse over
-		target.scale.x = 1.25;
-		target.scale.y = 1.25;
+		target.setGraphicSize(Std.int(target.width * 1.25));
 	}
 
 	function onMOut(target:FlxSprite):Void
 	{
-		target.scale.x = 1;
-		target.scale.y = 1;
+		target.setGraphicSize(Std.int(target.width));
 	}
 }
