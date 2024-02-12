@@ -54,7 +54,7 @@ class Template
 		for (targetData in targetsData)
 		{
 			var params = targetData.split(" ");
-			targetsDefault.push(new Circle(FlxPoint.get(Std.parseFloat(params[0]), Std.parseFloat(params[1])), Std.parseFloat(params[2]),
+			targetsDefault.push(new Circle(FlxPoint.get(Std.parseFloat(params[0]) * 2, Std.parseFloat(params[1]) * 2), Std.parseFloat(params[2]) * 2,
 				getColorFromData(params[3])));
 		}
 
@@ -70,7 +70,7 @@ class Template
 
 			for (i in 0...numVerts)
 			{
-				verts.push(FlxPoint.get(Std.parseFloat(params[2 * i]), Std.parseFloat(params[2 * i + 1])));
+				verts.push(FlxPoint.get(Std.parseFloat(params[2 * i]) * 2, Std.parseFloat(params[2 * i + 1]) * 2));
 			}
 
 			if (numVerts == 2)
