@@ -9,7 +9,9 @@ class Coin extends FlxSprite
 	public function new(x:Float, y:Float)
 	{
 		super(x, y);
-		loadGraphic(AssetPaths.coin__png, false, 8, 8);
+		loadGraphic(AssetPaths.coin__png, true, 12, 12);
+		animation.add("idle", [0, 1], 4);
+		animation.play("idle");
 	}
 
 	override function kill()
