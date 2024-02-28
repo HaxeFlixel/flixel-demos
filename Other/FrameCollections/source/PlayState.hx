@@ -86,7 +86,7 @@ class PlayState extends FlxState
 
 		bitmapText.autoSize = true;
 		bitmapText.multiLine = true;
-		bitmapText.wrapByWord = true;
+		bitmapText.wrap = WORD(NEVER);
 		bitmapText.text = "Math \n for game developers";
 		bitmapText.y = 40;
 		bitmapText.alignment = CENTER;

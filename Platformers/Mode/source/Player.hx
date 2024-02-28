@@ -297,7 +297,7 @@ class Player extends FlxSprite
 	}
 }
 
-@:enum abstract Animation(String) to String
+enum abstract Animation(String) to String
 {
 	var IDLE = "idle";
 	var IDLE_UP = "idle_up";

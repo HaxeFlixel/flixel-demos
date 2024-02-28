@@ -10,8 +10,6 @@ import flixel.util.FlxColor;
 
 class GameOverState extends FlxState
 {
-	var score:Int = 0; // number of coins we've collected
-	var win:Bool; // if we won or lost
 	var titleText:FlxText; // the title text
 	var messageText:FlxText; // the final score message text
 	var scoreIcon:FlxSprite; // sprite for a coin icon
@@ -27,12 +25,7 @@ class GameOverState extends FlxState
 	public function new(win:Bool, score:Int)
 	{
 		super();
-		this.win = win;
-		this.score = score;
-	}
 
-	override public function create()
-	{
 		#if FLX_MOUSE
 		FlxG.mouse.visible = true;
 		#end
@@ -71,8 +64,6 @@ class GameOverState extends FlxState
 		add(mainMenuButton);
 
 		FlxG.camera.fade(FlxColor.BLACK, 0.33, true);
-
-		super.create();
 	}
 
 	/**
@@ -103,7 +94,7 @@ class GameOverState extends FlxState
 	{
 		FlxG.camera.fade(FlxColor.BLACK, 0.33, false, function()
 		{
-			FlxG.switchState(new MenuState());
+			FlxG.switchState(MenuState.new);
 		});
 	}
 }

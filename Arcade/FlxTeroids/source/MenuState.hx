@@ -23,7 +23,7 @@ class MenuState extends FlxState
 	{
 		if (FlxG.keys.justReleased.SPACE)
 		{
-			FlxG.switchState(new PlayState());
+			FlxG.switchState(PlayState.new);
 		}
 	}
 }

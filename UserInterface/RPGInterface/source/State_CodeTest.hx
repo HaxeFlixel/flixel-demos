@@ -15,6 +15,11 @@ import flixel.addons.ui.FlxUIState;
  */
 class State_CodeTest extends FlxUIState
 {
+	public function new()
+	{
+		super();
+	}
+
 	override public function create()
 	{
 		super.create();
@@ -36,7 +41,7 @@ class State_CodeTest extends FlxUIState
 				case "click_button":
 					switch (Std.string(params[0]))
 					{
-						case "back": FlxG.switchState(new State_Title());
+						case "back": FlxG.switchState(State_Title.new);
 					}
 			}
 		}

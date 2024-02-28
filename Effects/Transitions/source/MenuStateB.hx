@@ -17,9 +17,9 @@ class MenuStateB extends MenuState
 		var welcome:FlxUIText = cast _ui.getAsset("welcome");
 		welcome.text = "STATE B";
 	}
-
+	
 	override function transition():Void
 	{
-		FlxG.switchState(new MenuState());
+		FlxG.switchState(MenuState.new);
 	}
 }

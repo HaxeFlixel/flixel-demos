@@ -66,7 +66,7 @@ class BlurState extends FlxState
 		// Toggle states
 		if (FlxG.keys.justReleased.SPACE)
 		{
-			FlxG.switchState(new ParticleState());
+			FlxG.switchState(ParticleState.new);
 		}
 	}
 }

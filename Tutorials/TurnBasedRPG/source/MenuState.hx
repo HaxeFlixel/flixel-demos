@@ -57,7 +57,7 @@ class MenuState extends FlxState
 	{
 		FlxG.camera.fade(FlxColor.BLACK, 0.33, false, function()
 		{
-			FlxG.switchState(new PlayState());
+			FlxG.switchState(PlayState.new);
 		});
 	}
 
@@ -65,7 +65,7 @@ class MenuState extends FlxState
 	{
 		FlxG.camera.fade(FlxColor.BLACK, 0.33, false, function()
 		{
-			FlxG.switchState(new OptionsState());
+			FlxG.switchState(OptionsState.new);
 		});
 	}
 

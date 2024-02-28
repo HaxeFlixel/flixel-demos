@@ -7,6 +7,11 @@ import flixel.addons.ui.FlxUIState;
  */
 class State_Demo extends FlxUIState
 {
+	public function new()
+	{
+		super();
+	}
+
 	override public function create()
 	{
 		_xml_id = "state_menu";
@@ -22,11 +27,11 @@ class State_Demo extends FlxUIState
 				var str:String = (params != null && params.length >= 1) ? cast params[0] : "";
 				if (str == "defaults")
 				{
-					FlxG.switchState(new State_Demo2());
+					FlxG.switchState(State_Demo2.new);
 				}
 				if (str == "hand_code")
 				{
-					FlxG.switchState(new State_DemoCode());
+					FlxG.switchState(State_DemoCode.new);
 				}
 		}
 	}
@@ -37,7 +42,7 @@ class State_Demo extends FlxUIState
 		#if debug
 		if (FlxG.keys.justPressed.R)
 		{
-			FlxG.switchState(new State_Demo());
+			FlxG.switchState(State_Demo.new);
 		}
 		#end
 	}

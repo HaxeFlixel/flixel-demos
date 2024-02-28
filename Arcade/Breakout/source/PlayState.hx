@@ -115,7 +115,7 @@ class PlayState extends FlxState
 		{
 			if (swipe.distance > 100)
 			{
-				if ((swipe.angle < 10 && swipe.angle > -10) || (swipe.angle > 170 || swipe.angle < -170))
+				if ((swipe.degrees < 10 && swipe.degrees > -10) || (swipe.degrees > 170 || swipe.degrees < -170))
 				{
 					FlxG.resetState();
 				}

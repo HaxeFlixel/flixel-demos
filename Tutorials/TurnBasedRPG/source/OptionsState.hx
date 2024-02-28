@@ -37,7 +37,8 @@ class OptionsState extends FlxState
 		add(volumeText);
 
 		// the volume buttons will be smaller than 'default' buttons
-		volumeDownButton = new FlxButton(8, volumeText.y + volumeText.height + 2, "-", clickVolumeDown);
+		volumeDownButton = new FlxButton(8, volumeText.y + volumeText.height + 2, "-",
+			clickVolumeDown);
 		volumeDownButton.loadGraphic(AssetPaths.button__png, true, 20, 20);
 		volumeDownButton.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(volumeDownButton);
@@ -47,7 +48,8 @@ class OptionsState extends FlxState
 		volumeUpButton.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(volumeUpButton);
 
-		volumeBar = new FlxBar(volumeDownButton.x + volumeDownButton.width + 4, volumeDownButton.y, LEFT_TO_RIGHT, Std.int(FlxG.width - 64),
+		volumeBar = new FlxBar(volumeDownButton.x + volumeDownButton.width + 4,
+			volumeDownButton.y, LEFT_TO_RIGHT, Std.int(FlxG.width - 64),
 			Std.int(volumeUpButton.height));
 		volumeBar.createFilledBar(0xff464646, FlxColor.WHITE, true, FlxColor.WHITE);
 		add(volumeBar);
@@ -61,12 +63,14 @@ class OptionsState extends FlxState
 		add(volumeAmountText);
 
 		#if desktop
-		fullscreenButton = new FlxButton(0, volumeBar.y + volumeBar.height + 8, FlxG.fullscreen ? "FULLSCREEN" : "WINDOWED", clickFullscreen);
+		fullscreenButton = new FlxButton(0, volumeBar.y + volumeBar.height + 8,
+			FlxG.fullscreen ? "FULLSCREEN" : "WINDOWED", clickFullscreen);
 		fullscreenButton.screenCenter(FlxAxes.X);
 		add(fullscreenButton);
 		#end
 
-		clearDataButton = new FlxButton((FlxG.width / 2) - 90, FlxG.height - 28, "Clear Data", clickClearData);
+		clearDataButton = new FlxButton((FlxG.width / 2) - 90, FlxG.height - 28, "Clear Data",
+			clickClearData);
 		clearDataButton.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(clearDataButton);
 
@@ -109,7 +113,7 @@ class OptionsState extends FlxState
 		FlxG.save.flush();
 		FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
 		{
-			FlxG.switchState(new MenuState());
+			FlxG.switchState(MenuState.new);
 		});
 	}
 

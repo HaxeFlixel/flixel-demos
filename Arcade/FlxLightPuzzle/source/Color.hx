@@ -5,8 +5,7 @@ package;
  * Abstract Int so that colors can be easily combined using the | (or) operator.
  * @author MSGHero
  */
-@:enum
-abstract Color(Int) from Int to Int
+enum abstract Color(Int) from Int to Int
 {
 	var MIRROR = 0x01 << 0;
 	var RED = 0x01 << 1;

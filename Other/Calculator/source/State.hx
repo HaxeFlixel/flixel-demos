@@ -13,7 +13,6 @@ import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRandom;
 import flixel.math.FlxRect;
-import flixel.math.FlxVector;
 import flixel.math.FlxVelocity;
 import flixel.system.scaleModes.PixelPerfectScaleMode;
 import flixel.text.FlxText;

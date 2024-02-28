@@ -335,13 +335,13 @@ class MenuState extends FlxState
 	function colorCallback(Name:String):Void
 	{
 		Reg.genColors();
-		FlxG.switchState(new MenuState());
+		FlxG.switchState(MenuState.new);
 	}
 	#end
 
 	function playCallback(Name:String):Void
 	{
-		FlxG.switchState(new PlayState());
+		FlxG.switchState(PlayState.new);
 	}
 
 	function hfCallback(Name:String):Void
