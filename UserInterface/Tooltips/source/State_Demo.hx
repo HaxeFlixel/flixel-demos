@@ -42,7 +42,7 @@ class State_Demo extends FlxUIState
 		#if debug
 		if (FlxG.keys.justPressed.R)
 		{
-			FlxG.switchState(new State_Demo());
+			FlxG.switchState(State_Demo.new);
 		}
 		#end
 	}

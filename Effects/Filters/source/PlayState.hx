@@ -1,18 +1,18 @@
 package;
 
-import flixel.addons.display.FlxBackdrop;
-import flixel.addons.ui.FlxUIAssets;
-import flixel.addons.ui.FlxUICheckBox;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxState;
+import flixel.addons.display.FlxBackdrop;
+import flixel.addons.ui.FlxUIAssets;
+import flixel.addons.ui.FlxUICheckBox;
 import openfl.filters.BitmapFilter;
 import openfl.filters.BlurFilter;
 import openfl.filters.ColorMatrixFilter;
 #if shaders_supported
-import effects.*;
-import openfl.filters.ShaderFilter;
+import filters.*;
 import openfl.Lib;
+import openfl.filters.ShaderFilter;
 #end
 
 class PlayState extends FlxState
@@ -110,7 +110,7 @@ class PlayState extends FlxState
 		add(backdrop);
 		
 		FlxG.camera.filters = filters;
-		FlxG.game.setFilters(filters);
+		FlxG.game.filters = filters;
 		
 		FlxG.game.filtersEnabled = false;
 		
