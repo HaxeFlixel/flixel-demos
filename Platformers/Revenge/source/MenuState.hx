@@ -80,7 +80,7 @@ class MenuState extends FlxState
 
 	function onFade():Void
 	{
-		FlxG.switchState(new PlayState());
+		FlxG.switchState(PlayState.new);
 	}
 
 	function onStartOver():Void

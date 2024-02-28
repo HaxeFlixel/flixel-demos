@@ -1,6 +1,6 @@
-package openfl3.effects;
+package effects;
 
-import openfl.display.Shader;
+import flixel.system.FlxAssets.FlxShader;
 
 enum WiggleEffectType
 {
@@ -13,51 +13,55 @@ enum WiggleEffectType
 
 class WiggleEffect
 {
-	public var effectType(default, set):WiggleEffectType = DREAMY;
 	public var shader(default, null):WiggleShader = new WiggleShader();
+	public var effectType(default, set):WiggleEffectType = DREAMY;
 	public var waveSpeed(default, set):Float = 0;
 	public var waveFrequency(default, set):Float = 0;
 	public var waveAmplitude(default, set):Float = 0;
-
-	public function new():Void {}
-
+	
+	public function new():Void
+	{
+		shader.uTime.value = [0];
+	}
+	
 	public function update(elapsed:Float):Void
 	{
-		shader.uTime += elapsed;
+		shader.uTime.value[0] += elapsed;
 	}
-
+	
 	function set_effectType(v:WiggleEffectType):WiggleEffectType
 	{
 		effectType = v;
-		shader.effectType = WiggleEffectType.getConstructors().indexOf(Std.string(v));
+		shader.effectType.value = [WiggleEffectType.getConstructors().indexOf(Std.string(v))];
 		return v;
 	}
-
+	
 	function set_waveSpeed(v:Float):Float
 	{
 		waveSpeed = v;
-		shader.uSpeed = waveSpeed;
+		shader.uSpeed.value = [waveSpeed];
 		return v;
 	}
-
+	
 	function set_waveFrequency(v:Float):Float
 	{
 		waveFrequency = v;
-		shader.uFrequency = waveFrequency;
+		shader.uFrequency.value = [waveFrequency];
 		return v;
 	}
-
+	
 	function set_waveAmplitude(v:Float):Float
 	{
 		waveAmplitude = v;
-		shader.uWaveAmplitude = waveAmplitude;
+		shader.uWaveAmplitude.value = [waveAmplitude];
 		return v;
 	}
 }
 
-class WiggleShader extends Shader
+class WiggleShader extends FlxShader
 {
-	@fragment var code = '
+	@:glFragmentSource('
+		#pragma header
 		//uniform float tx, ty; // x,y waves phase
 		uniform float uTime;
 		
@@ -118,10 +122,9 @@ class WiggleShader extends Shader
 
 		void main()
 		{
-			vec2 uv = sineWave(${Shader.vTexCoord});
-			gl_FragColor = texture2D(${Shader.uSampler}, uv);
-		}';
-
+			vec2 uv = sineWave(openfl_TextureCoordv);
+			gl_FragColor = texture2D(bitmap, uv);
+		}')
 	public function new()
 	{
 		super();

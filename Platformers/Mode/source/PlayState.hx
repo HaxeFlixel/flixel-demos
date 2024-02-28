@@ -341,7 +341,7 @@ class PlayState extends FlxState
 		// Escape to the main menu
 		#if FLX_KEYBOARD
 		if (FlxG.keys.pressed.ESCAPE)
-			FlxG.switchState(new MenuState());
+			FlxG.switchState(MenuState.new);
 		#end
 	}
 
@@ -363,7 +363,7 @@ class PlayState extends FlxState
 	{
 		// Reset the sounds for going inbetween the menu etc
 		FlxG.sound.destroy(true);
-		FlxG.switchState(new VictoryState());
+		FlxG.switchState(VictoryState.new);
 	}
 
 	/**

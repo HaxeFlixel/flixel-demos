@@ -1,4 +1,4 @@
-package openfl8.blends;
+package blends;
 
 import flixel.system.FlxAssets.FlxShader;
 

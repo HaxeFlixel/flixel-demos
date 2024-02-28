@@ -7,6 +7,11 @@ import flixel.addons.ui.FlxUIState;
  */
 class State_DefaultTest extends FlxUIState
 {
+	public function new()
+	{
+		super();
+	}
+
 	override public function create()
 	{
 		_xml_id = "state_default";
@@ -27,7 +32,7 @@ class State_DefaultTest extends FlxUIState
 				case "click_button":
 					switch (Std.string(params[0]))
 					{
-						case "back": FlxG.switchState(new State_Title());
+						case "back": FlxG.switchState(State_Title.new);
 						case "popup":
 							var popup:FlxUIPopup = new FlxUIPopup(); // create the popup
 							popup.quickSetup // set it up

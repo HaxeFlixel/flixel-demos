@@ -4,7 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.math.FlxVelocity;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 
 using flixel.util.FlxSpriteUtil;
 
@@ -22,7 +22,7 @@ class Enemy extends FlxSprite
 	var brain:FSM;
 	var idleTimer:Float;
 	var moveDirection:Float;
-	var stepSound:FlxSound;
+ 	var stepSound:FlxSound;
 
 	public var type(default, null):EnemyType;
 	public var seesPlayer:Bool;

@@ -29,11 +29,11 @@ class State_Demo2 extends FlxUIState
 				var str:String = (params != null && params.length >= 1) ? cast params[0] : "";
 				if (str == "no_defaults")
 				{
-					FlxG.switchState(new State_Demo());
+					FlxG.switchState(State_Demo.new);
 				}
 				if (str == "hand_code")
 				{
-					FlxG.switchState(new State_DemoCode());
+					FlxG.switchState(State_DemoCode.new);
 				}
 		}
 	}
