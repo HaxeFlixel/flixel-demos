@@ -37,7 +37,6 @@
 		"Effects/FlxTween/source",
 		"Effects/MosaicEffect/source",
 		"Effects/Parallax/source",
-		"Effects/PostProcess/source",
 		"Effects/Transitions/source",
 		"Features/CollisionAndGrouping/source",
 		"Features/Colors/source",
