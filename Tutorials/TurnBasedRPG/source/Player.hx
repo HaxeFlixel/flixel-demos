@@ -58,48 +58,41 @@ class Player extends FlxSprite
 		left = left || virtualPad.buttonLeft.pressed;
 		right = right || virtualPad.buttonRight.pressed;
 		#end
-
+		
+		// Cancel out opposing directions
 		if (up && down)
 			up = down = false;
 		if (left && right)
 			left = right = false;
-
-		if (up || down || left || right)
+		
+		if (right)
 		{
-			var newAngle:Float = 0;
-			if (up)
-			{
-				newAngle = -90;
-				if (left)
-					newAngle -= 45;
-				else if (right)
-					newAngle += 45;
-				facing = UP;
-			}
-			else if (down)
-			{
-				newAngle = 90;
-				if (left)
-					newAngle += 45;
-				else if (right)
-					newAngle -= 45;
-				facing = DOWN;
-			}
-			else if (left)
-			{
-				newAngle = 180;
-				facing = LEFT;
-			}
-			else if (right)
-			{
-				newAngle = 0;
-				facing = RIGHT;
-			}
-
-			// determine our velocity based on angle and speed
-			velocity.setPolarDegrees(SPEED, newAngle);
+			facing = RIGHT;
+			velocity.x = SPEED;
 		}
-
+		else if (left)
+		{
+			facing = LEFT;
+			velocity.x = -SPEED;
+		}
+		
+		if (down)
+		{
+			facing = DOWN;
+			velocity.y = SPEED;
+		}
+		else if (up)
+		{
+			facing = UP;
+			velocity.y = -SPEED;
+		}
+		
+		// Prevent faster speeds on diagonal movement
+		var magnitude = velocity.length;
+		if (magnitude > SPEED)
+			// Reduce velocity to SPEED but maintain the same direction
+			velocity.scale(SPEED / magnitude);
+		
 		var action = "idle";
 		// check if the player is moving, and not walking into walls
 		if ((velocity.x != 0 || velocity.y != 0) && touching == NONE)
