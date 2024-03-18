@@ -4,8 +4,6 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 #if (flixel < version("5.7.0"))
 import flixel.ui.FlxButton.HIGHLIGHT;
-
-typedef FlxButtonState = Int;
 #end
 
 class Button extends FlxButton
@@ -37,7 +35,7 @@ class Button extends FlxButton
 	/**
 	 * Override set_status to change how highlight / normal state looks.
 	 */
-	override function set_status(Value:FlxButtonState):Int
+	override function set_status(Value)
 	{
 		if (label != null)
 		{
