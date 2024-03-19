@@ -11,10 +11,12 @@ class Player extends FlxSprite
 	/** Reaches top speed in 0.15 seconds */
 	static inline var ACCEL:Float = SPEED / 0.15;
 
-	public final maxHealth:Float = 3.0;
+	public final maxHP:Int = 3;
+	public var hp:Int;
 
 	public function new(x:Float = 0, y:Float = 0)
 	{
+		hp = maxHP;
 		super(x, y);
 		
 		loadGraphic(AssetPaths.player__png, true, 24, 24);
@@ -31,8 +33,11 @@ class Player extends FlxSprite
 		maxVelocity.x = maxVelocity.y = SPEED;
 		setSize(12, 12);
 		offset.set(6, 12);
-
-		health = maxHealth;
+	}
+	
+	public function hurt(damage:Int)
+	{
+		hp -= damage;
 	}
 
 	override function update(elapsed:Float)

@@ -164,11 +164,11 @@ class CombatUI extends FlxSpriteGroup
 		add(section);
 		
 		// Make a 'dummy' player and health bar
-		playerIcon = createAvatar(24, 8, player, player.maxHealth);
+		playerIcon = createAvatar(24, 8, player, player.maxHP);
 		playerIcon.facing = RIGHT;
 		
 		// Make a 'dummy' enemy and health bar
-		enemyIcon = createAvatar(80, 8, enemy, enemy.maxHealth);
+		enemyIcon = createAvatar(80, 8, enemy, enemy.maxHP);
 		enemyIcon.facing = LEFT;
 		
 		attackResults = new FlxTypedGroup();
@@ -215,8 +215,8 @@ class CombatUI extends FlxSpriteGroup
 		bar.setRange(0, maxHealth);
 		// tracks the target's health automatically
 		bar.parent = target;
-		bar.parentVariable = "health";
-		bar.value = target.health;
+		bar.parentVariable = "hp";
+		bar.update(0);//redraw
 		// yellow bar, yellow border, red underneath
 		centerOn(bar, icon, X);
 		add(bar);
@@ -319,15 +319,6 @@ class CombatUI extends FlxSpriteGroup
 		}
 	}
 	
-	/**
-	 * Reduces the target's helth by the specified damage
-	 */
-	inline function hurtTarget(target:FlxSprite, damage:Int)
-	{
-		// subtracting floats from floats can cause arethmetic errors, so we convert to an int first
-		target.health = Std.int(target.health) - damage;
-	}
-	
 	function showAttackResult(icon:FlxSprite, msg:String, ?onComplete:()->Void)
 	{
 		// recycle dead text
@@ -358,7 +349,7 @@ class CombatUI extends FlxSpriteGroup
 				.then(FlxTween.tween(enemyIcon, {x: enemyIcon.x}, 0.1));
 			
 			// Deal 1 damage to the enemy
-			hurtTarget(enemy, 1);
+			enemy.hurt(1);
 			result = "1";
 		}
 		else
@@ -369,7 +360,7 @@ class CombatUI extends FlxSpriteGroup
 		}
 		
 		// Show the attack result then it's the enemy's turn
-		if (enemy.health > 0)
+		if (enemy.hp > 0)
 			showAttackResult(enemyIcon, result, enemyAttack);
 		else
 			showAttackResult(enemyIcon, result, roundEnd);
@@ -393,7 +384,7 @@ class CombatUI extends FlxSpriteGroup
 			FlxTween.tween(playerIcon, {x: playerIcon.x - 4}, 0.1, {startDelay: 0.1})
 				.then(FlxTween.tween(playerIcon, {x: playerIcon.x}, 0.1));
 			// Deal 1 damage
-			hurtTarget(player, 1);
+			player.hurt(1);
 			FlxG.sound.play(AssetPaths.hurt__wav);
 			result = "1";
 		}
@@ -409,9 +400,9 @@ class CombatUI extends FlxSpriteGroup
 	
 	function roundEnd()
 	{
-		if (player.health <= 0)
+		if (player.hp <= 0)
 			showOutcome(DEFEAT);
-		else if (enemy.health <= 0)
+		else if (enemy.hp <= 0)
 			showOutcome(VICTORY);
 		else
 		{

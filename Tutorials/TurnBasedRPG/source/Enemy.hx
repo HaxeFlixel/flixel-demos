@@ -28,15 +28,16 @@ class Enemy extends FlxSprite
 	public var type(default, null):EnemyType;
 	public var seesPlayer:Bool;
 	public var playerPosition:FlxPoint;
-	public var maxHealth:Float;
+	public var maxHP:Int;
+	public var hp:Int;
 
 	public function new(x:Float, y:Float, type:EnemyType)
 	{
 		super(x, y);
 		
 		changeType(type);
-		maxHealth = type == REGULAR ? 2 : 4;
-		health = maxHealth;
+		maxHP = type == REGULAR ? 2 : 4;
+		hp = maxHP;
 		
 		setFacingFlip(LEFT, true, false);
 		setFacingFlip(RIGHT, false, false);
@@ -58,8 +59,13 @@ class Enemy extends FlxSprite
 		stepSound = FlxG.sound.load(AssetPaths.step__wav, 0.4);
 		stepSound.proximity(x, y, FlxG.camera.target, FlxG.width * 0.6);
 	}
+	
+	public function hurt(damage:Int)
+	{
+		hp -= damage;
+	}
 
-	override public function update(elapsed:Float)
+	override function update(elapsed:Float)
 	{
 		if (this.isFlickering())
 			return;

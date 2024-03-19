@@ -134,7 +134,7 @@ class PlayState extends FlxState
 	
 	function handleCombatOutcome(outcome:CombatOutcome, enemy:Enemy)
 	{
-		hud.updateHealth(Std.int(player.health));
+		hud.updateHealth(player.hp);
 		switch(outcome)
 		{
 			case VICTORY:
