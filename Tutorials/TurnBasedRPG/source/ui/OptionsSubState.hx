@@ -244,7 +244,7 @@ class VolumeBar extends FlxSpriteGroup
 }
 
 /**
- * Helper class for creating an 80x20 button
+ * Helper class for creating an 80x20 button with a custom graphic
  */
 class Button extends FlxButton
 {
