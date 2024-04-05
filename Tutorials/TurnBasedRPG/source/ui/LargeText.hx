@@ -1,3 +1,5 @@
+package ui;
+
 import flixel.FlxG;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;

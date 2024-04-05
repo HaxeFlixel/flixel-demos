@@ -1,4 +1,4 @@
-package;
+package states;
 
 import flixel.FlxG;
 import flixel.FlxState;
@@ -11,6 +11,7 @@ import flixel.util.FlxColor;
 import flixel.ui.FlxVirtualPad;
 #end
 import ui.CombatSubState;
+import ui.HUD;
 
 using flixel.util.FlxSpriteUtil;
 

@@ -1,6 +1,7 @@
-package;
+package states;
 
 import ui.OptionsSubState;
+import ui.LargeText;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.text.FlxBitmapText;

@@ -1,4 +1,4 @@
-package;
+package states;
 
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
@@ -11,6 +11,7 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
+import ui.LargeText;
 
 class GameOverState extends FlxState
 {
