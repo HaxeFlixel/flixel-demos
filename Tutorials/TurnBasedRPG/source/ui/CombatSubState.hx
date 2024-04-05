@@ -211,7 +211,7 @@ class CombatUI extends FlxSpriteGroup
 		
 		// create a health bar
 		var bar = new FlxBar(0, icon.y + icon.height + 2, LEFT_TO_RIGHT, 30, 10);
-		bar.createFilledBar(0xffdc143c, FlxColor.YELLOW, true, FlxColor.YELLOW);
+		bar.createImageBar("assets/images/bar_empty.png", "assets/images/bar_filled.png", 0x0, 0x0);
 		bar.setRange(0, maxHealth);
 		// tracks the target's health automatically
 		bar.parent = target;
