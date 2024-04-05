@@ -10,6 +10,9 @@ import flixel.util.FlxColor;
 #if mobile
 import flixel.ui.FlxVirtualPad;
 #end
+import objects.Coin;
+import objects.Enemy;
+import objects.Player;
 import ui.CombatSubState;
 import ui.HUD;
 

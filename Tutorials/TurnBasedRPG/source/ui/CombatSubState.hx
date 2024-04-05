@@ -17,6 +17,9 @@ import flixel.addons.display.FlxSliceSprite;
 import flixel.addons.effects.chainable.FlxEffectSprite;
 import flixel.addons.effects.chainable.FlxWaveEffect;
 
+import objects.Player;
+import objects.Enemy;
+
 import openfl.filters.ColorMatrixFilter;
 import openfl.geom.Matrix;
 import openfl.geom.Point;
