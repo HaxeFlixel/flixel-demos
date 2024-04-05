@@ -20,68 +20,68 @@ class PlayState extends FlxState
 	var walls:FlxTilemap;
 	var coins:FlxTypedGroup<Coin>;
 	var enemies:FlxTypedGroup<Enemy>;
-
+	
 	var hud:HUD;
 	var money:Int = 0;
-
+	
 	#if mobile
 	public static var virtualPad:FlxVirtualPad;
 	#end
-
+	
 	override public function create()
 	{
 		#if FLX_MOUSE
 		FlxG.mouse.visible = false;
 		#end
-
+		
 		var map = new FlxOgmo3Loader(AssetPaths.turnBasedRPG__ogmo, AssetPaths.room_001__json);
 		walls = map.loadTilemap(AssetPaths.tiles__png, "walls");
 		walls.follow();
 		walls.setTileProperties(0, NONE, null, null, 16);
 		walls.setTileProperties(16, ANY, null, null, 20);
 		add(walls);
-
+		
 		coins = new FlxTypedGroup<Coin>();
 		add(coins);
-
+		
 		enemies = new FlxTypedGroup<Enemy>();
 		add(enemies);
-
+		
 		player = new Player();
 		map.loadEntities(placeEntities, "entities");
 		add(player);
-
+		
 		FlxG.camera.follow(player, TOPDOWN, 1);
-
+		
 		hud = new HUD();
 		add(hud);
-
+		
 		#if mobile
 		virtualPad = new FlxVirtualPad(FULL, NONE);
 		add(virtualPad);
 		#end
-
+		
 		FlxG.camera.fade(FlxColor.BLACK, 0.33, true);
-
+		
 		super.create();
 	}
-
+	
 	function placeEntities(entity:EntityData)
 	{
 		var x = entity.x;
 		var y = entity.y;
-
+		
 		switch (entity.name)
 		{
 			case "player":
 				player.setPosition(x, y);
-
+				
 			case "coin":
 				coins.add(new Coin(x + 4, y + 4));
-
+				
 			case "enemy":
 				enemies.add(new Enemy(x + 4, y, REGULAR));
-
+				
 			case "boss":
 				enemies.add(new Enemy(x + 4, y, BOSS));
 		}
@@ -140,7 +140,9 @@ class PlayState extends FlxState
 			case VICTORY:
 				enemy.kill();
 				if (enemy.type == BOSS)
+				{
 					fadeToGameOver(true);
+				}
 			case ESCAPED:
 				enemy.flicker();
 			case DEFEAT:

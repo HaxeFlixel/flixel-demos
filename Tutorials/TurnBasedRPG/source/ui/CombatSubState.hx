@@ -361,9 +361,13 @@ class CombatUI extends FlxSpriteGroup
 		
 		// Show the attack result then it's the enemy's turn
 		if (enemy.hp > 0)
+		{
 			showAttackResult(enemyIcon, result, enemyAttack);
+		}
 		else
+		{
 			showAttackResult(enemyIcon, result, roundEnd);
+		}
 	}
 	
 	function enemyAttack()
@@ -401,9 +405,13 @@ class CombatUI extends FlxSpriteGroup
 	function roundEnd()
 	{
 		if (player.hp <= 0)
+		{
 			showOutcome(DEFEAT);
+		}
 		else if (enemy.hp <= 0)
+		{
 			showOutcome(VICTORY);
+		}
 		else
 		{
 			// Enables UI for net turn
@@ -427,7 +435,7 @@ class CombatUI extends FlxSpriteGroup
 			function (_)
 			{
 				// Hold it there for a sec, then start the outro
-				new FlxTimer().start(1.0, (_)->callback(outcome));
+				FlxTimer.wait(1.0, ()->callback(outcome));
 			}
 		});
 	}
@@ -438,9 +446,14 @@ class CombatUI extends FlxSpriteGroup
 	static inline function centerOn(sprite:FlxSprite, target:FlxSprite, axes:FlxAxes = XY)
 	{
 		if (axes.x)
+		{
 			sprite.x = target.x + (target.width - sprite.width) / 2;
+		}
+		
 		if (axes.y)
+		{
 			sprite.y = target.y + (target.height - sprite.height) / 2;
+		}
 	}
 }
 

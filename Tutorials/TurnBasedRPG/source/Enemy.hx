@@ -68,7 +68,9 @@ class Enemy extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		if (this.isFlickering())
+		{
 			return;
+		}
 
 		var action = "idle";
 		if (velocity.x != 0 || velocity.y != 0)
@@ -76,37 +78,31 @@ class Enemy extends FlxSprite
 			action = "walk";
 			if (Math.abs(velocity.x) > Math.abs(velocity.y))
 			{
-				if (velocity.x < 0)
-					facing = LEFT;
-				else
-					facing = RIGHT;
+				facing = (velocity.x < 0) ? LEFT : RIGHT;
 			}
 			else
 			{
-				if (velocity.y < 0)
-					facing = UP;
-				else
-					facing = DOWN;
+				facing = (velocity.y < 0) ? UP : DOWN;
 			}
-
+			
 			stepSound.setPosition(x + width / 2, y + height);
 			stepSound.play();
 		}
-
+		
 		switch (facing)
 		{
 			case LEFT, RIGHT:
 				animation.play("lr_" + action);
-
+				
 			case UP:
 				animation.play("u_" + action);
-
+				
 			case DOWN:
 				animation.play("d_" + action);
-
+				
 			case _:
 		}
-
+		
 		brain.update(elapsed);
 		super.update(elapsed);
 	}
@@ -134,7 +130,9 @@ class Enemy extends FlxSprite
 			idleTimer = FlxG.random.int(1, 4);
 		}
 		else
+		{
 			idleTimer -= elapsed;
+		}
 	}
 
 	function chase(elapsed:Float)

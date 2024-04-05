@@ -50,7 +50,9 @@ class OptionsUI extends FlxGroup
 		super();
 		
 		if (FlxG.save.data.volumes == null)
+		{
 			initSave();
+		}
 		
 		// Make a background to visially separate the ui from the game underneath
 		var bg = new FlxSliceSprite(AssetPaths.uiback__png, new FlxRect(16, 16, 16, 16), 200, 160);
@@ -219,7 +221,9 @@ class VolumeBar extends FlxSpriteGroup
 		amountText.text = label + " " + bar.value + "%";
 		
 		if (dispatch)
+		{
 			onChange(bar.value / 100);
+		}
 	}
 	
 	public function setVolume(volume:Float, dispatch = false)

@@ -66,9 +66,13 @@ class MenuState extends FlxState
 	{
 		var volumes:{ music:Float, sound:Float } = null;
 		if (FlxG.save.data.volumes != null)
+		{
 			volumes = FlxG.save.data.volumes;
+		}
 		else
+		{
 			volumes = { music:0.5, sound:1.0 };
+		}
 		
 		FlxG.sound.defaultMusicGroup.volume = volumes.music;
 		FlxG.sound.defaultSoundGroup.volume = volumes.sound;

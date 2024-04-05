@@ -63,8 +63,9 @@ class GameOverState extends FlxState
 		// Get previous highscore
 		var highscore = 0;
 		if (FlxG.save.data.highscore != null)
+		{
 			highscore = FlxG.save.data.highscore;
-		
+		}
 		
 		var highscoreText = new FlxText(0, (FlxG.height / 2) + 10, 0, "Highscore: " + highscore, 8);
 		add(highscoreText);

@@ -17,7 +17,9 @@ abstract LargeText(FlxBitmapText) to FlxBitmapText
 		final graphic = FlxG.bitmap.add(AssetPaths.font__png);
 		final font = FlxBitmapFont.findFont(graphic.imageFrame.frame);
 		if (font != null)
+		{
 			return font;
+		}
 		
 		final chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!";
 		final widths = ['I'.code=>3, '!'.code=>3, 'T'.code=>7];

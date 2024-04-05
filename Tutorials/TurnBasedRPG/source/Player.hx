@@ -90,9 +90,14 @@ class Player extends FlxSprite
 		
 		// Cancel out opposing directions
 		if (up && down)
+		{
 			up = down = false;
+		}
+		
 		if (left && right)
+		{
 			left = right = false;
+		}
 		
 		acceleration.set(0, 0);
 		if (right)
