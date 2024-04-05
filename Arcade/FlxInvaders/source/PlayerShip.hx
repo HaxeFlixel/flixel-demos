@@ -65,7 +65,9 @@ class PlayerShip extends FlxSprite
 		{
 			// Play a sound effect when the player shoots with slight random pitch
 			var shootSound:FlxSound = FlxG.sound.play("assets/player_shoot.wav", 0.5);
+			#if FLX_PITCH
 			shootSound.pitch = FlxG.random.float(0.9, 1.1);
+			#end
 			// Space bar was pressed! FIRE A BULLET
 			var playState:PlayState = cast FlxG.state;
 			var bullet:FlxSprite = playState.playerBullets.recycle();
