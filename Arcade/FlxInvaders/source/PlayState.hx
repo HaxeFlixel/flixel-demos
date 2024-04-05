@@ -213,7 +213,9 @@ class PlayState extends FlxState
 	function stuffHitStuff(Object1:FlxObject, Object2:FlxObject):Void
 	{
 		var wallSound:FlxSound = FlxG.sound.play("assets/wall_break.wav");
+		#if FLX_PITCH
 		wallSound.pitch = FlxG.random.float(0.9, 1.1);
+		#end
 		Object1.kill();
 		Object2.kill();
 	}
