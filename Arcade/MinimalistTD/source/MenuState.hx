@@ -65,7 +65,7 @@ class MenuState extends FlxState
 	 */
 	function startGame():Void
 	{
-		FlxG.switchState(new PlayState());
+		FlxG.switchState(PlayState.new);
 	}
 
 	override public function update(elapsed:Float):Void

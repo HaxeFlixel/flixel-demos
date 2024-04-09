@@ -5,17 +5,10 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.util.FlxColor;
 #if shaders_supported
-#if (openfl >= "8.0.0")
-import openfl8.blends.*;
-import openfl8.effects.*;
-import openfl8.effects.WiggleEffect.WiggleEffectType;
-import openfl8.effects.BlendModeEffect.BlendModeShader;
-#else
-import openfl3.blends.*;
-import openfl3.effects.*;
-import openfl3.effects.WiggleEffect.WiggleEffectType;
-import openfl3.effects.BlendModeEffect.BlendModeShader;
-#end
+import blends.*;
+import effects.*;
+import effects.WiggleEffect.WiggleEffectType;
+import effects.BlendModeEffect.BlendModeShader;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -26,7 +19,7 @@ import openfl.filters.ShaderFilter;
 import flixel.text.FlxText;
 #end
 
-@:enum abstract LogoColor(FlxColor) to FlxColor
+enum abstract LogoColor(FlxColor) to FlxColor
 {
 	static var LIST(default, null) = [RED, BLUE, YELLOW, CYAN, GREEN];
 	var RED = 0xff3366;
@@ -126,7 +119,7 @@ class PlayState extends FlxState
 		color.alphaFloat = 0.5;
 
 		var effect = new BlendModeEffect(effects[blendEffect], color);
-		FlxG.camera.setFilters([new ShaderFilter(cast effect.shader)]);
+		FlxG.camera.filters = [new ShaderFilter(cast effect.shader)];
 	}
 
 	function createShutterEffect():Void

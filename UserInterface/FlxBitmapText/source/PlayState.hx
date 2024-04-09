@@ -65,7 +65,7 @@ class PlayState extends FlxState
 		tf2.letterSpacing = 25;
 		tf2.autoUpperCase = true;
 		tf2.multiLine = true;
-		tf2.wordWrap = false;
+		tf2.wrap = NONE;
 		tf2.screenCenter(FlxAxes.X);
 		add(tf2);
 
@@ -80,7 +80,7 @@ class PlayState extends FlxState
 		tf4.y = tf3.y + tf3.height + 50;
 		tf4.alignment = FlxTextAlign.CENTER;
 		tf4.text = "!\u20e4 You can e\u0332v\u0332e\u0332n\u0332 define and use\nUnicode Combining Diacritical Marks!";
-		tf4.multiLine =  true;
+		tf4.multiLine = true;
 		tf4.screenCenter(FlxAxes.X);
 		add(tf4);
 	}

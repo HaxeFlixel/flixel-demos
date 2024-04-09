@@ -19,6 +19,11 @@ import openfl.text.TextFormatAlign;
  */
 class State_DemoCode extends FlxUIState
 {
+	public function new()
+	{
+		super();
+	}
+
 	override public function create()
 	{
 		super.create();
@@ -34,11 +39,11 @@ class State_DemoCode extends FlxUIState
 				var str:String = (params != null && params.length >= 1) ? cast params[0] : "";
 				if (str == "defaults")
 				{
-					FlxG.switchState(new State_Demo2());
+					FlxG.switchState(State_Demo2.new);
 				}
 				if (str == "no_defaults")
 				{
-					FlxG.switchState(new State_Demo());
+					FlxG.switchState(State_Demo.new);
 				}
 		}
 	}
@@ -71,30 +76,33 @@ class State_DemoCode extends FlxUIState
 			{bodyWidth: 100});
 
 		b = addBtn("even_fancier", new FlxUIButton(b.x, b.y + b.height + 10, "Even fancier"), "Even fancier tooltip!",
-			"This tooltip has a title and a body, as well as custom padding and offsets", null,
-			{titleWidth: 120, bodyWidth: 120, bodyOffset: new FlxPoint(5, 5)});
+			"This tooltip has a title and a body, as well as custom padding and offsets", null, {
+				titleWidth: 120,
+				bodyWidth: 120,
+				bodyOffset: new FlxPoint(5, 5)
+			});
 
 		b = addBtn("fanciest", new FlxUIButton(b.x, b.y + b.height + 10, "Fanciest"), "Fanciest tooltip",
 			"This tooltip has a title and a body, custom padding and offsets, as well as custom text formatting", null, {
-			titleWidth: 125,
-			bodyWidth: 120,
-			bodyOffset: new FlxPoint(5, 5),
-			titleFormat: sans12,
-			bodyFormat: sans10,
-			titleBorder: border,
-			bodyBorder: border,
-			leftPadding: 5,
-			rightPadding: 5,
-			topPadding: 5,
-			bottomPadding: 5,
-			background: FlxColor.RED,
-			borderSize: 1,
-			borderColor: FlxColor.WHITE
-		});
+				titleWidth: 125,
+				bodyWidth: 120,
+				bodyOffset: new FlxPoint(5, 5),
+				titleFormat: sans12,
+				bodyFormat: sans10,
+				titleBorder: border,
+				bodyBorder: border,
+				leftPadding: 5,
+				rightPadding: 5,
+				topPadding: 5,
+				bottomPadding: 5,
+				background: FlxColor.RED,
+				borderSize: 1,
+				borderColor: FlxColor.WHITE
+			});
 
 		b = addBtn("goback", new FlxUIButton(b.x, b.y + b.height + 10, "Go Back", function()
 		{
-			FlxG.switchState(new State_Demo());
+			FlxG.switchState(State_Demo.new);
 		}), "Go Back", "This button takes you back to the first screen");
 	}
 

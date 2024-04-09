@@ -123,8 +123,5 @@ class MenuState extends FlxState
 		x11.animation.addByPrefix("spin", "", 3);
 		x11.animation.play("spin");
 		add(x11);
-
-		// Remove atlas bitmaps from memory (useful for targets with hardware acceleration: cpp only atm).
-		FlxG.bitmap.dumpCache();
 	}
 }

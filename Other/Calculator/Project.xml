@@ -5,7 +5,7 @@
 	<app title="Calculator" file="Calculator" main="Main" version="0.0.1" company="" />
 	
 	<window background="#222222" fps="60" width="640" height="480"/>
-	<window orientation="portrait" resizable="false" if="web" />
+	<window orientation="portrait" resizable="true" if="web" />
 	<window orientation="landscape" fullscreen="false" hardware="true" vsync="false" if="flash" />
 	<window orientation="landscape" resizable="false" fullscreen="false" hardware="true" vsync="false" if="cpp" />
 	

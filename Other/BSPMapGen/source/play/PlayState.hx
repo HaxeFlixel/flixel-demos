@@ -45,6 +45,6 @@ class PlayState extends FlxState
 
 	function back():Void
 	{
-		FlxG.switchState(new GenerateState());
+		FlxG.switchState(GenerateState.new);
 	}
 }

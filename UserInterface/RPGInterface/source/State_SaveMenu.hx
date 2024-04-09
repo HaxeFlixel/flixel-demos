@@ -10,6 +10,11 @@ import haxe.xml.Access;
  */
 class State_SaveMenu extends FlxUIState
 {
+	public function new()
+	{
+		super();
+	}
+
 	override public function create()
 	{
 		_xml_id = "state_save";
@@ -43,7 +48,7 @@ class State_SaveMenu extends FlxUIState
 				case "click_button":
 					switch (Std.string(params[0]))
 					{
-						case "back": FlxG.switchState(new State_Title());
+						case "back": FlxG.switchState(State_Title.new);
 					}
 			}
 		}

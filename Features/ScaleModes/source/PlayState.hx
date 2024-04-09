@@ -72,8 +72,7 @@ class PlayState extends FlxState
 	}
 }
 
-@:enum
-abstract ScaleMode(String) to String
+enum abstract ScaleMode(String) to String
 {
 	var RATIO_DEFAULT = "ratio";
 	var RATIO_FILL_SCREEN = "ratio (screenfill)";

@@ -1,22 +1,18 @@
 package;
 
-import flixel.addons.display.FlxBackdrop;
-import flixel.addons.ui.FlxUIAssets;
-import flixel.addons.ui.FlxUICheckBox;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxState;
+import flixel.addons.display.FlxBackdrop;
+import flixel.addons.ui.FlxUIAssets;
+import flixel.addons.ui.FlxUICheckBox;
 import openfl.filters.BitmapFilter;
 import openfl.filters.BlurFilter;
 import openfl.filters.ColorMatrixFilter;
 #if shaders_supported
-#if (openfl >= "8.0.0")
-import openfl8.*;
-#else
-import openfl3.*;
-#end
-import openfl.filters.ShaderFilter;
+import filters.*;
 import openfl.Lib;
+import openfl.filters.ShaderFilter;
 #end
 
 class PlayState extends FlxState
@@ -24,7 +20,7 @@ class PlayState extends FlxState
 	var filters:Array<BitmapFilter> = [];
 	var uiCamera:flixel.FlxCamera;
 	var filterMap:Map<String, {filter:BitmapFilter, ?onUpdate:Void->Void}>;
-
+	
 	override public function create():Void
 	{
 		filterMap = [
@@ -60,7 +56,7 @@ class PlayState extends FlxState
 					0.5, 0.5, 0.5, 0, 0,
 					  0,   0,   0, 1, 0,
 				];
-
+				
 				{filter: new ColorMatrixFilter(matrix)}
 			},
 			"Invert" => {
@@ -70,7 +66,7 @@ class PlayState extends FlxState
 					 0,  0, -1, 0, 255,
 					 0,  0,  0, 1,   0,
 				];
-
+				
 				{filter: new ColorMatrixFilter(matrix)}
 			},
 			"Deuteranopia" => {
@@ -80,7 +76,7 @@ class PlayState extends FlxState
 					-.02, 0.03,    1, 0, 0,
 					   0,    0,    0, 1, 0,
 				];
-
+				
 				{filter: new ColorMatrixFilter(matrix)}
 			},
 			"Protanopia" => {
@@ -90,7 +86,7 @@ class PlayState extends FlxState
 					0.01, -.01,    1, 0, 0,
 					   0,    0,    0, 1, 0,
 				];
-
+				
 				{filter: new ColorMatrixFilter(matrix)}
 			},
 			"Tritanopia" => {
@@ -100,51 +96,51 @@ class PlayState extends FlxState
 					0.06, 0.88, 0.18, 0, 0,
 					   0,    0,    0, 1, 0,
 				];
-
+				
 				{filter: new ColorMatrixFilter(matrix)}
 			}
 		];
-
+		
 		uiCamera = new FlxCamera(0, 0, 130, 300);
 		FlxG.cameras.add(uiCamera);
-
+		
 		var backdrop = new FlxBackdrop("assets/logo.png");
 		backdrop.cameras = [FlxG.camera];
 		backdrop.velocity.set(150, 150);
 		add(backdrop);
-
-		FlxG.camera.setFilters(filters);
-		FlxG.game.setFilters(filters);
-
+		
+		FlxG.camera.filters = filters;
+		FlxG.game.filters = filters;
+		
 		FlxG.game.filtersEnabled = false;
-
+		
 		var x = 10;
 		var y = 10;
-
+		
 		for (key in filterMap.keys())
 		{
 			createCheckbox(x, y, key, filterMap.get(key).filter);
 			y += 25;
 		}
-
+		
 		y += 10;
 		var checkbox = new FlxUICheckBox(x, y, FlxUIAssets.IMG_CHECK_BOX, FlxUIAssets.IMG_CHECK_MARK, "Apply to full game");
 		checkbox.cameras = [uiCamera];
 		add(checkbox);
-
+		
 		checkbox.callback = function()
 		{
 			FlxG.camera.filtersEnabled = !checkbox.checked;
 			FlxG.game.filtersEnabled = checkbox.checked;
 		}
 	}
-
+	
 	function createCheckbox(x:Float, y:Float, name:String, filter:BitmapFilter)
 	{
 		var checkbox = new FlxUICheckBox(x, y, FlxUIAssets.IMG_CHECK_BOX, FlxUIAssets.IMG_CHECK_MARK, name);
 		checkbox.cameras = [uiCamera];
 		add(checkbox);
-
+		
 		checkbox.callback = function()
 		{
 			if (checkbox.checked)
@@ -153,11 +149,11 @@ class PlayState extends FlxState
 				filters.remove(filter);
 		}
 	}
-
+	
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-
+		
 		for (filter in filterMap)
 		{
 			if (filter.onUpdate != null)

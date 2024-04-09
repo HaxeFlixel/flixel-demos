@@ -165,6 +165,6 @@ class PlayState extends FlxState
 		 */
 		var save:String = FlxG.vcr.stopRecording(false);
 
-		FlxG.vcr.loadReplay(save, new PlayState(), ["ANY", "MOUSE"], 0, startRecording);
+		FlxG.vcr.loadReplay(save, PlayState.new, ["ANY", "MOUSE"], 0, startRecording);
 	}
 }

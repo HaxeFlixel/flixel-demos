@@ -126,7 +126,7 @@ class MenuState extends FlxState
 
 	function startGame():Void
 	{
-		FlxG.switchState(new PlayState());
+		FlxG.switchState(PlayState.new);
 	}
 }
 

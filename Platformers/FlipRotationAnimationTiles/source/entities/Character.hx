@@ -1,7 +1,7 @@
 package entities;
 
 import flixel.FlxG;
-import flixel.addons.display.FlxExtendedSprite;
+import flixel.addons.display.FlxExtendedMouseSprite;
 import flixel.math.FlxRect;
 import haxe.Json;
 import haxe.io.Path;
@@ -10,7 +10,7 @@ import openfl.Assets;
 /**
  * @author MrCdK
  */
-class Character extends FlxExtendedSprite
+class Character extends FlxExtendedMouseSprite
 {
 	public var collisionMap:FlxRect;
 	public var maxBounds:FlxRect;

@@ -23,7 +23,7 @@ class Enemy extends FlxSprite
 	var brain:FSM;
 	var idleTimer:Float;
 	var moveDirection:Float;
-	var stepSound:FlxSound;
+ 	var stepSound:FlxSound;
 
 	public var type(default, null):EnemyType;
 	public var seesPlayer:Bool;

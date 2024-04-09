@@ -47,6 +47,12 @@ class Alien extends FlxSprite
 		velocity.x = 10;
 	}
 
+	override function kill() {
+		var snd:String = FlxG.random.getObject(["assets/alien_die0.wav", "assets/alien_die1.wav"]);
+		FlxG.sound.play(snd, 0.9);
+		super.kill();
+	}
+
 	/**
 	 * Basic game loop is BACK y'all
 	 */

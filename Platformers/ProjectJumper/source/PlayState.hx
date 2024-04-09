@@ -143,7 +143,7 @@ class PlayState extends FlxState
 
 		if (_restart)
 		{
-			FlxG.switchState(new PlayState());
+			FlxG.switchState(PlayState.new);
 		}
 	}
 

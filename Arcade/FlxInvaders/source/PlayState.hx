@@ -1,5 +1,6 @@
 package;
 
+import flixel.sound.FlxSound;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -60,8 +61,16 @@ class PlayState extends FlxState
 	 * Inside this function we will create and orient all the important game objects.
 	 */
 	override public function create():Void
-	{
+	{	
+		if (FlxG.sound.music == null)
+			FlxG.sound.playMusic("assets/theme.ogg");
+
 		FlxG.mouse.visible = false;
+
+		if (statusMessage == "YOU LOST")
+		{
+			FlxG.sound.play("assets/lose.wav", 0.9);
+		}
 
 		// First we will instantiate the bullets you fire at your enemies.
 		var numPlayerBullets:Int = 8;
@@ -187,6 +196,8 @@ class PlayState extends FlxState
 			// Player died, so set our label to YOU LOST
 			statusMessage = "YOU LOST";
 			FlxG.resetState();
+			
+
 		}
 		else if (_aliens.getFirstExisting() == null)
 		{
@@ -201,6 +212,10 @@ class PlayState extends FlxState
 	 */
 	function stuffHitStuff(Object1:FlxObject, Object2:FlxObject):Void
 	{
+		var wallSound:FlxSound = FlxG.sound.play("assets/wall_break.wav");
+		#if FLX_PITCH
+		wallSound.pitch = FlxG.random.float(0.9, 1.1);
+		#end
 		Object1.kill();
 		Object2.kill();
 	}

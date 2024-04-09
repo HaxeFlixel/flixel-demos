@@ -8,6 +8,11 @@ import flixel.addons.ui.FlxUIState;
  */
 class State_Title extends FlxUIState
 {
+	public function new()
+	{
+		super();
+	}
+
 	override public function create():Void
 	{
 		FlxG.cameras.bgColor = 0xff131c1b;
@@ -39,11 +44,11 @@ class State_Title extends FlxUIState
 				{
 					switch (Std.string(params[0]))
 					{
-						case "saves": FlxG.switchState(new State_SaveMenu());
-						case "menu": FlxG.switchState(new State_TestMenu());
-						case "battle": FlxG.switchState(new State_Battle());
-						case "default_test": FlxG.switchState(new State_DefaultTest());
-						case "code_test": FlxG.switchState(new State_CodeTest());
+						case "saves": FlxG.switchState(State_SaveMenu.new);
+						case "menu": FlxG.switchState(State_TestMenu.new);
+						case "battle": FlxG.switchState(State_Battle.new);
+						case "default_test": FlxG.switchState(State_DefaultTest.new);
+						case "code_test": FlxG.switchState(State_CodeTest.new);
 						case "popup": openSubState(new Popup_Demo());
 					}
 				}
@@ -58,6 +63,6 @@ class State_Title extends FlxUIState
 
 	function reloadState():Void
 	{
-		FlxG.switchState(new State_Title());
+		FlxG.switchState(State_Title.new);
 	}
 }

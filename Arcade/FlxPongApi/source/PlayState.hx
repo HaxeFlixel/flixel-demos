@@ -93,7 +93,7 @@ class PlayState extends FlxState
 		}
 		if (FlxG.keys.justPressed.ESCAPE)
 		{
-			FlxG.switchState(new MenuState());
+			FlxG.switchState(MenuState.new);
 		}
 		#end
 
@@ -150,6 +150,6 @@ class PlayState extends FlxState
 
 	function endGame(f:FlxTimer):Void
 	{
-		FlxG.switchState(new MenuState());
+		FlxG.switchState(MenuState.new);
 	}
 }

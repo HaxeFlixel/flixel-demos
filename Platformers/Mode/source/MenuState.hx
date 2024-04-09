@@ -198,10 +198,10 @@ class MenuState extends FlxState
 	{
 		if (_demoMode)
 		{
-			FlxG.vcr.loadReplay(Assets.getText('assets/data/demo${FlxG.random.int(1, 2)}.fgr'), new PlayState(), ["ANY"], 22, onDemoComplete);
+			FlxG.vcr.loadReplay(Assets.getText('assets/data/demo${FlxG.random.int(1, 2)}.fgr'), PlayState.new, ["ANY"], 22, onDemoComplete);
 		}
 		else
-			FlxG.switchState(new PlayState());
+			FlxG.switchState(PlayState.new);
 	}
 
 	/**

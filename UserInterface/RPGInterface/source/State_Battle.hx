@@ -9,6 +9,11 @@ import openfl.events.Event;
  */
 class State_Battle extends FlxUIState
 {
+	public function new()
+	{
+		super();
+	}
+
 	override public function create()
 	{
 		_xml_id = "state_battle";
@@ -76,7 +81,7 @@ class State_Battle extends FlxUIState
 				case FlxUITypedButton.CLICK_EVENT:
 					switch (Std.string(params[0]))
 					{
-						case "back": FlxG.switchState(new State_Title());
+						case "back": FlxG.switchState(State_Title.new);
 					}
 			}
 		}

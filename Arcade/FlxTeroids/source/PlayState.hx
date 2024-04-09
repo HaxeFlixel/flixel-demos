@@ -88,7 +88,7 @@ class PlayState extends FlxState
 		// Escape to the menu
 		if (FlxG.keys.pressed.ESCAPE)
 		{
-			FlxG.switchState(new MenuState());
+			FlxG.switchState(MenuState.new);
 		}
 
 		super.update(elapsed);

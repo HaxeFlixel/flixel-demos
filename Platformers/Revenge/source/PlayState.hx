@@ -177,6 +177,6 @@ class PlayState extends FlxState
 	function onFade():Void
 	{
 		// FlxG.fade.start also takes in a callback which is called after the fade ends!!
-		FlxG.switchState(new EndState());
+		FlxG.switchState(EndState.new);
 	}
 }
