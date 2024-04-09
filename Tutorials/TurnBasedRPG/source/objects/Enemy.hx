@@ -152,7 +152,7 @@ class Enemy extends FlxSprite
 		// Store the player position
 		player.getMidpoint(playerPosition);
 		// Cast a ray from here to the player and see if a wall is blocking
-		seesPlayer = walls.ray(getMidpoint(), playerPosition);
+		seesPlayer = walls.ray(getMidpoint(FlxPoint.weak()), playerPosition);
 	}
 
 	public function changeType(type:EnemyType)
