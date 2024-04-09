@@ -455,6 +455,7 @@ class PlayState extends FlxState
 			mouseMode = NONE;
 			updateMouseCursor(false);
 		}
+		mPos.put();
 	}
 
 	/**
