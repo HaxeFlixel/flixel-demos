@@ -13,6 +13,7 @@ import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
 import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
+import flixel.util.FlxDestroyUtil;
 import openfl.display.BitmapData;
 import openfl.geom.Rectangle;
 import openfl.ui.Mouse;
@@ -419,7 +420,7 @@ class PlayState extends FlxState
 		if (mPos.x >= lifeMap.x && mPos.y >= lifeMap.y && mPos.x < lifeMap.x + lifeMap.width && mPos.y < lifeMap.y + lifeMap.height)
 		{
 			// if the mouse is over the lifeMap, get the tile it is over
-			var mPosOff:FlxPoint = new FlxPoint((mPos.x - lifeMap.x) / TILE_SIZE, (mPos.y - lifeMap.y) / TILE_SIZE);
+			final mPosOff = FlxPoint.get((mPos.x - lifeMap.x) / TILE_SIZE, (mPos.y - lifeMap.y) / TILE_SIZE);
 
 			// if the player just pressed the mouse, set the mouse mode to paint or erase mode, depending on the tile they clicked on
 			if (FlxG.mouse.justPressed)
@@ -436,19 +437,20 @@ class PlayState extends FlxState
 
 					for (points in getLine(Std.int(mPosOffPrev.x), Std.int(mPosOffPrev.y), Std.int(mPosOff.x), Std.int(mPosOff.y)))
 						lifeMap.setTile(points.x, points.y, mouseMode == PAINT ? 1 : 0);
-					
 				}
-
-				mPosOffPrev = FlxPoint.get(mPosOff.x, mPosOff.y);
+				else
+					mPosOffPrev = FlxPoint.get();
+				
+				mPosOffPrev.copyFrom(mPosOff);
 			}
 			else if (FlxG.mouse.released)
 			{
 				// if the player released the mouse, set the mode to none
 				mouseMode = NONE;
-				mPosOffPrev = null;
-			
+				mPosOffPrev = FlxDestroyUtil.put(mPosOffPrev);
 			} 
 			updateMouseCursor(true);
+			mPosOff.put();
 		}
 		else
 		{
