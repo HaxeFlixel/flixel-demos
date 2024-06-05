@@ -83,15 +83,15 @@ class PlayState extends FlxState
 		_hud.add(_levelText);
 	}
 
-	function fallInClouds(Tile:FlxObject, Object:FlxObject):Void
+	function fallInClouds(tile:FlxObject, object:FlxObject):Void
 	{
 		if (FlxG.keys.anyPressed([DOWN, S]))
 		{
-			Tile.allowCollisions = NONE;
+			tile.allowCollisions = NONE;
 		}
-		else if (Object.y >= Tile.y)
+		else
 		{
-			Tile.allowCollisions = CEILING;
+			tile.allowCollisions = CEILING;
 		}
 	}
 
