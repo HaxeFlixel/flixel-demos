@@ -1,13 +1,13 @@
 package;
 
-import flixel.effects.particles.FlxEmitter;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.effects.particles.FlxEmitter;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.util.FlxSpriteUtil;
 import flixel.system.FlxAssets;
+import flixel.util.FlxSpriteUtil;
 
-class Spawner extends FlxSprite
+class Spawner extends FlxSprite implements IHurt
 {
 	var _timer:Float;
 	var _bots:FlxTypedGroup<Enemy>;
@@ -16,6 +16,7 @@ class Spawner extends FlxSprite
 	var _gibs:FlxEmitter;
 	var _player:Player;
 	var _open:Bool;
+	var _health:Int = 8;
 
 	public function new(X:Int, Y:Int, Gibs:FlxEmitter, Bots:FlxTypedGroup<Enemy>, BotBullets:FlxTypedGroup<EnemyBullet>, BotGibs:FlxEmitter, ThePlayer:Player)
 	{
@@ -28,7 +29,6 @@ class Spawner extends FlxSprite
 		_player = ThePlayer;
 		_timer = FlxG.random.float(0, 20);
 		_open = false;
-		health = 8;
 
 		animation.add("open", [1, 2, 3, 4, 5], 40, false);
 		animation.add("close", [4, 3, 2, 1, 0], 40, false);
@@ -79,13 +79,15 @@ class Spawner extends FlxSprite
 		super.update(elapsed);
 	}
 
-	override public function hurt(Damage:Float):Void
+	public function hurt(damage:Int = 1):Void
 	{
 		FlxG.sound.play(FlxAssets.getSound("assets/sounds/hit"));
 		FlxSpriteUtil.flicker(this, 0.2, 0.02, true);
 		Reg.score += 50;
 
-		super.hurt(Damage);
+		_health -= damage;
+		if (_health <= 0)
+			kill();
 	}
 
 	override public function kill():Void

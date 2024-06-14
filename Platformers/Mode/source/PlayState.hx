@@ -1,19 +1,19 @@
 package;
 
-import flixel.effects.particles.FlxEmitter;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.effects.particles.FlxEmitter;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
+import flixel.system.FlxAssets;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
-import flixel.system.FlxAssets;
 #if SHOW_FPS
-import openfl.display.FPS;
 import openfl.Lib;
+import openfl.display.FPS;
 #end
 
 /**
@@ -348,12 +348,21 @@ class PlayState extends FlxState
 	/**
 	 * This is an overlap callback function, triggered by the calls to FlxG.overlap().
 	 */
-	function overlapped(Sprite1:FlxObject, Sprite2:FlxObject):Void
+	function overlapped(attacker:FlxObject, victim:FlxObject):Void
 	{
-		if ((Sprite1 is EnemyBullet) || (Sprite1 is Bullet))
-			Sprite1.kill();
+		if ((attacker is Bullet) || (attacker is EnemyBullet))
+		{
+			attacker.kill();
+		}
 
-		Sprite2.hurt(1);
+		if ((victim is IHurt))
+		{
+			(cast victim : IHurt).hurt(1);
+		}
+		else
+		{
+			victim.kill();
+		}
 	}
 
 	/**

@@ -9,7 +9,7 @@ import flixel.math.FlxVelocity;
 import flixel.system.FlxAssets;
 import flixel.util.FlxSpriteUtil;
 
-class Enemy extends FlxSprite
+class Enemy extends FlxSprite implements IHurt
 {
 	/**
 	 * The player object
@@ -54,6 +54,8 @@ class Enemy extends FlxSprite
 	 * a FlxPoint.get() object by the getMidpoint() function.
 	 */
 	var _playerMidpoint:FlxPoint;
+
+	var _health:Int = 2;
 
 	/**
 	 * This is the constructor for the enemy class. Because we are recycling
@@ -103,7 +105,7 @@ class Enemy extends FlxSprite
 		reset(xPos - width / 2, yPos - height / 2);
 		angle = angleTowardPlayer();
 		// Enemies take 2 shots to kill
-		health = 2;
+		_health = 2;
 		_timer = 0;
 		_shotClock = 0;
 	}
@@ -236,15 +238,17 @@ class Enemy extends FlxSprite
 	 * The enemy is told to flicker, points are awarded to the player,
 	 * and damage is dealt to the Enemy.
 	 *
-	 * @param	Damage	The amount of damage to take
+	 * @param	damage	The amount of damage to take
 	 */
-	override public function hurt(Damage:Float):Void
+	public function hurt(damage:Int = 1):Void
 	{
 		FlxG.sound.play(FlxAssets.getSound("assets/sounds/hit"));
 		FlxSpriteUtil.flicker(this, 0.2, 0.02, true);
 		Reg.score += 10;
 
-		super.hurt(Damage);
+		_health -= damage;
+		if (_health <= 0)
+			kill();
 	}
 
 	/**
