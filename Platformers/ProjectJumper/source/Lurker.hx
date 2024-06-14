@@ -3,7 +3,6 @@ package;
 import flixel.FlxG;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
-import flixel.util.FlxSpriteUtil;
 
 /**
  * @author David Bell
@@ -142,22 +141,6 @@ class Lurker extends EnemyTemplate
 		acceleration.y = GRAVITY;
 		maxVelocity.y = JUMP_SPEED;
 		_playdeathsound = true;
-	}
-
-	override public function hurt(Damage:Float):Void
-	{
-		if (x > _player.x)
-		{
-			velocity.x = drag.x * 4;
-		}
-		else
-		{
-			velocity.x = -drag.x * 4;
-		}
-
-		FlxSpriteUtil.flicker(this, 0.5);
-		FlxG.sound.play("assets/sounds/monhurt2" + Reg.SoundExtension, 1, false);
-		health -= 1;
 	}
 
 	function shoot(P:Player):Void

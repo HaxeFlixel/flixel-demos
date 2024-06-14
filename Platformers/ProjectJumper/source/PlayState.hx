@@ -137,7 +137,7 @@ class PlayState extends FlxState
 		}
 
 		FlxG.overlap(player, _enemies, hitPlayer);
-		FlxG.overlap(_bullets, _enemies, hitmonster);
+		FlxG.overlap(_bullets, _enemies, hitMonster);
 		FlxG.overlap(player, _coins, collectCoin);
 		FlxG.overlap(player, _badbullets, hitPlayer);
 
@@ -152,32 +152,28 @@ class PlayState extends FlxState
 		C.kill();
 	}
 
-	function hitPlayer(P:FlxObject, Monster:FlxObject):Void
+	function hitPlayer(player:Player, attacker:FlxObject):Void
 	{
-		if ((Monster is Bullet))
+		if ((attacker is Bullet))
 		{
-			Monster.kill();
+			attacker.kill();
+		}
+		else if ((attacker is EnemyTemplate))
+		{
+			final enemy:EnemyTemplate = cast attacker;
+			if (enemy.health <= 0)
+				return;
 		}
 
-		if (Monster.health > 0)
-		{
-			// This should still be more interesting
-			P.hurt(1);
-		}
+		player.kill();
 	}
 
-	function hitmonster(Blt:FlxObject, Monster:FlxObject):Void
+	function hitMonster(bullet:Bullet, monster:EnemyTemplate):Void
 	{
-		if (!Monster.alive)
+		if (monster.alive && monster.health > 0)
 		{
-			// Just in case
-			return;
-		}
-
-		if (Monster.health > 0)
-		{
-			Blt.kill();
-			Monster.hurt(1);
+			bullet.kill();
+			monster.hurt(1);
 		}
 	}
 
