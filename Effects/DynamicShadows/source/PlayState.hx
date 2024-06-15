@@ -109,7 +109,7 @@ class PlayState extends FlxState
 		{
 			for (tileX in 0...foreground.widthInTiles)
 			{
-				var tileIndex = foreground.getTile(tileX, tileY);
+				var tileIndex = foreground.getTileIndex(tileX, tileY);
 				var xPos:Float = tileX * TILE_SIZE;
 				var yPos:Float = tileY * TILE_SIZE;
 
@@ -133,7 +133,7 @@ class PlayState extends FlxState
 	 */
 	function cleanTile(x:Int, y:Int):Void
 	{
-		foreground.setTile(x, y, 0);
+		foreground.setTileIndex(x, y, 0);
 	}
 
 	override public function update(elapsed:Float):Void
