@@ -184,12 +184,12 @@ class PlayState extends FlxState
 
 	function getTileAt(x:Float, y:Float):Int
 	{
-		return tilemap.getTile(Std.int(x / TILE_SIZE), Std.int(y / TILE_SIZE));
+		return tilemap.getTileIndexAt(x, y);
 	}
 
 	function setTileAt(x:Float, y:Float, value:Int):Void
 	{
-		tilemap.setTile(Std.int(x / TILE_SIZE), Std.int(y / TILE_SIZE), value, true);
+		tilemap.setTileIndexAt(x, y, value, true);
 
 		updateDistanceMap();
 	}

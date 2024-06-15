@@ -81,7 +81,7 @@ class Player extends FlxSprite
 		move = new FlxActionAnalog();
 
 		if (actions == null)
-			actions = FlxG.inputs.add(new FlxActionManager());
+			actions = FlxG.inputs.addInput(new FlxActionManager());
 		actions.addActions([up, down, left, right, trigger1, trigger2, move]);
 
 		// Add keyboard inputs

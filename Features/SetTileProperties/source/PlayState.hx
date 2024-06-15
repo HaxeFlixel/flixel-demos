@@ -1,9 +1,9 @@
 package;
 
-import flixel.effects.particles.FlxEmitter;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxState;
+import flixel.effects.particles.FlxEmitter;
 import flixel.text.FlxText;
 import flixel.tile.FlxTile;
 import flixel.tile.FlxTilemap;
@@ -108,7 +108,7 @@ class PlayState extends FlxState
 
 	function removeTile(Tile:FlxTile):Void
 	{
-		_map.setTileByIndex(Tile.mapIndex, 0, true);
+		_map.setTileIndex(Tile.mapIndex, 0, true);
 	}
 
 	function leftHit(Tile:FlxObject, Particle:FlxObject):Void

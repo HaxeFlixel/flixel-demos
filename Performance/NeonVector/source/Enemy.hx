@@ -17,6 +17,7 @@ class Enemy extends Entity
 	// var enemyPixels:Array<BitmapData>;
 	var enemyPixels:Array<String>;
 	var pointValue:Int = 10;
+	var health:Int = 1;
 
 	var _saveWidth:Int;
 	var _saveHeight:Int;
@@ -99,9 +100,11 @@ class Enemy extends Entity
 			hitEdgeOfScreen = clampToScreen();
 	}
 
-	override public function hurt(Damage:Float):Void
+	public function hurt(damage:Int):Void
 	{
-		super.hurt(Damage);
+		health -= damage;
+		if (health <= 0)
+			kill();
 
 		if (type == BLACK_HOLE)
 		{

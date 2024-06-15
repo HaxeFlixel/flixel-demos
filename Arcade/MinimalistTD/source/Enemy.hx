@@ -2,13 +2,14 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.path.FlxPath;
 import flixel.math.FlxPoint;
+import flixel.path.FlxPath;
 
 class Enemy extends FlxSprite
 {
 	public var moneyGain:Bool = true;
 	public var maxHealth:Float = 1.0;
+	public var health:Float = 1.0;
 
 	/**
 	 * Create a new enemy. Used in the menu and playstate.
@@ -35,9 +36,9 @@ class Enemy extends FlxSprite
 	/**
 	 * The alpha of the enemy is dependent on health.
 	 */
-	override public function update(elapsed:Float):Void
+	override function update(elapsed:Float):Void
 	{
-		alpha = health / maxHealth;
+		// alpha = health / maxHealth;
 		super.update(elapsed);
 	}
 
@@ -46,7 +47,7 @@ class Enemy extends FlxSprite
 	 *
 	 * @param	Damage	The damage to deal to this enemy.
 	 */
-	override public function hurt(Damage:Float):Void
+	public function hurt(Damage:Float):Void
 	{
 		health -= Damage;
 
@@ -86,7 +87,7 @@ class Enemy extends FlxSprite
 	 * and then uses FlxPath.start() to set this enemy on the path. Speed is determined by wave number, unless
 	 * in the menu, in which case it's arbitrary.
 	 */
-	public function followPath(Path:Array<FlxPoint>, Speed:Int, ?OnComplete:FlxPath->Void):Void
+	public function followPath(Path:Array<FlxPoint>, Speed:Int, ?OnComplete:() -> Void):Void
 	{
 		if (Path == null)
 			throw("No valid path was passed to the enemy! Does the tilemap provide a valid path from start to finish?");
@@ -95,6 +96,6 @@ class Enemy extends FlxSprite
 		Path[0].y = y;
 
 		path = new FlxPath().start(Path, Speed, 0, true);
-		path.onComplete = OnComplete;
+		path.onEndReached.add((_) -> OnComplete());
 	}
 }

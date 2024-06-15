@@ -491,7 +491,7 @@ class PlayState extends FlxState
 	/**
 	 * Called when a bullet hits an enemy. Damages the enemy, kills the bullet.
 	 */
-	function hitEnemy(bullet:Bullet, enemy:FlxSprite):Void
+	function hitEnemy(bullet:Bullet, enemy:Enemy):Void
 	{
 		enemy.hurt(bullet.damage);
 		bullet.kill();
@@ -719,7 +719,7 @@ class PlayState extends FlxState
 		}
 
 		// Can't place towers on the road
-		if (_map.getTile(Std.int(xPos / TILE_SIZE), Std.int(yPos / TILE_SIZE)) == 0)
+		if (_map.getTileIndexAt(xPos, yPos) == 0)
 		{
 			FlxG.sound.play("deny");
 

@@ -15,7 +15,7 @@ import flixel.ui.FlxVirtualPad;
 import flixel.util.FlxDestroyUtil;
 #end
 
-class Player extends FlxSprite
+class Player extends FlxSprite implements IHurt
 {
 	#if VIRTUAL_PAD
 	public static var virtualPad:FlxVirtualPad;
@@ -117,7 +117,7 @@ class Player extends FlxSprite
 		#end
 
 		if (actions == null)
-			actions = FlxG.inputs.add(new FlxActionManager());
+			actions = FlxG.inputs.addUniqueType(new FlxActionManager());
 		actions.addActions([_up, _down, _left, _right, _jump, _shoot]);
 	}
 
@@ -168,10 +168,8 @@ class Player extends FlxSprite
 		}
 	}
 
-	override public function hurt(damage:Float):Void
+	public function hurt(damage:Int = 1):Void
 	{
-		damage = 0;
-
 		if (flickering)
 			return;
 
@@ -186,8 +184,6 @@ class Player extends FlxSprite
 			velocity.x = -maxVelocity.x;
 		else
 			velocity.x = maxVelocity.x;
-
-		super.hurt(damage);
 	}
 
 	function flicker(Duration:Float):Void

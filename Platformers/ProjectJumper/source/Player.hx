@@ -136,7 +136,7 @@ class Player extends FlxSprite
 		// but I hear int is faster so let's go with that.
 		_ygrid = Std.int((y + height - 1) / 16);
 
-		if (_parent.ladders.getTile(_xgridleft, _ygrid) > 0 && _parent.ladders.getTile(_xgridright, _ygrid) > 0)
+		if (_parent.ladders.getTileIndex(_xgridleft, _ygrid) > 0 && _parent.ladders.getTileIndex(_xgridright, _ygrid) > 0)
 		{
 			_onLadder = true;
 		}
@@ -166,7 +166,7 @@ class Player extends FlxSprite
 				_timesJumped = 0;
 			}
 
-			if (climbing && (_parent.ladders.getTile(_xgridleft, _ygrid - 1)) > 0)
+			if (climbing && (_parent.ladders.getTileIndex(_xgridleft, _ygrid - 1)) > 0)
 			{
 				velocity.y = -RUN_SPEED;
 			}

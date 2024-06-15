@@ -2,7 +2,6 @@ package;
 
 import flixel.FlxG;
 import flixel.effects.particles.FlxEmitter;
-import flixel.util.FlxSpriteUtil;
 
 /**
  * @author David Bell
@@ -41,7 +40,7 @@ class Enemy extends EnemyTemplate
 		_gibs = Gibs;
 	}
 
-	override public function update(elapsed:Float):Void
+	override function update(elapsed:Float):Void
 	{
 		if (!alive)
 		{
@@ -103,7 +102,7 @@ class Enemy extends EnemyTemplate
 		super.update(elapsed);
 	}
 
-	override public function reset(X:Float, Y:Float):Void
+	override function reset(X:Float, Y:Float):Void
 	{
 		super.reset(X, Y);
 
@@ -111,27 +110,15 @@ class Enemy extends EnemyTemplate
 		_spawntimer = 0;
 	}
 
-	override public function hurt(Damage:Float):Void
+	override function hurt(damage:Int = 1):Void
 	{
-		// remember, right means facing left
-		if (facing == RIGHT)
-		{
-			// Knock him to the right
-			velocity.x = drag.x * 4;
-		}
-		// Don't really need the if part, but hey.
-		else if (facing == LEFT)
-		{
-			velocity.x = -drag.x * 4;
-		}
+		super.hurt(damage);
 
-		FlxSpriteUtil.flicker(this, 0.5);
-		FlxG.sound.play("assets/sounds/monhurt2" + Reg.SoundExtension, 1, false);
-
-		super.hurt(Damage);
+		if (health <= 0)
+			kill();
 	}
 
-	override public function kill():Void
+	override function kill():Void
 	{
 		if (!alive)
 		{

@@ -337,7 +337,7 @@ class PlayState extends FlxState
 		}
 	}
 
-	function eBulletHitPlayer(EB:FlxSprite, P:FlxSprite):Void
+	function eBulletHitPlayer(EB:FlxSprite, P:Player):Void
 	{
 		if (EB.alive)
 		{
@@ -355,7 +355,7 @@ class PlayState extends FlxState
 		_hits.add(hit);
 	}
 
-	function playerHitEnemy(P:FlxSprite, E:FlxSprite):Void
+	function playerHitEnemy(P:Player, E:Enemy):Void
 	{
 		if (E.alive)
 		{
@@ -363,7 +363,7 @@ class PlayState extends FlxState
 			addExplosions(E);
 			FlxG.camera.flash(FlxColor.WHITE, .1);
 			_score += 100;
-			_sprPlayer.hurt(1);
+			P.hurt(1);
 		}
 	}
 
