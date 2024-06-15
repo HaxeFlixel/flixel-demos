@@ -1,16 +1,16 @@
 package;
 
-import flixel.addons.tile.FlxCaveGenerator;
-import flixel.addons.ui.FlxSlider;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.addons.tile.FlxCaveGenerator;
+import flixel.addons.ui.FlxSlider;
+import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
-import flixel.math.FlxMath;
-import flixel.math.FlxPoint;
 import flixel.util.FlxSpriteUtil;
 import haxe.Timer;
 
@@ -111,8 +111,11 @@ class PlayState extends FlxState
 		_tilemap.updateBuffers();
 
 		// Find an empty tile for the player
-		var emptyTiles:Array<FlxPoint> = _tilemap.getTileCoords(0, false);
-		var randomEmptyTile:FlxPoint = emptyTiles[FlxG.random.int(0, emptyTiles.length)];
-		_player.setPosition(randomEmptyTile.x, randomEmptyTile.y);
+		final emptyTiles:Array<Int> = _tilemap.getAllMapIndices(0);
+		final spawnIndex:Int = emptyTiles[FlxG.random.int(0, emptyTiles.length)];
+		final spawnPos = _tilemap.getTilePos(spawnIndex);
+		_player.x = spawnPos.x;
+		_player.y = spawnPos.y;
+		spawnPos.put();
 	}
 }
