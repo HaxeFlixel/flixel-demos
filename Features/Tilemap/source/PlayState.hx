@@ -128,7 +128,7 @@ class PlayState extends FlxState
 			// FlxTilemaps can be manually edited at runtime as well.
 			// Setting a tile to 0 removes it, and setting it to anything else will place a tile.
 			// If auto map is on, the map will automatically update all surrounding tiles.
-			_collisionMap.setTile(Std.int(FlxG.mouse.x / TILE_WIDTH), Std.int(FlxG.mouse.y / TILE_HEIGHT), FlxG.keys.pressed.SHIFT ? 0 : 1);
+			_collisionMap.setTileIndexAt(FlxG.mouse.x, FlxG.mouse.y, FlxG.keys.pressed.SHIFT ? 0 : 1);
 		}
 
 		updatePlayer();
