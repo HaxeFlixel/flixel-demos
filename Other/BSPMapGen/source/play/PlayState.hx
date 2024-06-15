@@ -18,17 +18,17 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		map = new FlxTilemap();
-		var csvData:String = FlxStringUtil.bitmapToCSV(GenerateState.mapData);
+		final csvData:String = FlxStringUtil.bitmapToCSV(GenerateState.mapData);
 		map.loadMapFromCSV(csvData, "assets/images/tiles.png", TILE_SIZE, TILE_SIZE, AUTO);
 		add(map);
 
 		// Randomly pick room for player to start in
-		var emptyTiles:Array<FlxPoint> = map.getTileCoords(0, false);
-		var randomEmptyTile:FlxPoint = emptyTiles[FlxG.random.int(0, emptyTiles.length)];
-
+		final emptyTiles:Array<Int> = map.getAllMapIndices(0);
+		final randomEmptyTile:FlxPoint = map.getTilePos(emptyTiles[FlxG.random.int(0, emptyTiles.length)]);
 		add(new Player(randomEmptyTile.x, randomEmptyTile.y));
+		randomEmptyTile.put();
 
-		var gutter:Int = 10;
+		final gutter:Int = 10;
 		add(new FlxButton(gutter, gutter, "Back (Space)", back));
 	}
 
