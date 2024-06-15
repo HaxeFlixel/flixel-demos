@@ -50,6 +50,9 @@
 	
 	<!-- ______________________________ Haxedefines _____________________________ -->
 	
+	<!--Disable the legacy health system-->
+	<haxedef name="FLX_NO_HEALTH" />
+	
 	<!--Enable the Flixel core recording system-->
 	<!--<haxedef name="FLX_RECORD" />-->
 	

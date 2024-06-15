@@ -7,6 +7,7 @@ import flixel.util.FlxColor;
 class Player extends FlxSprite
 {
 	public var dying:Bool = false;
+	public var health:Int = 10;
 
 	var _dyingTimer:Float = 2;
 	var _deathCallback:FlxSprite->Void;
@@ -21,8 +22,15 @@ class Player extends FlxSprite
 		health = 10;
 		_deathCallback = DeathCallback;
 	}
-
-	override public function kill():Void
+	
+	public function hurt(damage:Int)
+	{
+		health -= damage;
+		if (health <= 0)
+			kill();
+	}
+	
+	override function kill():Void
 	{
 		health = 0;
 		dying = true;
@@ -33,7 +41,7 @@ class Player extends FlxSprite
 		FlxG.camera.flash(FlxColor.WHITE, .1);
 	}
 
-	override public function update(elapsed:Float):Void
+	override function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
 		if (dying)
