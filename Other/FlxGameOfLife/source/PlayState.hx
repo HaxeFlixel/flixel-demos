@@ -298,7 +298,7 @@ class PlayState extends FlxState
 	{
 		for (i in 0...(MAP_SIZE * MAP_SIZE))
 		{
-			lifeMap.setTile(i % MAP_SIZE, Std.int(i / MAP_SIZE), 0);
+			lifeMap.setTileIndex(i, 0);
 		}
 	}
 
@@ -326,7 +326,7 @@ class PlayState extends FlxState
 
 		for (i in 0...str.length)
 		{
-			lifeMap.setTile(i % MAP_SIZE, Std.int(i / MAP_SIZE), Std.parseInt(str.charAt(i)));
+			lifeMap.setTileIndex(i, Std.parseInt(str.charAt(i)));
 		}
 		lastUpdate = FlxG.game.ticks;
 	}
@@ -383,12 +383,12 @@ class PlayState extends FlxState
 							continue;
 
 						// count all the living neighbors of this tile
-						if (lifeMap.getTile(nx, ny) == 1)
+						if (lifeMap.getTileIndex(nx, ny) == 1)
 							count++;
 					}
 				}
 
-				var tile:Int = lifeMap.getTile(x, y);
+				var tile:Int = lifeMap.getTileIndex(x, y);
 
 				if (tile == 1) // if this tile is alive
 				{
@@ -405,7 +405,7 @@ class PlayState extends FlxState
 		// now loop through the new generation and replace the old generation with it
 		for (i in 0...newGen.length)
 		{
-			lifeMap.setTile(i % MAP_SIZE, Std.int(i / MAP_SIZE), newGen[i]);
+			lifeMap.setTileIndex(i, newGen[i]);
 		}
 	}
 
@@ -425,18 +425,18 @@ class PlayState extends FlxState
 			// if the player just pressed the mouse, set the mouse mode to paint or erase mode, depending on the tile they clicked on
 			if (FlxG.mouse.justPressed)
 			{
-				mouseMode = lifeMap.getTile(Std.int(mPosOff.x), Std.int(mPosOff.y)) == 0 ? PAINT : ERASE;
+				mouseMode = lifeMap.getTileIndex(mPos) == 0 ? PAINT : ERASE;
 			}
 			else if (FlxG.mouse.pressed) // if the player is pressing the mouse, paint or erase the tile they are over, based on their mode
 			{
-				lifeMap.setTile(Std.int(mPosOff.x), Std.int(mPosOff.y), mouseMode == PAINT ? 1 : 0);
+				lifeMap.setTileIndex(mPos, mouseMode == PAINT ? 1 : 0);
 
 				if (mPosOffPrev != null)
 				{
 					// if the player is dragging the mouse, paint or erase all the tiles between the last tile they were over and the current tile
 
 					for (points in getLine(Std.int(mPosOffPrev.x), Std.int(mPosOffPrev.y), Std.int(mPosOff.x), Std.int(mPosOff.y)))
-						lifeMap.setTile(points.x, points.y, mouseMode == PAINT ? 1 : 0);
+						lifeMap.setTileIndex(points.x, points.y, mouseMode == PAINT ? 1 : 0);
 				}
 				else
 					mPosOffPrev = FlxPoint.get();
