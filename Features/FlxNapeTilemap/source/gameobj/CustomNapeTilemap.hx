@@ -2,12 +2,12 @@ package gameobj;
 
 import Constants.TileType;
 import flixel.addons.nape.FlxNapeTilemap;
-import flixel.system.FlxAssets;
 import flixel.math.FlxPoint;
+import flixel.system.FlxAssets;
 import nape.geom.Vec2;
 
-using logic.PhysUtil;
 using Lambda;
+using logic.PhysUtil;
 
 class CustomNapeTilemap extends FlxNapeTilemap
 {
@@ -40,7 +40,7 @@ class CustomNapeTilemap extends FlxNapeTilemap
 
 			for (tx in 0...widthInTiles)
 			{
-				if (TileType.ONE_WAY.has(getTileByIndex(ty * widthInTiles + tx)))
+				if (TileType.ONE_WAY.has(getTileIndex(tx, ty)))
 				{
 					if (!prevOneWay)
 					{
@@ -54,7 +54,7 @@ class CustomNapeTilemap extends FlxNapeTilemap
 				else if (prevOneWay)
 				{
 					prevOneWay = false;
-					var startPos = getTileCoordsByIndex(startY * widthInTiles + startX, false);
+					var startPos = getTilePos(startX, startY, false);
 					PhysUtil.setOneWayLong(this, startPos, length);
 				}
 			}
@@ -62,12 +62,12 @@ class CustomNapeTilemap extends FlxNapeTilemap
 			if (prevOneWay)
 			{
 				prevOneWay = false;
-				var startPos = getTileCoordsByIndex(startY * widthInTiles + startX, false);
+				var startPos = getTilePos(startX, startY, false);
 				PhysUtil.setOneWayLong(this, startPos, length);
 			}
 		}
 
-		for (point in getTileCoords(TileType.SPAWN, false))
+		for (point in getAllTilePos(TileType.SPAWN, false))
 		{
 			point.x += scaledTileHeight * 0.5;
 			spawnPoints.push(point);

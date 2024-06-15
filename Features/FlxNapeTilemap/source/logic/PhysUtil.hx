@@ -33,7 +33,7 @@ class PhysUtil
 	{
 		tilemap.body.space = null;
 		var polygon:Polygon;
-		var coords:Array<FlxPoint> = tilemap.getTileCoords(index, false);
+		var coords:Array<FlxPoint> = tilemap.getAllTilePos(index, false);
 		for (point in coords)
 		{
 			polygon = new Polygon(vertices, mat);
