@@ -50,7 +50,7 @@ class DistanceTilemap extends FlxTilemap
 		
 		function getTileScoreByIndex(index:Int):Int
 		{
-			if (collisionMap.getTileCollisions(collisionMap.getTileByIndex(index)) == NONE)
+			if (collisionMap.getTileData(index).solid)
 				return getDistanceToTargetByIndex(index);
 			
 			return maxDistance;
@@ -106,11 +106,11 @@ class DistanceTilemap extends FlxTilemap
 
 	function setTileByDistance(index:Int, distanceRatio:Float)
 	{
-		setTileByIndex(index, Std.int(colorTiles * distanceRatio), true);
+		setTileIndex(index, Std.int(colorTiles * distanceRatio), true);
 	}
 
 	function setBlockedTile(index:Int)
 	{
-		setTileByIndex(index, blockedTile, true);
+		setTileIndex(index, blockedTile, true);
 	}
 }
