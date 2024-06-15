@@ -26,8 +26,8 @@ class BigMoverPathfinder extends FlxDiagonalPathfinder
 			(heightInTiles - 1) / 2 * map.height / map.heightInTiles
 		);
 		// offset to center of top-left tile
-		final startIndex = map.getTileIndexByCoords(FlxPoint.weak(start.x - offset.x, start.y - offset.y));
-		final endIndex   = map.getTileIndexByCoords(FlxPoint.weak(end.x   - offset.x, end.y   - offset.y));
+		final startIndex = map.getMapIndexAt(start.x - offset.x, start.y - offset.y);
+		final endIndex   = map.getMapIndexAt(end.x   - offset.x, end.y   - offset.y);
 		offset.put();
 
 		final data = createData(map, startIndex, endIndex);

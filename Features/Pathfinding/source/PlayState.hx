@@ -258,7 +258,7 @@ class PlayState extends FlxState
 		// Check mouse pressed and unit action
 		if (FlxG.mouse.pressed)
 		{
-			var index = map.getTileIndexByCoords(FlxG.mouse.getWorldPosition(FlxPoint.weak()));
+			var index = map.getMapIndexAt(FlxG.mouse.x, FlxG.mouse.y);
 			if (index != -1)
 			{
 				var tileEmpty = map.getTileIndex(index) == 0;
