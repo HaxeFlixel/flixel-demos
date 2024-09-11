@@ -1,98 +1,86 @@
 package;
 
-import flixel.addons.display.FlxPieDial;
-import flixel.addons.display.FlxPieDial.FlxPieDialShape;
-import flixel.tweens.FlxTween;
+import flixel.FlxG;
 import flixel.FlxState;
+import flixel.addons.display.FlxPieDial;
+import flixel.addons.display.FlxPieGuage;
+import flixel.group.FlxGroup;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 
 class DemoState extends FlxState
 {
+	var pieDial:FlxPieDial;
+	
 	override public function create():Void
 	{
 		super.create();
+		FlxG.cameras.bgColor = FlxColor.GRAY;
 
-		var i:Int = 0;
-		var x:Float = 10;
-		var y:Float = 10;
-		var shape:FlxPieDialShape = CIRCLE;
-		var clockwise:Bool = false;
-		var innerRadius:Int = 0;
+		final colors = [FlxColor.RED, FlxColor.BLUE, FlxColor.LIME, FlxColor.WHITE];
+		final spacingX = 100;
+		final spacingY = 100;
 
-		var createDial = function()
+		inline function createDial(x, y, color, shape = CIRCLE, clockwise = true, innerRadius = 0, quarters:Int)
 		{
-			var colors = [FlxColor.RED, FlxColor.BLUE, FlxColor.LIME, FlxColor.WHITE];
-			var amounts = [0.25, 0.50, 0.75, 1.00];
-
-			var dial = new FlxPieDial(x, y, 25, colors[i], 72, shape, clockwise, innerRadius);
-			dial.amount = amounts[i];
+			final dial = new FlxPieDial(x, y, 25, color, 4, shape, clockwise, innerRadius);
+			dial.amount = quarters * .25;
 			add(dial);
-			x += 100;
-
-			i++;
-			if (i > 3)
-				i = 0;
 			return dial;
 		}
 
-		var createFour = function()
+		inline function createFour(x:Float, y, shape = CIRCLE, clockwise = true, innerRadius = 0)
 		{
-			for (_ in 0...4)
-				createDial();
+			for (i in 0...4)
+				createDial(x + i * spacingX, y, colors[i], shape, clockwise, innerRadius, i+1);
 		}
-
-		var nextLine = function()
+		
+		var y = 10;
+		
+		inline function createEight(shape = CIRCLE, innerRadius = 0)
 		{
-			x = 10;
-			y += 100;
+			createFour(10, y, shape, true, innerRadius);
+			createFour(spacingX * 4 + 10, y, shape, false, innerRadius);
+			y += spacingY;
 		}
-
-		// Circular pie dials
-		shape = CIRCLE;
-		clockwise = true;
-		createFour();
-
-		clockwise = false;
-		createFour();
-
-		nextLine();
-
-		// Square-ular pie dials
-		shape = SQUARE;
-		clockwise = true;
-		createFour();
-
-		clockwise = false;
-		createFour();
-
-		nextLine();
-
-		// Donut-ular pie dials
-		shape = CIRCLE;
-		clockwise = true;
-		innerRadius = 12;
-		createFour();
-
-		clockwise = false;
-		createFour();
-
-		nextLine();
-
-		// Square donut-ular pie dials
-		shape = SQUARE;
-		clockwise = true;
-		createFour();
-
-		clockwise = false;
-		createFour();
-
-		nextLine();
-
-		// Tweened pie dial
-		var pieDial = new FlxPieDial(25, y, 25, FlxColor.LIME, 36, FlxPieDialShape.SQUARE, false, 10);
-		pieDial.amount = 0.0;
-		add(pieDial);
-
-		FlxTween.tween(pieDial, {amount: 1.0}, 2.0, {type: PINGPONG});
+		
+		createEight(CIRCLE);
+		createEight(SQUARE);
+		createEight(CIRCLE, 12);
+		createEight(SQUARE, 12);
+		
+		var x = 10;
+		final tweened = new FlxTypedGroup<FlxPieDial>();
+		inline function createTweened(color, shape, innerRadius = 0, clockwise = true)
+		{
+			final dial = new FlxPieDial(x, y, 25, color, 36, shape, clockwise, innerRadius);
+			tweened.add(dial);
+			x += spacingX;
+			
+			return dial;
+		}
+		add(tweened);
+		
+		// clockwise
+		createTweened(colors[0], CIRCLE, 0 , true);
+		createTweened(colors[1], CIRCLE, 10, true);
+		createTweened(colors[2], SQUARE, 0 , true);
+		createTweened(colors[3], SQUARE, 10, true);
+		// counter-clockwise
+		createTweened(colors[0], CIRCLE, 0 , false);
+		createTweened(colors[1], CIRCLE, 10, false);
+		createTweened(colors[2], SQUARE, 0 , false);
+		createTweened(colors[3], SQUARE, 10, false);
+		
+		FlxTween.num(-0.1, 1.1, 2.0, {type: PINGPONG}, function (n)
+		{
+			final n = Math.min(1.0, Math.max(0.0, n));
+			for (dial in tweened)
+				dial.amount = n;
+			
+			#if debug
+			FlxG.watch.addQuick("amount", n);
+			#end
+		});
 	}
 }
