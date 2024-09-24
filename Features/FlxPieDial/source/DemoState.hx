@@ -3,15 +3,12 @@ package;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.addons.display.FlxPieDial;
-import flixel.addons.display.FlxPieGuage;
 import flixel.group.FlxGroup;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 
 class DemoState extends FlxState
 {
-	var pieDial:FlxPieDial;
-	
 	override public function create():Void
 	{
 		super.create();
