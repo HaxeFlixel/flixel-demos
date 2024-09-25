@@ -1,0 +1,140 @@
+name: build-demos-concurrently
+
+on:
+    push:
+        branches: [dev]
+    workflow_dispatch:
+    repository_dispatch:
+
+jobs:
+    get-demos:
+        runs-on: ubuntu-latest
+        outputs:
+            result: ${{ steps.find-demos.outputs.result }}
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                clean: 'false'
+                submodules: 'recursive'
+            - uses: actions/cache@v4
+              with:
+                path: /home/runner/haxe
+                key: haxelib-${{ runner.os }}
+            - uses: lix-pm/setup-lix@master
+            - uses: HaxeFlixel/setup-flixel@v1
+              with:
+                haxe-version: stable
+                flixel-versions: dev
+                target: html5
+            
+            - name: Find all demo folders
+              uses: actions/github-script@v7
+              id: find-demos
+              with:
+                retries: 3
+                script: |
+                  // runs the script to get all the demo folders
+                  // and returns the output, which will be an array
+                  // of paths
+                  // note: actions/github-script will encode the result
+                  // in JSON! we decode it later
+                  
+                  const fs = require('fs');
+                  const path = require('path');
+
+                  module.exports = ({core}) => {
+                    try {
+                        let projectPaths = [];
+
+                        function findProjectXmlFiles(dir) {
+                            const filesAndDirs = fs.readdirSync(dir, {withFileTypes: true});
+
+                            for (const item of filesAndDirs) {
+                                const fullPath = path.join(dir, item.name);
+                                if (item.isDirectory())
+                                    findProjectXmlFiles(fullPath);
+                                else if (item.isFile() && item.name.match(/project.xml/i))
+                                    projectPaths.push(dir);
+                            
+                            }
+                        }
+
+                        findProjectXmlFiles("./");
+
+                        console.log(projectPaths);
+                        
+                        return projectPaths;
+                    } catch (error) {
+                        core.setFailed(error.message);
+                    }
+                  }
+
+                
+    build-demo:
+        runs-on: ubuntu-latest
+        needs: get-demos
+        strategy:
+            fail-fast: false
+            matrix:
+                demo-path: ${{ fromJson(needs.get-demos.outputs.result) }}
+        steps:
+            - name: Get Demo Name
+              uses: actions/github-script@v7
+              id: demo-name
+              with:
+                result-encoding: string
+                retries: 3
+                script: |
+                    return '${{ matrix.demo-path }}'.split('/').pop();
+            - name: Checkout demos repository
+              uses: actions/checkout@v4
+              with:
+                repository: 'HaxeFlixel/flixel-demos'
+                submodules: 'recursive'
+                ref: 'dev'
+                clean: 'false'
+                sparse-checkout: ${{ matrix.demo-path }}
+            - uses: lix-pm/setup-lix@master
+            - uses: actions/cache@v4
+              with:
+                path: /home/runner/haxe
+                key: haxelib-${{ runner.os }}
+            - run: |
+                cd ${{ matrix.demo-path }}
+                haxelib run lime build html5 -- -final
+                ls -lR
+            
+            - name: Move export to new folder
+              run: |
+                mkdir ${{steps.demo-name.outputs.result}}
+                mv ${{ matrix.demo-path }}/export/html5/bin/* ${{steps.demo-name.outputs.result}}
+            - run: ls -lR
+            - name: 'Upload Artifact'
+              uses: actions/upload-artifact@v4
+              with:
+                name: ${{steps.demo-name.outputs.result}}
+                path: ${{steps.demo-name.outputs.result}}/
+                retention-days: 1
+                compression-level: 1
+    publish-site:
+        runs-on: ubuntu-latest
+        needs: build-demo
+        steps:
+            - name: Download Artifacts
+              uses: actions/download-artifact@v4
+            - run: |
+                mkdir -p out/html5
+                for d in */; do
+                    if [ "$d" != "out/html5/" ]; then
+                        mv "$d" out/html5/
+                    fi
+                done
+              shell: bash
+            - name: Deploy
+              uses: peaceiris/actions-gh-pages@v4
+              with:
+                github_token: ${{secrets.GITHUB_TOKEN}}
+                publish_dir: out
+                force_orphan: true
+                cname: demos.haxeflixel.com
