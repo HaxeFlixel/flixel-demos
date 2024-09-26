@@ -8,6 +8,11 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
+		#if flash
 		addChild(new FlxGame(800, 500, DemoState));
+		#else
+		addChild(new FlxGame(800, 500, GaugeState));
+		#end
+		
 	}
 }
