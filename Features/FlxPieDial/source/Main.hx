@@ -9,9 +9,8 @@ class Main extends Sprite
 	{
 		super();
 		#if flash
-		addChild(new FlxGame(800, 500, DemoState.new));
+		addChild(new FlxGame(800, 500, PieDialState.new));
 		#else
-		// addChild(new FlxGame(800, 500, GaugeState.new));
 		addChild(new FlxGame(800, 500, GaugeEditorState.new));
 		#end
 	}

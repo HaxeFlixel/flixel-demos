@@ -8,6 +8,7 @@ import flixel.math.FlxPoint;
 import flixel.tweens.FlxTween;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
+import flixel.util.FlxSignal;
 
 using flixel.addons.display.FlxPieDial.FlxPieDialUtils;
 /**
@@ -15,22 +16,29 @@ using flixel.addons.display.FlxPieDial.FlxPieDialUtils;
  */
 class GaugeEditorState extends flixel.FlxState
 {
-	final shapeGauge:ShapeGaugeEditor;
-	final imageGaugeBg:FlxRadialGauge;
-	final imageGaugeFg:FlxRadialGauge;
+	final circleGauge:ShapeGaugeEditor;
+	final squareGauge:DoubleGauge;
+	final imageGauge:DoubleGauge;
 	
 	public function new ()
 	{
 		super();
 		
-		shapeGauge = new ShapeGaugeEditor(FlxG.width / 3, FlxG.height * 0.5, CIRCLE, 100, 75, -225, 45);
+		circleGauge = new ShapeGaugeEditor(FlxG.width * 0.5, FlxG.height * 0.5, CIRCLE, 100, 75, -225, 45);
+		squareGauge = new DoubleGauge();
+		squareGauge.makeShapeGraphic(SQUARE, 100, 75);
+		squareGauge.color = FlxColor.LIME;
+		squareGauge.back.color = FlxColor.BLACK;
+		circleGauge.onRedraw.add(function ()
+		{
+			squareGauge.makeShapeGraphic(SQUARE, Math.round(circleGauge.radius), Math.round(circleGauge.innerRadius));
+		});
 		
 		drawLogo();
-		imageGaugeBg = new FlxRadialGauge(FlxG.width * 2 / 3, FlxG.height * 0.5, "logo-200x200");
-		imageGaugeBg.x -= imageGaugeBg.width * 0.5;
-		imageGaugeBg.y -= imageGaugeBg.height * 0.5;
-		imageGaugeBg.color = 0xFF909090;
-		imageGaugeFg = new FlxRadialGauge(imageGaugeBg.x, imageGaugeBg.y, "logo-200x200");
+		imageGauge = new DoubleGauge(FlxG.width * 0.5, FlxG.height * 0.5, "logo-200x200");
+		imageGauge.x -= imageGauge.width;
+		imageGauge.y -= imageGauge.height * 0.5;
+		imageGauge.back.color = 0xFF909090;
 	}
 	
 	function drawLogo()
@@ -48,23 +56,52 @@ class GaugeEditorState extends flixel.FlxState
 		super.create();
 		bgColor = FlxColor.GRAY;
 		
-		add(shapeGauge);
-		add(imageGaugeBg);
-		add(imageGaugeFg);
+		add(circleGauge);
+		add(squareGauge);
+		add(imageGauge);
 	}
 	
 	override function draw()
 	{
-		imageGaugeFg.amount = shapeGauge.getAmount();
-		imageGaugeFg.start = imageGaugeBg.start = shapeGauge.getStart();
-		imageGaugeFg.end = imageGaugeBg.end = shapeGauge.getEnd();
-		final scale = 2 * shapeGauge.radius / imageGaugeBg.frameWidth;
-		imageGaugeBg.scale.set(scale, scale);
-		imageGaugeFg.scale.set(scale, scale);
+		squareGauge.amount = imageGauge.amount = circleGauge.getAmount();
+		squareGauge.start = imageGauge.start = circleGauge.getStart();
+		squareGauge.end = imageGauge.end = circleGauge.getEnd();
+		final scale = 2 * circleGauge.radius / imageGauge.frameWidth;
+		imageGauge.scale.set(scale, scale);
+		imageGauge.updateHitbox();
+		
+		squareGauge.x = circleGauge.x - circleGauge.radius * 3 - 10;
+		imageGauge.x = circleGauge.x + circleGauge.radius + 10;
+		imageGauge.y = squareGauge.y = circleGauge.y - circleGauge.radius;
 		
 		super.draw();
 	}
 }
+
+class DoubleGauge extends FlxRadialGauge
+{
+	public final back:FlxRadialGauge;
+	public function new (x = 0.0, y = 0.0, ?graphic)
+	{
+		back = new FlxRadialGauge(x, y, graphic);
+		
+		super(x, y, graphic);
+	}
+	
+	override function draw()
+	{
+		back.x = x;
+		back.y = y;
+		back.frames = frames;
+		back.start = start;
+		back.end = end;
+		back.scale.copyFrom(scale);
+		back.updateHitbox();
+		back.draw();
+		super.draw();
+	}
+}
+
 
 /**
  * A visual editor for a FlxRadialGauge, has draggable objects that determine the gauge's properties
@@ -74,12 +111,11 @@ class ShapeGaugeEditor extends flixel.group.FlxSpriteGroup
 	public var shape:FlxRadialGaugeShape;
 	public var radius = 0.0;
 	public var innerRadius = 0.0;
+	public var onRedraw = new FlxSignal();
 	
-	final gaugeBg:FlxRadialGauge;
-	final gaugeFg:FlxRadialGauge;
+	final gauge:DoubleGauge;
 	final radiusHandle:DragHandle;
 	final innerRadiusHandle:DragHandle;
-	final shapeBtn:FlxButton;
 	
 	public function new (x = 0.0, y = 0.0, shape = CIRCLE, radius:Int, innerRadius:Int, start:Float, end:Float)
 	{
@@ -88,11 +124,9 @@ class ShapeGaugeEditor extends flixel.group.FlxSpriteGroup
 		this.innerRadius = innerRadius;
 		super(0, 0);
 		
-		add(gaugeBg = new FlxRadialGauge(-radius, -radius));
-		gaugeBg.color = FlxColor.BLACK;
-		
-		add(gaugeFg = new FlxRadialGauge(-radius, -radius));
-		gaugeFg.color = FlxColor.LIME;
+		add(gauge = new DoubleGauge(-radius, -radius));
+		gauge.back.color = FlxColor.BLACK;
+		gauge.color = FlxColor.LIME;
 		
 		// Helper point
 		final pos = FlxPoint.get();
@@ -100,25 +134,15 @@ class ShapeGaugeEditor extends flixel.group.FlxSpriteGroup
 		add(radiusHandle = new DragHandle(pos.x, pos.y, onRadiusChange));
 		pos.setPolarDegrees(innerRadius, end);
 		add(innerRadiusHandle = new DragHandle(pos.x, pos.y, onInnerRadiusChange));
-		shapeBtn = new FlxButton(0, 0, '${shape.getName()}', function ()
-		{
-			this.shape = (this.shape == SQUARE ? CIRCLE : SQUARE);
-			shapeBtn.text = '${this.shape.getName()}';
-			redraw();
-		});
-		add(shapeBtn);
-		shapeBtn.x -= shapeBtn.width * 0.5;
-		shapeBtn.y -= shapeBtn.height * 0.5;
 		
 		redraw();
-		gaugeBg.setOrientation(start, end);
-		gaugeFg.setOrientation(start, end);
+		gauge.setOrientation(start, end);
 		
 		
 		FlxTween.num(-0.1, 1.1, 2.0, {type: PINGPONG}, function (n)
 		{
 			final n = Math.min(1.0, Math.max(0.0, n));
-			gaugeFg.amount = n;
+			gauge.amount = n;
 		});
 		
 		// Setting position after everything is added makes it easier to use relative positioning
@@ -127,20 +151,18 @@ class ShapeGaugeEditor extends flixel.group.FlxSpriteGroup
 		pos.put();
 		
 		#if debug
-		FlxG.watch.addFunction("shape", ()->shape);
 		FlxG.watch.addFunction("radius", ()->radius);
 		FlxG.watch.addFunction("innerRadius", ()->innerRadius);
-		FlxG.watch.addFunction("start", ()->gaugeBg.start);
-		FlxG.watch.addFunction("end", ()->gaugeBg.end);
-		FlxG.watch.addFunction("amount", ()->gaugeFg.amount);
+		FlxG.watch.addFunction("start", ()->gauge.start);
+		FlxG.watch.addFunction("end", ()->gauge.end);
+		FlxG.watch.addFunction("amount", ()->gauge.amount);
 		#end
 	}
 	
 	inline function redraw()
 	{
-		trace(shape);
-		gaugeBg.makeShapeGraphic(shape, Math.round(radius), Math.round(innerRadius));
-		gaugeFg.makeShapeGraphic(shape, Math.round(radius), Math.round(innerRadius));
+		gauge.makeShapeGraphic(shape, Math.round(radius), Math.round(innerRadius));
+		onRedraw.dispatch();
 	}
 	
 	function onRadiusChange()
@@ -148,9 +170,9 @@ class ShapeGaugeEditor extends flixel.group.FlxSpriteGroup
 		final dis = FlxPoint.get(radiusHandle.x - x, radiusHandle.y - y);
 		radius = dis.length;
 		redraw();
-		gaugeFg.x = gaugeBg.x = x - radius;
-		gaugeFg.y = gaugeBg.y = y - radius;
-		gaugeFg.start = gaugeBg.start = validateAngle(dis.degrees);
+		gauge.x = x - radius;
+		gauge.y = y - radius;
+		gauge.start = validateAngle(dis.degrees);
 		dis.put();
 	}
 	
@@ -159,7 +181,7 @@ class ShapeGaugeEditor extends flixel.group.FlxSpriteGroup
 		final dis = FlxPoint.get(innerRadiusHandle.x - x, innerRadiusHandle.y - y);
 		innerRadius = dis.length;
 		redraw();
-		gaugeFg.end = gaugeBg.end = validateAngle(dis.degrees);
+		gauge.end = validateAngle(dis.degrees);
 		dis.put();
 	}
 	
@@ -171,17 +193,17 @@ class ShapeGaugeEditor extends flixel.group.FlxSpriteGroup
 	
 	inline public function getStart()
 	{
-		return gaugeBg.start;
+		return gauge.start;
 	}
 	
 	inline public function getEnd()
 	{
-		return gaugeBg.end;
+		return gauge.end;
 	}
 	
 	inline public function getAmount()
 	{
-		return gaugeFg.amount;
+		return gauge.amount;
 	}
 }
 

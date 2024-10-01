@@ -7,7 +7,7 @@ import flixel.group.FlxGroup;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 
-class DemoState extends FlxState
+class PieDialState extends FlxState
 {
 	override public function create():Void
 	{
