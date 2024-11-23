@@ -131,6 +131,8 @@ class PlayState extends FlxState
 		checkbox.callback = function()
 		{
 			FlxG.camera.filtersEnabled = !checkbox.checked;
+
+			FlxG.game.setFilters(filters);
 			FlxG.game.filtersEnabled = checkbox.checked;
 		}
 	}
