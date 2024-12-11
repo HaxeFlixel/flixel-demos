@@ -241,7 +241,7 @@ class Eye extends FlxGroup
 	{
 		super.update(elapsed);
 
-		var distance:Vec2 = new Vec2(FlxG.mouse.screenX - x, FlxG.mouse.screenY - y);
+		var distance:Vec2 = new Vec2(FlxG.mouse.viewX - x, FlxG.mouse.viewY - y);
 
 		outerEye.x = x;
 		outerEye.y = y;

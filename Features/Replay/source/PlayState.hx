@@ -116,8 +116,8 @@ class PlayState extends FlxState
 		{
 			_cursor.scale.set(2, 2);
 		}
-		_cursor.x = FlxG.mouse.screenX;
-		_cursor.y = FlxG.mouse.screenY;
+		_cursor.x = FlxG.mouse.viewX;
+		_cursor.y = FlxG.mouse.viewY;
 
 		super.update(elapsed);
 	}
