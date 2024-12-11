@@ -47,6 +47,9 @@
 	
 	<!-- ______________________________ Haxedefines _____________________________ -->
 	
+	<!--Remove the legacy health system-->
+	<haxedef name="FLX_NO_HEALTH" />
+	
 	<!--Enable the Flixel core recording system-->
 	<haxedef name="FLX_RECORD" />
 	
@@ -70,9 +73,6 @@
 	
 	<!--Disable the Flixel core focus lost screen-->
 	<!--<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />-->
-	
-	<!--Remove legacy health so we can make our own-->
-	<haxedef name="FLX_NO_HEALTH" />
 	
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />

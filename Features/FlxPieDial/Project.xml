@@ -46,6 +46,9 @@
 	
 	<!-- ______________________________ Haxedefines _____________________________ -->
 	
+	<!--Remove the legacy health system-->
+	<haxedef name="FLX_NO_HEALTH" />
+	
 	<!--Enable this for nape release builds for a serious peformance improvement-->
 	<!--<haxedef name="NAPE_RELEASE_BUILD" />--> 
 	
