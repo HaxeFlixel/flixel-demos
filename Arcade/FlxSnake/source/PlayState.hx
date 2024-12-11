@@ -158,7 +158,11 @@ class PlayState extends FlxState
 
 		// Our reward - a new segment! :)
 		addSegment();
-		FlxG.sound.load(FlxAssets.getSound("flixel/sounds/beep")).play();
+		#if flash
+		FlxG.sound.load("flixel/sounds/beep.mp3").play();
+		#else
+		FlxG.sound.load("flixel/sounds/beep.ogg").play();
+		#end
 
 		// Become faster each pickup - set a max speed though!
 		if (_movementInterval >= MIN_INTERVAL)

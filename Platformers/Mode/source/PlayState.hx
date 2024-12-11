@@ -175,7 +175,7 @@ class PlayState extends FlxState
 			s.cameras = [FlxG.camera];
 		});
 
-		FlxG.sound.playMusic(FlxAssets.getSound("assets/sounds/mode"));
+		FlxG.sound.playMusic(AssetPaths.sounds.mode);
 
 		FlxG.cameras.flash(0xff131c1b);
 		_fading = false;
@@ -311,7 +311,7 @@ class PlayState extends FlxState
 						volume = 1.0;
 					}
 
-					FlxG.sound.play(FlxAssets.getSound("assets/sounds/countdown"), volume);
+					FlxG.sound.play(AssetPaths.sounds.countdown, volume);
 				}
 			}
 

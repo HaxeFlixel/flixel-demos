@@ -44,8 +44,13 @@ class MenuState extends FlxState
 		_typeText.color = 0x8811EE11;
 		_typeText.skipKeys = ["SPACE"];
 		_typeText.sounds = [
-			FlxG.sound.load(FlxAssets.getSound("assets/type01")),
-			FlxG.sound.load(FlxAssets.getSound("assets/type02"))
+			#if flash
+			FlxG.sound.load("assets/type01.mp3"),
+			FlxG.sound.load("assets/type02.mp3")
+			#else
+			FlxG.sound.load("assets/type01.ogg"),
+			FlxG.sound.load("assets/type02.ogg")
+			#end
 		];
 
 		_status = new FlxTypeText(15, FlxG.height - 102, FlxG.width - 20, "None", 16);

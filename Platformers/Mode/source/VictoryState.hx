@@ -51,7 +51,7 @@ class VictoryState extends FlxState
 			if (_timer > 0.35 && (_timer > 10 #if FLX_KEYBOARD || FlxG.keys.anyJustPressed([X, C]) #end))
 			{
 				_fading = true;
-				FlxG.sound.play(FlxAssets.getSound("assets/sounds/menu_hit_2"));
+				FlxG.sound.play(AssetPaths.sounds.menu_hit_2);
 				FlxG.cameras.fade(0xff131c1b, 2, false, function()
 				{
 					FlxG.switchState(PlayState.new);

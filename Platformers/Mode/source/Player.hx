@@ -173,7 +173,7 @@ class Player extends FlxSprite implements IHurt
 		if (flickering)
 			return;
 
-		FlxG.sound.play(FlxAssets.getSound("assets/sounds/hurt"));
+		FlxG.sound.play(AssetPaths.sounds.hurt);
 
 		flicker(1.3);
 
@@ -201,8 +201,8 @@ class Player extends FlxSprite implements IHurt
 			return;
 
 		solid = false;
-		FlxG.sound.play(FlxAssets.getSound("assets/sounds/asplode"));
-		FlxG.sound.play(FlxAssets.getSound("assets/sounds/menu_hit_2"));
+		FlxG.sound.play(AssetPaths.sounds.asplode);
+		FlxG.sound.play(AssetPaths.sounds.menu_hit_2);
 
 		super.kill();
 
@@ -254,7 +254,7 @@ class Player extends FlxSprite implements IHurt
 		if (isReadyToJump && (velocity.y == 0))
 		{
 			velocity.y = -_jumpPower;
-			FlxG.sound.play(FlxAssets.getSound("assets/sounds/jump"));
+			FlxG.sound.play(AssetPaths.sounds.jump);
 		}
 	}
 
@@ -266,7 +266,7 @@ class Player extends FlxSprite implements IHurt
 
 		if (flickering)
 		{
-			FlxG.sound.play(FlxAssets.getSound("assets/sounds/jam"));
+			FlxG.sound.play(AssetPaths.sounds.jam);
 		}
 		else
 		{

@@ -205,7 +205,7 @@ class Enemy extends FlxSprite implements IHurt
 				_jets.start(false, 0.01);
 
 				if (isOnScreen())
-					FlxG.sound.play(FlxAssets.getSound("assets/sounds/jet"));
+					FlxG.sound.play(AssetPaths.sounds.jet);
 			}
 			// Then, position the jets at the center of the Enemy,
 			// and point the jets the opposite way from where we're moving.
@@ -242,7 +242,7 @@ class Enemy extends FlxSprite implements IHurt
 	 */
 	public function hurt(damage:Int = 1):Void
 	{
-		FlxG.sound.play(FlxAssets.getSound("assets/sounds/hit"));
+		FlxG.sound.play(AssetPaths.sounds.hit);
 		FlxSpriteUtil.flicker(this, 0.2, 0.02, true);
 		Reg.score += 10;
 
@@ -260,7 +260,7 @@ class Enemy extends FlxSprite implements IHurt
 		if (!alive)
 			return;
 
-		FlxG.sound.play(FlxAssets.getSound("assets/sounds/asplode"));
+		FlxG.sound.play(AssetPaths.sounds.asplode);
 
 		super.kill();
 

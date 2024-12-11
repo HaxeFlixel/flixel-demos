@@ -112,7 +112,7 @@ class MenuState extends FlxState
 			_title2.velocity.x = 0;
 
 			// Then, play a cool sound, change their color, and blow up pieces everywhere
-			FlxG.sound.play(FlxAssets.getSound("assets/sounds/menu_hit"));
+			FlxG.sound.play(AssetPaths.sounds.menu_hit);
 
 			FlxG.cameras.flash(0xffd8eba2, 0.5);
 			FlxG.cameras.shake(0.035, 0.5);
@@ -163,7 +163,7 @@ class MenuState extends FlxState
 			if ((FlxG.keys.pressed.X && FlxG.keys.pressed.C) || _demoMode)
 			{
 				_fading = true;
-				FlxG.sound.play(FlxAssets.getSound("assets/sounds/menu_hit_2"));
+				FlxG.sound.play(AssetPaths.sounds.menu_hit_2);
 
 				FlxG.cameras.flash(0xffd8eba2, 0.5);
 				FlxG.cameras.fade(0xff131c1b, 1, false, onFade);
@@ -186,7 +186,7 @@ class MenuState extends FlxState
 	function onPlay()
 	{
 		onFade();
-		FlxG.sound.play(FlxAssets.getSound("assets/sounds/menu_hit_2"));
+		FlxG.sound.play(AssetPaths.sounds.menu_hit_2);
 	}
 
 	/**

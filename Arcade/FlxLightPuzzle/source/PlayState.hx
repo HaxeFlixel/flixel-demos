@@ -65,7 +65,11 @@ class PlayState extends FlxState
 
 		// the original file was edited to have a 44100 Hz sampling frequency, since Flash cannot use 48000 Hz
 		// this is really easy to change using a free program like Audacity
-		FlxG.sound.playMusic(FlxAssets.getSound("assets/music/Waltzon_edit"), 0.5);
+		#if flash
+		FlxG.sound.playMusic("assets/music/Waltzon_edit.mp3", 0.5);
+		#else
+		FlxG.sound.playMusic("assets/music/Waltzon_edit.ogg", 0.5);
+		#end
 
 		openMenu();
 	}

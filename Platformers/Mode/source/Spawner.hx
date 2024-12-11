@@ -81,7 +81,7 @@ class Spawner extends FlxSprite implements IHurt
 
 	public function hurt(damage:Int = 1):Void
 	{
-		FlxG.sound.play(FlxAssets.getSound("assets/sounds/hit"));
+		FlxG.sound.play(AssetPaths.sounds.hit);
 		FlxSpriteUtil.flicker(this, 0.2, 0.02, true);
 		Reg.score += 50;
 
@@ -97,8 +97,8 @@ class Spawner extends FlxSprite implements IHurt
 			return;
 		}
 
-		FlxG.sound.play(FlxAssets.getSound("assets/sounds/asplode"));
-		FlxG.sound.play(FlxAssets.getSound("assets/sounds/menu_hit_2"));
+		FlxG.sound.play(AssetPaths.sounds.asplode);
+		FlxG.sound.play(AssetPaths.sounds.menu_hit_2);
 
 		super.kill();
 
