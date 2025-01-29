@@ -95,10 +95,17 @@ class Player extends FlxSprite
 		right.addKey(D, PRESSED);
 
 		// Add virtual pad (on-screen button) inputs
+		#if (flixel >= version("6.0.0"))
+		up.addInput(_virtualPad.getButton(UP), PRESSED);
+		down.addInput(_virtualPad.getButton(DOWN), PRESSED);
+		left.addInput(_virtualPad.getButton(LEFT), PRESSED);
+		right.addInput(_virtualPad.getButton(RIGHT), PRESSED);
+		#else
 		up.addInput(_virtualPad.buttonUp, PRESSED);
 		down.addInput(_virtualPad.buttonDown, PRESSED);
 		left.addInput(_virtualPad.buttonLeft, PRESSED);
 		right.addInput(_virtualPad.buttonRight, PRESSED);
+		#end
 
 		// Add gamepad DPAD inputs
 		up.addGamepad(DPAD_UP, PRESSED);
