@@ -152,36 +152,40 @@ class Player extends FlxSprite
 	function updateDigital():Void
 	{
 		#if (flixel >= version("6.0.0"))
-		_virtualPad.getButton(UP).color = FlxColor.WHITE;
-		_virtualPad.getButton(DOWN).color = FlxColor.WHITE;
-		_virtualPad.getButton(LEFT).color = FlxColor.WHITE;
-		_virtualPad.getButton(RIGHT).color = FlxColor.WHITE;
+		final vUp = _virtualPad.getButton(UP);
+		final vDown = _virtualPad.getButton(DOWN);
+		final vLeft = _virtualPad.getButton(LEFT);
+		final vRight = _virtualPad.getButton(RIGHT);
 		#else
-		_virtualPad.buttonUp.color = FlxColor.WHITE;
-		_virtualPad.buttonDown.color = FlxColor.WHITE;
-		_virtualPad.buttonLeft.color = FlxColor.WHITE;
-		_virtualPad.buttonRight.color = FlxColor.WHITE;
+		final vUp = _virtualPad.buttonUp;
+		final vDown = _virtualPad.buttonDown;
+		final vLeft = _virtualPad.buttonLeft;
+		final vRight = _virtualPad.buttonRight;
 		#end
+		vUp.color = FlxColor.WHITE;
+		vDown.color = FlxColor.WHITE;
+		vLeft.color = FlxColor.WHITE;
+		vRight.color = FlxColor.WHITE;
 
 		if (down.triggered)
 		{
-			_virtualPad.buttonDown.color = FlxColor.LIME;
+			vDown.color = FlxColor.LIME;
 			moveY = 1;
 		}
 		else if (up.triggered)
 		{
-			_virtualPad.buttonUp.color = FlxColor.LIME;
+			vUp.color = FlxColor.LIME;
 			moveY = -1;
 		}
 
 		if (left.triggered)
 		{
-			_virtualPad.buttonLeft.color = FlxColor.LIME;
+			vLeft.color = FlxColor.LIME;
 			moveX = -1;
 		}
 		else if (right.triggered)
 		{
-			_virtualPad.buttonRight.color = FlxColor.LIME;
+			vRight.color = FlxColor.LIME;
 			moveX = 1;
 		}
 
