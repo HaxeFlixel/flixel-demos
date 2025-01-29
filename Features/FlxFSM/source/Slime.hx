@@ -15,7 +15,7 @@ class Slime extends FlxSprite
 	{
 		super(X, Y);
 
-		loadGraphic("assets/slime.png", true, 16, 16);
+		loadGraphic("assets/images/slime.png", true, 16, 16);
 		setFacingFlip(LEFT, true, false);
 		setFacingFlip(RIGHT, false, false);
 		facing = RIGHT;
@@ -100,7 +100,7 @@ class Idle extends FlxFSMState<Slime>
 
 	override function enter(owner:Slime, fsm:FlxFSM<Slime>):Void
 	{
-		walkSnd = FlxG.sound.load("assets/walk.ogg", 0.4);
+		walkSnd = FlxG.sound.load("assets/sounds/walk", 0.4);
 		owner.animation.play("standing");
 	}
 
@@ -131,7 +131,7 @@ class Jump extends FlxFSMState<Slime>
 {
 	override function enter(owner:Slime, fsm:FlxFSM<Slime>):Void
 	{
-		FlxG.sound.play("assets/jump.ogg", FlxG.random.float(0.9, 1.0));
+		FlxG.sound.play("assets/sounds/jump", FlxG.random.float(0.9, 1.0));
 		owner.animation.play("jumping");
 		owner.velocity.y = -200;
 	}
@@ -150,7 +150,7 @@ class SuperJump extends Jump
 {
 	override function enter(owner:Slime, fsm:FlxFSM<Slime>):Void
 	{
-		FlxG.sound.play("assets/superjump.ogg", FlxG.random.float(0.9, 1.0));
+		FlxG.sound.play("assets/sounds/superjump", FlxG.random.float(0.9, 1.0));
 		owner.animation.play("jumping");
 		owner.velocity.y = -300;
 	}
@@ -162,7 +162,7 @@ class GroundPound extends FlxFSMState<Slime>
 
 	override function enter(owner:Slime, fsm:FlxFSM<Slime>):Void
 	{
-		FlxG.sound.play("assets/groundpound.ogg");
+		FlxG.sound.play("assets/sounds/groundpound");
 		owner.animation.play("pound");
 		owner.velocity.x = 0;
 		owner.acceleration.x = 0;
@@ -187,7 +187,7 @@ class GroundPoundFinish extends FlxFSMState<Slime>
 {
 	override function enter(owner:Slime, fsm:FlxFSM<Slime>):Void
 	{
-		FlxG.sound.play("assets/groundpoundfinish.ogg");
+		FlxG.sound.play("assets/sounds/groundpoundfinish");
 		owner.animation.play("landing");
 		FlxG.camera.shake(0.025, 0.25);
 		owner.velocity.x = 0;

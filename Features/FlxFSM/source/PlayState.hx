@@ -33,7 +33,7 @@ class PlayState extends FlxState
 		// Music by 8-BITek
 		// Licensed under CC BY-NC-ND 3.0
 		// https://www.newgrounds.com/audio/listen/1341678
-		FlxG.sound.playMusic("assets/happynewyear.ogg", 0);
+		FlxG.sound.playMusic("assets/sounds/happynewyear", 0);
 		FlxG.sound.music.fadeIn(2, 0, 0.2);
 
 		final J = 99;
@@ -66,16 +66,16 @@ class PlayState extends FlxState
 		
 		final tileSize = 16;
 		_map = new FlxTilemap();
-		_map.loadMapFromArray(data, 20, 15, "assets/tiles.png", tileSize, tileSize);
+		_map.loadMapFromArray(data, 20, 15, "assets/images/tiles.png", tileSize, tileSize);
 		add(_map);
 
 		_slime = new Slime(192, 128);
 		add(_slime);
 
-		_superJump = new FlxSprite((superJumpIndex % columns) * tileSize, Std.int(superJumpIndex / columns) * tileSize, "assets/powerup.png");
+		_superJump = new FlxSprite((superJumpIndex % columns) * tileSize, Std.int(superJumpIndex / columns) * tileSize, "assets/images/powerup.png");
 		add(_superJump);
 
-		_groundPound = new FlxSprite((groundPoundIndex % columns) * tileSize, Std.int(groundPoundIndex / columns) * tileSize, "assets/powerup.png");
+		_groundPound = new FlxSprite((groundPoundIndex % columns) * tileSize, Std.int(groundPoundIndex / columns) * tileSize, "assets/images/powerup.png");
 		_groundPound.flipY = true;
 		_groundPound.y += 4;
 		add(_groundPound);
@@ -92,14 +92,14 @@ class PlayState extends FlxState
 		
 		FlxG.overlap(_slime, _superJump, function (_, _)
 		{
-			FlxG.sound.play("assets/powerup.ogg");
+			FlxG.sound.play("assets/sounds/powerup");
 			_slime.addSuperJump();
 			_superJump.kill();
 		});
 		
 		FlxG.overlap(_slime, _groundPound, function (_, _)
 		{
-			FlxG.sound.play("assets/powerup.ogg");
+			FlxG.sound.play("assets/sounds/powerup");
 			_slime.addGroundPound();
 			_groundPound.kill();
 			startGroundPoundInfoTween();
