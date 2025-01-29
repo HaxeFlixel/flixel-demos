@@ -105,10 +105,17 @@ abstract VirtualPad(FlxVirtualPad) from FlxVirtualPad to FlxVirtualPad
 	{
 		return switch(input)
 		{
+			#if (flixel >= version("6.0.0"))
+			case Input.LEFT : this.getButton(FlxVirtualInputID.LEFT).pressed;
+			case Input.RIGHT: this.getButton(FlxVirtualInputID.RIGHT).pressed;
+			case Input.UP   : this.getButton(FlxVirtualInputID.UP).pressed;
+			case Input.DOWN : this.getButton(FlxVirtualInputID.DOWN).pressed;
+			#else
 			case Input.LEFT : this.buttonLeft.pressed;
 			case Input.RIGHT: this.buttonRight.pressed;
 			case Input.UP   : this.buttonUp.pressed;
 			case Input.DOWN : this.buttonDown.pressed;
+			#end
 			default: false;
 		}
 	}
