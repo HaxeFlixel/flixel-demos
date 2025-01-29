@@ -144,7 +144,7 @@ class Player extends FlxSprite
 
 	function updateDigital():Void
 	{
-		#if (flixel >= version(6.0.0))
+		#if (flixel >= version("6.0.0"))
 		_virtualPad.getButton(UP).color = FlxColor.WHITE;
 		_virtualPad.getButton(DOWN).color = FlxColor.WHITE;
 		_virtualPad.getButton(LEFT).color = FlxColor.WHITE;
