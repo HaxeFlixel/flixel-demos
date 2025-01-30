@@ -32,7 +32,7 @@ class Bullet extends FlxSprite
 			// If the bullet makes it 64 pixels off the side of the screen, kill it
 			kill();
 		}
-		else if (touching != 0)
+		else if (touching != NONE)
 		{
 			// We want the bullet to go away when it hits something, not just stop.
 			kill();

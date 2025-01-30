@@ -25,7 +25,7 @@ class EnemyBullet extends FlxSprite
 			if (animation.finished)
 				exists = false;
 		}
-		else if (touching != 0)
+		else if (touching != NONE)
 		{
 			kill();
 		}
