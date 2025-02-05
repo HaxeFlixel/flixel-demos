@@ -43,7 +43,6 @@ jobs:
                   const fs = require('fs');
                   const path = require('path');
 
-                  module.exports = ({core}) => {
                     try {
                         let projectPaths = [];
 
@@ -68,7 +67,6 @@ jobs:
                     } catch (error) {
                         core.setFailed(error.message);
                     }
-                  }
 
                 
     build-demo:
