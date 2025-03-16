@@ -69,17 +69,20 @@ class PlayState extends FlxState
 		if (Reg.highScore > 0)
 			_highScore.text = Std.string(Reg.highScore);
 
-		// The left bounce panel. Drawn via code in Reg to fit screen height.
+		// The bounce panel. Drawn via code in Reg to fit screen height.
+		final bounceImage = Reg.createBounceImage(FlxG.height - 34);
 
+		// The left bounce panel.
+		
 		_bounceLeft = new FlxSprite(1, 17);
-		_bounceLeft.loadGraphic(Reg.getBounceImage(FlxG.height - 34), true, 4, FlxG.height - 34);
+		_bounceLeft.loadGraphic(bounceImage, true, 4, FlxG.height - 34);
 		_bounceLeft.animation.add("flash", [1, 0], 8, false);
 		add(_bounceLeft);
 
 		// The right bounce panel.
 
 		_bounceRight = new FlxSprite(FlxG.width - 5, 17);
-		_bounceRight.loadGraphic(Reg.getBounceImage(FlxG.height - 34), true, 4, FlxG.height - 34);
+		_bounceRight.loadGraphic(bounceImage, true, 4, FlxG.height - 34);
 		_bounceRight.animation.add("flash", [1, 0], 8, false);
 		add(_bounceRight);
 
