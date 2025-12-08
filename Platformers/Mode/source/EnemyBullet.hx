@@ -38,7 +38,7 @@ class EnemyBullet extends FlxSprite
 		if (!alive)
 			return;
 
-		velocity.set();
+		velocity.zero();
 		if (isOnScreen())
 			FlxG.sound.play(AssetPaths.sounds.jump);
 

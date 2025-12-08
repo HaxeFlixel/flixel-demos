@@ -55,7 +55,7 @@ class PlayState extends FlxState
 
 		_stars = new FlxStarField2D(0, 0, FlxG.width, FlxG.height, 60);
 		_stars.bgColor = 0x0;
-		_stars.scrollFactor.set();
+		_stars.scrollFactor.zero();
 		_stars.setStarSpeed(0, 0);
 		add(_stars);
 
@@ -129,12 +129,12 @@ class PlayState extends FlxState
 
 		_txtScore = new FlxText(FlxG.width - 202, 2, 200, "0", 8);
 		_txtScore.alignment = FlxTextAlign.RIGHT;
-		_txtScore.scrollFactor.set();
+		_txtScore.scrollFactor.zero();
 		add(_txtScore);
 
 		_healthBar = new FlxBar(2, 2, FlxBarFillDirection.LEFT_TO_RIGHT, 90, 6, _sprPlayer, "health", 0, 10, true);
 		_healthBar.createGradientBar([0xcc111111], [0xffff0000, 0xff00ff00], 1, 0, true, 0xcc333333);
-		_healthBar.scrollFactor.set();
+		_healthBar.scrollFactor.zero();
 		add(_healthBar);
 
 		var shine:FlxSprite = FlxGradient.createGradientFlxSprite(Std.int(_healthBar.width), Std.int(_healthBar.height),
@@ -142,7 +142,7 @@ class PlayState extends FlxState
 		shine.alpha = .5;
 		shine.x = _healthBar.x;
 		shine.y = _healthBar.y;
-		shine.scrollFactor.set();
+		shine.scrollFactor.zero();
 		add(shine);
 
 		FlxG.camera.setScrollBoundsRect(_map.x, _map.y, _map.width, _map.height, true);

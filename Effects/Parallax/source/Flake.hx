@@ -55,7 +55,7 @@ class Flake extends FlxSprite
 				if (_level == 3)
 				{
 					scrollFactor.x = 1;
-					velocity.set();
+					velocity.zero();
 					y = FlxG.height - 65;
 				}
 				else

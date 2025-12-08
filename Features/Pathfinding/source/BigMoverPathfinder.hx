@@ -63,7 +63,7 @@ class BigMoverPathfinder extends FlxDiagonalPathfinder
 		);
 
 		for (p in path)
-			p.addPoint(offset);
+			p.add(offset);
 
 		offset.put();
 

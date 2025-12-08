@@ -1,10 +1,10 @@
 package;
 
-import flixel.addons.tile.FlxTilemapExt;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.addons.tile.FlxTilemapExt;
 import flixel.graphics.frames.FlxTileFrames;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
@@ -79,7 +79,7 @@ class PlayState extends FlxState
 		_levelText = new FlxText(FlxG.width - 100, 0, 100);
 		_levelText.setFormat(null, 8, 0xFFFFFFFF, RIGHT);
 		_levelText.text = "G -> Gravity";
-		_levelText.scrollFactor.set();
+		_levelText.scrollFactor.zero();
 		_hud.add(_levelText);
 	}
 

@@ -26,7 +26,7 @@ class EnemySpinner extends FlxSprite
 				alpha = _dying;
 				if (_dying <= 0)
 				{
-					velocity.set();
+					velocity.zero();
 					alive = false;
 					exists = false;
 				}
