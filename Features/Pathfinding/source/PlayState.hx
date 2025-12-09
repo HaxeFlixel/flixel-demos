@@ -457,7 +457,6 @@ private abstract SimplifyButton(FlxButton) to FlxButton
 				case NONE         : "NONE";
 				case LINE         : "LINE";
 				case RAY          : "RAY";
-				case RAY_STEP(_)  : "STEP";
 				case RAY_BOX(_, _): "BOX";
 				default: throw "Invalid simplify";
 			};

@@ -27,7 +27,7 @@ class PlayState extends FlxState
 	{
 		// build a gradient sky for the background - make it as big as our screen, and, it's going to be stationary
 		var sky:FlxSprite = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [0xff6dcff6, 0xff333333], 16);
-		sky.scrollFactor.set();
+		sky.scrollFactor.zero();
 		add(sky);
 
 		var uncoloredMountain:FlxSprite = new FlxSprite(0, 0, "assets/mountains.png");
@@ -45,7 +45,7 @@ class PlayState extends FlxState
 		// this is just a solid-gradient to go behind our ground
 		var _sprSolid = FlxGradient.createGradientFlxSprite(FlxG.width, 64, [0xff333333, 0xff000000], 8);
 		_sprSolid.y = FlxG.height - 64;
-		_sprSolid.scrollFactor.set();
+		_sprSolid.scrollFactor.zero();
 		add(_sprSolid);
 
 		// a tileblock of stuff to go between the player and the mountains
@@ -69,7 +69,7 @@ class PlayState extends FlxState
 		var txtInst:FlxText = new FlxText(0, FlxG.height - 16, FlxG.width, "Left/Right to Move");
 		txtInst.alignment = FlxTextAlign.CENTER;
 		txtInst.setBorderStyle(FlxTextBorderStyle.SHADOW, 0xff333333, 1, 1);
-		txtInst.scrollFactor.set();
+		txtInst.scrollFactor.zero();
 		add(txtInst);
 
 		// we're going to have some snow or ash flakes drifting down at different 'levels'. We need a lot of them for the effect to work nicely

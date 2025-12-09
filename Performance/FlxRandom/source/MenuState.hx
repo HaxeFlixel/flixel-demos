@@ -1,17 +1,17 @@
 package;
 
+import flash.Lib;
 import flash.display.BitmapData;
 import flash.geom.Matrix;
 import flash.geom.Rectangle;
-import flash.Lib;
 import flash.utils.ByteArray;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.group.FlxGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
-import flixel.group.FlxGroup;
 
 class MenuState extends FlxState
 {
@@ -417,7 +417,7 @@ class MenuState extends FlxState
 		{
 			for (xPos in 0...640)
 			{
-				dummyBitmapdata.setPixel(xPos, yPos, FlxG.random.color().to24Bit());
+				dummyBitmapdata.setPixel(xPos, yPos, FlxG.random.color().rgb);
 			}
 		}
 

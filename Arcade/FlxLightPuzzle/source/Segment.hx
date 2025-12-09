@@ -52,7 +52,7 @@ class Segment
 			return false;
 
 		var v1 = segment.start.clone();
-		v1.subtractPoint(start);
+		v1.subtract(start);
 
 		if (v1.crossProductLength(vector) > FlxPoint.EPSILON_SQUARED)
 		{

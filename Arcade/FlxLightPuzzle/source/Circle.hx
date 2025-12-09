@@ -35,12 +35,12 @@ class Circle
 		else
 			closest = segment.start.addNew(segment.vector.clone().normalize().scale(proj));
 
-		closest.subtractPoint(center);
+		closest.subtract(center);
 
 		if (closest.lengthSquared >= radius * radius)
 			closest.set(Math.NaN, Math.NaN);
 
-		closest.addPoint(center);
+		closest.add(center);
 
 		return closest;
 	}

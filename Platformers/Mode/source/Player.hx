@@ -210,8 +210,8 @@ class Player extends FlxSprite implements IHurt
 		active = false;
 		visible = false;
 		moves = false;
-		velocity.set();
-		acceleration.set();
+		velocity.zero();
+		acceleration.zero();
 		FlxG.camera.shake(0.005, 0.35);
 		FlxG.camera.flash(0xffd8eba2, 0.35);
 

@@ -41,7 +41,7 @@ class PlayerShip extends FlxSprite
 			angularVelocity += 240;
 		}
 
-		acceleration.set();
+		acceleration.zero();
 
 		if (FlxG.keys.anyPressed([W, UP]))
 		{

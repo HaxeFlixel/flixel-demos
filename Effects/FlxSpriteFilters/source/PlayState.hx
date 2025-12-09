@@ -1,8 +1,5 @@
 package;
 
-import openfl.filters.DisplacementMapFilterMode;
-import openfl.utils.Assets;
-import openfl.filters.DisplacementMapFilter;
 import flash.filters.BitmapFilter;
 import flash.filters.BlurFilter;
 import flash.filters.DropShadowFilter;
@@ -13,7 +10,10 @@ import flixel.FlxState;
 import flixel.graphics.frames.FlxFilterFrames;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
+import openfl.filters.DisplacementMapFilter;
+import openfl.filters.DisplacementMapFilterMode;
 import openfl.geom.Point;
+import openfl.utils.Assets;
 
 #if flash
 import flash.filters.BevelFilter;
@@ -204,7 +204,7 @@ class PlayState extends FlxState
 	function updateFilter(spr:FlxSprite, sprFilter:FlxFilterFrames)
 	{
 		// Reset the offset, it will ballon with each apply call
-		spr.offset.set();
+		spr.offset.zero();
 		sprFilter.applyToSprite(spr, false, true);
 	}
 }
