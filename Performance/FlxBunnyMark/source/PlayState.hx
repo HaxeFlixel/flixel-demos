@@ -183,13 +183,21 @@ class PlayState extends FlxState
 				#end
 
 				// It's much slower to recycle objects, but keeps runtime costs of garbage collection low
-				_bunnies.add(new Bunny().init(offScreen, useShaders, shader));
+				var bunny = new Bunny().init(offScreen, useShaders, shader);
+
+				// Modify the members array directly to avoid lag with many bunnies due to searching for duplicates
+				_bunnies.members.push(bunny);
+				_bunnies.length++;
 			}
 			else
 			{
 				var bunny:Bunny = _bunnies.getFirstAlive();
 				if (bunny != null)
-					_bunnies.remove(bunny);
+				{
+					// Modify the members array directly to avoid lag with many bunnies due to searching for duplicates
+					_bunnies.members.remove(bunny);
+					_bunnies.length--;
+				}
 			}
 		}
 
