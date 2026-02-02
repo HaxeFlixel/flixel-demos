@@ -30,12 +30,14 @@ class PlayState extends FlxState
 	var _times:Array<Float>;
 	var _collisions:Bool = false;
 
+	var _background:FlxSprite;
 	var _bunnies:FlxTypedGroup<Bunny>;
 	var _uiOverlay:FlxSpriteGroup;
 	var _complexityButton:FlxButton;
 	var _collisionButton:FlxButton;
 	var _timestepButton:FlxButton;
 	var _offScreenButton:FlxButton;
+	var _backgroundButton:FlxButton;
 	var _bunnyCounter:FlxText;
 	var _fpsCounter:FlxText;
 
@@ -60,12 +62,13 @@ class PlayState extends FlxState
 
 		if (useAnimatedBackground)
 		{
-			add(new Background());
+			_background = new Background();
+			add(_background);
 		}
 		else
 		{
-			var bg = new FlxTileblock(0, 0, bgWidth, bgHeight);
-			add(bg.loadTiles("assets/grass.png"));
+			_background = new FlxTileblock(0, 0, bgWidth, bgHeight).loadTiles("assets/grass.png");
+			add(_background);
 		}
 
 		var initialAmount = _changeAmount;
@@ -107,25 +110,28 @@ class PlayState extends FlxState
 		// Column2 1
 		var rightButtonX:Float = FlxG.width - 100;
 
-		_complexityButton = new FlxButton(rightButtonX, 10, "Simple", onComplexityToggle);
+		_complexityButton = new FlxButton(rightButtonX, 5, "Simple", onComplexityToggle);
 		overlay.add(_complexityButton);
 
-		_collisionButton = new FlxButton(rightButtonX, 35, "Collisons: Off", onCollisionToggle);
+		_collisionButton = new FlxButton(rightButtonX, 30, "Collisons: Off", onCollisionToggle);
 		overlay.add(_collisionButton);
 
 		// Column2
 		rightButtonX -= 100;
 
-		_timestepButton = new FlxButton(rightButtonX, 10, "Step: Fixed", onTimestepToggle);
+		_timestepButton = new FlxButton(rightButtonX, 5, "Step: Fixed", onTimestepToggle);
 		overlay.add(_timestepButton);
 
-		_offScreenButton = new FlxButton(rightButtonX, 35, "On-Screen", onOffScreenToggle);
+		_offScreenButton = new FlxButton(rightButtonX, 30, "On-Screen", onOffScreenToggle);
 		overlay.add(_offScreenButton);
 
 		#if shaders_supported
-		_shaderButton = new FlxButton(rightButtonX, 60, "Shaders: Off", onShaderToggle);
+		_shaderButton = new FlxButton(rightButtonX, 55, "Shaders: Off", onShaderToggle);
 		overlay.add(_shaderButton);
 		#end
+
+		_backgroundButton = new FlxButton(rightButtonX, 80, "BG: On", onBackgroundToggle);
+		overlay.add(_backgroundButton);
 
 		// The texts
 		_bunnyCounter = new FlxText(0, 10, FlxG.width, "Bunnies: " + _bunnies.length);
@@ -253,6 +259,12 @@ class PlayState extends FlxState
 				bunny.useShader = useShaders;
 	}
 	#end
+
+	function onBackgroundToggle():Void
+	{
+		_background.exists = !_background.exists;
+		toggleLabel(_backgroundButton, "BG: Off", "BG: On");
+	}
 
 	function toggleLabel(button:FlxButton, text1:String, text2:String):Void
 	{
