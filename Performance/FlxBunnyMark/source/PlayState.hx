@@ -95,7 +95,7 @@ class PlayState extends FlxState
 		var overlay = new FlxSpriteGroup();
 
 		var uiBackground = new FlxSprite();
-		uiBackground.makeGraphic(FlxG.width, 100, FlxColor.WHITE);
+		uiBackground.makeGraphic(FlxG.width, 105, FlxColor.WHITE);
 		uiBackground.alpha = 0.7;
 		overlay.add(uiBackground);
 
