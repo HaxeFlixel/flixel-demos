@@ -157,12 +157,15 @@ class PlayState extends FlxState
 		var time = FlxG.game.ticks;
 
 		#if shaders_supported
-		var floodFillY = 0.5 * (1.0 + Math.sin(time / 1000));
-		#if (openfl >= "8.0.0")
-		floodFill.uFloodFillY.value = [floodFillY];
-		#else
-		floodFill.uFloodFillY = floodFillY;
-		#end
+		if (useShaders)
+		{
+			var floodFillY = 0.5 * (1.0 + Math.sin(time / 1000));
+			#if (openfl >= "8.0.0")
+			floodFill.uFloodFillY.value = [floodFillY];
+			#else
+			floodFill.uFloodFillY = floodFillY;
+			#end
+		}
 		#end
 
 		if (_collisions)
