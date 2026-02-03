@@ -1,5 +1,6 @@
 package;
 
+import flixel.math.FlxMath;
 import flash.Lib;
 import flixel.addons.ui.FlxSlider;
 import flixel.FlxG;
@@ -30,6 +31,7 @@ class PlayState extends FlxState
 	var _changeAmount:Int = 1000;
 	var _times:Array<Float>;
 	var _collisions:Bool = false;
+	var _uiState:UIState = VISIBLE;
 
 	var _background:FlxSprite;
 	var _bunnies:FlxTypedGroup<Bunny>;
@@ -181,7 +183,7 @@ class PlayState extends FlxState
 
 		#if FLX_KEYBOARD
 		if (FlxG.keys.justPressed.SPACE)
-			_uiOverlay.visible = !_uiOverlay.visible;
+			updateUIState();
 		#end
 	}
 
@@ -221,6 +223,34 @@ class PlayState extends FlxState
 			if (bunnyAmount == -1)
 				bunnyAmount = 0;
 			_bunnyCounter.text = "Bunnies: " + bunnyAmount;
+		}
+	}
+
+	function updateUIState():Void
+	{
+		_uiState = FlxMath.wrap(_uiState + 1, VISIBLE, HIDDEN);
+
+		switch (_uiState)
+		{
+			case VISIBLE:
+				_uiOverlay.exists = true;
+				_fpsCounter.y = _bunnyCounter.y + _bunnyCounter.height + 20;
+				_fpsCounter.setBorderStyle(NONE);
+
+			case FPS_ONLY:
+				for (ui in _uiOverlay)
+				{
+					if (ui == _fpsCounter)
+						continue;
+
+					ui.exists = false;
+				}
+
+				_fpsCounter.setBorderStyle(OUTLINE, FlxColor.WHITE, 2);
+				_fpsCounter.y = 10;
+
+			case HIDDEN:
+				_uiOverlay.exists = false;
 		}
 	}
 
@@ -288,4 +318,11 @@ class PlayState extends FlxState
 	{
 		button.label.text = if (button.label.text == text1) text2 else text1;
 	}
+}
+
+enum abstract UIState(Int) from Int to Int
+{
+	var VISIBLE = 0;
+	var FPS_ONLY = 1;
+	var HIDDEN = 2;
 }
