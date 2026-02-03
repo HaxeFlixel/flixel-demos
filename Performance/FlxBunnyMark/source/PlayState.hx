@@ -25,6 +25,7 @@ class PlayState extends FlxState
 	public static var complex:Bool = false;
 	public static var offScreen:Bool = false;
 	public static var useShaders:Bool = false;
+	public static var allowRotation:Bool = true;
 
 	var _changeAmount:Int = 1000;
 	var _times:Array<Float>;
@@ -38,6 +39,7 @@ class PlayState extends FlxState
 	var _timestepButton:FlxButton;
 	var _offScreenButton:FlxButton;
 	var _backgroundButton:FlxButton;
+	var _rotationButton:FlxButton;
 	var _bunnyCounter:FlxText;
 	var _fpsCounter:FlxText;
 
@@ -116,6 +118,9 @@ class PlayState extends FlxState
 		_collisionButton = new FlxButton(rightButtonX, 30, "Collisons: Off", onCollisionToggle);
 		overlay.add(_collisionButton);
 
+		_rotationButton = new FlxButton(rightButtonX, 55, "Rotation: On", onRotationToggle);
+		overlay.add(_rotationButton);
+
 		// Column2
 		rightButtonX -= 100;
 
@@ -189,7 +194,7 @@ class PlayState extends FlxState
 				#end
 
 				// It's much slower to recycle objects, but keeps runtime costs of garbage collection low
-				var bunny = new Bunny().init(offScreen, useShaders, shader);
+				var bunny = new Bunny().init(offScreen, useShaders, shader, allowRotation);
 
 				// Modify the members array directly to avoid lag with many bunnies due to searching for duplicates
 				_bunnies.members.push(bunny);
@@ -245,7 +250,7 @@ class PlayState extends FlxState
 
 		for (bunny in _bunnies)
 			if (bunny != null)
-				bunny.init(offScreen, useShaders);
+				bunny.init(offScreen, useShaders, null, allowRotation);
 	}
 
 	#if shaders_supported
@@ -264,6 +269,16 @@ class PlayState extends FlxState
 	{
 		_background.exists = !_background.exists;
 		toggleLabel(_backgroundButton, "BG: Off", "BG: On");
+	}
+
+	function onRotationToggle():Void
+	{
+		allowRotation = !allowRotation;
+		toggleLabel(_rotationButton, "Rotation: Off", "Rotation: On");
+
+		for (bunny in _bunnies)
+			if (bunny != null)
+				bunny.allowRotation = allowRotation;
 	}
 
 	function toggleLabel(button:FlxButton, text1:String, text2:String):Void
