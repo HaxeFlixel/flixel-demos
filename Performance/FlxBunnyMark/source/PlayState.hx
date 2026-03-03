@@ -12,11 +12,7 @@ import flixel.text.FlxText;
 import flixel.tile.FlxTileblock;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
-#if (openfl >= "8.0.0")
-import openfl8.*;
-#else
-import openfl3.*;
-#end
+import shaders.*;
 
 /**
  * @author Zaphod
@@ -60,9 +56,6 @@ class PlayState extends FlxState
 		var bgHeight:Int = Math.ceil(FlxG.height / bgSize) * bgSize;
 
 		var useAnimatedBackground = !FlxG.renderBlit;
-		#if (!openfl_legacy && openfl <= "4.0.0")
-		useAnimatedBackground = false;
-		#end
 
 		if (useAnimatedBackground)
 		{
@@ -162,11 +155,7 @@ class PlayState extends FlxState
 		if (useShaders)
 		{
 			var floodFillY = 0.5 * (1.0 + Math.sin(time / 1000));
-			#if (openfl >= "8.0.0")
 			floodFill.uFloodFillY.value = [floodFillY];
-			#else
-			floodFill.uFloodFillY = floodFillY;
-			#end
 		}
 		#end
 
