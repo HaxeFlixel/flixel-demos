@@ -32,7 +32,7 @@ class PlayState extends FlxState
 
 		// Music by 8-BITek
 		// Licensed under CC BY-NC-ND 3.0
-		// https://www.newgrounds.com/audio/listen/1341678
+		// https://www.newgrounds.com/audio/listen/1335530
 		FlxG.sound.playMusic("assets/sounds/happynewyear", 0);
 		FlxG.sound.music.fadeIn(2, 0, 0.2);
 
