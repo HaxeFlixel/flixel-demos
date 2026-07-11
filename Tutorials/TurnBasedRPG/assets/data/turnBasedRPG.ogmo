@@ -1,6 +1,6 @@
 {
   "name": "HaxeFlixel Tutorial",
-  "ogmoVersion": "3.3.0",
+  "ogmoVersion": "3.4.0",
   "levelPaths": ["."],
   "backgroundColor": "#282c34ff",
   "gridColor": "#3c4049cc",
@@ -29,7 +29,7 @@
       "definition": "tile",
       "name": "walls",
       "gridSize": {"x": 16, "y": 16},
-      "exportID": "40116503",
+      "exportID": "02788814",
       "exportMode": 0,
       "arrayMode": 0,
       "defaultTileset": "tiles"
@@ -54,7 +54,7 @@
           {"x": 1, "y": 1}
         ]
       },
-      "color": "#ff0000ff",
+      "color": "#00e3ffff",
       "tileX": false,
       "tileY": false,
       "tileSize": {"x": 16, "y": 16},
@@ -162,7 +162,7 @@
           {"x": 1, "y": 1}
         ]
       },
-      "color": "#00e3ffff",
+      "color": "#ff0000ff",
       "tileX": false,
       "tileY": false,
       "tileSize": {"x": 16, "y": 16},
@@ -182,6 +182,6 @@
     }
   ],
   "tilesets": [
-    {"label": "tiles", "path": "../images/tiles.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAQCAYAAABQrvyxAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODRBQjNDODZENDhCMTFFMzk5N0RDMzAxQTc5NEM5RkMiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODRBQjNDODdENDhCMTFFMzk5N0RDMzAxQTc5NEM5RkMiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4NEFCM0M4NEQ0OEIxMUUzOTk3REMzMDFBNzk0QzlGQyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4NEFCM0M4NUQ0OEIxMUUzOTk3REMzMDFBNzk0QzlGQyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PrOLMN8AAACUSURBVHja7JWhDoAgEEBPRrERbVYCX+If8Z8Eqo2IyYi7wOYYTncYuI3XD94bDKaUErSwWZtWY0izu3NAnc3zEhpBAVyIQvAeWuKPEEAAQ7I8IjjLswso5RHZq2iNUp7lFRoBI2AEQN+vEL5A+EM/MSvV7wm8ySNnjH0GfJGvRQhu8mWE/GPz2g/5hUVrkvw94hJgALO2Vr1s43dIAAAAAElFTkSuQmCC", "tileWidth": 16, "tileHeight": 16, "tileSeparationX": 0, "tileSeparationY": 0}
+    {"label": "tiles", "path": "../images/tiles.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAACQCAMAAACPiZ3DAAAABGdBTUEAALGOfPtRkwAAAFRQTFRFAAAAqrfM/udh/q40/smc5O35af/UdeP/0XbQAJnbWmmIm0yj/3BtJZVq4Zpl6EU3Q+Gz////98KCz4JUvWxKUmB8wMvcJitEdjs26qVsi5u0PyYxhk+Z/gAAABx0Uk5TAP///////////////////////////////////6l3rVEAAAMZSURBVGiB7ZdbcusgDED90R0QkwTvf5+XNxKSLMBJm2mvpmMHDAch9KDb1slzUvr5bwB8fb0CYFCXtTY+wmtpC7MAvLwxKxoYA3+a0FwGgH0s2iDPNCYqsg7Isg4ID6/CFMBcBRANprZQPTpbz6STmdOACYuFLXQAo0i/gDHYqX4bIPeh1jiAGjjmolFA6zH1IQIMBaCVzRNkoRVA3sAMgJk/p8GPA07mvweAvn8eoA+mHviZADJABYBLB1vOxfgYBJwK2cIKIBCKDsuAqxq0hLMGaDr82BbGAayjzdiAc3XYXgRMGFHV4H63bljs/Y7G+3YBIEqPtGACA3Dh1hUfRVADtl0AgK8uAvYJCQDcfpkN5gC2tTe0J02KDVxrf7YNqG8ggFVtQH0D+YH7PBsM2OIkFpgIYGzxllh4XJT/gL8COIpMAw5RxgB1eHZ8nnAKcCiWWnkZBlgeYCcBew7+fQUQJxZAySLfCjiOPqWkXgZAfSUNTYsXcU4CMC4yC3jcbg8R0MwgA25eGMCQDXyHCLBg+eQDBHAkgLgFfIwLRlQBaaJ0jLoNxGwBATkuBUCyXviTAa74wymA00D3gwI43cIFG4z4gZBx5/zgfYDns6bi+A/GKcDfhgiACgG0EPA24gBdXeCjUdBgJK2XRf3qNJhm6oIHoB3UykTqAqlMaZ7vJYDej7PwACrHzgP2wershb9toiFbsL2t1r9JqLg092GLp08MCCVk2wy40QVGAaJUwONBUwolsYBqAw0gaSDfwAYB12Tjj7pJnw/69gbznQPpu6TzNp6VBsBeC+8D5J6I2gIA1oE+nOHbAzQbqIC281oAuzrQ5wPYTluQ9Y+xz/en9ysAug3OvxI/yMdXzZHTeBzV/C800hdyjOX82zECQAjHkh4kQP/uC0lLDxmg26ACunyQAbofdBr0AP0Y3w0Ir91xuw++SquxBMD5ILYnAUj79GMU4HYJsLtxAGuDQUCJ8OwHwBEmbED1/26A5geweuEL34AfxNTOyqAflCxM60JMabofKGld9wMVoPmBUhf0Y1TS+lXAP2vxLx2XEutMAAAAAElFTkSuQmCC", "tileWidth": 16, "tileHeight": 16, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0}
   ]
 }
