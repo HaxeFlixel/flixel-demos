@@ -28,7 +28,7 @@ class Player extends FlxSprite
 		setSize(8, 8);
 		offset.set(4, 8);
 
-		stepSound = FlxG.sound.load(AssetPaths.step__wav);
+		stepSound = FlxG.sound.create(AssetPaths.step__wav);
 	}
 
 	override function update(elapsed:Float)
