@@ -6,7 +6,6 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.addons.ui.FlxUIButton;
-import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUIText;
 import flixel.math.FlxAngle;
 import flixel.math.FlxMath;
@@ -15,6 +14,7 @@ import flixel.math.FlxRandom;
 import flixel.math.FlxRect;
 import flixel.math.FlxVelocity;
 import flixel.system.scaleModes.PixelPerfectScaleMode;
+import flixel.text.FlxInputText;
 import flixel.text.FlxText;
 import flixel.util.FlxSpriteUtil;
 import hscript.Expr;
@@ -25,7 +25,7 @@ import hscript.Parser;
 class State extends FlxState
 {
 	// Input and output texts, and the interpretor
-	var input:FlxUIInputText = new FlxUIInputText(); // Input text
+	var input:FlxInputText = new FlxInputText(); // Input text
 	var outputs:Array<FlxUIText> = new Array<FlxUIText>(); // Output texts
 	var interp:Interp = new Interp(); // Script interpretor
 	var graph:FlxSprite;
@@ -49,12 +49,11 @@ class State extends FlxState
 		add(labels);
 
 		// Input text box
-		input = new FlxUIInputText();
-		input.broadcastToFlxUI = false;
+		input = new FlxInputText();
 		input.text = "";
 		input.setPosition(10 + labels.width, 10);
 		input.setFormat("Font", 8, 0xff000000);
-		input.textField.width = FlxG.width - input.x - 10;
+		input.fieldWidth = FlxG.width - input.x - 10;
 		add(input);
 
 		// Output texts
@@ -81,11 +80,7 @@ class State extends FlxState
 			{
 				buttons[y].push(new FlxUIButton(10 + x * 23, FlxG.height - 26 - (btns.length - 1 - y) * 18, btns[y][x], function()
 				{
-					var start = input.text.substring(0, input.caretIndex);
-					var end = input.text.substring(input.caretIndex);
-					input.text = start + btns[y][x] + end;
-					input.hasFocus = true;
-					input.caretIndex++;
+					input.text += btns[y][x];
 				}));
 
 				buttons[y][x].label.setFormat("Font", 8, 0xff000000, CENTER);
@@ -131,7 +126,7 @@ class State extends FlxState
 				} // Next
 
 				input.text = txt[index];
-				input.hasFocus = true;
+				// input.hasFocus = true;
 			});
 
 			examples[i].label.setFormat("Font", 8, 0xff000000, CENTER);
@@ -145,7 +140,7 @@ class State extends FlxState
 		add(FlxSpriteUtil.drawRect(graph, 1, 1, graph.width - 2, graph.height - 2, 0xffffffff));
 
 		// Set focus
-		input.hasFocus = true;
+		// input.hasFocus = true;
 
 		// Bind classes. You can also bind class instances and call their public functions and use their public data
 		interp.variables.set("x", 0);
