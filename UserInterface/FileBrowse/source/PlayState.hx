@@ -12,14 +12,10 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.math.FlxMath;
 import flixel.system.FlxAssets;
-#if (flash || html5)
 import openfl.display.Loader;
 import openfl.display.LoaderInfo;
 import openfl.net.FileReference;
 import openfl.net.FileFilter;
-#elseif (sys && !hl)
-import systools.Dialogs;
-#end
 
 /**
  * @author Lars Doucet
@@ -139,7 +135,6 @@ class PlayState extends FlxState
 
 	function _showFileDialog():Void
 	{
-		#if (flash || html5)
 		var fr:FileReference = new FileReference();
 		fr.addEventListener(Event.SELECT, _onSelect, false, 0, true);
 		fr.addEventListener(Event.CANCEL, _onCancel, false, 0, true);
@@ -147,19 +142,8 @@ class PlayState extends FlxState
 		filters.push(new FileFilter("PNG Files", "*.png"));
 		filters.push(new FileFilter("JPEG Files", "*.jpg;*.jpeg"));
 		fr.browse();
-		#elseif (sys && !hl)
-		var filters:FILEFILTERS = {
-			count: 2,
-			descriptions: ["PNG files", "JPEG files"],
-			extensions: ["*.png", "*.jpg;*.jpeg"]
-		};
-		var result:Array<String> = Dialogs.openFile("Select a file please!", "Please select one or more files, so we can see if this method works", filters);
-
-		_onSelect(result);
-		#end
 	}
 
-	#if (flash || html5)
 	function _onSelect(E:Event):Void
 	{
 		var fr:FileReference = cast(E.target, FileReference);
@@ -185,25 +169,6 @@ class PlayState extends FlxState
 		var bmp:Bitmap = cast(loaderInfo.content, Bitmap);
 		_showImage(bmp.bitmapData);
 	}
-	#elseif (sys && !hl)
-	function _onSelect(arr:Array<String>):Void
-	{
-		if (arr != null && arr.length > 0)
-		{
-			_text.text = arr[0];
-			var img = #if lime_legacy BitmapData.load(arr[0]); #else BitmapData.fromFile(arr[0]); #end
-
-			if (img != null)
-			{
-				_showImage(img);
-			}
-		}
-		else
-		{
-			_onCancel(null);
-		}
-	}
-	#end
 
 	function _onCancel(_):Void
 	{
