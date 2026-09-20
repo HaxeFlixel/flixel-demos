@@ -60,7 +60,7 @@ class GameOverState extends FlxState
 
 		mainMenuButton = new FlxButton(0, FlxG.height - 32, "Main Menu", switchToMainMenu);
 		mainMenuButton.screenCenter(FlxAxes.X);
-		mainMenuButton.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
+		mainMenuButton.onUp.sound = FlxG.sound.create(AssetPaths.select__wav);
 		add(mainMenuButton);
 
 		FlxG.camera.fade(FlxColor.BLACK, 0.33, true);

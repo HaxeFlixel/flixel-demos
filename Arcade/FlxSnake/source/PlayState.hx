@@ -1,15 +1,15 @@
 package;
 
-import flixel.util.FlxDirection;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxPoint;
 import flixel.system.FlxAssets;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import flixel.math.FlxPoint;
+import flixel.util.FlxDirection;
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxTimer;
 
@@ -158,11 +158,8 @@ class PlayState extends FlxState
 
 		// Our reward - a new segment! :)
 		addSegment();
-		#if flash
-		FlxG.sound.load("flixel/sounds/beep.mp3").play();
-		#else
-		FlxG.sound.load("flixel/sounds/beep.ogg").play();
-		#end
+		// mp3 on flash, ogg otherwise. Enabled via compile flag FLX_DEFAULT_SOUND_EXT
+		FlxG.sound.play("flixel/sounds/beep");
 
 		// Become faster each pickup - set a max speed though!
 		if (_movementInterval >= MIN_INTERVAL)

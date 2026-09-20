@@ -1,11 +1,11 @@
 package;
 
-import flixel.sound.FlxSound;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
@@ -63,7 +63,7 @@ class PlayState extends FlxState
 	override public function create():Void
 	{	
 		if (FlxG.sound.music == null)
-			FlxG.sound.playMusic("assets/theme.ogg");
+			FlxG.sound.playMusic("assets/theme");// Extension ommitted via FLX_DEFAULT_SOUND_EXT
 
 		FlxG.mouse.visible = false;
 

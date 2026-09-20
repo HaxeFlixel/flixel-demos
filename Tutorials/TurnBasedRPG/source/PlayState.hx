@@ -7,11 +7,12 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.sound.FlxSound;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxColor;
+
+using flixel.util.FlxSpriteUtil;
 #if mobile
 import flixel.ui.FlxVirtualPad;
 #end
 
-using flixel.util.FlxSpriteUtil;
 
 class PlayState extends FlxState
 {
@@ -68,7 +69,7 @@ class PlayState extends FlxState
 		combatHud = new CombatHUD();
 		add(combatHud);
 
-		coinSound = FlxG.sound.load(AssetPaths.coin__wav);
+		coinSound = FlxG.sound.create(AssetPaths.coin__wav);
 
 		#if mobile
 		virtualPad = new FlxVirtualPad(FULL, NONE);
