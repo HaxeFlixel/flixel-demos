@@ -60,6 +60,9 @@ class GamepadSprite extends FlxSpriteGroup
 		createInputSprite(395, 123, "A", A);
 		createInputSprite(433, 84, "B", B);
 
+		createInputSprite(483, 90, "Cancel", CANCEL);
+		createInputSprite(483, 130, "Accept", ACCEPT);
+
 		createInputSprite(357, 234, "Extra0", EXTRA_0, Invisible);
 		createInputSprite(395, 234, "Extra1", EXTRA_1, Invisible);
 		createInputSprite(433, 234, "Extra2", EXTRA_2, Invisible);
