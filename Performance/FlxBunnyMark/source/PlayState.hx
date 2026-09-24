@@ -1,5 +1,6 @@
 package;
 
+import flixel.math.FlxMath;
 import flash.Lib;
 import flixel.addons.ui.FlxSlider;
 import flixel.FlxG;
@@ -11,11 +12,7 @@ import flixel.text.FlxText;
 import flixel.tile.FlxTileblock;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
-#if (openfl >= "8.0.0")
-import openfl8.*;
-#else
-import openfl3.*;
-#end
+import shaders.*;
 
 /**
  * @author Zaphod
@@ -25,17 +22,22 @@ class PlayState extends FlxState
 	public static var complex:Bool = false;
 	public static var offScreen:Bool = false;
 	public static var useShaders:Bool = false;
+	public static var allowRotation:Bool = true;
 
 	var _changeAmount:Int = 1000;
 	var _times:Array<Float>;
 	var _collisions:Bool = false;
+	var _uiState:UIState = VISIBLE;
 
+	var _background:FlxSprite;
 	var _bunnies:FlxTypedGroup<Bunny>;
 	var _uiOverlay:FlxSpriteGroup;
 	var _complexityButton:FlxButton;
 	var _collisionButton:FlxButton;
 	var _timestepButton:FlxButton;
 	var _offScreenButton:FlxButton;
+	var _backgroundButton:FlxButton;
+	var _rotationButton:FlxButton;
 	var _bunnyCounter:FlxText;
 	var _fpsCounter:FlxText;
 
@@ -54,18 +56,16 @@ class PlayState extends FlxState
 		var bgHeight:Int = Math.ceil(FlxG.height / bgSize) * bgSize;
 
 		var useAnimatedBackground = !FlxG.renderBlit;
-		#if (!openfl_legacy && openfl <= "4.0.0")
-		useAnimatedBackground = false;
-		#end
 
 		if (useAnimatedBackground)
 		{
-			add(new Background());
+			_background = new Background();
+			add(_background);
 		}
 		else
 		{
-			var bg = new FlxTileblock(0, 0, bgWidth, bgHeight);
-			add(bg.loadTiles("assets/grass.png"));
+			_background = new FlxTileblock(0, 0, bgWidth, bgHeight).loadTiles("assets/grass.png");
+			add(_background);
 		}
 
 		var initialAmount = _changeAmount;
@@ -90,7 +90,7 @@ class PlayState extends FlxState
 		var overlay = new FlxSpriteGroup();
 
 		var uiBackground = new FlxSprite();
-		uiBackground.makeGraphic(FlxG.width, 100, FlxColor.WHITE);
+		uiBackground.makeGraphic(FlxG.width, 105, FlxColor.WHITE);
 		uiBackground.alpha = 0.7;
 		overlay.add(uiBackground);
 
@@ -107,25 +107,31 @@ class PlayState extends FlxState
 		// Column2 1
 		var rightButtonX:Float = FlxG.width - 100;
 
-		_complexityButton = new FlxButton(rightButtonX, 10, "Simple", onComplexityToggle);
+		_complexityButton = new FlxButton(rightButtonX, 5, "Simple", onComplexityToggle);
 		overlay.add(_complexityButton);
 
-		_collisionButton = new FlxButton(rightButtonX, 35, "Collisons: Off", onCollisionToggle);
+		_collisionButton = new FlxButton(rightButtonX, 30, "Collisons: Off", onCollisionToggle);
 		overlay.add(_collisionButton);
+
+		_rotationButton = new FlxButton(rightButtonX, 55, "Rotation: On", onRotationToggle);
+		overlay.add(_rotationButton);
 
 		// Column2
 		rightButtonX -= 100;
 
-		_timestepButton = new FlxButton(rightButtonX, 10, "Step: Fixed", onTimestepToggle);
+		_timestepButton = new FlxButton(rightButtonX, 5, "Step: Fixed", onTimestepToggle);
 		overlay.add(_timestepButton);
 
-		_offScreenButton = new FlxButton(rightButtonX, 35, "On-Screen", onOffScreenToggle);
+		_offScreenButton = new FlxButton(rightButtonX, 30, "On-Screen", onOffScreenToggle);
 		overlay.add(_offScreenButton);
 
 		#if shaders_supported
-		_shaderButton = new FlxButton(rightButtonX, 60, "Shaders: Off", onShaderToggle);
+		_shaderButton = new FlxButton(rightButtonX, 55, "Shaders: Off", onShaderToggle);
 		overlay.add(_shaderButton);
 		#end
+
+		_backgroundButton = new FlxButton(rightButtonX, 80, "BG: On", onBackgroundToggle);
+		overlay.add(_backgroundButton);
 
 		// The texts
 		_bunnyCounter = new FlxText(0, 10, FlxG.width, "Bunnies: " + _bunnies.length);
@@ -146,12 +152,11 @@ class PlayState extends FlxState
 		var time = FlxG.game.ticks;
 
 		#if shaders_supported
-		var floodFillY = 0.5 * (1.0 + Math.sin(time / 1000));
-		#if (openfl >= "8.0.0")
-		floodFill.uFloodFillY.value = [floodFillY];
-		#else
-		floodFill.uFloodFillY = floodFillY;
-		#end
+		if (useShaders)
+		{
+			var floodFillY = 0.5 * (1.0 + Math.sin(time / 1000));
+			floodFill.uFloodFillY.value = [floodFillY];
+		}
 		#end
 
 		if (_collisions)
@@ -167,7 +172,7 @@ class PlayState extends FlxState
 
 		#if FLX_KEYBOARD
 		if (FlxG.keys.justPressed.SPACE)
-			_uiOverlay.visible = !_uiOverlay.visible;
+			updateUIState();
 		#end
 	}
 
@@ -183,13 +188,21 @@ class PlayState extends FlxState
 				#end
 
 				// It's much slower to recycle objects, but keeps runtime costs of garbage collection low
-				_bunnies.add(new Bunny().init(offScreen, useShaders, shader));
+				var bunny = new Bunny().init(offScreen, useShaders, shader, allowRotation);
+
+				// Modify the members array directly to avoid lag with many bunnies due to searching for duplicates
+				_bunnies.members.push(bunny);
+				_bunnies.length++;
 			}
 			else
 			{
 				var bunny:Bunny = _bunnies.getFirstAlive();
 				if (bunny != null)
-					_bunnies.remove(bunny);
+				{
+					// Modify the members array directly to avoid lag with many bunnies due to searching for duplicates
+					_bunnies.members.remove(bunny);
+					_bunnies.length--;
+				}
 			}
 		}
 
@@ -199,6 +212,34 @@ class PlayState extends FlxState
 			if (bunnyAmount == -1)
 				bunnyAmount = 0;
 			_bunnyCounter.text = "Bunnies: " + bunnyAmount;
+		}
+	}
+
+	function updateUIState():Void
+	{
+		_uiState = FlxMath.wrap(_uiState + 1, VISIBLE, HIDDEN);
+
+		switch (_uiState)
+		{
+			case VISIBLE:
+				_uiOverlay.exists = true;
+				_fpsCounter.y = _bunnyCounter.y + _bunnyCounter.height + 20;
+				_fpsCounter.setBorderStyle(NONE);
+
+			case FPS_ONLY:
+				for (ui in _uiOverlay)
+				{
+					if (ui == _fpsCounter)
+						continue;
+
+					ui.exists = false;
+				}
+
+				_fpsCounter.setBorderStyle(OUTLINE, FlxColor.WHITE, 2);
+				_fpsCounter.y = 10;
+
+			case HIDDEN:
+				_uiOverlay.exists = false;
 		}
 	}
 
@@ -231,7 +272,7 @@ class PlayState extends FlxState
 
 		for (bunny in _bunnies)
 			if (bunny != null)
-				bunny.init(offScreen, useShaders);
+				bunny.init(offScreen, useShaders, null, allowRotation);
 	}
 
 	#if shaders_supported
@@ -246,8 +287,31 @@ class PlayState extends FlxState
 	}
 	#end
 
+	function onBackgroundToggle():Void
+	{
+		_background.exists = !_background.exists;
+		toggleLabel(_backgroundButton, "BG: Off", "BG: On");
+	}
+
+	function onRotationToggle():Void
+	{
+		allowRotation = !allowRotation;
+		toggleLabel(_rotationButton, "Rotation: Off", "Rotation: On");
+
+		for (bunny in _bunnies)
+			if (bunny != null)
+				bunny.allowRotation = allowRotation;
+	}
+
 	function toggleLabel(button:FlxButton, text1:String, text2:String):Void
 	{
 		button.label.text = if (button.label.text == text1) text2 else text1;
 	}
+}
+
+enum abstract UIState(Int) from Int to Int
+{
+	var VISIBLE = 0;
+	var FPS_ONLY = 1;
+	var HIDDEN = 2;
 }
