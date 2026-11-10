@@ -123,10 +123,11 @@ jobs:
             - run: |
                 mkdir -p out/html5
                 for d in */; do
-                    if [ "$d" != "out/html5/" ]; then
-                        mv "$d" out/html5/
-                    fi
+                if [[ "$d" != "out/" && "$d" != "out/html5/" ]]; then
+                    mv "$d" out/html5/
+                fi
                 done
+
               shell: bash
             - name: Deploy
               uses: peaceiris/actions-gh-pages@v4
