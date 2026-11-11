@@ -1,3 +1,5 @@
+package objects;
+
 class FSM
 {
 	public var activeState:Float->Void;
