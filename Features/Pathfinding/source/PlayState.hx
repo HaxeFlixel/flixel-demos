@@ -401,7 +401,6 @@ private abstract Tilemap(FlxTilemap) from FlxTilemap to FlxTilemap
 			mapData,
 			false, // invert
 			1, // scale
-			null, // colorMap
 			FlxGraphic.fromClass(GraphicAutoFull),
 			TILE_SIZE, // tile_width
 			TILE_SIZE, // tile_height

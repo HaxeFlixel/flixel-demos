@@ -52,7 +52,7 @@ class Enemy extends FlxSprite
 		seesPlayer = false;
 		playerPosition = FlxPoint.get();
 
-		stepSound = FlxG.sound.load(AssetPaths.step__wav, 0.4);
+		stepSound = FlxG.sound.create(AssetPaths.step__wav).setup(0.4);
 		stepSound.proximity(x, y, FlxG.camera.target, FlxG.width * 0.6);
 	}
 

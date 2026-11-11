@@ -6,9 +6,9 @@ import flash.geom.Rectangle;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.addons.text.FlxTypeText;
 import flixel.system.FlxAssets;
 import flixel.ui.FlxButton;
-import flixel.addons.text.FlxTypeText;
 
 /**
  * A FlxState which can be used for the game's menu.
@@ -45,11 +45,11 @@ class MenuState extends FlxState
 		_typeText.skipKeys = ["SPACE"];
 		_typeText.sounds = [
 			#if flash
-			FlxG.sound.load("assets/type01.mp3"),
-			FlxG.sound.load("assets/type02.mp3")
+			FlxG.sound.create("assets/type01.mp3"),
+			FlxG.sound.create("assets/type02.mp3")
 			#else
-			FlxG.sound.load("assets/type01.ogg"),
-			FlxG.sound.load("assets/type02.ogg")
+			FlxG.sound.create("assets/type01.ogg"),
+			FlxG.sound.create("assets/type02.ogg")
 			#end
 		];
 
