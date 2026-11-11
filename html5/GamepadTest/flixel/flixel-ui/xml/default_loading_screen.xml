@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	
+	<sprite id="black" x="0" y="0" width="100%" height="100%" color="0x88000000"/>
+	
+	<chrome id="back" center_x="true" center_y="true" width="400" height="100"/>
+	
+	<text id="title" x="0" y="5" width="back.width" text="$POPUP_TITLE_DEFAULT" align="center">
+		<anchor x="back.left" x-flush="left" y="back.top" y-flush="top"/>
+	</text>
+	
+	<text id="body" x="5" y="5" width="back.width-10" text="$POPUP_BODY_DEFAULT" align="center">
+		<anchor x="back.left" x-flush="left" y="title.bottom" y-flush="top"/>
+	</text>
+	
+	<button id="btn_cancel" y="-5" label="$POPUP_CANCEL">
+		<anchor x="back.center" x-flush="center" y="back.bottom" y-flush="bottom"/>
+		<param type="String" value="cancel"/>
+		<exact_size width="back.width*0.25"/>
+	</button>
+	
+	<button id="btn_ok" y="-5" label="$POPUP_OK">
+		<anchor x="back.center" x-flush="center" y="back.bottom" y-flush="bottom"/>
+		<param type="String" value="ok"/>
+		<exact_size width="back.width*0.25"/>
+	</button>
+	
+	<chrome id="bar_back" y="5" src="RAW:flixel/flixel-ui/img/chrome_inset">
+		<anchor x="back.center" x-flush="center" y="body.bottom" y-flush="top"/>
+		<exact_size width="back.width*0.75" height="24"/>
+	</chrome>
+	
+	<chrome id="bar" src="RAW:flixel/flixel-ui/img/chrome_light">
+		<anchor x="bar_back.left" x-flush="left" y="bar_back.top" y-flush="top"/>
+		<exact_size width="bar_back.width" height="24"/>
+	</chrome>
+	
+	<mode id="can_cancel">
+		<hide id="btn_ok"/>
+		<show id="btn_cancel"/>
+		<align axis="horizontal" spacing="10" resize="true">
+			<bounds left="back.left" right="back.right-10"/>
+			<objects value="btn_cancel"/>
+		</align>
+	</mode>
+	
+	<mode id="no_cancel">
+		<hide id="btn_cancel,btn_ok"/>
+	</mode>
+	
+	<mode id="finished">
+		<show id="btn_ok"/>
+		<hide id="btn_cancel"/>
+		<align axis="horizontal" spacing="10" resize="true">
+			<bounds left="back.left" right="back.right-10"/>
+			<objects value="btn_ok"/>
+		</align>
+	</mode>
+	
+</data>

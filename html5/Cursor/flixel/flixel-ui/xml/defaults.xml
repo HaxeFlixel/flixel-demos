@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	
+	<definition id="sans10" font="vera" size="10" style="bold" color="0xffffff" outline="0x000000" align="left"/>
+	<definition id="sans12" font="vera" size="12" style="bold" color="0xffffff" outline="0x000000" align="left"/>
+	<definition id="sans16" font="vera" size="16" style="bold" color="0xffffff" outline="0x000000" align="left"/>
+	
+	<tab_menu x="500" y="212" width="200" height="200">
+		<tab id="tab_1" label="$MENU_TAB_1"/>
+		<tab id="tab_2" label="$MENU_TAB_2"/>
+		<tab id="tab_3" label="$MENU_TAB_3"/>
+		<tab id="tab_4" label="$MENU_TAB_4"/>
+		<group id="tab_1">
+			<radio_group x="10" y="10">
+				<param type="string" value="dr_seuss2"/>
+				<radio id="1_fish" label="$MENU_1_FISH"/>
+				<radio id="2_fish" label="$MENU_2_FISH"/>
+				<radio id="0xff0000_fish" label="$MENU_RED_FISH"/>
+				<radio id="0x0000ff_fish" label="$MENU_BLUE_FISH"/>
+			</radio_group>
+		</group>
+		<group id="tab_2">
+			<checkbox x="10" y="10" label="$MENU_THING_1">
+				<param type="string" value="thing 1"/>
+			</checkbox>	
+			<checkbox x="10" y="40" label="$MENU_THING_2">
+				<param type="string" value="thing 2"/>
+			</checkbox>
+		</group>
+		<group id="tab_3">
+		</group>
+		<group id="tab_4">
+		</group>
+	</tab_menu>
+	
+	
+</data>
