@@ -13,6 +13,8 @@ class Bunny extends FlxSprite
 
 	public var useShader(default, set):Bool = false;
 
+	public var allowRotation(default, set):Bool = true;
+
 	var _shader:FlxShader;
 
 	public function new()
@@ -25,7 +27,7 @@ class Bunny extends FlxSprite
 			loadGraphic("assets/wabbit_alpha.png");
 	}
 
-	public function init(offscreen:Bool = false, useShader:Bool = false, ?shader:FlxShader):Bunny
+	public function init(offscreen:Bool = false, useShader:Bool = false, ?shader:FlxShader, allowRotation:Bool):Bunny
 	{
 		var speedMultiplier:Int = 50;
 
@@ -40,9 +42,8 @@ class Bunny extends FlxSprite
 		velocity.x = speedMultiplier * FlxG.random.float(-5, 5);
 		velocity.y = speedMultiplier * FlxG.random.float(-7.5, 2.5);
 		acceleration.y = 5;
-		angle = FlxG.random.float(-15, 15);
-		angularVelocity = 30 * FlxG.random.float(-5, 5);
 		complex = PlayState.complex;
+		this.allowRotation = allowRotation;
 		elasticity = 1;
 
 		return this;
@@ -106,5 +107,21 @@ class Bunny extends FlxSprite
 	{
 		shader = if (value) _shader else null;
 		return useShader = value;
+	}
+
+	function set_allowRotation(value:Bool):Bool
+	{
+		if (value)
+		{
+			angle = FlxG.random.float(-15, 15);
+			angularVelocity = 30 * FlxG.random.float(-5, 5);
+		}
+		else
+		{
+			angle = 0;
+			angularVelocity = 0;
+		}
+
+		return allowRotation = value;
 	}
 }
