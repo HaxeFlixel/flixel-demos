@@ -133,6 +133,6 @@ jobs:
               uses: peaceiris/actions-gh-pages@v4
               with:
                 github_token: ${{secrets.GITHUB_TOKEN}}
-                publish_dir: out
+                publish_dir: ./out
                 force_orphan: true
                 cname: demos.haxeflixel.com
