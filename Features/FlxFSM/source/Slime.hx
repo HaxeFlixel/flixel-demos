@@ -1,9 +1,9 @@
 package;
 
-import flixel.sound.FlxSound;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.util.FlxFSM;
+import flixel.sound.FlxSound;
 
 class Slime extends FlxSprite
 {
@@ -100,7 +100,7 @@ class Idle extends FlxFSMState<Slime>
 
 	override function enter(owner:Slime, fsm:FlxFSM<Slime>):Void
 	{
-		walkSnd = FlxG.sound.load("assets/sounds/walk", 0.4);
+		walkSnd = FlxG.sound.create("assets/sounds/walk").setup(0.4);
 		owner.animation.play("standing");
 	}
 
