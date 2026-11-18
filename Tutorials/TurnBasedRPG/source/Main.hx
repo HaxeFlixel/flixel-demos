@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.util.FlxSave;
 import openfl.display.Sprite;
+import states.MenuState;
 
 class Main extends Sprite
 {
