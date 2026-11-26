@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>	
+	<sprite id="black" x="0" y="0" width="100%" height="100%" color="0x88000000"/>
+	
+	<chrome id="back" center_x="true" center_y="true" width="400" height="100"/>		
+	
+	<text id="title" x="0" y="5" width="back.width" text="$POPUP_TITLE_DEFAULT" align="center">
+		<anchor x="back.left" x-flush="left" y="back.top" y-flush="top"/>		
+	</text>
+	
+	<text id="body" x="5" y="5" width="back.width-10" text="$POPUP_BODY_DEFAULT" align="left">
+		<anchor x="back.left" x-flush="left" y="title.bottom" y-flush="top"/>		
+	</text>
+	
+	<button id="btn0" y="-5" label="$POPUP_YES">
+		<anchor y="back.bottom" y-flush="bottom"/>
+		<param type="int" value="0"/>		
+	</button>
+	
+	<button id="btn1" label="$POPUP_NO">
+		<anchor y="btn0.top" y-flush="top"/>
+		<param type="int" value="1"/>
+	</button>
+		
+	<button id="btn2" label="$POPUP_CANCEL">
+		<anchor y="btn0.top" y-flush="top"/>		
+		<param type="int" value="2"/>
+	</button>
+	
+	<mode id="1btn" is_default="true">
+		<show id="btn0"/>
+		<hide id="btn1,btn2"/>
+		<change id="btn0" label="$POPUP_OK" width="back.width*0.25"/>
+		<position id="btn0">
+			<anchor x="back.center" x-flush="center"/>
+		</position>
+	</mode>
+	
+	<mode id="2btn">
+		<show id="btn0,btn1"/>
+		<hide id="btn2"/>
+		<align axis="horizontal" spacing="10" resize="true">
+			<bounds left="back.left" right="back.right-10"/>		
+			<objects value="btn0,btn1"/>
+		</align>
+		<change id="btn0" label="$POPUP_OK"/>
+		<change id="btn1" label="$POPUP_CANCEL"/>
+	</mode>
+		
+	<mode id="3btn">
+		<show id="btn0,btn1,btn2"/>
+		<align axis="horizontal" spacing="5" resize="true">
+			<bounds left="back.left+5" right="back.right-5"/>		
+			<objects value="btn0,btn1,btn2"/>
+		</align>
+		<change id="btn0" label="$POPUP_YES"/>
+		<change id="btn1" label="$POPUP_NO"/>
+		<change id="btn2" label="$POPUP_CANCEL"/>
+	</mode>
+</data>

@@ -1,0 +1,252 @@
+{ "frames": [
+   {
+    "filename": "idle:0",
+    "frame": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "jump:1",
+    "frame": { "x": 80, "y": 0, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "fall:2",
+    "frame": { "x": 160, "y": 0, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "duck:3",
+    "frame": { "x": 240, "y": 0, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "fall:4",
+    "frame": { "x": 320, "y": 0, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "climb:5",
+    "frame": { "x": 0, "y": 110, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "climb:6",
+    "frame": { "x": 80, "y": 110, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "cheer:7",
+    "frame": { "x": 160, "y": 110, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "cheer:8",
+    "frame": { "x": 240, "y": 110, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "walk:9",
+    "frame": { "x": 320, "y": 110, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "walk:10",
+    "frame": { "x": 0, "y": 220, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "hold:11",
+    "frame": { "x": 80, "y": 220, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "hold:12",
+    "frame": { "x": 160, "y": 220, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "action:13",
+    "frame": { "x": 240, "y": 220, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "action:14",
+    "frame": { "x": 320, "y": 220, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "kick:15",
+    "frame": { "x": 0, "y": 330, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "swim:16",
+    "frame": { "x": 80, "y": 330, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "swim:17",
+    "frame": { "x": 160, "y": 330, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "talk:18",
+    "frame": { "x": 240, "y": 330, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "slide:19",
+    "frame": { "x": 320, "y": 330, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "hang:20",
+    "frame": { "x": 0, "y": 440, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "skid:21",
+    "frame": { "x": 80, "y": 440, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "back:22",
+    "frame": { "x": 160, "y": 440, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   },
+   {
+    "filename": "stand:23",
+    "frame": { "x": 240, "y": 440, "w": 80, "h": 110 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 110 },
+    "sourceSize": { "w": 80, "h": 110 },
+    "duration": 250
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3-rc4-x64",
+  "image": "player.png",
+  "format": "RGBA8888",
+  "size": { "w": 400, "h": 550 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "idle", "from": 0, "to": 0, "direction": "forward", "color": "#000000ff" },
+   { "name": "jump", "from": 1, "to": 1, "direction": "forward", "color": "#000000ff" },
+   { "name": "fall", "from": 2, "to": 2, "direction": "forward", "color": "#000000ff" },
+   { "name": "duck", "from": 3, "to": 3, "direction": "forward", "color": "#000000ff" },
+   { "name": "fall", "from": 4, "to": 4, "direction": "forward", "color": "#000000ff" },
+   { "name": "climb", "from": 5, "to": 6, "direction": "forward", "repeat": "2", "color": "#000000ff" },
+   { "name": "cheer", "from": 7, "to": 8, "direction": "forward", "repeat": "2", "color": "#000000ff" },
+   { "name": "walk", "from": 9, "to": 10, "direction": "forward", "repeat": "2", "color": "#000000ff" },
+   { "name": "hold", "from": 11, "to": 12, "direction": "forward", "repeat": "2", "color": "#000000ff" },
+   { "name": "action", "from": 13, "to": 14, "direction": "forward", "repeat": "2", "color": "#000000ff" },
+   { "name": "kick", "from": 15, "to": 15, "direction": "forward", "color": "#000000ff" },
+   { "name": "swim", "from": 16, "to": 17, "direction": "forward", "color": "#000000ff" },
+   { "name": "talk", "from": 18, "to": 18, "direction": "forward", "color": "#000000ff" },
+   { "name": "slide", "from": 19, "to": 19, "direction": "forward", "color": "#000000ff" },
+   { "name": "hang", "from": 20, "to": 20, "direction": "forward", "color": "#000000ff" },
+   { "name": "skid", "from": 21, "to": 21, "direction": "forward", "color": "#000000ff" },
+   { "name": "back", "from": 22, "to": 22, "direction": "forward", "color": "#000000ff" },
+   { "name": "stand", "from": 23, "to": 23, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

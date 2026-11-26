@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	
+	<include id="_ui_globals"/>
+	
+	<!--DEFS-->
+	
+	<definition id="grey" src="ui/chrome/dark_grey"/>
+	<definition id="grey_flat" src="ui/chrome/dark_grey_flat_top"/>
+	
+	<definition id="sans10" font="vera" size="10" style="bold" color="0xffffff" outline="0x000000" align="left"/>
+	<definition id="sans10c" font="vera" size="10" style="bold" color="0xffffff" outline="0x000000" align="center"/>
+	<definition id="sans12" font="vera" size="12" style="bold" color="0xffffff" outline="0x000000" align="left"/>
+	<definition id="sans12y" font="vera" size="12" style="bold" color="0xffcc00" outline="0x000000" align="left"/>
+	
+	<definition id="sans8" font="vera" size="10" style="bold" color="0xffffff" outline="0x000000" align="left"/>
+	<definition id="sans8y" font="vera" size="10" style="bold" color="0xffcc00" outline="0x000000" align="left"/>
+	
+	<definition id="sans8c" font="vera" size="10" style="bold" color="0xffffff" outline="0x000000" align="center"/>
+	<definition id="sans8yc" font="vera" size="10" style="bold" color="0xffcc00" outline="0x000000" align="center"/>
+	
+	<definition id="sans8dc" font="vera" size="10" style="bold" color="0xcccccc" outline="0x000000" align="center"/>
+	<definition id="sans8dyc" font="vera" size="10" style="bold" color="0xccaa00" outline="0x000000" align="center"/>
+		
+	<definition id="sans16" font="vera" size="16" style="bold" color="0xffffff" outline="0x000000" align="left"/>
+	<definition id="sans16y" font="vera" size="16" style="bold" color="0xffcc00" outline="0x000000" align="left"/>
+		
+	<definition id="check_small" box_src="ui/misc/check_box_small" check_src="ui/misc/check_small" text_y="0">
+		<text use_def="sans12" color="0xffffff">
+			<color id="over" value="0xffff00"/>
+		</text>
+	</definition>
+	
+	<definition id="check_big" box_src="ui/misc/check_box_big" check_src="ui/misc/check_big" text_y="0">
+		<text use_def="sans16" color="0xffffff">
+			<color id="over" value="0xffff00"/>
+		</text>
+	</definition>
+	
+	<definition id="radio_1" radio_src="ui/misc/radio" dot_src="ui/misc/radio_dot">
+		<text use_def="sans10" color="0xffffff">
+			<color id="over" value="0xffff00"/>
+		</text>
+	</definition>
+	
+	<definition id="tab_button_toggle" width="50" height="20" text_x="-2" text_y="0">
+		<text use_def="sans10c" color="0xcccccc">
+			<color id="over" value="0xccaa00"/>
+			<color id="up" toggle="true" value="0xffffff"/>
+			<color id="over" toggle="true" value="0xffff00"/>
+		</text>
+		
+		<graphic id="up" image="ui/buttons/tab_grey_back" slice9="6,6,12,12"/>
+		<graphic id="over" image="ui/buttons/tab_grey_back_over" slice9="6,6,12,12"/>
+		<graphic id="down" image="ui/buttons/tab_grey_back_over" slice9="6,6,12,12"/>
+		
+		<graphic id="up" toggle="true" image="ui/buttons/tab_grey" slice9="6,6,12,12"/>
+		<graphic id="over" toggle="true" image="ui/buttons/tab_grey_over" slice9="6,6,12,12"/>
+		<graphic id="down" toggle="true" image="ui/buttons/tab_grey_over" slice9="6,6,12,12"/>
+	</definition>
+	
+	<definition id="button_toggle" width="50" height="20">
+		<text use_def="sans10c" color="0xffffff">
+			<color id="over" value="0xffff00"/>
+		</text>
+		
+		<graphic id="all" image="ui/buttons/button_blue_toggle" slice9="6,6,12,12"/>
+	</definition>
+	
+	<definition id="dropdown">
+		 <data id="thing_1" label="Thing 1"/>
+		 <data id="thing_2" label="Thing 2"/>
+		 <data id="1_fish" label="One Fish"/>
+		 <data id="2_fish" label="Two Fish"/>
+		 <data id="0xff0000_fish" label="Red Fish"/>
+		 <data id="0x0000ff_fish" label="Blue Fish"/>
+	</definition>
+	
+	<definition id="chrome_flat" src="ui/chrome/dark_grey_flat_top" slice9="4,4,8,8"/>
+		
+	<definition id="tab_menu_1" back_def="chrome_flat">
+		<tab use_def="tab_button_toggle"/>
+	</definition>
+	
+
+	<!--STUFF-->
+	
+	<sprite x="0" y="0" src="ui/title_back"/>
+
+	<button center_x="true" x="0" y="535" id="start" use_def="text_button" group="top" label="$MISC_BACK">
+		<param type="string" value="back"/>
+		<locale id="nb-NO">
+			<change width="96"/>
+		</locale>	
+	</button>
+	
+	<chrome x="50" y="150" width="700" height="300" use_def="grey"/>
+
+	<checkbox x="60" y="170" use_def="check_small" label="$MENU_THING_1">
+		<param type="string" value="thing 1"/>
+	</checkbox>
+	
+	<checkbox x="60" y="200" use_def="check_big" label="$MENU_THING_2">
+		<param type="string" value="thing 2"/>
+	</checkbox>
+	
+	<radio_group x="170" y="170" use_def="radio_1">
+		<!--callback parameter for clicking anything in this group-->
+		<param type="string" value="dr_seuss"/>
+		
+		<!--actual radio button elements-->
+		<radio id="1_fish" label="$MENU_1_FISH"/>
+		<radio id="2_fish" label="$MENU_2_FISH"/>
+		<radio id="0xff0000_fish" label="$MENU_RED_FISH"/>
+		<radio id="0x0000ff_fish" label="$MENU_BLUE_FISH"/>
+	</radio_group>
+	
+	<button_toggle x="300" y="170" use_def="button_toggle" label="$MENU_TOGGLE"/>
+	<button_toggle x="300" y="200" use_def="button_toggle" label="$MENU_TOGGLE"/>
+	<button_toggle x="300" y="230" use_def="button_toggle" label="$MENU_TOGGLE"/>
+	<button_toggle x="300" y="260" use_def="button_toggle" label="$MENU_TOGGLE"/>
+	
+	<dropdown x="360" y="230" use_def="dropdown" label="$MENU_DROPDOWN"/>
+	<dropdown x="360" y="170" use_def="dropdown" label="$MENU_DROPDOWN"/>
+	
+	<tab_menu x="500" y="182" use_def="tab_menu_1" width="200" height="200">
+		<tab id="tab_1" label="$MENU_TAB_1"/>
+		<tab id="tab_2" label="$MENU_TAB_2"/>
+		<tab id="tab_3" label="$MENU_TAB_3"/>
+		<tab id="tab_4" label="$MENU_TAB_4"/>
+		<group id="tab_1">
+			<radio_group x="10" y="10" use_def="radio_1">
+				<param type="string" value="dr_seuss2"/>
+		
+				<radio id="1_fish" label="$MENU_1_FISH"/>
+				<radio id="2_fish" label="$MENU_2_FISH"/>
+				<radio id="0xff0000_fish" label="$MENU_RED_FISH"/>
+				<radio id="0x0000ff_fish" label="$MENU_BLUE_FISH"/>
+			</radio_group>
+		</group>
+		<group id="tab_2">
+			<checkbox x="10" y="10" use_def="check_small" label="$MENU_THING_1">
+				<param type="string" value="thing 1"/>
+			</checkbox>
+	
+			<checkbox x="10" y="40" use_def="check_big" label="$MENU_THING_2">
+				<param type="string" value="thing 2"/>
+			</checkbox>
+		</group>
+		<group id="tab_3">
+		</group>
+		<group id="tab_4">
+		</group>
+	</tab_menu>
+	
+	<!--You can scale the source of a 9-slice sprite BEFORE the sprite itself is constructed!-->
+	
+	<chrome id="scaled_chrome" center_x="true" x="-200" y="300" group="top" width="144" height="90" src="ui/buttons/button_blue_scale_0" slice9="24,24,48,48">
+		<scale_src scale="0.5"/>
+	</chrome>
+	
+	<!--You can do the same thing with the internal 9-slice sprites fed into a button-->
+	
+	<button id="scaledsrc" center_x="true" x="0" y="300" group="top" label="SCALED SRC" width="93" height="32">
+		<text use_def="sans14c"/>
+		<graphic id="up" image="ui/buttons/button_blue_scale_0" slice9="24,24,48,48">
+			<scale_src scale="screen.height/1200"/>
+		</graphic>
+		<graphic id="over" image="ui/buttons/button_blue_scale_1" slice9="24,24,48,48">
+			<scale_src scale="screen.height/1200"/>
+		</graphic>
+		<graphic id="down" image="ui/buttons/button_blue_scale_2" slice9="24,24,48,48">
+			<scale_src scale="screen.height/1200"/>
+		</graphic>
+		<param type="string" value="scaledsrc"/>
+	</button>
+	
+	<!--You can also do it with a single vertical button strip-->
+	
+	<button id="scaledsrc" center_x="true" x="0" y="350" group="top" label="SCALED SRC" width="93" height="32">
+		<text use_def="sans14c"/>
+		<graphic id="all" image="ui/buttons/button_blue_scale_all" slice9="24,24,48,48">
+			<scale_src scale="screen.height/1200"/>
+		</graphic>
+		<param type="string" value="scaledsrc"/>
+	</button>
+	
+</data>
