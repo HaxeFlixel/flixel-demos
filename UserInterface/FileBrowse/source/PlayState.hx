@@ -141,7 +141,7 @@ class PlayState extends FlxState
 		var filters:Array<FileFilter> = new Array<FileFilter>();
 		filters.push(new FileFilter("PNG Files", "*.png"));
 		filters.push(new FileFilter("JPEG Files", "*.jpg;*.jpeg"));
-		fr.browse();
+		fr.browse(filters);
 	}
 
 	function _onSelect(E:Event):Void
